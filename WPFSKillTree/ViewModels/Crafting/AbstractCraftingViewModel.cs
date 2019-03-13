@@ -328,7 +328,9 @@ namespace POESKillTree.ViewModels.Crafting
             var quality = SelectedBase.CanHaveQuality 
                 ? _qualitySlider.Value
                 : 0;
-            Item.Properties = new ObservableCollection<ItemMod>(Item.BaseType.GetRawProperties(quality));
+            var properties = Item.BaseType.GetRawProperties(quality)
+                .Concat(GetAdditionalProperties());
+            Item.Properties = new ObservableCollection<ItemMod>(properties);
             ApplyLocals();
 
             if (Item.IsWeapon)
@@ -351,6 +353,9 @@ namespace POESKillTree.ViewModels.Crafting
         /// <returns>All explicit and crafted stats of the item and their values.</returns>
         protected abstract (IEnumerable<StatIdValuePair> explicitStats, IEnumerable<StatIdValuePair> craftedStats)
             RecalculateItemSpecific(out int requiredLevel);
+
+        protected virtual IEnumerable<ItemMod> GetAdditionalProperties()
+            => new ItemMod[0];
 
         private IEnumerable<ItemMod> CreateItemMods(IEnumerable<StatIdValuePair> statValuePairs)
         {

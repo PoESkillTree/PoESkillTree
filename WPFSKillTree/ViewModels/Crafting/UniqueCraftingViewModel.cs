@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Linq;
 using MoreLinq;
 using PoESkillTree.GameModel.Items;
-using PoESkillTree.GameModel.Modifiers;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Mods;
 
@@ -14,6 +13,15 @@ namespace POESKillTree.ViewModels.Crafting
     /// </summary>
     public class UniqueCraftingViewModel : AbstractCraftingViewModel<UniqueBase>
     {
+        private const string JewelRadiusStat = "local_jewel_effect_base_radius";
+        private const string JewelRadiusPropertyPrefix = "Radius: ";
+
+        private static readonly IReadOnlyDictionary<int, string> JewelRadiusToString = new Dictionary<int, string>
+        {
+            { 800, "Small" },
+            { 1200, "Medium" },
+            { 1500, "Large" },
+        };
 
         private IReadOnlyList<ModSelectorViewModel> _msExplicits = new ModSelectorViewModel[0];
         public IReadOnlyList<ModSelectorViewModel> MsExplicits
@@ -57,6 +65,21 @@ namespace POESKillTree.ViewModels.Crafting
                 .DefaultIfEmpty()
                 .Max();
             return (MsExplicits.SelectMany(ms => ms.GetStatValues()), new StatIdValuePair[0]);
+        }
+
+        protected override IEnumerable<ItemMod> GetAdditionalProperties()
+        {
+            var rangeStat = MsExplicits.SelectMany(ms => ms.Query().Stats).FirstOrDefault(s => s.Id == JewelRadiusStat);
+            if (rangeStat != null)
+            {
+                yield return CreateJewelRangeProperty(rangeStat.Range.From);
+            }
+        }
+
+        private static ItemMod CreateJewelRangeProperty(int range)
+        {
+            var rangeString = JewelRadiusPropertyPrefix + JewelRadiusToString[range];
+            return new ItemMod(rangeString, false);
         }
 
         private void MsOnPropertyChanged(object sender, PropertyChangedEventArgs e)
