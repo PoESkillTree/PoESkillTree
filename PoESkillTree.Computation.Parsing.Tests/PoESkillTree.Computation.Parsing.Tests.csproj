@@ -76,6 +76,7 @@
     <Compile Include="CoreParserTest.cs" />
     <Compile Include="GivenStatsParserTest.cs" />
     <Compile Include="ItemParsers\ItemParserTest.cs" />
+    <Compile Include="JewelParsers\JewelInItemParserTest.cs" />
     <Compile Include="ParserTestUtils.cs" />
     <Compile Include="PassiveTreeParsers\PassiveNodeParserTest.cs" />
     <Compile Include="PassiveTreeParsers\SkilledPassiveNodeParserTest.cs" />

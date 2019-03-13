@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Moq;
@@ -151,31 +150,6 @@ namespace PoESkillTree.Computation.IntegrationTests
             var actual = _parser.ParseItem(item, ItemSlot.MainHand);
 
             AssertCorrectModifiers(Mock.Of<IValueCalculationContext>(), expectedModifiers, actual);
-        }
-
-        private static void AssertCorrectModifiers(
-            IValueCalculationContext context,
-            (string stat, Form form, NodeValue? value, ModifierSource source)[] expectedModifiers,
-            ParseResult result)
-        {
-            var (failedLines, remainingSubstrings, modifiers) = result;
-
-            Assert.IsEmpty(failedLines);
-            Assert.IsEmpty(remainingSubstrings);
-            for (var i = 0; i < Math.Min(modifiers.Count, expectedModifiers.Length); i++)
-            {
-                var expected = expectedModifiers[i];
-                var actual = modifiers[i];
-                Assert.AreEqual(expected.stat, actual.Stats[0].Identity);
-                Assert.AreEqual(Entity.Character, actual.Stats[0].Entity, expected.stat);
-                Assert.AreEqual(expected.form, actual.Form, expected.stat);
-                Assert.AreEqual(expected.source, actual.Source, expected.stat);
-
-                var expectedValue = expected.value;
-                var actualValue = actual.Value.Calculate(context);
-                Assert.AreEqual(expectedValue, actualValue, expected.stat);
-            }
-            Assert.AreEqual(expectedModifiers.Length, modifiers.Count);
         }
 
         [TestCaseSource(nameof(ReadParseableBaseItems))]

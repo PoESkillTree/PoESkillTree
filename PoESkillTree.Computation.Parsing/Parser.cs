@@ -8,6 +8,7 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Parsing.ItemParsers;
+using PoESkillTree.Computation.Parsing.JewelParsing;
 using PoESkillTree.Computation.Parsing.PassiveTreeParsers;
 using PoESkillTree.Computation.Parsing.SkillParsers;
 using PoESkillTree.GameModel;
@@ -25,6 +26,7 @@ namespace PoESkillTree.Computation.Parsing
         private readonly IParser<ushort> _passiveNodeParser;
         private readonly IParser<ushort> _skilledPassiveNodeParser;
         private readonly IParser<ItemParserParameter> _itemParser;
+        private readonly IParser<ItemParserParameter> _itemJewelParser;
         private readonly IParser<IReadOnlyList<Skill>> _skillsParser;
         private readonly IParser<Skill> _activeSkillParser;
         private readonly IParser<SupportSkillParserParameter> _supportSkillParser;
@@ -64,6 +66,7 @@ namespace PoESkillTree.Computation.Parsing
             _skilledPassiveNodeParser = Caching(new SkilledPassiveNodeParser(passiveTree, builderFactories));
             _itemParser = Caching(new ItemParser(baseItems, builderFactories, _coreParser,
                 statTranslators[StatTranslationFileNames.Main]));
+            _itemJewelParser = Caching(new JewelInItemParser(_coreParser));
             _activeSkillParser =
                 Caching(new ActiveSkillParser(skills, builderFactories, GetOrAddUntranslatedStatParser));
             _supportSkillParser =
@@ -101,6 +104,9 @@ namespace PoESkillTree.Computation.Parsing
 
         public ParseResult ParseItem(Item item, ItemSlot itemSlot)
             => _itemParser.Parse(new ItemParserParameter(item, itemSlot));
+
+        public ParseResult ParseJewelSocketedInItem(Item item, ItemSlot itemSlot)
+            => _itemJewelParser.Parse(new ItemParserParameter(item, itemSlot));
 
         public ParseResult ParseSkills(IReadOnlyList<Skill> skills)
             => _skillsParser.Parse(new SequenceEquatableListView<Skill>(skills));
