@@ -26,6 +26,7 @@ namespace PoESkillTree.GameModel.Items
         Flask3 = 1 << 12,
         Flask4 = 1 << 13,
         Flask5 = 1 << 14,
+        SkillTree = 1 << 15,
     }
 
     public static class ItemSlotExtensions

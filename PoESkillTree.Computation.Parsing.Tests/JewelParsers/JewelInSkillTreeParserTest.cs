@@ -1,7 +1,6 @@
 ﻿using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Parsing.ItemParsers;
 using PoESkillTree.Computation.Parsing.JewelParsing;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
@@ -10,13 +9,13 @@ using static PoESkillTree.Computation.Parsing.Tests.ParserTestUtils;
 namespace PoESkillTree.Computation.Parsing.Tests.JewelParsers
 {
     [TestFixture]
-    public class JewelInItemParserTest
+    public class JewelInSkillTreeParserTest
     {
         [TestCase("+42 to maximum Life")]
         [TestCase("Adds 14 to 21 Cold Damage to Wand Attacks")]
         public void ParseReturnsCorrectModifier(string modifier)
         {
-            var parserParam = CreateItem(ItemSlot.BodyArmour, modifier);
+            var parserParam = CreateItem(modifier);
             var source = CreateGlobalSource(parserParam);
             var expected = CreateModifier("", Form.BaseAdd, 2, source);
             var coreParser = Mock.Of<ICoreParser>(p =>
@@ -32,7 +31,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.JewelParsers
         [Test]
         public void ParseReturnsEmptyResultForDisabledItem()
         {
-            var parserParam = CreateItem(ItemSlot.Gloves, false, "+1 to Strength");
+            var parserParam = CreateItem(false, "+1 to Strength");
             var sut = CreateSut();
 
             var result = sut.Parse(parserParam);
@@ -40,23 +39,23 @@ namespace PoESkillTree.Computation.Parsing.Tests.JewelParsers
             Assert.IsEmpty(result.Modifiers);
         }
 
-        private static JewelInItemParser CreateSut(ICoreParser coreParser = null)
-            => new JewelInItemParser(coreParser ?? Mock.Of<ICoreParser>());
+        private static JewelInSkillTreeParser CreateSut(ICoreParser coreParser = null)
+            => new JewelInSkillTreeParser(coreParser ?? Mock.Of<ICoreParser>());
 
-        private static ItemParserParameter CreateItem(ItemSlot itemSlot, params string[] mods)
-            => CreateItem(itemSlot, true, mods);
+        private static JewelInSkillTreeParserParameter CreateItem(params string[] mods)
+            => CreateItem(true, mods);
 
-        private static ItemParserParameter CreateItem(ItemSlot itemSlot, bool isEnabled = true, params string[] mods)
+        private static JewelInSkillTreeParserParameter CreateItem(bool isEnabled = true, params string[] mods)
         {
             var item = new Item("metadataId", "itemName", 0, 0, default,
                 false, mods, isEnabled);
-            return new ItemParserParameter(item, itemSlot);
+            return new JewelInSkillTreeParserParameter(item, JewelRadius.None, 0);
         }
 
-        private static ModifierSource.Global CreateGlobalSource(ItemParserParameter parserParam)
+        private static ModifierSource.Global CreateGlobalSource(JewelInSkillTreeParserParameter parserParam)
             => new ModifierSource.Global(CreateLocalSource(parserParam));
 
-        private static ModifierSource.Local.Item CreateLocalSource(ItemParserParameter parserParam)
-            => new ModifierSource.Local.Item(parserParam.ItemSlot, parserParam.Item.Name);
+        private static ModifierSource.Local.Item CreateLocalSource(JewelInSkillTreeParserParameter parserParam)
+            => new ModifierSource.Local.Item(ItemSlot.SkillTree, parserParam.Item.Name);
     }
 }

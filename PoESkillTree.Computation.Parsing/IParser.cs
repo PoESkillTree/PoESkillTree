@@ -21,6 +21,7 @@ namespace PoESkillTree.Computation.Parsing
         ParseResult ParseItem(Item item, ItemSlot itemSlot);
 
         ParseResult ParseJewelSocketedInItem(Item item, ItemSlot itemSlot);
+        ParseResult ParseJewelSocketedInSkillTree(Item item, JewelRadius jewelRadius, ushort nodeId);
         
         ParseResult ParseSkills(IReadOnlyList<Skill> skills);
         ParseResult ParseActiveSkill(Skill activeSkill);
