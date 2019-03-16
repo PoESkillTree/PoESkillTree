@@ -12,7 +12,6 @@ using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.Computation.Parsing.Referencing;
 using PoESkillTree.Computation.Parsing.StringParsers;
 using PoESkillTree.Utils;
-using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Parsing
 {
@@ -33,10 +32,12 @@ namespace PoESkillTree.Computation.Parsing
         private static readonly ILog Log =
             LogManager.GetLogger($"{typeof(CoreParser<>).FullName}<{typeof(TStep).Name}>");
 
+        private delegate StringParseResult<IReadOnlyList<Modifier>> Parser(CoreParserParameter parameter);
+
         private readonly IParsingData<TStep> _parsingData;
         private readonly IBuilderFactories _builderFactories;
 
-        private readonly Lazy<IStringParser<IReadOnlyList<Modifier>>> _parser;
+        private readonly Lazy<Parser> _parser;
 
         private readonly ConcurrentDictionary<CoreParserParameter, ParseResult> _cache =
             new ConcurrentDictionary<CoreParserParameter, ParseResult>();
@@ -45,7 +46,7 @@ namespace PoESkillTree.Computation.Parsing
         {
             _parsingData = parsingData;
             _builderFactories = builderFactories;
-            _parser = new Lazy<IStringParser<IReadOnlyList<Modifier>>>(CreateParser);
+            _parser = new Lazy<Parser>(CreateParser);
         }
 
         public ParseResult Parse(CoreParserParameter parameter)
@@ -55,7 +56,7 @@ namespace PoESkillTree.Computation.Parsing
         {
             try
             {
-                var (success, remaining, result) = _parser.Value.Parse(parameter);
+                var (success, remaining, result) = _parser.Value(parameter);
                 if (success)
                 {
                     return ParseResult.Success(result);
@@ -71,7 +72,7 @@ namespace PoESkillTree.Computation.Parsing
             }
         }
 
-        private IStringParser<IReadOnlyList<Modifier>> CreateParser()
+        private Parser CreateParser()
         {
             var referenceService = new ReferenceService(_parsingData.ReferencedMatchers, _parsingData.StatMatchers);
             var regexGroupService = new RegexGroupService(_builderFactories.ValueBuilders);
@@ -100,27 +101,30 @@ namespace PoESkillTree.Computation.Parsing
                 => innerParserCache[_parsingData.SelectStatMatcher(step)];
 
             // The full parsing pipeline.
-            return
-                new ValidatingParser<IReadOnlyList<Modifier>>(
-                    new StatNormalizingParser<IReadOnlyList<Modifier>>(
-                        new ResultMappingParser<IReadOnlyList<IReadOnlyList<Modifier>>, IReadOnlyList<Modifier>>(
-                            new StatReplacingParser<IReadOnlyList<Modifier>>(
-                                new ResultMappingParser<IReadOnlyList<IIntermediateModifier>,
-                                    IReadOnlyList<Modifier>>(
-                                    new CompositeParser<IIntermediateModifier, TStep>(_parsingData.Stepper,
-                                        StepToParser),
-                                    AggregateAndBuild),
-                                _parsingData.StatReplacers
-                            ),
-                            (_, ls) => ls.Flatten().ToList()
+            IStringParser<IReadOnlyList<IReadOnlyList<IIntermediateModifier>>> parser =
+                new ValidatingParser<IReadOnlyList<IReadOnlyList<IIntermediateModifier>>>(
+                    new StatNormalizingParser<IReadOnlyList<IReadOnlyList<IIntermediateModifier>>>(
+                        new StatReplacingParser<IReadOnlyList<IIntermediateModifier>>(
+                            new CompositeParser<IIntermediateModifier, TStep>(_parsingData.Stepper, StepToParser),
+                            _parsingData.StatReplacers
                         )
                     )
                 );
+            return ps => AggregateAndBuild(ps, parser.Parse(ps.ModifierLine));
+        }
+
+        private static StringParseResult<IReadOnlyList<Modifier>> AggregateAndBuild(
+            CoreParserParameter parameter,
+            StringParseResult<IReadOnlyList<IReadOnlyList<IIntermediateModifier>>> result)
+        {
+            var (successfullyParsed, remaining, intermediates) = result;
+            var modifiers = intermediates.SelectMany(ms => AggregateAndBuild(parameter, ms)).ToList();
+            return (successfullyParsed, remaining, modifiers);
         }
 
         private static IReadOnlyList<Modifier> AggregateAndBuild(
-            CoreParserParameter parameter, IReadOnlyList<IIntermediateModifier> intermediates) =>
-            intermediates
+            CoreParserParameter parameter, IReadOnlyList<IIntermediateModifier> intermediates)
+            => intermediates
                 .Aggregate()
                 .Build(parameter.ModifierSource, parameter.ModifierSourceEntity);
     }

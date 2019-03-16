@@ -4,7 +4,7 @@
     /// Decorating parser that caches results.
     /// </summary>
     public class CachingStringParser<T>
-        : GenericCachingParser<CoreParserParameter, StringParseResult<T>>, IStringParser<T>
+        : GenericCachingParser<string, StringParseResult<T>>, IStringParser<T>
     {
         public CachingStringParser(IStringParser<T> decoratedParser)
             : base(decoratedParser.Parse)

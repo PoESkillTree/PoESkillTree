@@ -33,14 +33,14 @@ namespace PoESkillTree.Computation.Parsing.StringParsers
             => new Regex("^" + data.OriginalStatRegex + "$",
                 RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 
-        public StringParseResult<IReadOnlyList<TResult>> Parse(CoreParserParameter parameter)
+        public StringParseResult<IReadOnlyList<TResult>> Parse(string modifierLine)
         {
             var successfullyParsed = true;
             var remainings = new List<string>();
             var results = new List<TResult>();
-            foreach (var replacementStat in GetReplacements(parameter.ModifierLine))
+            foreach (var replacementStat in GetReplacements(modifierLine))
             {
-                var (innerSuccess, innerRemaining, innerResult) = _inner.Parse(replacementStat, parameter);
+                var (innerSuccess, innerRemaining, innerResult) = _inner.Parse(replacementStat);
                 successfullyParsed &= innerSuccess;
                 results.Add(innerResult);
                 if (!string.IsNullOrWhiteSpace(innerRemaining))

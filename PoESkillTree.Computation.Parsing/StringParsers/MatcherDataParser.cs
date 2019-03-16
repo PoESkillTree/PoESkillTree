@@ -41,15 +41,14 @@ namespace PoESkillTree.Computation.Parsing.StringParsers
             => new Regex(regex,
                 RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
 
-        public StringParseResult<MatcherDataParseResult> Parse(CoreParserParameter parameter)
+        public StringParseResult<MatcherDataParseResult> Parse(string modifierLine)
         {
-            var stat = parameter.ModifierLine;
             Match longestMatch = null;
             MatcherData matchingData = null;
             Regex matchingRegex = null;
             foreach (var (data, regex) in _dataWithRegexes)
             {
-                var match = regex.Match(stat);
+                var match = regex.Match(modifierLine);
                 if (match.Success && (longestMatch is null || match.Length > longestMatch.Length))
                 {
                     longestMatch = match;
@@ -59,10 +58,10 @@ namespace PoESkillTree.Computation.Parsing.StringParsers
             }
 
             if (longestMatch is null)
-                return (false, stat, null);
+                return (false, modifierLine, null);
 
             return (true,
-                GetRemaining(matchingData, stat, longestMatch),
+                GetRemaining(matchingData, modifierLine, longestMatch),
                 new MatcherDataParseResult(matchingData.Modifier, SelectGroups(matchingRegex, longestMatch.Groups)));
         }
 

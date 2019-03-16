@@ -38,9 +38,9 @@ namespace PoESkillTree.Computation.Parsing.StringParsers
             _regexGroupParser = regexGroupParser;
         }
 
-        public StringParseResult<IIntermediateModifier> Parse(CoreParserParameter parameter)
+        public StringParseResult<IIntermediateModifier> Parse(string modifierLine)
         {
-            var (successfullyParsed, remaining, innerResult) = _innerParser.Parse(parameter);
+            var (successfullyParsed, remaining, innerResult) = _innerParser.Parse(modifierLine);
             IIntermediateModifier result;
 
             if (successfullyParsed)

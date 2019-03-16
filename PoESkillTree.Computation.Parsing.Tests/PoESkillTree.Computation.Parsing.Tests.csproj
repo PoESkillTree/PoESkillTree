@@ -91,7 +91,6 @@
     <Compile Include="StringParsers\MatcherDataParserTest.cs" />
     <Compile Include="StringParsers\CachingParserTest.cs" />
     <Compile Include="Referencing\ResolvedMatchContextTest.cs" />
-    <Compile Include="StringParsers\ResultMappingParserTest.cs" />
     <Compile Include="Referencing\MatcherMocks.cs" />
     <Compile Include="Referencing\ReferenceServiceTest.cs" />
     <Compile Include="Referencing\ReferenceValidatorTest.cs" />

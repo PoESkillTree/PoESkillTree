@@ -107,7 +107,6 @@
     <Compile Include="StringParsers\CachingStringParser.cs" />
     <Compile Include="CoreParser.cs" />
     <Compile Include="ParseResult.cs" />
-    <Compile Include="StringParsers\ResultMappingParser.cs" />
     <Compile Include="Referencing\ResolvedReferenceConverter.cs" />
     <Compile Include="Referencing\IReferencedRegexes.cs" />
     <Compile Include="Referencing\IReferenceToMatcherDataResolver.cs" />

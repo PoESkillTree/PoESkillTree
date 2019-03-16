@@ -1,15 +1,10 @@
 ﻿using System;
 using Moq;
-using PoESkillTree.Computation.Parsing.StringParsers;
 
-namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
+namespace PoESkillTree.Computation.Parsing.StringParsers
 {
     public static class StringParserTestUtils
     {
-        public static StringParseResult<TResult> Parse<TResult>(this IStringParser<TResult> @this,
-            string modifierLine)
-            => @this.Parse(modifierLine, default, default);
-
         public static Mock<IStringParser<TResult>> MockParser<TResult>(
             string modifier, bool successfullyParsed, string remainingSubstring, TResult result)
             => MockParser(modifier, new StringParseResult<TResult>(successfullyParsed, remainingSubstring, result));
@@ -24,7 +19,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
             var mock = new Mock<IStringParser<TResult>>();
             foreach (var (modifier, result) in setup)
             {
-                mock.Setup(p => p.Parse(CreateParameter(modifier)))
+                mock.Setup(p => p.Parse(modifier))
                     .Returns(result);
             }
             return mock;
@@ -32,12 +27,9 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
 
         public static void VerifyParse<TResult>(this Mock<IStringParser<TResult>> @this,
             string modifier, Func<Times> times)
-            => @this.Verify(p => p.Parse(CreateParameter(modifier)), times);
+            => @this.Verify(p => p.Parse(modifier), times);
 
         public static void VerifyParse<TResult>(this Mock<IStringParser<TResult>> @this, string modifier)
-            => @this.Verify(p => p.Parse(CreateParameter(modifier)));
-
-        private static CoreParserParameter CreateParameter(string modifier)
-            => new CoreParserParameter(modifier, default, default);
+            => @this.Verify(p => p.Parse(modifier));
     }
 }

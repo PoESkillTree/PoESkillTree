@@ -17,10 +17,10 @@ namespace PoESkillTree.Computation.Parsing.StringParsers
             _inner = inner;
         }
 
-        public StringParseResult<TResult> Parse(CoreParserParameter parameter)
+        public StringParseResult<TResult> Parse(string modifierLine)
         {
-            var modifierLine = MergeWhiteSpace(parameter.ModifierLine.Trim());
-            return _inner.Parse(modifierLine, parameter);
+            var normalized = MergeWhiteSpace(modifierLine.Trim());
+            return _inner.Parse(normalized);
         }
 
         // This is infinitely faster than Regex.Replace
