@@ -569,7 +569,6 @@
     </Compile>
     <Compile Include="Model\Builds\PoEBuild.cs" />
     <Compile Include="SkillTreeFiles\PoESkillTree.cs" />
-    <Compile Include="SkillTreeFiles\Point2D.cs" />
     <Compile Include="SkillTreeFiles\Rect2D.cs" />
     <Compile Include="SkillTreeFiles\SkillTree-Drawing.cs" />
     <Compile Include="SkillTreeFiles\SkillTree.cs" />

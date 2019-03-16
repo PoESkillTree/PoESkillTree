@@ -443,9 +443,10 @@ namespace POESKillTree.SkillTreeFiles
                 var nodeList = Skillnodes.Where(x => x.Value.ascendancyName == ascName && !x.Value.IsAscendancyStart);
                 var worldPos = Skillnodes[RootNodeClassDictionary[CharClass]].Position;
                 var ascStartNode = AscRootNodeList.First(x => x.ascendancyName == ascName);
-                var ascNodeOriginalPos = ascStartNode.SkillNodeGroup.Position;
+                var ascStartNodeGroup = ascStartNode.SkillNodeGroup;
+                var ascNodeOriginalPos = ascStartNodeGroup.Position;
                 if (_originalPositions.All(x => x.Item1 != ascStartNode.G))
-                    _originalPositions.Add(new Tuple<int, Vector2D>(ascStartNode.G, new Vector2D(ascNodeOriginalPos.ToContainingPoint())));
+                    _originalPositions.Add(new Tuple<int, Vector2D>(ascStartNode.G, ascNodeOriginalPos));
 
                 var imageName = "Classes" + ascStartNode.ascendancyName;
                 var bitmap = Assets[imageName];
@@ -464,7 +465,7 @@ namespace POESKillTree.SkillTreeFiles
                 var imageCx = worldPos.X + (distanceFromStartNodeCenter + bitmap.Height * 1.25) * Math.Cos(ascButtonRot + Math.PI / 2);
                 var imageCy = worldPos.Y + (distanceFromStartNodeCenter + bitmap.Width * 1.25) * Math.Sin(ascButtonRot + Math.PI / 2);
 
-                ascStartNode.SkillNodeGroup.Position = new Vector2D(imageCx, imageCy);
+                ascStartNodeGroup.Position = new Vector2D(imageCx, imageCy);
                 var done = new List<SkillNodeGroup> { ascStartNode.SkillNodeGroup };
 
                 foreach (var n in nodeList)
@@ -472,12 +473,10 @@ namespace POESKillTree.SkillTreeFiles
                     if (done.Contains(n.Value.SkillNodeGroup))
                         continue;
                     if (_originalPositions.All(x => x.Item1 != n.Value.G))
-                        _originalPositions.Add(new Tuple<int, Vector2D>(n.Value.G, new Vector2D(n.Value.SkillNodeGroup.Position.ToContainingPoint())));
+                        _originalPositions.Add(new Tuple<int, Vector2D>(n.Value.G, n.Value.SkillNodeGroup.Position));
                     var diffDist = ascNodeOriginalPos - n.Value.SkillNodeGroup.Position;
-                    imageCx = ascStartNode.SkillNodeGroup.Position.X - diffDist.X;
-                    imageCy = ascStartNode.SkillNodeGroup.Position.Y - diffDist.Y;
 
-                    n.Value.SkillNodeGroup.Position = new Vector2D(imageCx, imageCy);
+                    n.Value.SkillNodeGroup.Position = ascStartNodeGroup.Position - diffDist;
                     done.Add(n.Value.SkillNodeGroup);
                 }
             }
