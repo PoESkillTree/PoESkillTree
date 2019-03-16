@@ -14,7 +14,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.PassiveTreeParsers
         public void ReturnsCorrectModifier(ushort nodeId)
         {
             var definition = new PassiveNodeDefinition(nodeId, PassiveNodeType.Normal, "", false,
-                true, 0, new string[0]);
+                true, 0, default, new string[0]);
             var expected = new[]
             {
                 CreateModifier($"{nodeId}.Skilled", Form.TotalOverride, 1, CreateGlobalSource(definition))

@@ -93,7 +93,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.PassiveTreeParsers
         private static PassiveNodeDefinition CreateNode(
             bool isAscendancyNode, int passivePointsGranted, bool costsPassivePoint, params string[] modifiers)
             => new PassiveNodeDefinition(42, PassiveNodeType.Normal, "node", isAscendancyNode, costsPassivePoint,
-                passivePointsGranted, modifiers);
+                passivePointsGranted, default, modifiers);
 
         private static Modifier CreateConditionalModifier(
             PassiveNodeDefinition nodeDefinition, string stat, Form form, double value)
