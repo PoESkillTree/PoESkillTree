@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EnumsNET;
@@ -95,11 +95,7 @@ namespace PoESkillTree.GameModel.Items
         {
             if (!requirementsJson.HasValues)
                 return new Requirements(0, 0, 0, 0);
-            return new Requirements(
-                requirementsJson.Value<int>("level"),
-                requirementsJson.Value<int>("dexterity"),
-                requirementsJson.Value<int>("intelligence"),
-                requirementsJson.Value<int>("strength"));
+            return requirementsJson.ToObject<Requirements>();
         }
 
         private IReadOnlyList<CraftableStat> DeserializeImplicitModifiers(IEnumerable<string> implicits)

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -89,6 +89,7 @@
     <Compile Include="Bandit.cs" />
     <Compile Include="CharacterBaseStats.cs" />
     <Compile Include="CharacterClass.cs" />
+    <Compile Include="CraftableStat.cs" />
     <Compile Include="GameData.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Items\BaseItemDefinitions.cs" />
@@ -104,8 +105,11 @@
     <Compile Include="Items\ValueColoring.cs" />
     <Compile Include="Items\ItemConstants.cs" />
     <Compile Include="Items\XmlUniqueList.cs" />
+    <Compile Include="Modifiers\ModDomain.cs" />
     <Compile Include="Modifiers\ModGenerationType.cs" />
     <Compile Include="Modifiers\ModifierDefinition.cs" />
+    <Compile Include="Modifiers\ModifierDefinitions.cs" />
+    <Compile Include="Modifiers\ModifierJsonDeserializer.cs" />
     <Compile Include="Modifiers\ModifierLocalityTester.cs" />
     <Compile Include="MonsterBaseStats.cs" />
     <Compile Include="PassiveTree\NodePosition.cs" />

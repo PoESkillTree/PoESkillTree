@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Items\BaseItemJsonDeserializerTest.cs" />
+    <Compile Include="Modifiers\ModifierJsonDeserializerTest.cs" />
     <Compile Include="Modifiers\ModifierLocalityTesterTest.cs" />
     <Compile Include="PassiveTree\PassiveTreeDefinitionExtensionsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

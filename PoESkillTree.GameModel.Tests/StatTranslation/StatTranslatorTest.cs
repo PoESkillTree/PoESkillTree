@@ -2,9 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using PoESkillTree.GameModel.StatTranslation;
 
-namespace PoESkillTree.GameModel.Tests.StatTranslation
+namespace PoESkillTree.GameModel.StatTranslation
 {
     [TestFixture]
     public class StatTranslatorTest
