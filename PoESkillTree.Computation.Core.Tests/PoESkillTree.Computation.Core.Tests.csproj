@@ -10,7 +10,7 @@
     <ProjectGuid>{02676C0A-817C-4D1D-BE32-640D6D5A9937}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PoESkillTree.Computation.Core.Tests</RootNamespace>
+    <RootNamespace>PoESkillTree.Computation.Core</RootNamespace>
     <AssemblyName>PoESkillTree.Computation.Core.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

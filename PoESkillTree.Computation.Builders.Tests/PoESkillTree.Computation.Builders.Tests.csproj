@@ -10,7 +10,7 @@
     <ProjectGuid>{D6ECC468-961D-4C72-8E8F-DA9037B9B200}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PoESkillTree.Computation.Builders.Tests</RootNamespace>
+    <RootNamespace>PoESkillTree.Computation.Builders</RootNamespace>
     <AssemblyName>PoESkillTree.Computation.Builders.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
