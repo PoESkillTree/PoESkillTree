@@ -219,7 +219,6 @@
     <Compile Include="Model\Items\Mods\JsonMod.cs" />
     <Compile Include="Model\Items\Mods\Mod.cs" />
     <Compile Include="Model\Items\Mods\ModDatabase.cs" />
-    <Compile Include="Model\Items\Enums\ModDomain.cs" />
     <Compile Include="Model\Items\Mods\Affix.cs" />
     <Compile Include="Model\Items\Mods\Stat.cs" />
     <Compile Include="Model\Items\IItemBase.cs" />
@@ -376,7 +375,6 @@
     <Compile Include="Model\IMemento.cs" />
     <Compile Include="Model\IPersistentData.cs" />
     <Compile Include="Model\Items\Mods\ItemMod.cs" />
-    <Compile Include="Model\Items\Enums\ModGenerationType.cs" />
     <Compile Include="Model\Items\EquipmentData.cs" />
     <Compile Include="Model\Items\ItemImage.cs" />
     <Compile Include="Model\Items\XmlItemList.cs" />

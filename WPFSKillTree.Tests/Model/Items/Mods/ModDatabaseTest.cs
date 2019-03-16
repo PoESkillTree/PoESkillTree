@@ -5,10 +5,10 @@ using MoreLinq;
 using NUnit.Framework;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
-using POESKillTree.Model.Items.Enums;
+using PoESkillTree.GameModel.Modifiers;
 using POESKillTree.Model.Items.Mods;
 
-namespace PoESkillTree.Tests.Model.Items.Mods
+namespace PoESkillTree.Model.Items.Mods
 {
     [TestFixture]
     public class ModDatabaseTest
