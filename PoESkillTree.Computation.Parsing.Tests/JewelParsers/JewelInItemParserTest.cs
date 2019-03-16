@@ -1,13 +1,13 @@
-﻿using Moq;
+﻿using FluentAssertions;
+using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Parsing.ItemParsers;
-using PoESkillTree.Computation.Parsing.JewelParsing;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using static PoESkillTree.Computation.Parsing.Tests.ParserTestUtils;
 
-namespace PoESkillTree.Computation.Parsing.Tests.JewelParsers
+namespace PoESkillTree.Computation.Parsing.JewelParsers
 {
     [TestFixture]
     public class JewelInItemParserTest
@@ -26,7 +26,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.JewelParsers
 
             var result = sut.Parse(parserParam);
 
-            Assert.That(result.Modifiers, Has.Member(expected));
+            result.Modifiers.Should().Contain(expected);
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.JewelParsers
 
             var result = sut.Parse(parserParam);
 
-            Assert.IsEmpty(result.Modifiers);
+            result.Modifiers.Should().BeEmpty();
         }
 
         private static JewelInItemParser CreateSut(ICoreParser coreParser = null)

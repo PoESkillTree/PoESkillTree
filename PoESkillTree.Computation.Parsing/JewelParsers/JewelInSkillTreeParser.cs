@@ -4,7 +4,7 @@ using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.Utils;
 
-namespace PoESkillTree.Computation.Parsing.JewelParsing
+namespace PoESkillTree.Computation.Parsing.JewelParsers
 {
     public class JewelInSkillTreeParser : IParser<JewelInSkillTreeParserParameter>
     {

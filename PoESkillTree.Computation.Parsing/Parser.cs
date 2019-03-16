@@ -8,7 +8,7 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Parsing.ItemParsers;
-using PoESkillTree.Computation.Parsing.JewelParsing;
+using PoESkillTree.Computation.Parsing.JewelParsers;
 using PoESkillTree.Computation.Parsing.PassiveTreeParsers;
 using PoESkillTree.Computation.Parsing.SkillParsers;
 using PoESkillTree.GameModel;
