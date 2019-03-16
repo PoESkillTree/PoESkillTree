@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using NUnit.Framework;
 
-namespace PoESkillTree.GameModel.Tests
+namespace PoESkillTree.GameModel
 {
     public static class TestUtils
     {
