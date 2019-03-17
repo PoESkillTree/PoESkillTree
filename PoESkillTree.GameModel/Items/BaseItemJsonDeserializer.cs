@@ -1,8 +1,9 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EnumsNET;
 using Newtonsoft.Json.Linq;
+using PoESkillTree.GameModel.Modifiers;
 
 namespace PoESkillTree.GameModel.Items
 {
@@ -11,22 +12,22 @@ namespace PoESkillTree.GameModel.Items
     /// </summary>
     public class BaseItemJsonDeserializer
     {
-        private readonly JObject _modJson;
+        private readonly ModifierDefinitions _modifiers;
 
-        private BaseItemJsonDeserializer(JObject modJson) => _modJson = modJson;
+        private BaseItemJsonDeserializer(ModifierDefinitions modifiers) => _modifiers = modifiers;
 
-        public static async Task<BaseItemDefinitions> DeserializeAsync(bool deserializeOnThreadPool)
+        public static async Task<BaseItemDefinitions> DeserializeAsync(
+            bool deserializeOnThreadPool, Task<ModifierDefinitions> modifiersTask)
         {
             var baseItemsTask = DataUtils.LoadRePoEAsObjectAsync("base_items", deserializeOnThreadPool);
-            var modsTask = DataUtils.LoadRePoEAsObjectAsync("mods", deserializeOnThreadPool);
             return Deserialize(
                 await baseItemsTask.ConfigureAwait(false),
-                await modsTask.ConfigureAwait(false));
+                await modifiersTask.ConfigureAwait(false));
         }
 
-        public static BaseItemDefinitions Deserialize(JObject baseItemJson, JObject modJson)
+        public static BaseItemDefinitions Deserialize(JObject baseItemJson, ModifierDefinitions modifiers)
         {
-            var deserializer = new BaseItemJsonDeserializer(modJson);
+            var deserializer = new BaseItemJsonDeserializer(modifiers);
             var definitions = baseItemJson.Properties()
                 .Select(deserializer.Deserialize)
                 .Where(d => d.ReleaseState != ReleaseState.Unreleased)
@@ -99,15 +100,6 @@ namespace PoESkillTree.GameModel.Items
         }
 
         private IReadOnlyList<CraftableStat> DeserializeImplicitModifiers(IEnumerable<string> implicits)
-            => implicits.SelectMany(DeserializeImplicitModifier).ToList();
-
-        private IEnumerable<CraftableStat> DeserializeImplicitModifier(string modId)
-            => _modJson[modId].Value<JArray>("stats").Select(DeserializeImplicitModifier);
-
-        private static CraftableStat DeserializeImplicitModifier(JToken statJson)
-            => new CraftableStat(
-                statJson.Value<string>("id"),
-                statJson.Value<int>("min"),
-                statJson.Value<int>("max"));
+            => implicits.SelectMany(i => _modifiers.GetModifierById(i).Stats).ToList();
     }
 }

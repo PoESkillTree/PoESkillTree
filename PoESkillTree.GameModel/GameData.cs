@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Nito.AsyncEx;
 using PoESkillTree.GameModel.Items;
+using PoESkillTree.GameModel.Modifiers;
 using PoESkillTree.GameModel.PassiveTree;
 using PoESkillTree.GameModel.Skills;
 using PoESkillTree.GameModel.StatTranslation;
@@ -12,6 +13,7 @@ namespace PoESkillTree.GameModel
     public class GameData
     {
         private readonly AsyncLazy<PassiveTreeDefinition> _passiveTree;
+        private readonly AsyncLazy<ModifierDefinitions> _modifiers;
         private readonly AsyncLazy<BaseItemDefinitions> _baseItems;
         private readonly AsyncLazy<SkillDefinitions> _skills;
         private readonly AsyncLazy<StatTranslators> _statTranslators;
@@ -27,12 +29,15 @@ namespace PoESkillTree.GameModel
             var asyncLazyFlags = runOnThreadPool ? AsyncLazyFlags.None : AsyncLazyFlags.ExecuteOnCallingThread;
             _passiveTree = new AsyncLazy<PassiveTreeDefinition>(
                 () => Task.FromResult(new PassiveTreeDefinition(passiveNodeDefinitions.ToList())), asyncLazyFlags);
+            _modifiers = new AsyncLazy<ModifierDefinitions>(
+                () => ModifierJsonDeserializer.DeserializeAsync(runOnThreadPool), asyncLazyFlags);
             _baseItems = new AsyncLazy<BaseItemDefinitions>(
-                async () => await BaseItemJsonDeserializer.DeserializeAsync(runOnThreadPool), asyncLazyFlags);
+                () => BaseItemJsonDeserializer.DeserializeAsync(runOnThreadPool, _modifiers.Task),
+                asyncLazyFlags);
             _skills = new AsyncLazy<SkillDefinitions>(
-                async () => await SkillJsonDeserializer.DeserializeAsync(runOnThreadPool), asyncLazyFlags);
+                () => SkillJsonDeserializer.DeserializeAsync(runOnThreadPool), asyncLazyFlags);
             _statTranslators = new AsyncLazy<StatTranslators>(
-                async () => await StatTranslation.StatTranslators.CreateAsync(runOnThreadPool), asyncLazyFlags);
+                () => StatTranslation.StatTranslators.CreateAsync(runOnThreadPool), asyncLazyFlags);
             _characterBaseStats = new AsyncLazy<CharacterBaseStats>(
                 GameModel.CharacterBaseStats.CreateAsync, asyncLazyFlags);
             _monsterBaseStats = new AsyncLazy<MonsterBaseStats>(GameModel.MonsterBaseStats.CreateAsync, asyncLazyFlags);
@@ -47,6 +52,7 @@ namespace PoESkillTree.GameModel
 
         public void StartAllTasks()
         {
+            _modifiers.Start();
             _baseItems.Start();
             _skills.Start();
             _statTranslators.Start();

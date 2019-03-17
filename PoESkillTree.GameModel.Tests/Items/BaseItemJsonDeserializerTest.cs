@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using PoESkillTree.GameModel.Modifiers;
 
 namespace PoESkillTree.GameModel.Items
 {
@@ -69,7 +70,8 @@ namespace PoESkillTree.GameModel.Items
              */
             var itemJson = JObject.Parse(TestUtils.ReadDataFile("base_items.json"));
             var modJson =  JObject.Parse(TestUtils.ReadDataFile("mods.json"));
-            return BaseItemJsonDeserializer.Deserialize(itemJson, modJson);
+            var modifiers = ModifierJsonDeserializer.Deserialize(modJson);
+            return BaseItemJsonDeserializer.Deserialize(itemJson, modifiers);
         }
     }
 }

@@ -1,11 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
 namespace PoESkillTree.GameModel.Modifiers
 {
     public static class ModifierJsonDeserializer
     {
+        public static async Task<ModifierDefinitions> DeserializeAsync(bool deserializeOnThreadPool)
+        {
+            var task = DataUtils.LoadRePoEAsObjectAsync("mods", deserializeOnThreadPool);
+            return Deserialize(await task.ConfigureAwait(false));
+        }
+
         public static ModifierDefinitions Deserialize(JObject modJson)
         {
             var definitions = modJson.Properties()
