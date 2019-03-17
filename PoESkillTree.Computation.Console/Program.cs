@@ -73,6 +73,10 @@ namespace PoESkillTree.Computation.Console
                     case "update ParseableBaseItems":
                         TestDataUpdater.UpdateParseableBaseItems(await _compositionRoot.GameData.BaseItems);
                         break;
+                    case "update ItemAffixes":
+                        TestDataUpdater.UpdateItemAffixes(await _compositionRoot.GameData.Modifiers,
+                            await _compositionRoot.GameData.StatTranslators);
+                        break;
                     default:
                         await HandleParseCommandAsync(statLine);
                         break;

@@ -44,6 +44,7 @@ namespace PoESkillTree.GameModel
         }
 
         public Task<PassiveTreeDefinition> PassiveTree => _passiveTree.Task;
+        public Task<ModifierDefinitions> Modifiers => _modifiers.Task;
         public Task<BaseItemDefinitions> BaseItems => _baseItems.Task;
         public Task<SkillDefinitions> Skills => _skills.Task;
         public Task<StatTranslators> StatTranslators => _statTranslators.Task;

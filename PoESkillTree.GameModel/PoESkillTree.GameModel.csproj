@@ -181,6 +181,9 @@
     <EmbeddedResource Include="Data\Equipment\Uniques.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Data\ItemAffixes.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\SkillTreeStatLines.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
