@@ -2,7 +2,7 @@
 
 namespace PoESkillTree.GameModel.Modifiers
 {
-    public class ModifierDefinition
+    public class ModifierDefinition : IDefinition<string>
     {
         public ModifierDefinition(
             string id, ModDomain domain, ModGenerationType generationType,

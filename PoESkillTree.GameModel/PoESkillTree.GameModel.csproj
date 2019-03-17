@@ -90,8 +90,10 @@
     <Compile Include="CharacterBaseStats.cs" />
     <Compile Include="CharacterClass.cs" />
     <Compile Include="CraftableStat.cs" />
+    <Compile Include="DefinitionsBase.cs" />
     <Compile Include="GameData.cs" />
     <Compile Include="Entity.cs" />
+    <Compile Include="IDefinition.cs" />
     <Compile Include="Items\BaseItemDefinitions.cs" />
     <Compile Include="Items\BaseItemJsonDeserializer.cs" />
     <Compile Include="Items\FrameType.cs" />

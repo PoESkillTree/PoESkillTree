@@ -2,7 +2,7 @@
 
 namespace PoESkillTree.GameModel.PassiveTree
 {
-    public class PassiveNodeDefinition
+    public class PassiveNodeDefinition : IDefinition<ushort>
     {
         public PassiveNodeDefinition(
             ushort id, PassiveNodeType type, string name, bool isAscendancyNode, bool costsPassivePoint,

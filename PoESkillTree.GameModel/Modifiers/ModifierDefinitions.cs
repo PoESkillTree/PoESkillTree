@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace PoESkillTree.GameModel.Modifiers
 {
-    public class ModifierDefinitions
+    public class ModifierDefinitions : DefinitionsBase<string, ModifierDefinition>
     {
-        private readonly Lazy<IReadOnlyDictionary<string, ModifierDefinition>> _modifierDict;
-
-        public ModifierDefinitions(IReadOnlyList<ModifierDefinition> modifiers)
+        public ModifierDefinitions(IReadOnlyList<ModifierDefinition> modifiers) : base(modifiers)
         {
-            Modifiers = modifiers;
-            _modifierDict = new Lazy<IReadOnlyDictionary<string, ModifierDefinition>>(
-                () => Modifiers.ToDictionary(s => s.Id));
         }
 
-        public IReadOnlyList<ModifierDefinition> Modifiers { get; }
+        public IReadOnlyList<ModifierDefinition> Modifiers => Definitions;
 
-        public ModifierDefinition GetModifierById(string id) => _modifierDict.Value[id];
+        public ModifierDefinition GetModifierById(string id) => GetDefinitionById(id);
     }
 }

@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace PoESkillTree.GameModel.Items
 {
-    public class BaseItemDefinitions
+    public class BaseItemDefinitions : DefinitionsBase<string, BaseItemDefinition>
     {
-        private readonly Lazy<IReadOnlyDictionary<string, BaseItemDefinition>> _baseItemDict;
-
-        public BaseItemDefinitions(IReadOnlyList<BaseItemDefinition> baseItems)
+        public BaseItemDefinitions(IReadOnlyList<BaseItemDefinition> baseItems) : base(baseItems)
         {
-            BaseItems = baseItems;
-            _baseItemDict = new Lazy<IReadOnlyDictionary<string, BaseItemDefinition>>(
-                () => BaseItems.ToDictionary(s => s.MetadataId));
         }
 
-        public IReadOnlyList<BaseItemDefinition> BaseItems { get; }
+        public IReadOnlyList<BaseItemDefinition> BaseItems => Definitions;
 
-        public BaseItemDefinition GetBaseItemById(string metadataId) => _baseItemDict.Value[metadataId];
+        public BaseItemDefinition GetBaseItemById(string metadataId) => GetDefinitionById(metadataId);
     }
 }

@@ -6,7 +6,7 @@ using PoESkillTree.Utils;
 
 namespace PoESkillTree.GameModel.Skills
 {
-    public class SkillDefinition
+    public class SkillDefinition : IDefinition<string>
     {
         private SkillDefinition(
             string id, int numericId, bool isSupport, string statTranslationFile, IReadOnlyList<string> partNames,
