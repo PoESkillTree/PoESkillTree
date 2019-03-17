@@ -9,7 +9,7 @@ using MoreLinq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace POESKillTree.Utils.WikiApi
+namespace PoESkillTree.Utils.WikiApi
 {
     /// <summary>
     /// Provides access to the wiki's API.

@@ -3,10 +3,10 @@ using System.ComponentModel;
 using System.Linq;
 using MoreLinq;
 using PoESkillTree.GameModel.Items;
-using POESKillTree.Model.Items;
-using POESKillTree.Model.Items.Mods;
+using PoESkillTree.Model.Items;
+using PoESkillTree.Model.Items.Mods;
 
-namespace POESKillTree.ViewModels.Crafting
+namespace PoESkillTree.ViewModels.Crafting
 {
     /// <summary>
     /// View model for crafting unique items.

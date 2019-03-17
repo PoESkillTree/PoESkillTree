@@ -1,7 +1,7 @@
 ﻿using System;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
 
-namespace POESKillTree.Controls.Dialogs
+namespace PoESkillTree.Controls.Dialogs
 {
     public class FileSelectorDialogSettings
     {

@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
+namespace PoESkillTree.TreeGenerator.Model.PseudoAttributes
 {
     /// <summary>
     /// Describes as Xml deserialized PseudoAttributes.

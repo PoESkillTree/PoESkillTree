@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
+namespace PoESkillTree.TreeGenerator.Model.PseudoAttributes
 {
     /// <summary>
     /// Tags that specify how damage is dealt/what improves the damage dealt.

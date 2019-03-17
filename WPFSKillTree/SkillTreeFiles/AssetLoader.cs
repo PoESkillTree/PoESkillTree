@@ -9,10 +9,8 @@ using log4net;
 using Newtonsoft.Json;
 using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
-using POESKillTree.Utils;
-using POESKillTree.Utils.Extensions;
 
-namespace POESKillTree.SkillTreeFiles
+namespace PoESkillTree.SkillTreeFiles
 {
     /// <summary>
     /// Contains methods to download all assets required for the skill tree

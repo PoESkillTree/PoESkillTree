@@ -5,10 +5,10 @@ using System.Linq;
 using MB.Algodat;
 using MoreLinq;
 using PoESkillTree.GameModel.StatTranslation;
-using POESKillTree.Model.Items.Mods;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
+using PoESkillTree.Model.Items.Mods;
 
-namespace POESKillTree.ViewModels.Crafting
+namespace PoESkillTree.ViewModels.Crafting
 {
     /// <summary>
     /// Pair of a stat id and a associated value. Used for translation.

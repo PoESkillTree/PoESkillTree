@@ -1,7 +1,7 @@
-﻿using POESKillTree.SkillTreeFiles;
-using POESKillTree.Utils.UrlProcessing;
+﻿using PoESkillTree.SkillTreeFiles;
+using PoESkillTree.Utils.UrlProcessing;
 
-namespace POESKillTree.Common
+namespace PoESkillTree.Common
 {
     /// <summary>
     /// Interface for the main SkillTree class to reduce dependencies on the SkillTreeFiles namespace.

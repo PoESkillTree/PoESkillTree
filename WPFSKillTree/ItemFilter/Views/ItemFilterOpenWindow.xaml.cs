@@ -3,10 +3,10 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using MahApps.Metro.Controls;
-using POESKillTree.Controls.Dialogs;
-using POESKillTree.ItemFilter.Model;
+using PoESkillTree.Controls.Dialogs;
+using PoESkillTree.ItemFilter.Model;
 
-namespace POESKillTree.ItemFilter.Views
+namespace PoESkillTree.ItemFilter.Views
 {
     /// <summary>
     /// Interaction logic for ItemFilterOpenWindow.xaml

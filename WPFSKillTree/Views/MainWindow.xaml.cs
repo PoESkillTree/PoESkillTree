@@ -24,30 +24,31 @@ using MahApps.Metro.Controls;
 using MoreLinq;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.PassiveTree;
-using POESKillTree.Common.ViewModels;
-using POESKillTree.Computation;
-using POESKillTree.Computation.ViewModels;
-using POESKillTree.Controls.Dialogs;
-using POESKillTree.ItemFilter.Views;
-using POESKillTree.Localization;
-using POESKillTree.Model;
-using POESKillTree.Model.Builds;
-using POESKillTree.Model.Items;
-using POESKillTree.SkillTreeFiles;
-using POESKillTree.TreeGenerator.ViewModels;
-using POESKillTree.Utils;
-using POESKillTree.Utils.Converter;
-using POESKillTree.Utils.Extensions;
-using POESKillTree.Utils.UrlProcessing;
-using POESKillTree.ViewModels;
-using POESKillTree.ViewModels.Builds;
-using POESKillTree.ViewModels.Crafting;
-using POESKillTree.ViewModels.Equipment;
-using POESKillTree.Views.Crafting;
-using POESKillTree.Views.Equipment;
-using Attribute = POESKillTree.ViewModels.Attribute;
+using PoESkillTree.Utils;
+using PoESkillTree.Utils.Extensions;
+using PoESkillTree.Common.ViewModels;
+using PoESkillTree.Computation;
+using PoESkillTree.Computation.ViewModels;
+using PoESkillTree.Controls.Dialogs;
+using PoESkillTree.ItemFilter.Views;
+using PoESkillTree.Localization;
+using PoESkillTree.Model;
+using PoESkillTree.Model.Builds;
+using PoESkillTree.Model.Items;
+using PoESkillTree.SkillTreeFiles;
+using PoESkillTree.TreeGenerator.ViewModels;
+using PoESkillTree.Utils.Converter;
+using PoESkillTree.Utils.UrlProcessing;
+using PoESkillTree.ViewModels;
+using PoESkillTree.ViewModels.Builds;
+using PoESkillTree.ViewModels.Crafting;
+using PoESkillTree.ViewModels.Equipment;
+using PoESkillTree.Views.Crafting;
+using PoESkillTree.Views.Equipment;
+using Attribute = PoESkillTree.ViewModels.Attribute;
+using Version = PoESkillTree.Properties.Version;
 
-namespace POESKillTree.Views
+namespace PoESkillTree.Views
 {
     /// <summary>
     ///     Interaction logic for MainWindow.xaml
@@ -1052,7 +1053,7 @@ namespace POESKillTree.Views
                 {
                     var message = release.IsUpdate
                         ? string.Format(L10n.Message("An update for {0} ({1}) is available!"),
-                            Properties.Version.ProductName, release.Version)
+                            Version.ProductName, release.Version)
                           + "\n\n" +
                           L10n.Message("The application will be closed when download completes to proceed with the update.")
                         : string.Format(L10n.Message("A new version {0} is available!"), release.Version)

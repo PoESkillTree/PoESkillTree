@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using MoreLinq;
 
-namespace POESKillTree.Utils
+namespace PoESkillTree.Utils
 {
     public static class Util
     {

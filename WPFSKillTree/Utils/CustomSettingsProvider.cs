@@ -5,9 +5,9 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using POESKillTree.Properties;
+using PoESkillTree.Properties;
 
-namespace POESKillTree.Utils
+namespace PoESkillTree.Utils
 {
     // Adjusted version of the one at http://stackoverflow.com/a/11398536 by Chuck Rostance
     // Uses the specified settingsKey to store the file at <Settings.SettingsPath>/<settingsKey>.config
@@ -152,7 +152,15 @@ namespace POESKillTree.Utils
                 var configXml = XDocument.Load(UserConfigPath);
 
                 //get all of the <setting name="..." serializeAs="..."> elements.
-                var settingElements = configXml.Element(CONFIG).Element(USER_SETTINGS).Element(typeof(Properties.Settings).FullName).Elements(SETTING);
+                var settingElements = configXml.Element(CONFIG).Element(USER_SETTINGS)
+                    .Element(typeof(Settings).FullName)?.Elements(SETTING);
+
+                if (settingElements is null)
+                {
+                    File.Delete(UserConfigPath);
+                    LoadValuesFromFile();
+                    return;
+                }
 
                 //iterate through, adding them to the dictionary, (checking for nulls, xml no likey nulls)
                 //using "String" as default serializeAs...just in case, no real good reason.
@@ -184,7 +192,7 @@ namespace POESKillTree.Utils
             var declaration = new XDeclaration("1.0", "utf-8", "true");
             var config = new XElement(CONFIG);
             var userSettings = new XElement(USER_SETTINGS);
-            var group = new XElement(typeof(Properties.Settings).FullName);
+            var group = new XElement(typeof(Settings).FullName);
             userSettings.Add(group);
             config.Add(userSettings);
             doc.Add(config);
@@ -207,7 +215,7 @@ namespace POESKillTree.Utils
             var import = XDocument.Load(UserConfigPath);
 
             //get the settings group (e.g. <Company.Project.Desktop.Settings>)
-            var settingsSection = import.Element(CONFIG).Element(USER_SETTINGS).Element(typeof(Properties.Settings).FullName);
+            var settingsSection = import.Element(CONFIG).Element(USER_SETTINGS).Element(typeof(Settings).FullName);
 
             //iterate though the dictionary, either updating the value or adding the new setting.
             foreach (var entry in SettingsDictionary)

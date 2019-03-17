@@ -2,9 +2,9 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using PoESkillTree.GameModel;
-using POESKillTree.SkillTreeFiles;
+using PoESkillTree.SkillTreeFiles;
 
-namespace POESKillTree.Utils.UrlProcessing
+namespace PoESkillTree.Utils.UrlProcessing
 {
     /// <summary>
     /// Represents an object that extracts build information from the http://poeplanner.com urls.

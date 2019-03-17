@@ -6,13 +6,13 @@ using log4net;
 using MoreLinq;
 using Newtonsoft.Json.Linq;
 using PoESkillTree.Utils;
-using POESKillTree.Controls;
-using POESKillTree.Model.Builds;
-using POESKillTree.Utils;
+using PoESkillTree.Controls;
+using PoESkillTree.Model.Builds;
+using PoESkillTree.Utils;
 
-using static POESKillTree.Model.Serialization.SerializationConstants;
+using static PoESkillTree.Model.Serialization.SerializationConstants;
 
-namespace POESKillTree.Model.Serialization
+namespace PoESkillTree.Model.Serialization
 {
     /// <summary>
     /// Serializes persistent data back to the file system.

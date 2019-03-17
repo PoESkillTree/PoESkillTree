@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using log4net;
 using Newtonsoft.Json.Linq;
 using PoESkillTree.Utils;
-using POESKillTree.Controls.Dialogs;
-using POESKillTree.Localization;
-using POESKillTree.Model.Builds;
-using POESKillTree.Model.Items;
-using POESKillTree.Utils;
+using PoESkillTree.Controls.Dialogs;
+using PoESkillTree.Localization;
+using PoESkillTree.Model.Builds;
+using PoESkillTree.Model.Items;
+using PoESkillTree.Utils;
 
-namespace POESKillTree.Model.Serialization
+namespace PoESkillTree.Model.Serialization
 {
     /// <summary>
     /// Abstract implementation of <see cref="IPersistentDataDeserializer"/> providing logic used by multiple

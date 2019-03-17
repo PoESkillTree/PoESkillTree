@@ -8,12 +8,12 @@ using System.Windows.Media.Imaging;
 using EnumsNET;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.PassiveTree;
-using HighlightState = POESKillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
-using POESKillTree.Model;
+using HighlightState = PoESkillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
+using PoESkillTree.Model;
 using MoreLinq;
-using POESKillTree.Utils.Wpf;
+using PoESkillTree.Utils.Wpf;
 
-namespace POESKillTree.SkillTreeFiles
+namespace PoESkillTree.SkillTreeFiles
 {
     public partial class SkillTree
     {

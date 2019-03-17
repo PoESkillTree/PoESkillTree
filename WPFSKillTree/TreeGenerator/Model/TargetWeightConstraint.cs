@@ -1,7 +1,7 @@
 ﻿using System;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
 
-namespace POESKillTree.TreeGenerator.Model
+namespace PoESkillTree.TreeGenerator.Model
 {
     /// <summary>
     /// Data class for Constraints with a data object, a target value and a weight.

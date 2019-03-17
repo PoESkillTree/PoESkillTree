@@ -11,12 +11,11 @@ using Newtonsoft.Json.Linq;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Modifiers;
 using PoESkillTree.GameModel.Skills;
+using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
-using POESKillTree.Model.Items.Mods;
-using POESKillTree.Utils;
-using POESKillTree.Utils.Extensions;
+using PoESkillTree.Model.Items.Mods;
 
-namespace POESKillTree.Model.Items
+namespace PoESkillTree.Model.Items
 {
     public class Item : Notifier, IRangeProvider<int>
     {

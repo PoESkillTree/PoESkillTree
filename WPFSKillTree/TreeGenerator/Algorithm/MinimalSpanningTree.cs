@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace POESKillTree.TreeGenerator.Algorithm
+namespace PoESkillTree.TreeGenerator.Algorithm
 {
     /// <summary>
     ///     Provides algorithms for building the minimal spanning distance tree between a set of nodes

@@ -1,8 +1,8 @@
 ﻿using System;
 using PoESkillTree.Computation.Common;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
 
-namespace POESKillTree.Computation.ViewModels
+namespace PoESkillTree.Computation.ViewModels
 {
     public class ConfigurationStatViewModel : Notifier, IDisposable
     {

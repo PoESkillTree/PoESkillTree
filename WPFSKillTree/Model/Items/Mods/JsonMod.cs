@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using PoESkillTree.GameModel.Modifiers;
 
-namespace POESKillTree.Model.Items.Mods
+namespace PoESkillTree.Model.Items.Mods
 {
     // The classes used to deserialize RePoE's mods
 

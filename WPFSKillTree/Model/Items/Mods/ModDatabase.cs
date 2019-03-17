@@ -2,7 +2,7 @@
 using System.Linq;
 using PoESkillTree.GameModel.Modifiers;
 
-namespace POESKillTree.Model.Items.Mods
+namespace PoESkillTree.Model.Items.Mods
 {
     /// <summary>
     /// Provides access to mods.

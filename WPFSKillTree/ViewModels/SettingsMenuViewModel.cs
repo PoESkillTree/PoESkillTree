@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using POESKillTree.Common.ViewModels;
-using POESKillTree.Controls.Dialogs;
-using POESKillTree.Localization;
-using POESKillTree.Model;
-using POESKillTree.Model.Serialization;
-using POESKillTree.ViewModels.Builds;
+using PoESkillTree.Common.ViewModels;
+using PoESkillTree.Controls.Dialogs;
+using PoESkillTree.Localization;
+using PoESkillTree.Model;
+using PoESkillTree.Model.Serialization;
+using PoESkillTree.ViewModels.Builds;
 
-namespace POESKillTree.ViewModels
+namespace PoESkillTree.ViewModels
 {
     public class SettingsMenuViewModel : CloseableViewModel
     {

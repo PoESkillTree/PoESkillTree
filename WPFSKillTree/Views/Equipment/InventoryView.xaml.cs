@@ -1,4 +1,4 @@
-﻿namespace POESKillTree.Views.Equipment
+﻿namespace PoESkillTree.Views.Equipment
 {
     /// <summary>
     /// Interaction logic for InventoryView.xaml

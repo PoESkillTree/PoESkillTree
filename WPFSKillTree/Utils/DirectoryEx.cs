@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace POESKillTree.Utils
+namespace PoESkillTree.Utils
 {
     public static class DirectoryEx
     {

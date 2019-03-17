@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using POESKillTree.TreeGenerator.Model.PseudoAttributes;
+using PoESkillTree.TreeGenerator.Model.PseudoAttributes;
 
-namespace POESKillTree.TreeGenerator.Settings
+namespace PoESkillTree.TreeGenerator.Settings
 {
     /// <summary>
     /// Data class for settings for AdvancedSolver.

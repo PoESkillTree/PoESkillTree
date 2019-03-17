@@ -1,4 +1,4 @@
-﻿namespace POESKillTree.TreeGenerator.Settings
+﻿namespace PoESkillTree.TreeGenerator.Settings
 {
     /// <summary>
     /// Data class for settings for AutomatedSolver.

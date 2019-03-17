@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using POESKillTree.SkillTreeFiles;
+using PoESkillTree.SkillTreeFiles;
 
-namespace POESKillTree.TreeGenerator.Algorithm.Model
+namespace PoESkillTree.TreeGenerator.Algorithm.Model
 {
     /// <summary>
     ///  Represents a node (or a collection thereof) in the

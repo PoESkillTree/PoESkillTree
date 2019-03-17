@@ -1,8 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+                    xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
                     xmlns:dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
-                    xmlns:controls="clr-namespace:POESKillTree.Controls.Dialogs">
+                    xmlns:controls="clr-namespace:PoESkillTree.Controls.Dialogs">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Themes/Dialogs/BaseMetroDialog.xaml" />

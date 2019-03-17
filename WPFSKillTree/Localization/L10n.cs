@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
 
-namespace POESKillTree.Localization
+namespace PoESkillTree.Localization
 {
     // Localization API.
     public class L10n

@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Interactivity;
 
-namespace POESKillTree.Utils.Wpf
+namespace PoESkillTree.Utils.Wpf
 {
     /// <summary>
     /// Allows (OneWayToSource) binding to the ActualHeight property of FrameworkElements.

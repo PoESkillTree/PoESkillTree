@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using PoESkillTree.Utils.Extensions;
-using POESKillTree.Utils;
 
-namespace PoESkillTree.Tests.Utils
+namespace PoESkillTree.Utils
 {
     [TestFixture]
     public class ObservableSetTest

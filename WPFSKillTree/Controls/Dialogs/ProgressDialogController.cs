@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace POESKillTree.Controls.Dialogs
+namespace PoESkillTree.Controls.Dialogs
 {
     // Wraps MahApps.Metro.Controls.Dialogs.ProgressDialogController
     // to solve namespace conflicts with MahApps.Metro.Controls.Dialogs in one place.

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace POESKillTree.Model
+namespace PoESkillTree.Model
 {
     /// <summary>
     /// Specifies which build data is reset on reset button click.

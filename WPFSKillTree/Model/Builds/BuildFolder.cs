@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace POESKillTree.Model.Builds
+namespace PoESkillTree.Model.Builds
 {
     /// <summary>
     /// Build implementation that represents a folder which can contain other <see cref="IBuild"/>s.

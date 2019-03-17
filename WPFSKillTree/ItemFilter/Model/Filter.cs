@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
-using POESKillTree.Utils.Converter;
+using PoESkillTree.Utils.Converter;
 
-namespace POESKillTree.ItemFilter.Model
+namespace PoESkillTree.ItemFilter.Model
 {
     public class Filter
     {

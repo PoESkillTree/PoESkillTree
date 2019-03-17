@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
-using POESKillTree.Computation.Model;
+using PoESkillTree.Computation.Model;
 
-namespace POESKillTree.Computation.ViewModels
+namespace PoESkillTree.Computation.ViewModels
 {
     public class GainOnActionStatsViewModel : ExplicitlyRegisteredStatsViewModel<GainOnActionStatViewModel>
     {

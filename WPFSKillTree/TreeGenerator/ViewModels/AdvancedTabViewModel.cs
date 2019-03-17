@@ -11,18 +11,18 @@ using MoreLinq;
 using Newtonsoft.Json.Linq;
 using PoESkillTree.GameModel.PassiveTree;
 using PoESkillTree.Utils.Extensions;
-using POESKillTree.Common.ViewModels;
-using POESKillTree.Controls.Dialogs;
-using POESKillTree.Localization;
-using POESKillTree.Model.JsonSettings;
-using POESKillTree.SkillTreeFiles;
-using POESKillTree.TreeGenerator.Model;
-using POESKillTree.TreeGenerator.Model.PseudoAttributes;
-using POESKillTree.TreeGenerator.Settings;
-using POESKillTree.TreeGenerator.Solver;
-using POESKillTree.Utils.Converter;
+using PoESkillTree.Common.ViewModels;
+using PoESkillTree.Controls.Dialogs;
+using PoESkillTree.Localization;
+using PoESkillTree.Model.JsonSettings;
+using PoESkillTree.SkillTreeFiles;
+using PoESkillTree.TreeGenerator.Model;
+using PoESkillTree.TreeGenerator.Model.PseudoAttributes;
+using PoESkillTree.TreeGenerator.Settings;
+using PoESkillTree.TreeGenerator.Solver;
+using PoESkillTree.Utils.Converter;
 
-namespace POESKillTree.TreeGenerator.ViewModels
+namespace PoESkillTree.TreeGenerator.ViewModels
 {
     // Some aliases to make things clearer without the need of extra classes.
     using AttributeConstraint = TargetWeightConstraint<string>;

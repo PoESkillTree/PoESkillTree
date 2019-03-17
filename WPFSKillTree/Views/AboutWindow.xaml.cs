@@ -1,4 +1,4 @@
-﻿namespace POESKillTree.Views
+﻿namespace PoESkillTree.Views
 {
     public partial class AboutWindow
     {

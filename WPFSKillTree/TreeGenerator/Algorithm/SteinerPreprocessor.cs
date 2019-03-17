@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using POESKillTree.TreeGenerator.Algorithm.Model;
-using POESKillTree.TreeGenerator.Algorithm.SteinerReductions;
+using PoESkillTree.TreeGenerator.Algorithm.Model;
+using PoESkillTree.TreeGenerator.Algorithm.SteinerReductions;
 
-namespace POESKillTree.TreeGenerator.Algorithm
+namespace PoESkillTree.TreeGenerator.Algorithm
 {
     /// <summary>
     /// Reduces the search space of instances of the Steiner tree problem (SteinerSolver) and the variation used

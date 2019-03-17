@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace POESKillTree.TreeGenerator.Algorithm.Model
+namespace PoESkillTree.TreeGenerator.Algorithm.Model
 {
     /// <summary>
     /// Interface for information about what nodes are fixed/variable target nodes or are

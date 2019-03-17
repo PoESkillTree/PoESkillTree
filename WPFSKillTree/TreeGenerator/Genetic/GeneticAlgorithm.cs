@@ -4,9 +4,9 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
 
-namespace POESKillTree.TreeGenerator.Genetic
+namespace PoESkillTree.TreeGenerator.Genetic
 {
     /// <summary>
     /// Data struct to pass parameters to <see cref="GeneticAlgorithm"/>.

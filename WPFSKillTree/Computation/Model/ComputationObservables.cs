@@ -13,9 +13,9 @@ using PoESkillTree.GameModel.PassiveTree;
 using PoESkillTree.GameModel.Skills;
 using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
-using POESKillTree.SkillTreeFiles;
+using PoESkillTree.SkillTreeFiles;
 
-namespace POESKillTree.Computation.Model
+namespace PoESkillTree.Computation.Model
 {
     public class ComputationObservables
     {

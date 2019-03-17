@@ -1,6 +1,6 @@
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
 
-namespace POESKillTree.Model.Builds
+namespace PoESkillTree.Model.Builds
 {
     /// <summary>
     /// Abstract base class for <see cref="IBuild"/>. The notify interfaces are implemented

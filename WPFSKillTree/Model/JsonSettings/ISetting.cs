@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace POESKillTree.Model.JsonSettings
+namespace PoESkillTree.Model.JsonSettings
 {
     /// <summary>
     /// Interface for setting classes that can be converted to and from JSON.

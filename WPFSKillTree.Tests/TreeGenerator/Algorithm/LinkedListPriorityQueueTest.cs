@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using POESKillTree.TreeGenerator.Algorithm;
+using PoESkillTree.TreeGenerator.Algorithm;
 
 namespace PoESkillTree.Tests.TreeGenerator.Algorithm
 {

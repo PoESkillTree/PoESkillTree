@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using POESKillTree.SkillTreeFiles;
+using PoESkillTree.SkillTreeFiles;
 
-namespace POESKillTree.Utils.UrlProcessing
+namespace PoESkillTree.Utils.UrlProcessing
 {
     public delegate bool TryCreateDeserializer(string buildUrl, IAscendancyClasses ascendancyClasses, out BuildUrlDeserializer deserializer);
 

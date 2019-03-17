@@ -1,9 +1,9 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using POESKillTree.Common;
-using POESKillTree.Model.Builds;
+using PoESkillTree.Common;
+using PoESkillTree.Model.Builds;
 
-namespace POESKillTree.ViewModels.Builds
+namespace PoESkillTree.ViewModels.Builds
 {
     /// <summary>
     /// Interface for Build view models that wrap a <see cref="IBuild"/> instance and provide additional

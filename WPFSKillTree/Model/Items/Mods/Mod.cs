@@ -5,7 +5,7 @@ using System.Linq;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Modifiers;
 
-namespace POESKillTree.Model.Items.Mods
+namespace PoESkillTree.Model.Items.Mods
 {
     /// <summary>
     /// Encapsulates a <see cref="JsonMod"/> into the <see cref="IMod"/> interface

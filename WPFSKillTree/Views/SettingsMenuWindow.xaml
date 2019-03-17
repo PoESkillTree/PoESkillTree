@@ -1,14 +1,14 @@
 ﻿<dialogs:CloseableBaseDialog
-    x:Class="POESKillTree.Views.SettingsMenuWindow"
+    x:Class="PoESkillTree.Views.SettingsMenuWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:l="clr-namespace:POESKillTree.Localization.XAML" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:l="clr-namespace:PoESkillTree.Localization.XAML" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
-    xmlns:viewModels="clr-namespace:POESKillTree.ViewModels"
-    xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
-    xmlns:model="clr-namespace:POESKillTree.Model"
-    xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
-    xmlns:localization="clr-namespace:POESKillTree.Localization"
+    xmlns:viewModels="clr-namespace:PoESkillTree.ViewModels"
+    xmlns:dialogs="clr-namespace:PoESkillTree.Controls.Dialogs"
+    xmlns:model="clr-namespace:PoESkillTree.Model"
+    xmlns:converter="clr-namespace:PoESkillTree.Utils.Converter"
+    xmlns:localization="clr-namespace:PoESkillTree.Localization"
     d:DataContext="{d:DesignInstance viewModels:SettingsMenuViewModel}"
     MaxContentWidth="550">
     <ContentControl.Resources>

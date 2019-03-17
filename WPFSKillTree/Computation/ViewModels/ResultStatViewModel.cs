@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Input;
 using log4net;
-using POESKillTree.Common.ViewModels;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
+using PoESkillTree.Common.ViewModels;
 
-namespace POESKillTree.Computation.ViewModels
+namespace PoESkillTree.Computation.ViewModels
 {
     public class ResultStatViewModel : Notifier, IDisposable
     {

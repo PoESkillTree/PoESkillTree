@@ -6,9 +6,9 @@ using MoreLinq;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.StatTranslation;
-using POESKillTree.Model.Items.Mods;
+using PoESkillTree.Model.Items.Mods;
 
-namespace POESKillTree.Model.Items
+namespace PoESkillTree.Model.Items
 {
     public class EquipmentData
     {

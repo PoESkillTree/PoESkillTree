@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace POESKillTree.TreeGenerator.Algorithm.Model
+namespace PoESkillTree.TreeGenerator.Algorithm.Model
 {
     /// <summary>
     /// A readonly set of <see cref="GraphEdge"/>s.

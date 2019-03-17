@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Media;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
 
-namespace POESKillTree.Controls
+namespace PoESkillTree.Controls
 {
     public class StashBookmark : Notifier
     {

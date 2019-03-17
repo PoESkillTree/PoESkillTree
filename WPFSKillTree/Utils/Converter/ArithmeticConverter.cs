@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
 
-namespace POESKillTree.Utils.Converter
+namespace PoESkillTree.Utils.Converter
 {
     /// <summary>
     /// Converts values by calculating the sum of them, <see cref="Constant"/> and the converter parameter

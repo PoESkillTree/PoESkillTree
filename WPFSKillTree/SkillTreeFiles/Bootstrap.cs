@@ -1,7 +1,7 @@
 ﻿using System;
-using POESKillTree.Views;
+using PoESkillTree.Views;
 
-namespace POESKillTree.SkillTreeFiles
+namespace PoESkillTree.SkillTreeFiles
 {
     // Application entry class.
     class Bootstrap : MarshalByRefObject

@@ -1,4 +1,4 @@
-﻿namespace POESKillTree.TreeGenerator.Algorithm
+﻿namespace PoESkillTree.TreeGenerator.Algorithm
 {
     /// <summary>
     /// Describes a disjoint set data structure of incremental ints.

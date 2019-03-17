@@ -1,7 +1,7 @@
 ﻿using System;
-using POESKillTree.Utils.Extensions;
+using PoESkillTree.Utils.Extensions;
 
-namespace POESKillTree.Utils
+namespace PoESkillTree.Utils
 {
     public class SemanticVersion : IComparable<SemanticVersion>, IEquatable<SemanticVersion>
     {

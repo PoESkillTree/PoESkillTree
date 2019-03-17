@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using POESKillTree.SkillTreeFiles;
+using PoESkillTree.SkillTreeFiles;
 
-namespace POESKillTree.TreeGenerator.Algorithm.Model
+namespace PoESkillTree.TreeGenerator.Algorithm.Model
 {
     /// <summary>
     /// A graph representing a simplified skill tree. 

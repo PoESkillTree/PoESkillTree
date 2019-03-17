@@ -2,9 +2,9 @@
 using System.ComponentModel;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.GameModel;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
 
-namespace POESKillTree.Computation.ViewModels
+namespace PoESkillTree.Computation.ViewModels
 {
     public class GainOnActionStatViewModel : Notifier, IDisposable
     {

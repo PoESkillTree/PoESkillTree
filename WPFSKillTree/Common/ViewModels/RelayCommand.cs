@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using JetBrains.Annotations;
 
-namespace POESKillTree.Common.ViewModels
+namespace PoESkillTree.Common.ViewModels
 {
     /// <summary>
     /// <see cref="ICommand"/> implementation using delegates.

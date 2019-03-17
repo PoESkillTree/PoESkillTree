@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using PoESkillTree.GameModel;
 
-namespace POESKillTree.Utils.UrlProcessing
+namespace PoESkillTree.Utils.UrlProcessing
 {
     /// <summary>
     /// Represents build information, stored in a url. Essentially it provides just identifiers.

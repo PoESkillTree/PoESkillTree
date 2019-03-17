@@ -5,11 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using log4net;
 using PoESkillTree.Utils;
-using POESKillTree.Localization;
-using POESKillTree.Model.Builds;
-using POESKillTree.Utils;
+using PoESkillTree.Localization;
+using PoESkillTree.Model.Builds;
+using PoESkillTree.Utils;
 
-namespace POESKillTree.Model.Serialization
+namespace PoESkillTree.Model.Serialization
 {
     /// <summary>
     /// Can deserialize PersistentData with the new build saving structure.

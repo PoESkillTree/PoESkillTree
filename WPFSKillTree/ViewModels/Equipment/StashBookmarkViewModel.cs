@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Windows;
 using GongSolutions.Wpf.DragDrop;
-using POESKillTree.Controls;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
+using PoESkillTree.Controls;
 
-namespace POESKillTree.ViewModels.Equipment
+namespace PoESkillTree.ViewModels.Equipment
 {
     /// <summary>
     /// View model for StashBookmarks as shown as draggable lines in the stash itself.

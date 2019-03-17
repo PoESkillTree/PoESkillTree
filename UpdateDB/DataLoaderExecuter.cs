@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using log4net;
 using MoreLinq;
 using PoESkillTree.Utils;
-using POESKillTree.Utils;
 using UpdateDB.DataLoading;
 
 namespace UpdateDB

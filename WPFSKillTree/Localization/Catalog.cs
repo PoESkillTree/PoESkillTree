@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using ExpressionEvaluator;
 
-namespace POESKillTree.Localization
+namespace PoESkillTree.Localization
 {
     // @see http://www.gnu.org/software/gettext/manual/html_node/PO-Files.html#PO-Files
     public class Catalog

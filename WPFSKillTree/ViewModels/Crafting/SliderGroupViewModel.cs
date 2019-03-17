@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.GameModel.StatTranslation;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
 
-namespace POESKillTree.ViewModels.Crafting
+namespace PoESkillTree.ViewModels.Crafting
 {
     /// <summary>
     /// View model for a group of mod value sliders. Shows a line of text describing the sliders at their current

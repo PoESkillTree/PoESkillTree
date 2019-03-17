@@ -2,9 +2,9 @@
 using System.Linq;
 using MoreLinq;
 using Newtonsoft.Json.Linq;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
 
-namespace POESKillTree.Model.JsonSettings
+namespace PoESkillTree.Model.JsonSettings
 {
     /// <summary>
     /// Abstract base class for composite settings that assemble multiple sub settings under one key in the

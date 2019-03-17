@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 
-namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
+namespace PoESkillTree.TreeGenerator.Model.PseudoAttributes
 {
     /// <summary>
     /// Enumeration of weapon classes a character can have.

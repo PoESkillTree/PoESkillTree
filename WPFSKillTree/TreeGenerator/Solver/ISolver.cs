@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace POESKillTree.TreeGenerator.Solver
+namespace PoESkillTree.TreeGenerator.Solver
 {
     /// <summary>
     /// Interface of solver classes for use without generic parameter.

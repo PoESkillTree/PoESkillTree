@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using POESKillTree.Common.ViewModels;
+using PoESkillTree.Common.ViewModels;
 
-namespace POESKillTree.Controls.Dialogs.ViewModels
+namespace PoESkillTree.Controls.Dialogs.ViewModels
 {
     /// <summary>
     /// View model for a input dialog that validates the input.

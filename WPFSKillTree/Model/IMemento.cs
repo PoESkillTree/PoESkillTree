@@ -1,4 +1,4 @@
-﻿namespace POESKillTree.Model
+﻿namespace PoESkillTree.Model
 {
     /// <summary>
     /// Represents a stored state for objects of class <typeparamref name="T"/> that can be restored on any

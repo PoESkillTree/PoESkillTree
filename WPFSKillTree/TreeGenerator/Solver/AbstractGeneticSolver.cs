@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using POESKillTree.SkillTreeFiles;
-using POESKillTree.TreeGenerator.Algorithm;
-using POESKillTree.TreeGenerator.Algorithm.Model;
-using POESKillTree.TreeGenerator.Genetic;
-using POESKillTree.TreeGenerator.Settings;
+using PoESkillTree.SkillTreeFiles;
+using PoESkillTree.TreeGenerator.Algorithm;
+using PoESkillTree.TreeGenerator.Algorithm.Model;
+using PoESkillTree.TreeGenerator.Genetic;
+using PoESkillTree.TreeGenerator.Settings;
 
-namespace POESKillTree.TreeGenerator.Solver
+namespace PoESkillTree.TreeGenerator.Solver
 {
     /// <summary>
     /// Abstract solver that uses <see cref="GeneticAlgorithm"/> for solving.

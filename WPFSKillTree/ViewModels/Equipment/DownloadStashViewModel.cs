@@ -11,16 +11,16 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Newtonsoft.Json.Linq;
 using PoESkillTree.GameModel;
-using POESKillTree.Common.ViewModels;
-using POESKillTree.Controls;
-using POESKillTree.Controls.Dialogs;
-using POESKillTree.Localization;
-using POESKillTree.Model;
-using POESKillTree.Model.Builds;
-using POESKillTree.Model.Items;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
+using PoESkillTree.Common.ViewModels;
+using PoESkillTree.Controls;
+using PoESkillTree.Controls.Dialogs;
+using PoESkillTree.Localization;
+using PoESkillTree.Model;
+using PoESkillTree.Model.Builds;
+using PoESkillTree.Model.Items;
 
-namespace POESKillTree.ViewModels.Equipment
+namespace PoESkillTree.ViewModels.Equipment
 {
     public class DownloadStashViewModel : CloseableViewModel
     {

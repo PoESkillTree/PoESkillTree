@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
 
-namespace POESKillTree.ViewModels.Crafting
+namespace PoESkillTree.ViewModels.Crafting
 {
     /// <summary>
     /// View model for a slider for a value of a mod, overlayed by text.

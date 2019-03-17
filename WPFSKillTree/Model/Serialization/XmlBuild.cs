@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace POESKillTree.Model.Serialization
+namespace PoESkillTree.Model.Serialization
 {
     /// <summary>
     /// Represents the information of a <see cref="Builds.PoEBuild"/> instance as stored in

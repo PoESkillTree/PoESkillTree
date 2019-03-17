@@ -12,10 +12,10 @@ using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Skills;
-using POESKillTree.Computation.Model;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
+using PoESkillTree.Computation.Model;
 
-namespace POESKillTree.Computation.ViewModels
+namespace PoESkillTree.Computation.ViewModels
 {
     public class ComputationViewModel : Notifier
     {

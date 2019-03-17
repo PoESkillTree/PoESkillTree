@@ -9,16 +9,16 @@ using System.Windows.Input;
 using System.Windows.Media;
 using GongSolutions.Wpf.DragDrop;
 using MoreLinq;
+using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
-using POESKillTree.Common.ViewModels;
-using POESKillTree.Controls;
-using POESKillTree.Localization;
-using POESKillTree.Model;
-using POESKillTree.Model.Items;
-using POESKillTree.Utils;
-using POESKillTree.Utils.Wpf;
+using PoESkillTree.Common.ViewModels;
+using PoESkillTree.Controls;
+using PoESkillTree.Localization;
+using PoESkillTree.Model;
+using PoESkillTree.Model.Items;
+using PoESkillTree.Utils.Wpf;
 
-namespace POESKillTree.ViewModels.Equipment
+namespace PoESkillTree.ViewModels.Equipment
 {
     public class StashViewModelProxy : BindingProxy<StashViewModel>
     {

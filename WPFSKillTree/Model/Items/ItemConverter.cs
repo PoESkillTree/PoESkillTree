@@ -9,9 +9,9 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
 using PoESkillTree.GameModel.Items;
-using POESKillTree.Model.Items.Mods;
+using PoESkillTree.Model.Items.Mods;
 
-namespace POESKillTree.Model.Items
+namespace PoESkillTree.Model.Items
 {
     public class TextBlockHelper
     {

@@ -4,11 +4,11 @@ using System.Linq;
 using MoreLinq;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Modifiers;
-using POESKillTree.Model.Items;
-using POESKillTree.Model.Items.Mods;
-using POESKillTree.Utils.Wpf;
+using PoESkillTree.Model.Items;
+using PoESkillTree.Model.Items.Mods;
+using PoESkillTree.Utils.Wpf;
 
-namespace POESKillTree.ViewModels.Crafting
+namespace PoESkillTree.ViewModels.Crafting
 {
     public class CraftingViewModelProxy : BindingProxy<CraftingViewModel>
     {

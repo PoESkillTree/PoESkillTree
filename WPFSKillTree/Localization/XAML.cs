@@ -5,13 +5,13 @@ using System.Text;
 using System.Windows;
 using System.Windows.Markup;
 
-[assembly: XmlnsDefinition("http://github.com/EmmittJ/PoESkillTree/l10n", "POESKillTree.Localization.XAML")]
+[assembly: XmlnsDefinition("http://github.com/EmmittJ/PoESkillTree/l10n", "PoESkillTree.Localization.XAML")]
 [assembly: XmlnsPrefix("http://github.com/EmmittJ/PoESkillTree/l10n", "l")]
-namespace POESKillTree.Localization.XAML
+namespace PoESkillTree.Localization.XAML
 {
     /* Usage:
      * 1) XAML document root element must have XML namespace defined to enable use of markup extension.
-     *    e.g.: <controls:MetroWindow ... xmlns:l="clr-namespace:POESKillTree.Localization.XAML" ...>
+     *    e.g.: <controls:MetroWindow ... xmlns:l="clr-namespace:PoESkillTree.Localization.XAML" ...>
      * 
      * 2) Examples of localized messages in XAML document:
      *    <Label Grid.Row="1" Grid.Column="0">

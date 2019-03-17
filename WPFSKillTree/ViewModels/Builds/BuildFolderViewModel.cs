@@ -4,9 +4,9 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using MoreLinq;
-using POESKillTree.Model.Builds;
+using PoESkillTree.Model.Builds;
 
-namespace POESKillTree.ViewModels.Builds
+namespace PoESkillTree.ViewModels.Builds
 {
     /// <summary>
     /// <see cref="IBuildFolderViewModel"/> implementation.

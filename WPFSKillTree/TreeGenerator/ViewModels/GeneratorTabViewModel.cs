@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using POESKillTree.Common.ViewModels;
-using POESKillTree.Controls.Dialogs;
-using POESKillTree.Model.JsonSettings;
-using POESKillTree.SkillTreeFiles;
-using POESKillTree.TreeGenerator.Settings;
-using POESKillTree.TreeGenerator.Solver;
+using PoESkillTree.Common.ViewModels;
+using PoESkillTree.Controls.Dialogs;
+using PoESkillTree.Model.JsonSettings;
+using PoESkillTree.SkillTreeFiles;
+using PoESkillTree.TreeGenerator.Settings;
+using PoESkillTree.TreeGenerator.Solver;
 
-namespace POESKillTree.TreeGenerator.ViewModels
+namespace PoESkillTree.TreeGenerator.ViewModels
 {
     /// <summary>
     /// Base class for tabs in SettingsViewModel that specify which solver

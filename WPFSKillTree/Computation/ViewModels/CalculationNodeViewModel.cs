@@ -1,9 +1,9 @@
 ﻿using System;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.GameModel;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
 
-namespace POESKillTree.Computation.ViewModels
+namespace PoESkillTree.Computation.ViewModels
 {
     public abstract class CalculationNodeViewModel : Notifier
     {

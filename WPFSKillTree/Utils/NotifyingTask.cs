@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 
-namespace POESKillTree.Utils
+namespace PoESkillTree.Utils
 {
     // Original source: Stephen Cleary at https://msdn.microsoft.com/en-us/magazine/dn605875.aspx
     /// <summary>

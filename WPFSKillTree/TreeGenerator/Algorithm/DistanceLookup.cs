@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using POESKillTree.TreeGenerator.Algorithm.Model;
+using PoESkillTree.TreeGenerator.Algorithm.Model;
 
 [assembly: InternalsVisibleTo("UnitTests")]
-namespace POESKillTree.TreeGenerator.Algorithm
+namespace PoESkillTree.TreeGenerator.Algorithm
 {
     /// <summary>
     /// Interface that serves as a cache for uint distances between nodes represented as

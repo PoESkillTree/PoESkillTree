@@ -6,12 +6,12 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
 using log4net;
-using POESKillTree.Localization;
-using POESKillTree.Model;
-using POESKillTree.Model.Serialization;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
+using PoESkillTree.Localization;
+using PoESkillTree.Model;
+using PoESkillTree.Model.Serialization;
 
-namespace POESKillTree.Views
+namespace PoESkillTree.Views
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -32,7 +32,7 @@ namespace POESKillTree.Views
         // The Mutex for detecting running application instance.
         private Mutex _runningInstanceMutex;
 
-        private static string RunningInstanceMutexName => POESKillTree.Properties.Version.AppId;
+        private static string RunningInstanceMutexName => PoESkillTree.Properties.Version.AppId;
 
         // Invoked when application is about to exit.
         protected override void OnExit(ExitEventArgs e)

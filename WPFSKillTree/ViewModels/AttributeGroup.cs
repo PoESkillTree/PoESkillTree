@@ -1,6 +1,6 @@
 using System;
 
-namespace POESKillTree.ViewModels
+namespace PoESkillTree.ViewModels
 {
     public class AttributeGroup
     {

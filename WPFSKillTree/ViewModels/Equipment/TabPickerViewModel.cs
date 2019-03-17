@@ -1,7 +1,7 @@
 ﻿using System.Windows.Media;
-using POESKillTree.Common.ViewModels;
+using PoESkillTree.Common.ViewModels;
 
-namespace POESKillTree.ViewModels.Equipment
+namespace PoESkillTree.ViewModels.Equipment
 {
     public enum TabPickerResult
     {

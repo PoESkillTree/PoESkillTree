@@ -4,7 +4,7 @@ using System.IO;
 using System.Reflection;
 using JetBrains.Annotations;
 
-namespace POESKillTree.Utils
+namespace PoESkillTree.Utils
 {
     // Application data folder API.
     public class AppData

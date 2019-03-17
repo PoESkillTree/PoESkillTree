@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Interactivity;
 
-namespace POESKillTree.Utils.Wpf
+namespace PoESkillTree.Utils.Wpf
 {
     /// <summary>
     /// Sets the property value bound to <see cref="Property"/> to <see cref="Value"/>.

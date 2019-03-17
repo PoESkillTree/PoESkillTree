@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using POESKillTree.Controls.Dialogs;
-using POESKillTree.Model.Builds;
+using PoESkillTree.Controls.Dialogs;
+using PoESkillTree.Model.Builds;
 
-namespace POESKillTree.Model.Serialization
+namespace PoESkillTree.Model.Serialization
 {
     /// <summary>
     /// Implements all abstract methods of <see cref="AbstractPersistentData"/> by throwing exceptions on call.

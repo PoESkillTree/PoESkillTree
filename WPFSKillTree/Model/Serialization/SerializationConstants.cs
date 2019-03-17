@@ -1,8 +1,8 @@
 ﻿using System;
-using POESKillTree.Localization;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
+using PoESkillTree.Localization;
 
-namespace POESKillTree.Model.Serialization
+namespace PoESkillTree.Model.Serialization
 {
     /// <summary>
     /// Contains constants used for serialization of build files.

@@ -6,7 +6,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
 
-namespace POESKillTree.ViewModels
+namespace PoESkillTree.ViewModels
 {
     class AttributeToTextblockConverter : IValueConverter
     {

@@ -1,7 +1,7 @@
 using System;
 using System.Reactive.Disposables;
 
-namespace POESKillTree.Utils
+namespace PoESkillTree.Utils
 {
     /// <summary>
     /// A simple monitor that can be used to track method calls. Can be used to stop events from being handled

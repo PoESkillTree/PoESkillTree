@@ -8,7 +8,7 @@ using PoESkillTree.Computation.Data.Steps;
 using PoESkillTree.Computation.Parsing;
 using PoESkillTree.GameModel;
 
-namespace POESKillTree.Computation.Model
+namespace PoESkillTree.Computation.Model
 {
     public class ComputationFactory
     {

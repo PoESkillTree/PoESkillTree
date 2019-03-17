@@ -4,11 +4,11 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using Newtonsoft.Json.Linq;
-using POESKillTree.Computation.Model;
-using POESKillTree.SkillTreeFiles;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
+using PoESkillTree.Computation.Model;
+using PoESkillTree.SkillTreeFiles;
 
-namespace POESKillTree.Model.Builds
+namespace PoESkillTree.Model.Builds
 {
     /// <summary>
     /// <see cref="IBuild"/> implementation that represents a single build, a leaf in the build tree.

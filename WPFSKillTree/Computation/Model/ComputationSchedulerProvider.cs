@@ -1,7 +1,7 @@
 ﻿using System.Reactive.Concurrency;
 using System.Threading;
 
-namespace POESKillTree.Computation.Model
+namespace PoESkillTree.Computation.Model
 {
     public class ComputationSchedulerProvider
     {

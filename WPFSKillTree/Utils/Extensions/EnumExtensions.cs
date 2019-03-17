@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Reflection;
 
-namespace POESKillTree.Utils.Extensions
+namespace PoESkillTree.Utils.Extensions
 {
     /// <summary>
     /// Provides extension methods for Enums.

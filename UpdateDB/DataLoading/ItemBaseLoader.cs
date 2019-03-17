@@ -6,7 +6,7 @@ using log4net;
 using Newtonsoft.Json.Linq;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
-using POESKillTree.Model.Items;
+using PoESkillTree.Model.Items;
 
 namespace UpdateDB.DataLoading
 {

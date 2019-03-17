@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
+namespace PoESkillTree.TreeGenerator.Model.PseudoAttributes
 {
     /// <summary>
     /// Data class describing settings for the evaluation of conditions.

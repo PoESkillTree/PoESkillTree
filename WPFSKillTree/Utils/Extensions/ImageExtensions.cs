@@ -2,7 +2,7 @@
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 
-namespace POESKillTree.Utils.Extensions
+namespace PoESkillTree.Utils.Extensions
 {
     public static class ImageExtensions
     {

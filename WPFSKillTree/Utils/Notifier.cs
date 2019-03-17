@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace POESKillTree.Utils
+namespace PoESkillTree.Utils
 {
     /// <summary>
     /// Abstract class that simplifies Properties using INotifyPropertyChanged.

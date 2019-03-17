@@ -306,14 +306,14 @@
 
         <!-- Create empty PersistentData template file -->
         <AssemblyInvokeStatic AssemblyFile="$(DistDir)\$(AssemblyName).exe"
-                              ClassFullName="POESKillTree.Model.Serialization.PersistentDataSerializationService"
+                              ClassFullName="PoESkillTree.Model.Serialization.PersistentDataSerializationService"
                               Method="CreateSetupTemplate"
                               Input1="$(DistDir)"
                               Input2="%LANGUAGE%" />
 
         <!-- Create PackageName from ProductName -->
         <AssemblyInvokeStatic AssemblyFile="$(DistDir)\$(AssemblyName).exe"
-                              ClassFullName="POESKillTree.SkillTreeFiles.Updater"
+                              ClassFullName="PoESkillTree.SkillTreeFiles.Updater"
                               Method="GetPackageName"
                               Input1="$(ProductName)">
             <Output PropertyName="PackageName" TaskParameter="ReturnValue" />

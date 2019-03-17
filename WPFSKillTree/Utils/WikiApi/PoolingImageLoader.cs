@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using log4net;
 
-namespace POESKillTree.Utils.WikiApi
+namespace PoESkillTree.Utils.WikiApi
 {
     /// <summary>
     /// Retrieves images for items from the wiki's API and saves them to the filesystem. Images are retrieved

@@ -2,7 +2,7 @@
 using System.Reactive.Concurrency;
 using System.Threading.Tasks;
 
-namespace POESKillTree.Utils.Extensions
+namespace PoESkillTree.Utils.Extensions
 {
     public static class SchedulerExtensions
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace POESKillTree.SkillTreeFiles
+namespace PoESkillTree.SkillTreeFiles
 {
     public class NodeHighlighter
     {

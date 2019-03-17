@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MahApps.Metro.SimpleChildWindow;
-using POESKillTree.Controls.Dialogs;
-using POESKillTree.SkillTreeFiles;
-using POESKillTree.TreeGenerator.Solver;
-using POESKillTree.TreeGenerator.Views;
+using PoESkillTree.Controls.Dialogs;
+using PoESkillTree.SkillTreeFiles;
+using PoESkillTree.TreeGenerator.Solver;
+using PoESkillTree.TreeGenerator.Views;
 
-namespace POESKillTree.TreeGenerator.ViewModels
+namespace PoESkillTree.TreeGenerator.ViewModels
 {
     public interface ISettingsDialogCoordinator : IDialogCoordinator
     {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using POESKillTree.Common.ViewModels;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
+using PoESkillTree.Common.ViewModels;
 
-namespace POESKillTree.ViewModels
+namespace PoESkillTree.ViewModels
 {
     /// <summary>
     /// Contains a collection of pairs of a title and a command. Can be used e.g. to make commands selectable

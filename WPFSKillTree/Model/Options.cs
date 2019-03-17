@@ -1,6 +1,6 @@
-﻿using POESKillTree.Utils;
+﻿using PoESkillTree.Utils;
 
-namespace POESKillTree.Model
+namespace PoESkillTree.Model
 {
     public class Options : Notifier
     {

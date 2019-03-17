@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using PoESkillTree.GameModel.Items;
-using POESKillTree.Model.Items.Mods;
+using PoESkillTree.Model.Items.Mods;
 
-namespace POESKillTree.Model.Items
+namespace PoESkillTree.Model.Items
 {
     /// <summary>
     /// Interface for <see cref="ItemBase"/> and <see cref="UniqueBase"/>. <see cref="IItemBase.ToString()"/>

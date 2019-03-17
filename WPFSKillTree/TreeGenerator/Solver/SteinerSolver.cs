@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using POESKillTree.SkillTreeFiles;
-using POESKillTree.TreeGenerator.Genetic;
-using POESKillTree.TreeGenerator.Settings;
+using PoESkillTree.SkillTreeFiles;
+using PoESkillTree.TreeGenerator.Genetic;
+using PoESkillTree.TreeGenerator.Settings;
 
-namespace POESKillTree.TreeGenerator.Solver
+namespace PoESkillTree.TreeGenerator.Solver
 {
     /// <summary>
     /// Implementation of AbstractSolver that solves the Steiner tree problem.

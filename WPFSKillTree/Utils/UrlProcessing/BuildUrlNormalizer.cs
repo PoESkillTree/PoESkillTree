@@ -4,9 +4,9 @@ using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using POESKillTree.Localization;
+using PoESkillTree.Localization;
 
-namespace POESKillTree.Utils.UrlProcessing
+namespace PoESkillTree.Utils.UrlProcessing
 {
     /// <summary>
     /// Converts redirects and short links into direct builders and planners links.

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace POESKillTree.ItemFilter.Model
+namespace PoESkillTree.ItemFilter.Model
 {
     public abstract class Match : IComparable<Match>, IEquatable<Match>
     {

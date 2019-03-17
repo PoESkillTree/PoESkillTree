@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using POESKillTree.SkillTreeFiles;
+using PoESkillTree.SkillTreeFiles;
 
-namespace POESKillTree.Utils.UrlProcessing
+namespace PoESkillTree.Utils.UrlProcessing
 {
     /// <summary>
     /// Serializes provided instance of the <see cref="SkillTree"/> class into url representation.

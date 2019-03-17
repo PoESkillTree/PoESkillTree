@@ -9,13 +9,13 @@ using System.Windows.Threading;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using MahApps.Metro.IconPacks;
-using POESKillTree.Common.ViewModels;
-using POESKillTree.Controls.Dialogs.ViewModels;
-using POESKillTree.Controls.Dialogs.Views;
-using POESKillTree.Localization;
-using POESKillTree.Utils.Extensions;
+using PoESkillTree.Utils.Extensions;
+using PoESkillTree.Common.ViewModels;
+using PoESkillTree.Controls.Dialogs.ViewModels;
+using PoESkillTree.Controls.Dialogs.Views;
+using PoESkillTree.Localization;
 
-namespace POESKillTree.Controls.Dialogs
+namespace PoESkillTree.Controls.Dialogs
 {
     public static class ExtendedDialogManager
     {

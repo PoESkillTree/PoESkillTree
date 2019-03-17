@@ -6,14 +6,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using log4net;
-using POESKillTree.Common.ViewModels;
-using POESKillTree.Controls.Dialogs;
-using POESKillTree.Localization;
-using POESKillTree.SkillTreeFiles;
-using POESKillTree.TreeGenerator.Algorithm;
-using POESKillTree.TreeGenerator.Solver;
+using PoESkillTree.Common.ViewModels;
+using PoESkillTree.Controls.Dialogs;
+using PoESkillTree.Localization;
+using PoESkillTree.SkillTreeFiles;
+using PoESkillTree.TreeGenerator.Algorithm;
+using PoESkillTree.TreeGenerator.Solver;
 
-namespace POESKillTree.TreeGenerator.ViewModels
+namespace PoESkillTree.TreeGenerator.ViewModels
 {
     /// <summary>
     /// ViewModel that runs a solver and reports its results.

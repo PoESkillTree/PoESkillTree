@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
-namespace POESKillTree.SkillTreeFiles
+namespace PoESkillTree.SkillTreeFiles
 {
     public class SkillIcons
     {

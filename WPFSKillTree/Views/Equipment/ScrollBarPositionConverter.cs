@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace POESKillTree.Views.Equipment
+namespace PoESkillTree.Views.Equipment
 {
     /// <summary>
     /// The thumb of a scroll bar is not always centered above the scroll bar value. If the scroll bar value is at

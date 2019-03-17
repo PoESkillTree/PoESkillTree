@@ -4,10 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
-using POESKillTree.Localization;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
+using PoESkillTree.Localization;
 
-namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
+namespace PoESkillTree.TreeGenerator.Model.PseudoAttributes
 {
     /// <summary>
     /// The exception that is thrown when the xml files describing pseudo

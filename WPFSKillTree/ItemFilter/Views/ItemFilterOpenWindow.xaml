@@ -1,11 +1,11 @@
 ﻿<controls:MetroWindow
     xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-    x:Class="POESKillTree.ItemFilter.Views.ItemFilterOpenWindow"
+    x:Class="PoESkillTree.ItemFilter.Views.ItemFilterOpenWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-    xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
-    Icon="/POESKillTree;component/logo.ico"
+    xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
+    Icon="/PoESkillTree;component/logo.ico"
     Width="500"
     WindowStartupLocation="CenterOwner" WindowStyle="ToolWindow"
     ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height">

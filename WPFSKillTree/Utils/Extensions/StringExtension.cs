@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.IO;
 
-namespace POESKillTree.Utils.Extensions
+namespace PoESkillTree.Utils.Extensions
 {
     public static class StringExtensions
     {

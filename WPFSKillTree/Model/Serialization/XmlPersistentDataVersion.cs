@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace POESKillTree.Model.Serialization
+namespace PoESkillTree.Model.Serialization
 {
     /// <summary>
     /// Only used to get the AppVersion stored in PersistentData.xml.

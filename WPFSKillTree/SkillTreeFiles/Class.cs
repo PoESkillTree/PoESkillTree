@@ -1,4 +1,4 @@
-namespace POESKillTree.SkillTreeFiles
+namespace PoESkillTree.SkillTreeFiles
 {
     public class Class
     {

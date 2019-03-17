@@ -2,8 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:converters="http://metro.mahapps.com/winfx/xaml/shared"
-                    xmlns:local="clr-namespace:POESKillTree.Controls"
-                    xmlns:l="clr-namespace:POESKillTree.Localization.XAML">
+                    xmlns:local="clr-namespace:PoESkillTree.Controls"
+                    xmlns:l="clr-namespace:PoESkillTree.Localization.XAML">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Shared.xaml" />

@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.PassiveTree;
-using POESKillTree.Model.Items.Mods;
-using POESKillTree.SkillTreeFiles;
-using OldItem = POESKillTree.Model.Items.Item;
+using PoESkillTree.Model.Items.Mods;
+using PoESkillTree.SkillTreeFiles;
+using OldItem = PoESkillTree.Model.Items.Item;
 
-namespace POESKillTree.Model
+namespace PoESkillTree.Model
 {
     /// <summary>
     /// The PoESkillTree.GameModel project should at some point replace all game-related model classes.

@@ -10,7 +10,7 @@ using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
 using PoESkillTree.Utils;
-using POESKillTree.Computation.Model;
+using PoESkillTree.Computation.Model;
 
 namespace PoESkillTree.Tests.Computation.Model
 {

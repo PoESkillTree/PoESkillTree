@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Input;
 using Microsoft.WindowsAPICodePack.Dialogs;
-using POESKillTree.Common.ViewModels;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
+using PoESkillTree.Common.ViewModels;
 
-namespace POESKillTree.Controls.Dialogs.ViewModels
+namespace PoESkillTree.Controls.Dialogs.ViewModels
 {
     /// <summary>
     /// View model used for selecting a path to a file or directory.

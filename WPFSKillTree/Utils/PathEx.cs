@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using POESKillTree.Localization;
+using PoESkillTree.Localization;
 
-namespace POESKillTree.Utils
+namespace PoESkillTree.Utils
 {
     /// <summary>
     /// Static class containing useful methods on path strings not in <see cref="Path"/>.

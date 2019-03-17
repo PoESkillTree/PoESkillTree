@@ -11,23 +11,23 @@ using System.Windows.Input;
 using GongSolutions.Wpf.DragDrop;
 using log4net;
 using MoreLinq;
-using POESKillTree.Common;
-using POESKillTree.Common.ViewModels;
-using POESKillTree.Localization;
-using POESKillTree.Model;
-using POESKillTree.Model.Builds;
-using POESKillTree.Model.Serialization;
-using POESKillTree.SkillTreeFiles;
-using POESKillTree.Utils;
-using POESKillTree.Utils.Extensions;
-using POESKillTree.Utils.Wpf;
-using POESKillTree.Controls.Dialogs;
+using PoESkillTree.Common;
+using PoESkillTree.Common.ViewModels;
+using PoESkillTree.Localization;
+using PoESkillTree.Model;
+using PoESkillTree.Model.Builds;
+using PoESkillTree.Model.Serialization;
+using PoESkillTree.SkillTreeFiles;
+using PoESkillTree.Utils.Wpf;
+using PoESkillTree.Controls.Dialogs;
 using Newtonsoft.Json;
 using System.Text;
 using EnumsNET;
 using PoESkillTree.GameModel;
+using PoESkillTree.Utils;
+using PoESkillTree.Utils.Extensions;
 
-namespace POESKillTree.ViewModels.Builds
+namespace PoESkillTree.ViewModels.Builds
 {
     public class ClassFilterItem
     {
@@ -294,7 +294,7 @@ namespace POESKillTree.ViewModels.Builds
             var build = new GGGBuild()
             {
                 Name = target.Build.Name,
-                Version = Properties.Version.GGGPatchVersion,
+                Version = PoESkillTree.Properties.Version.GGGPatchVersion,
                 Parts = new List<GGGBuildPart>()
             };
 
