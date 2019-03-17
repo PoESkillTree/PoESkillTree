@@ -270,8 +270,6 @@ Skills that would Summon a Totem Summon two Totems instead
 Critical Strikes have Culling Strike
 Damage from your Critical Strikes cannot be Reflected
 Recover 0.5% of your maximum Life per Poison affecting Enemies you Kill
-// - Trickster
-20% chance to Recover 10% of Maximum Mana when you use a Skill
 // - Saboteur
 100% increased Mine Arming Speed
 20% Chance for Traps to Trigger an additional time

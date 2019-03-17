@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using MoreLinq;
@@ -78,8 +79,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder GrandSpectrumJewelsSocketed => FromIdentity(typeof(uint));
 
         public IStatBuilder RampageStacks => FromIdentity(typeof(uint));
-        public IStatBuilder CharacterSize => FromIdentity(typeof(double));
-        public IStatBuilder LightRadius => FromIdentity(typeof(double));
         public IStatBuilder AttachedBrands => FromIdentity(typeof(uint));
 
         public IStatBuilder PassiveNodeSkilled(ushort nodeId) => FromIdentity($"{nodeId}.Skilled", typeof(bool));
@@ -88,6 +87,9 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public ValueBuilder UniqueAmount(string name)
             => FromIdentity(name, typeof(uint), UserSpecifiedValue(0)).Value;
+
+        public IStatBuilder IndependentMultiplier(string identity)
+            => FromIdentity(identity, typeof(uint), IndependentResult(NodeType.Increase));
 
         public IAttributeStatBuilders Attribute => new AttributeStatBuilders(StatFactory);
         public IRequirementStatBuilders Requirements => new RequirementStatBuilders(StatFactory);

@@ -4,6 +4,7 @@ using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
+using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Data
 {
@@ -52,9 +53,15 @@ namespace PoESkillTree.Computation.Data
                 { "when you are hit", Hit.By(Enemy).On },
                 { "with hits", Hit.On },
                 { "for each enemy hit by (your )?attacks", And(With(Keyword.Attack), Hit.On) },
+                { "for each enemy hit by (your )?spells", And(With(Keyword.Spell), Hit.On) },
                 {
                     "when you or your totems hit an enemy with a spell",
                     And(With(Keyword.Spell), Hit.On.Or(Hit.By(Entity.Totem).On))
+                },
+                {
+                    "for each blinded enemy hit by this weapon",
+                    (And(ModifierSourceIs(ItemSlot.MainHand), MainHandAttack, Hit.On, Buff.Blind.IsOn(Enemy)),
+                        And(ModifierSourceIs(ItemSlot.OffHand), OffHandAttack, Hit.On, Buff.Blind.IsOn(Enemy)))
                 },
                 // critical strike
                 { "critical strikes have a", CriticalStrike.On },
@@ -65,9 +72,12 @@ namespace PoESkillTree.Computation.Data
                 { "when you place a totem", Totems.Cast.On },
                 { "when you summon a totem", Totems.Cast.On },
                 { "when you use a warcry", Skills[Keyword.Warcry].Cast.On },
+                { "when you use a skill", Skills.AllSkills.Cast.On },
                 // block
                 { "when they block", Block.On },
                 { "when you block", Block.On },
+                // buffs
+                { "when you ({BuffMatchers}) an enemy", Reference.AsBuff.InflictionAction.On },
                 // other
                 {
                     "when you stun an enemy with a melee hit",

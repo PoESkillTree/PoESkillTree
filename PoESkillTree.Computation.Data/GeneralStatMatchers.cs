@@ -45,6 +45,11 @@ namespace PoESkillTree.Computation.Data
                 { "strength and intelligence", ApplyOnce(Attribute.Strength, Attribute.Intelligence) },
                 { "dexterity and intelligence", ApplyOnce(Attribute.Dexterity, Attribute.Intelligence) },
                 { "(all )?attributes", ApplyOnce(Attribute.Strength, Attribute.Dexterity, Attribute.Intelligence) },
+                // - requirements
+                {
+                    "attribute requirements",
+                    Stat.Requirements.Strength, Stat.Requirements.Dexterity, Stat.Requirements.Intelligence
+                },
                 // offense
                 // - damage: see also DamageStatMatchers
                 { "chance to deal double damage", Damage.ChanceToDouble },
@@ -126,10 +131,11 @@ namespace PoESkillTree.Computation.Data
                 { "evasion rating and armour", ApplyOnce(Armour, Evasion) },
                 { "armour and evasion( rating)?", ApplyOnce(Armour, Evasion) },
                 { "armour and energy shield", ApplyOnce(Armour, EnergyShield) },
+                { "armour, evasion( rating)? and energy shield", ApplyOnce(Armour, Evasion, EnergyShield) },
                 { "(global )?defences", ApplyOnce(Armour, Evasion, EnergyShield) },
                 { "minion maximum life", Life.For(Entity.Minion) },
                 // - resistances
-                { "({DamageTypeMatchers}) resistance", Reference.AsDamageType.Resistance },
+                { "({DamageTypeMatchers}) resistances?", Reference.AsDamageType.Resistance },
                 {
                     "({DamageTypeMatchers}) and ({DamageTypeMatchers}) resistances",
                     References[0].AsDamageType.Resistance, References[1].AsDamageType.Resistance
@@ -231,6 +237,7 @@ namespace PoESkillTree.Computation.Data
                 // regen and recharge
                 { "({PoolStatMatchers}) regeneration( rate)?", Reference.AsPoolStat.Regen },
                 { "energy shield recharge rate", EnergyShield.Recharge },
+                { "({PoolStatMatchers}) recovery rate", Reference.AsPoolStat.RecoveryRate },
                 {
                     "recovery rate of life, mana and energy shield",
                     Life.RecoveryRate, Mana.RecoveryRate, EnergyShield.RecoveryRate
@@ -243,6 +250,7 @@ namespace PoESkillTree.Computation.Data
                     "maximum ({ChargeTypeMatchers}) and maximum ({ChargeTypeMatchers})",
                     ApplyOnce(References[0].AsChargeType.Amount.Maximum, References[1].AsChargeType.Amount.Maximum)
                 },
+                { "(?<!while at )minimum ({ChargeTypeMatchers})", Reference.AsChargeType.Amount.Minimum },
                 { "chance to (gain|grant) (an?|1) ({ChargeTypeMatchers})", Reference.AsChargeType.ChanceToGain },
                 {
                     "chance to (gain|grant) an? ({ChargeTypeMatchers}) and an? ({ChargeTypeMatchers})",
@@ -351,6 +359,10 @@ namespace PoESkillTree.Computation.Data
                 { "chance to avoid elemental ailments", Ailment.Elemental.Select(a => a.Avoidance) },
                 { "({AilmentMatchers}) duration( on enemies)?", Reference.AsAilment.Duration },
                 {
+                    "({AilmentMatchers}) and ({AilmentMatchers}) duration( on enemies)?",
+                    References[0].AsAilment.Duration, References[1].AsAilment.Duration
+                },
+                {
                     "duration of ailments on enemies",
                     Ailment.Elemental.Append(Ailment.Bleed, Ailment.Poison).Select(a => a.Duration)
                 },
@@ -393,15 +405,18 @@ namespace PoESkillTree.Computation.Data
                 { "melee weapon and unarmed( attack)? range", Stat.Range.With(Keyword.Melee) },
                 { "melee range", Stat.Range.With(Keyword.Melee) },
                 { "melee weapon range", Stat.Range.With(Keyword.Melee), MainHand.HasItem },
+                { "weapon range", Stat.Range },
                 // other
                 { "rampage stacks", Stat.RampageStacks },
                 { "chance to knock enemies back", Effect.Knockback.Chance },
                 { "knockback distance", Effect.Knockback.Distance },
-                { "character size", Stat.CharacterSize },
+                { "reflected damage taken", AnyDamageType.ReflectedDamageTaken },
                 { "reflected elemental damage taken", Elemental.ReflectedDamageTaken },
                 { "reflected physical damage taken", Physical.ReflectedDamageTaken },
                 { "damage taken gained as mana over 4 seconds when hit", Stat.DamageTakenGainedAsMana },
-                { "light radius", Stat.LightRadius },
+                { "character size", Stat.IndependentMultiplier("CharacterSize") },
+                { "light radius", Stat.IndependentMultiplier("LightRadius") },
+                { "experience gain", Stat.IndependentMultiplier("ExperienceGain") },
             };
     }
 }

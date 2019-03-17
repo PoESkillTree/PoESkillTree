@@ -167,6 +167,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 // - crit
                 { @"\+#% critical strike chance", BaseAdd, Value, CriticalStrike.Chance },
+                { @"\+#% critical strike multiplier", BaseAdd, Value, CriticalStrike.Multiplier },
                 {
                     "no critical strike multiplier, no damage multiplier for ailments from critical strikes",
                     TotalOverride, 0, CriticalStrike.Multiplier
@@ -268,8 +269,12 @@ namespace PoESkillTree.Computation.Data
                     BaseAdd, Value, Reference.AsPoolStat.Regen.Percent
                 },
                 {
-                    "# ({PoolStatMatchers}) regenerated per second", BaseAdd, Value,
-                    Reference.AsPoolStat.Regen
+                    "# ({PoolStatMatchers}) regenerated per second",
+                    BaseAdd, Value, Reference.AsPoolStat.Regen
+                },
+                {
+                    "#% of ({StatMatchers}) is regenerated as ({PoolStatMatchers}) per second",
+                    BaseAdd, Value.PercentOf(References[0].AsStat), References[1].AsPoolStat.Regen
                 },
                 {
                     "#% faster start of energy shield recharge", PercentIncrease, Value,
@@ -299,6 +304,10 @@ namespace PoESkillTree.Computation.Data
                 {
                     "recover ({PoolStatMatchers}) equal to #% of your evasion rating",
                     BaseAdd, Value.PercentOf(Evasion), Reference.AsPoolStat.Gain
+                },
+                {
+                    "#% chance to recover #% of ({PoolStatMatchers})",
+                    BaseAdd, Values[0].AsPercentage * Values[1].PercentOf(Reference.AsStat), Reference.AsPoolStat.Gain
                 },
                 // charges
                 {

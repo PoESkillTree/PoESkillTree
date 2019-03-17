@@ -181,7 +181,6 @@ namespace PoESkillTree.Computation.ViewModels
             AddAvailableStats(DefensiveStats, f.StatBuilders.MovementSpeed);
             AddAvailableStats(DefensiveStats, f.StatBuilders.ItemQuantity);
             AddAvailableStats(DefensiveStats, f.StatBuilders.ItemRarity);
-            AddAvailableStats(DefensiveStats, f.StatBuilders.LightRadius);
 
             AddAvailableStats(DefensiveStats, f.StatBuilders.PassivePoints);
             AddAvailableStats(DefensiveStats, f.StatBuilders.PassivePoints.Maximum);

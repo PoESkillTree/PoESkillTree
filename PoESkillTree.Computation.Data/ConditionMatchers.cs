@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Equipment;
@@ -29,11 +30,15 @@ namespace PoESkillTree.Computation.Data
             {
                 // actions
                 // - generic
-                { "if you('ve| have) ({ActionMatchers})( an enemy)? recently,?", Reference.AsAction.Recently },
+                { "if you('ve| have) ({ActionMatchers})( an enemy)? recently", Reference.AsAction.Recently },
                 { "if you haven't ({ActionMatchers}) recently", Not(Reference.AsAction.Recently) },
-                { "if you've ({ActionMatchers}) in the past # seconds,?", Reference.AsAction.InPastXSeconds(Value) },
+                { "if you've ({ActionMatchers}) in the past # seconds", Reference.AsAction.InPastXSeconds(Value) },
                 { "for # seconds on ({ActionMatchers})", Reference.AsAction.InPastXSeconds(Value) },
                 { "on ({ActionMatchers}) for # seconds", Reference.AsAction.InPastXSeconds(Value) },
+                {
+                    "for # seconds on ({KeywordMatchers}) ({ActionMatchers})",
+                    And(Condition.WithPart(References[0].AsKeyword), References[1].AsAction.InPastXSeconds(Value))
+                },
                 {
                     "for # seconds when you ({ActionMatchers}) a rare or unique enemy",
                     And(Enemy.IsRareOrUnique, Reference.AsAction.InPastXSeconds(Value))
@@ -69,6 +74,7 @@ namespace PoESkillTree.Computation.Data
                 { "if you haven't been hit recently", Not(Hit.By(Enemy).Recently) },
                 { "if you were damaged by a hit recently", Hit.By(Enemy).Recently },
                 { "if you've taken no damage from hits recently", Not(Hit.By(Enemy).Recently) },
+                { "if you weren't damaged by a hit recently", Not(Hit.By(Enemy).Recently) },
                 // - critical strike
                 { "if you've crit in the past # seconds", CriticalStrike.InPastXSeconds(Value) },
                 // - block
@@ -92,7 +98,7 @@ namespace PoESkillTree.Computation.Data
                 { "your spells have", Condition.With(DamageSource.Spell) },
                 // - by item tag
                 { "with weapons", AttackWith(Tags.Weapon) },
-                { "weapon", AttackWith(Tags.Weapon) },
+                { "(?<!this )weapon", AttackWith(Tags.Weapon) },
                 { "with bows", AttackWith(Tags.Bow) },
                 { "with a bow", AttackWith(Tags.Bow) },
                 { "with arrow hits", AttackWith(Tags.Bow) },
@@ -123,12 +129,18 @@ namespace PoESkillTree.Computation.Data
                     "with two handed melee weapons",
                     And(MainHandAttackWith(Tags.TwoHandWeapon), Not(MainHand.Has(Tags.Ranged)))
                 },
+                {
+                    "with melee damage",
+                    (And(MainHandAttack, Not(MainHand.Has(Tags.Ranged))),
+                        And(OffHandAttackWith(Tags.Weapon), Not(OffHand.Has(Tags.Ranged))))
+                },
+                { "with unarmed attacks", And(MainHandAttack, Not(MainHand.HasItem)) },
                 // - by item slot
                 { "with the main-hand weapon", MainHandAttack },
                 { "with main hand", MainHandAttack },
                 { "with off hand", OffHandAttack },
                 {
-                    "(attacks|hits) with this weapon( deal| have)?",
+                    "(attacks |hits )?with this weapon( deal| have)?",
                     (ModifierSourceIs(ItemSlot.MainHand).And(MainHandAttack),
                         ModifierSourceIs(ItemSlot.OffHand).And(OffHandAttack))
                 },
@@ -189,7 +201,9 @@ namespace PoESkillTree.Computation.Data
                 { "if rare or unique", Enemy.IsRareOrUnique },
                 { "if normal or magic", Not(Enemy.IsRareOrUnique) },
                 { "while there is only one nearby enemy", Enemy.CountNearby.Eq(1) },
+                { "if there are at least # nearby enemies", Enemy.CountNearby >= Value },
                 { "at close range", Enemy.IsNearby },
+                { "while a rare or unique enemy is nearby", And(Enemy.IsRareOrUnique, Enemy.IsNearby) },
                 // buffs
                 { "while you have ({BuffMatchers})", Reference.AsBuff.IsOn(Self) },
                 { "while affected by ({SkillMatchers})", Reference.AsSkill.Buff.IsOn(Self) },
@@ -234,6 +248,7 @@ namespace PoESkillTree.Computation.Data
                 { "({KeywordMatchers}) skills (have|deal)", With(Reference.AsKeyword) },
                 { "caused by melee hits", Condition.WithPart(Keyword.Melee) },
                 // - by damage type
+                { "with elemental skills", ElementalDamageTypes.Select(With).Aggregate((l, r) => l.Or(r)) },
                 { "with ({DamageTypeMatchers}) skills", With(Reference.AsDamageType) },
                 // - by single skill
                 { "({SkillMatchers})", With(Reference.AsSkill) },
@@ -310,6 +325,8 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "while you have at least one nearby ally", Condition.Unique("Is any ally nearby?") },
                 { "while channelling", Condition.Unique("Are you currently channeling?") },
+                { "during soul gain prevention", Condition.Unique("SoulGainPrevention") },
+                { "while focussed", Condition.Unique("Focus") },
                 // support gem mod clarifications. Irrelevant for parsing.
                 { "supported (skills|spells|attacks) (have|deal)", Condition.True },
                 { "(from |with )?supported skills'?", Condition.True },

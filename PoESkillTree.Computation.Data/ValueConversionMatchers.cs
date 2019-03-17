@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Data;
@@ -45,6 +46,7 @@ namespace PoESkillTree.Computation.Data
                 // equipment
                 { "for each magic item you have equipped", Equipment.Count(e => e.Has(FrameType.Magic)) },
                 // stats
+                { "per # accuracy rating", PerStat(Stat.Accuracy.With(AttackDamageHand.MainHand)) },
                 { "per #%? ({StatMatchers})(?! leech)", PerStat(stat: Reference.AsStat, divideBy: Value) },
                 { "per # ({StatMatchers}) ceiled", PerStatCeiled(stat: Reference.AsStat, divideBy: Value) },
                 { "per ({StatMatchers})(?! leech)", PerStat(stat: Reference.AsStat) },
