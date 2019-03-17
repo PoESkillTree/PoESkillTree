@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
-using POESKillTree.Utils.Converter;
+using PoESkillTree.Utils.Converter;
 
-namespace POESKillTree.ItemFilter.Model
+namespace PoESkillTree.ItemFilter.Model
 {
     public class Block : IComparable<Block>
     {

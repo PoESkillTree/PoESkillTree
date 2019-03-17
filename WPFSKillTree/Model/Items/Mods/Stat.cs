@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using MB.Algodat;
 
-namespace POESKillTree.Model.Items.Mods
+namespace PoESkillTree.Model.Items.Mods
 {
     /// <summary>
     /// A single stat of an <see cref="IMod"/>.

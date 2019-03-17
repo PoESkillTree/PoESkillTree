@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace POESKillTree.Utils
+namespace PoESkillTree.Utils
 {
     public static class RegexTools
     {

@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows.Data;
-using POESKillTree.Localization;
-using POESKillTree.ViewModels;
-using Attribute = POESKillTree.ViewModels.Attribute;
+using PoESkillTree.Localization;
+using PoESkillTree.ViewModels;
+using Attribute = PoESkillTree.ViewModels.Attribute;
 
-namespace POESKillTree.Utils.Converter
+namespace PoESkillTree.Utils.Converter
 {
     [ValueConversion(typeof (string), typeof (string))]
     //list view sorter here

@@ -3,9 +3,9 @@ using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using log4net;
 using PoESkillTree.Computation.Common;
-using POESKillTree.Localization;
+using PoESkillTree.Localization;
 
-namespace POESKillTree.Computation.ViewModels
+namespace PoESkillTree.Computation.ViewModels
 {
     public class ResultNodeViewModel : CalculationNodeViewModel, IDisposable
     {

@@ -1,4 +1,4 @@
-﻿namespace POESKillTree.TreeGenerator.Views
+﻿namespace PoESkillTree.TreeGenerator.Views
 {
     /// <summary>
     /// Interaction logic for SettingsWindow.xaml

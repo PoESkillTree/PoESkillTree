@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using POESKillTree.Common.ViewModels;
-using POESKillTree.Model.Builds;
+using PoESkillTree.Common.ViewModels;
+using PoESkillTree.Model.Builds;
 
-namespace POESKillTree.ViewModels.Builds
+namespace PoESkillTree.ViewModels.Builds
 {
     public class EditBuildViewModel : ErrorInfoViewModel<bool>
     {

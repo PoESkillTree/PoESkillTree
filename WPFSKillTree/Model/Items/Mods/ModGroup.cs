@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using PoESkillTree.GameModel.Items;
-using POESKillTree.Model.Items.Enums;
+using PoESkillTree.Model.Items.Enums;
 
-namespace POESKillTree.Model.Items.Mods
+namespace PoESkillTree.Model.Items.Mods
 {
     /// <summary>
     /// A group of mods with the same <see cref="JsonMod.Group"/>

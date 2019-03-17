@@ -5,9 +5,9 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
-using POESKillTree.Computation.Model;
+using PoESkillTree.Computation.Model;
 
-namespace POESKillTree.Computation.ViewModels
+namespace PoESkillTree.Computation.ViewModels
 {
     public class ConfigurationNodeViewModel : CalculationNodeViewModel, IDisposable
     {

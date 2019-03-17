@@ -489,7 +489,7 @@ will lead to less confusion for translators as context of whole sentence will be
 
 3.2. How to write localized XAML source
 
-Use "Catalog" custom tag of "clr-namespace:POESKillTree.Localization.XAML" XML namespace to translate messages.
+Use "Catalog" custom tag of "clr-namespace:PoESkillTree.Localization.XAML" XML namespace to translate messages.
 The custom tag has following attributes:
 
 	- Message: The untranslated string in English.
@@ -501,13 +501,13 @@ For messages without plural form, only Message attribute with optional Context a
 For messages with plural forms also Plural and N attributes have to be set.
 
 Remember to declare XML namespace in root element of XAML file with "xmlns:l" attribute value set to
-"clr-namespace:POESKillTree.Localization.XAML".
+"clr-namespace:PoESkillTree.Localization.XAML".
 
 Example of simple localization:
 
 	<controls:MetroWindow
 		...
-		xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+		xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
 		...>
 		<controls:MetroWindow.Title>
 			<l:Catalog Message="About PoESkillTree"/>

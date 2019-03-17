@@ -5,11 +5,11 @@ using System.Windows.Media;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using Xceed.Wpf.Toolkit;
-using POESKillTree.Localization;
-using POESKillTree.Utils.Converter;
-using NamedColor = POESKillTree.Utils.Converter.ColorUtils.NamedColor;
+using PoESkillTree.Localization;
+using PoESkillTree.Utils.Converter;
+using NamedColor = PoESkillTree.Utils.Converter.ColorUtils.NamedColor;
 
-namespace POESKillTree.ItemFilter.Views
+namespace PoESkillTree.ItemFilter.Views
 {
     /// <summary>
     /// Interaction logic for ColorButtonDialog.xaml

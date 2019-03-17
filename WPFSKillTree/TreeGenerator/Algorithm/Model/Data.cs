@@ -1,4 +1,4 @@
-﻿namespace POESKillTree.TreeGenerator.Algorithm.Model
+﻿namespace PoESkillTree.TreeGenerator.Algorithm.Model
 {
     /// <summary>
     /// Interface used to provide the reductions in SteinerReductions with the necessary data.

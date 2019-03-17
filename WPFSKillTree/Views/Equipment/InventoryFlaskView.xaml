@@ -1,11 +1,11 @@
-﻿<UserControl x:Class="POESKillTree.Views.Equipment.InventoryFlaskView"
+﻿<UserControl x:Class="PoESkillTree.Views.Equipment.InventoryFlaskView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:equipment="clr-namespace:POESKillTree.ViewModels.Equipment"
-             xmlns:local="clr-namespace:POESKillTree.Views.Equipment"
+             xmlns:equipment="clr-namespace:PoESkillTree.ViewModels.Equipment"
+             xmlns:local="clr-namespace:PoESkillTree.Views.Equipment"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance equipment:InventoryItemViewModel}">
     <StackPanel Orientation="Vertical">

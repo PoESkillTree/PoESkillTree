@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -17,16 +17,16 @@ using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.PassiveTree;
 using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
-using POESKillTree.Common;
-using POESKillTree.Controls.Dialogs;
-using POESKillTree.Localization;
-using POESKillTree.Model;
-using POESKillTree.Utils.UrlProcessing;
-using POESKillTree.Utils.Wpf;
-using HighlightState = POESKillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
-using static POESKillTree.SkillTreeFiles.Constants;
+using PoESkillTree.Common;
+using PoESkillTree.Controls.Dialogs;
+using PoESkillTree.Localization;
+using PoESkillTree.Model;
+using PoESkillTree.Utils.UrlProcessing;
+using PoESkillTree.Utils.Wpf;
+using HighlightState = PoESkillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
+using static PoESkillTree.SkillTreeFiles.Constants;
 
-namespace POESKillTree.SkillTreeFiles
+namespace PoESkillTree.SkillTreeFiles
 {
     public partial class SkillTree : Notifier, ISkillTree
     {

@@ -1,6 +1,6 @@
-﻿using POESKillTree.Localization;
+﻿using PoESkillTree.Localization;
 
-namespace POESKillTree.Views
+namespace PoESkillTree.Views
 {
     /// <summary>
     /// Interaction logic for HelpWindow.xaml

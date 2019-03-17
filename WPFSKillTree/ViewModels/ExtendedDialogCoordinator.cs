@@ -1,16 +1,16 @@
 ﻿using System.Threading.Tasks;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
-using POESKillTree.Controls.Dialogs;
-using POESKillTree.Model;
-using POESKillTree.Model.Builds;
-using POESKillTree.Model.Items;
-using POESKillTree.ViewModels.Builds;
-using POESKillTree.ViewModels.Equipment;
-using POESKillTree.Views.Builds;
-using POESKillTree.Views.Equipment;
+using PoESkillTree.Controls.Dialogs;
+using PoESkillTree.Model;
+using PoESkillTree.Model.Builds;
+using PoESkillTree.Model.Items;
+using PoESkillTree.ViewModels.Builds;
+using PoESkillTree.ViewModels.Equipment;
+using PoESkillTree.Views.Builds;
+using PoESkillTree.Views.Equipment;
 
-namespace POESKillTree.ViewModels
+namespace PoESkillTree.ViewModels
 {
     public interface IExtendedDialogCoordinator : IDialogCoordinator
     {

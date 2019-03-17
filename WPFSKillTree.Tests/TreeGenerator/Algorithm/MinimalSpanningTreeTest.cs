@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using POESKillTree.SkillTreeFiles;
-using POESKillTree.TreeGenerator.Algorithm;
-using POESKillTree.TreeGenerator.Algorithm.Model;
+using PoESkillTree.SkillTreeFiles;
+using PoESkillTree.TreeGenerator.Algorithm;
+using PoESkillTree.TreeGenerator.Algorithm.Model;
 
 namespace PoESkillTree.Tests.TreeGenerator.Algorithm
 {

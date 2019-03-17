@@ -1,8 +1,8 @@
 using System;
 using PoESkillTree.GameModel.Items;
-using POESKillTree.Model.Items.Enums;
+using PoESkillTree.Model.Items.Enums;
 
-namespace POESKillTree.ViewModels.Crafting
+namespace PoESkillTree.ViewModels.Crafting
 {
     /// <summary>
     /// Very rough classification of item/unique bases used for the first filter level in  

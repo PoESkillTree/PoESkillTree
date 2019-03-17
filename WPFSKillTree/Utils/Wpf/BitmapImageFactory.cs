@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Media.Imaging;
 
-namespace POESKillTree.Utils.Wpf
+namespace PoESkillTree.Utils.Wpf
 {
     public static class BitmapImageFactory
     {

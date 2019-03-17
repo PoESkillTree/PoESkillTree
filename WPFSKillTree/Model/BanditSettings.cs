@@ -2,9 +2,9 @@
 using System.Xml.Serialization;
 using EnumsNET;
 using PoESkillTree.GameModel;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
 
-namespace POESKillTree.Model
+namespace PoESkillTree.Model
 {
     /// <summary>
     /// Stores the bandit choice.

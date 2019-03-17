@@ -6,12 +6,12 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using MoreLinq;
-using POESKillTree.Computation.Model;
-using POESKillTree.Model;
-using POESKillTree.Model.Builds;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
+using PoESkillTree.Computation.Model;
+using PoESkillTree.Model;
+using PoESkillTree.Model.Builds;
 
-namespace POESKillTree.Computation.ViewModels
+namespace PoESkillTree.Computation.ViewModels
 {
     public class ConfigurationStatsConnector
     {

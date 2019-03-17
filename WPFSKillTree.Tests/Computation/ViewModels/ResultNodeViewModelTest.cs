@@ -4,7 +4,7 @@ using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.GameModel;
-using POESKillTree.Computation.ViewModels;
+using PoESkillTree.Computation.ViewModels;
 
 namespace PoESkillTree.Tests.Computation.ViewModels
 {

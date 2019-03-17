@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using POESKillTree.TreeGenerator.Algorithm.Model;
+using PoESkillTree.TreeGenerator.Algorithm.Model;
 
-namespace POESKillTree.TreeGenerator.Algorithm
+namespace PoESkillTree.TreeGenerator.Algorithm
 {
     /// <summary>
     ///     Simple hillclimbing algorithm that tries to improve a set of nodes by swapping

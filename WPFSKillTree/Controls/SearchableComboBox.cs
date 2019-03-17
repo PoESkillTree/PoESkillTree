@@ -7,9 +7,9 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Threading;
-using POESKillTree.Utils.Extensions;
+using PoESkillTree.Utils.Extensions;
 
-namespace POESKillTree.Controls
+namespace PoESkillTree.Controls
 {
     [TemplatePart(Name = "PART_SearchBox", Type = typeof(TextBox))]
     public class SearchableComboBox : ComboBox

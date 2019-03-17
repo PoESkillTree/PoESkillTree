@@ -1,8 +1,8 @@
 ﻿using System.Windows;
 using JetBrains.Annotations;
-using POESKillTree.Model.Items;
+using PoESkillTree.Model.Items;
 
-namespace POESKillTree.ViewModels.Equipment
+namespace PoESkillTree.ViewModels.Equipment
 {
     /// <summary>
     /// View model for items in the stash.

@@ -13,12 +13,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using log4net;
 using PoESkillTree.GameModel.Items;
-using POESKillTree.Utils;
-using POESKillTree.Utils.Extensions;
-using POESKillTree.Utils.WikiApi;
-using POESKillTree.Utils.Wpf;
+using PoESkillTree.Utils;
+using PoESkillTree.Utils.Extensions;
+using PoESkillTree.Utils.WikiApi;
+using PoESkillTree.Utils.Wpf;
 
-namespace POESKillTree.Model.Items
+namespace PoESkillTree.Model.Items
 {
     /// <summary>
     /// Serves item images for ItemGroups, base items and items with an icon url in their json.

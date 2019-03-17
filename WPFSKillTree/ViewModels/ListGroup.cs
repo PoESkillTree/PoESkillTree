@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace POESKillTree.ViewModels
+namespace PoESkillTree.ViewModels
 {
     public class ListGroup
     {

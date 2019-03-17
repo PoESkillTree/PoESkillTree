@@ -2,9 +2,9 @@
 using System.Linq;
 using log4net;
 using PoESkillTree.GameModel.Items;
-using POESKillTree.Model.Items.Mods;
+using PoESkillTree.Model.Items.Mods;
 
-namespace POESKillTree.Model.Items
+namespace PoESkillTree.Model.Items
 {
     /// <summary>
     /// Represents the base of an unique item. I.e. their base item and ranges of explicit mods.

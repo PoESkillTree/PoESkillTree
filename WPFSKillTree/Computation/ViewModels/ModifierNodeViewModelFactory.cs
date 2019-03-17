@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using PoESkillTree.Computation.Common;
-using POESKillTree.Computation.Model;
+using PoESkillTree.Computation.Model;
 
-namespace POESKillTree.Computation.ViewModels
+namespace PoESkillTree.Computation.ViewModels
 {
     public class ModifierNodeViewModelFactory
     {

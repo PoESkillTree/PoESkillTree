@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
-using POESKillTree.Controls;
+using PoESkillTree.Controls;
 
-namespace POESKillTree.Model.Serialization
+namespace PoESkillTree.Model.Serialization
 {
     public class XmlLeagueStash
     {

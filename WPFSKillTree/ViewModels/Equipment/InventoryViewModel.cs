@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.GameModel.Items;
-using POESKillTree.Model.Items;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
+using PoESkillTree.Model.Items;
 
-namespace POESKillTree.ViewModels.Equipment
+namespace PoESkillTree.ViewModels.Equipment
 {
     /// <summary>
     /// View model for the inventory. Only a collection of the the InventoryItemViewModels for the slots.
@@ -48,7 +48,7 @@ namespace POESKillTree.ViewModels.Equipment
             var imageName = SlotToImageName(slot);
             return new InventoryItemViewModel(_dialogCoordinator, _itemAttributes, slot)
             {
-                EmptyBackgroundImagePath = $"/POESKillTree;component/Images/EquipmentUI/ItemDefaults/{imageName}.png"
+                EmptyBackgroundImagePath = $"/PoESkillTree;component/Images/EquipmentUI/ItemDefaults/{imageName}.png"
             };
         }
 

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using POESKillTree.Model.JsonSettings;
-using POESKillTree.SkillTreeFiles;
+using PoESkillTree.Model.JsonSettings;
+using PoESkillTree.SkillTreeFiles;
 
-namespace POESKillTree.TreeGenerator.ViewModels
+namespace PoESkillTree.TreeGenerator.ViewModels
 {
     /// <summary>
     /// ViewModel that enables setting up and running <see cref="Solver.ISolver"/> through

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace POESKillTree.ItemFilter.Model
+namespace PoESkillTree.ItemFilter.Model
 {
     public class Rule : Block
     {

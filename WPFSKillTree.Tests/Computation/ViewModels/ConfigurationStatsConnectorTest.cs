@@ -8,9 +8,9 @@ using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
-using POESKillTree.Computation.ViewModels;
-using POESKillTree.Model;
-using POESKillTree.Model.Builds;
+using PoESkillTree.Computation.ViewModels;
+using PoESkillTree.Model;
+using PoESkillTree.Model.Builds;
 
 namespace PoESkillTree.Tests.Computation.ViewModels
 {

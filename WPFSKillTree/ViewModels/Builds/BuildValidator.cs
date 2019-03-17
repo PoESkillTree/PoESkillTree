@@ -1,11 +1,11 @@
 ﻿using System.IO;
 using System.Linq;
-using POESKillTree.Localization;
-using POESKillTree.Model;
-using POESKillTree.Model.Serialization;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
+using PoESkillTree.Localization;
+using PoESkillTree.Model;
+using PoESkillTree.Model.Serialization;
 
-namespace POESKillTree.ViewModels.Builds
+namespace PoESkillTree.ViewModels.Builds
 {
     /// <summary>
     /// Used to validate build names and to decide whether builds can be moved into a folder or whether

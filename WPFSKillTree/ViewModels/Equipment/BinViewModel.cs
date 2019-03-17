@@ -2,7 +2,7 @@
 using System.Windows.Media;
 using GongSolutions.Wpf.DragDrop;
 
-namespace POESKillTree.ViewModels.Equipment
+namespace PoESkillTree.ViewModels.Equipment
 {
     /// <summary>
     /// View model for the bin. Items can be dropped onto it to remove them.

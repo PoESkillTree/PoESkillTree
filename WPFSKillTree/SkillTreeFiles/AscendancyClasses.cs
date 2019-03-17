@@ -3,7 +3,7 @@ using System.Linq;
 using EnumsNET;
 using PoESkillTree.GameModel;
 
-namespace POESKillTree.SkillTreeFiles
+namespace PoESkillTree.SkillTreeFiles
 {
     /// <summary>
     /// Represents methods for obtaining skill tree class names.

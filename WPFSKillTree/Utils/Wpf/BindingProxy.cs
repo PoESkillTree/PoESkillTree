@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace POESKillTree.Utils.Wpf
+namespace PoESkillTree.Utils.Wpf
 {
     /// <summary>
     /// Wraps any object of type T to allow binding to it. Use this if the original object is not

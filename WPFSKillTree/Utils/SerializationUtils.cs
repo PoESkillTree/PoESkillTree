@@ -2,7 +2,7 @@
 using System.Net;
 using System.Reflection;
 
-namespace POESKillTree.Utils
+namespace PoESkillTree.Utils
 {
     /// <summary>
     /// Contains build serialization related utility methods.

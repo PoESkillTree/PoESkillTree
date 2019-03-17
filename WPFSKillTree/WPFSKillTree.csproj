@@ -9,7 +9,7 @@
     <ProjectGuid>{FCDA18D8-4FD9-484B-B7DC-DBF771B3AEC7}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>POESKillTree</RootNamespace>
+    <RootNamespace>PoESkillTree</RootNamespace>
     <AssemblyName>PoESkillTree</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <TargetFrameworkProfile />
@@ -70,7 +70,7 @@
     <ApplicationIcon>logo.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>POESKillTree.SkillTreeFiles.Bootstrap</StartupObject>
+    <StartupObject>PoESkillTree.SkillTreeFiles.Bootstrap</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Antlr3.Runtime">
@@ -477,7 +477,6 @@
     <Compile Include="Utils\NotifyingTask.cs" />
     <Compile Include="Utils\ObservableSet.cs" />
     <Compile Include="Utils\SimpleMonitor.cs" />
-    <Compile Include="Utils\Win32.cs" />
     <Compile Include="Utils\Wpf\BindingProxy.cs" />
     <Compile Include="Utils\Wpf\Setter.cs" />
     <Compile Include="Utils\Wpf\Helper.cs" />

@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
 using PoESkillTree.GameModel;
-using POESKillTree.SkillTreeFiles;
+using PoESkillTree.SkillTreeFiles;
 
-namespace POESKillTree.Utils.UrlProcessing
+namespace PoESkillTree.Utils.UrlProcessing
 {
     /// <summary>
     /// Represents an object that extracts build information from the tree url.

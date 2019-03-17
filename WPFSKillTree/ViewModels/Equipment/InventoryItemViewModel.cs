@@ -3,11 +3,11 @@ using System.Windows;
 using System.Windows.Input;
 using GongSolutions.Wpf.DragDrop;
 using PoESkillTree.GameModel.Items;
-using POESKillTree.Common.ViewModels;
-using POESKillTree.Model.Items;
-using Item = POESKillTree.Model.Items.Item;
+using PoESkillTree.Common.ViewModels;
+using PoESkillTree.Model.Items;
+using Item = PoESkillTree.Model.Items.Item;
 
-namespace POESKillTree.ViewModels.Equipment
+namespace PoESkillTree.ViewModels.Equipment
 {
     /// <summary>
     /// View model for draggable items in the inventory. This is also a drop target.

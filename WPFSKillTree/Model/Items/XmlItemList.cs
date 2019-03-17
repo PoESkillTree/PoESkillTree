@@ -1,8 +1,8 @@
 ﻿using System.Xml.Serialization;
 using PoESkillTree.GameModel.Items;
-using POESKillTree.Model.Items.Enums;
+using PoESkillTree.Model.Items.Enums;
 
-namespace POESKillTree.Model.Items
+namespace PoESkillTree.Model.Items
 {
     // Contains the classes that allow serialization and deserialization of Items.xml
 

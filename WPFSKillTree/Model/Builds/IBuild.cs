@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace POESKillTree.Model.Builds
+namespace PoESkillTree.Model.Builds
 {
     /// <summary>
     /// Interface for builds. Builds have a name, can be deep cloned and implement both

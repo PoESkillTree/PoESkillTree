@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using PoESkillTree.GameModel.PassiveTree;
-using POESKillTree.SkillTreeFiles;
-using POESKillTree.TreeGenerator.Algorithm;
-using POESKillTree.TreeGenerator.Algorithm.Model;
-using POESKillTree.TreeGenerator.Settings;
+using PoESkillTree.SkillTreeFiles;
+using PoESkillTree.TreeGenerator.Algorithm;
+using PoESkillTree.TreeGenerator.Algorithm.Model;
+using PoESkillTree.TreeGenerator.Settings;
 
-namespace POESKillTree.TreeGenerator.Solver
+namespace PoESkillTree.TreeGenerator.Solver
 {
     /// <summary>
     ///  Base solver class controlling the interaction between the skill tree data and the

@@ -4,12 +4,12 @@ using System.Linq;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
 using PoESkillTree.Utils;
-using POESKillTree.Model.Items;
-using POESKillTree.Utils;
+using PoESkillTree.Model.Items;
+using PoESkillTree.Utils;
 using Item = PoESkillTree.GameModel.Items.Item;
-using OldItem = POESKillTree.Model.Items.Item;
+using OldItem = PoESkillTree.Model.Items.Item;
 
-namespace POESKillTree.Model
+namespace PoESkillTree.Model
 {
     public class ObservableItemCollectionConverter
     {

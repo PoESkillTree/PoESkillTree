@@ -33,7 +33,7 @@ namespace UpdateDB
     public enum OutputDirectory
     {
         /// <summary>
-        /// Use <see cref="POESKillTree.Utils.AppData.GetFolder(bool)"/> as root output directory.
+        /// Use <see cref="PoESkillTree.Utils.AppData.GetFolder(bool)"/> as root output directory.
         /// </summary>
         AppData,
         /// <summary>

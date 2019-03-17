@@ -10,13 +10,13 @@ using MoreLinq;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Modifiers;
 using PoESkillTree.GameModel.StatTranslation;
-using POESKillTree.Common.ViewModels;
-using POESKillTree.Model.Items;
-using POESKillTree.Model.Items.Mods;
-using POESKillTree.Utils;
-using Item = POESKillTree.Model.Items.Item;
+using PoESkillTree.Utils;
+using PoESkillTree.Common.ViewModels;
+using PoESkillTree.Model.Items;
+using PoESkillTree.Model.Items.Mods;
+using Item = PoESkillTree.Model.Items.Item;
 
-namespace POESKillTree.ViewModels.Crafting
+namespace PoESkillTree.ViewModels.Crafting
 {
     /// <summary>
     /// Base view model for crafting items from a list of bases. Contains all functionality not specific to the type

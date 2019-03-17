@@ -1,8 +1,8 @@
 ﻿using System;
 using Newtonsoft.Json.Linq;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
 
-namespace POESKillTree.Model.JsonSettings
+namespace PoESkillTree.Model.JsonSettings
 {
     /// <summary>
     /// Simple implementation of a setting without sub settings.

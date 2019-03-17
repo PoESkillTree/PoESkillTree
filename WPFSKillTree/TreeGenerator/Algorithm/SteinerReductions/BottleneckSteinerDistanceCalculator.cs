@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
+namespace PoESkillTree.TreeGenerator.Algorithm.SteinerReductions
 {
     /// <summary>
     /// Calculates bottleneck Steiner distances between all search space nodes.

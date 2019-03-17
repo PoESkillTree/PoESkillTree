@@ -3,10 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
 
-namespace POESKillTree.Utils
+namespace PoESkillTree.Utils
 {
     /// <summary>
     /// ISet implementation that notifies on collection and property changes.

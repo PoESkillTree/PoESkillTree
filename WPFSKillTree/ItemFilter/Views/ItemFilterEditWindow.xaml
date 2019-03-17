@@ -1,13 +1,13 @@
 ﻿<controls:MetroWindow
-    x:Class="POESKillTree.ItemFilter.Views.ItemFilterEditWindow"
+    x:Class="PoESkillTree.ItemFilter.Views.ItemFilterEditWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-    xmlns:ctl="clr-namespace:POESKillTree.Controls"
-    xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
-    xmlns:utl="clr-namespace:POESKillTree.Utils.Converter"
-    Icon="/POESKillTree;component/logo.ico"
+    xmlns:ctl="clr-namespace:PoESkillTree.Controls"
+    xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
+    xmlns:utl="clr-namespace:PoESkillTree.Utils.Converter"
+    Icon="/PoESkillTree;component/logo.ico"
     Width="500"
     WindowStartupLocation="CenterOwner" WindowStyle="ToolWindow"
     ShowInTaskbar="False" ResizeMode="NoResize" SizeToContent="Height">

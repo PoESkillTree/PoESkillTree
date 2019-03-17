@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace POESKillTree.Controls
+namespace PoESkillTree.Controls
 {
     class MenuItemExtensions : DependencyObject
     {

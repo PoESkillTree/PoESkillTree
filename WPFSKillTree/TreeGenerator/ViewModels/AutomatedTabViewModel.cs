@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using POESKillTree.Controls.Dialogs;
-using POESKillTree.Localization;
-using POESKillTree.Model.JsonSettings;
-using POESKillTree.SkillTreeFiles;
-using POESKillTree.TreeGenerator.Settings;
-using POESKillTree.TreeGenerator.Solver;
+using PoESkillTree.Controls.Dialogs;
+using PoESkillTree.Localization;
+using PoESkillTree.Model.JsonSettings;
+using PoESkillTree.SkillTreeFiles;
+using PoESkillTree.TreeGenerator.Settings;
+using PoESkillTree.TreeGenerator.Solver;
 
-namespace POESKillTree.TreeGenerator.ViewModels
+namespace PoESkillTree.TreeGenerator.ViewModels
 {
     public sealed class AutomatedTabViewModel : GeneratorTabViewModel
     {

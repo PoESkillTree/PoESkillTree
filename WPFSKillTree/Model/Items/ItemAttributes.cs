@@ -9,12 +9,12 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
+using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
-using POESKillTree.Model.Items.Mods;
-using POESKillTree.Utils;
-using POESKillTree.ViewModels;
+using PoESkillTree.Model.Items.Mods;
+using PoESkillTree.ViewModels;
 
-namespace POESKillTree.Model.Items
+namespace PoESkillTree.Model.Items
 {
     public class ItemAttributes : Notifier, IDisposable
     {

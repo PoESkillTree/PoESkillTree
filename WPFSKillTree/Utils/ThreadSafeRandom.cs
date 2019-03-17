@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace POESKillTree.Utils
+namespace PoESkillTree.Utils
 {
     // Based on http://blogs.msdn.com/b/pfxteam/archive/2009/02/19/9434171.aspx
     /// <summary>

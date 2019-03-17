@@ -4,9 +4,9 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using EnumsNET;
 using PoESkillTree.Computation.Common;
-using POESKillTree.Common.ViewModels;
+using PoESkillTree.Common.ViewModels;
 
-namespace POESKillTree.Computation.ViewModels
+namespace PoESkillTree.Computation.ViewModels
 {
     public class ResultStatsViewModel
     {

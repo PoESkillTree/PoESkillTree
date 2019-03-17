@@ -7,11 +7,12 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.Win32;
-using POESKillTree.Localization;
+using PoESkillTree.Localization;
 using Newtonsoft.Json.Linq;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
+using Version = PoESkillTree.Properties.Version;
 
-namespace POESKillTree.SkillTreeFiles
+namespace PoESkillTree.SkillTreeFiles
 {
     /* Update manager.
      * Provides API for semi-synchronous update process (downloading is asynchronous, while checking for updates and installation are synchronous tasks).
@@ -327,7 +328,7 @@ namespace POESKillTree.SkillTreeFiles
                         Description = release["body"].Value<string>(),
                         IsPrerelease = prerelease,
                         // A release is an update, if file name starts with our PackageName.
-                        IsUpdate = fileName.StartsWith(GetPackageName(Properties.Version.ProductName) + "-"),
+                        IsUpdate = fileName.StartsWith(GetPackageName(Version.ProductName) + "-"),
                         PackageFileName = fileName,
                         Version = tag,
                         URI = new Uri(pkgAsset["browser_download_url"].Value<string>())
@@ -383,7 +384,7 @@ namespace POESKillTree.SkillTreeFiles
         // Returns current version.
         private static SemanticVersion GetCurrentVersion()
         {
-            return SemanticVersion.Parse(Properties.Version.ProductVersion);
+            return SemanticVersion.Parse(Version.ProductVersion);
         }
 
         // Return latest release, or null if there is none or it wasn't checked for yet.
@@ -411,7 +412,7 @@ namespace POESKillTree.SkillTreeFiles
                 return AppData.GetIniValue("Setup", "Language");
             }
             else
-                using (RegistryKey uninstallKey = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall\" + Properties.Version.AppId + InnoSetupUninstallAppIdSuffix))
+                using (RegistryKey uninstallKey = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall\" + Version.AppId + InnoSetupUninstallAppIdSuffix))
                 {
                     if (uninstallKey == null)
                         throw new Exception(L10n.Message("The application is not correctly installed"));
@@ -455,9 +456,9 @@ namespace POESKillTree.SkillTreeFiles
                         string productName = key.GetValue("DisplayName") as string;
                         if (string.IsNullOrEmpty(productName)) continue; // Missing DisplayName value.
 
-                        if (!productName.ToLowerInvariant().Contains("poeskilltree")) continue; // Not our application.
+                        if (!productName.ToLowerInvariant().Contains("PoESkillTree")) continue; // Not our application.
 
-                        if (productName != Properties.Version.ProductName)
+                        if (productName != Version.ProductName)
                         {
                             var version = SemanticVersion.Parse((string) key.GetValue("DisplayVersion"));
                             if (version.CompareTo(current) > 0)

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
@@ -15,11 +14,11 @@ using PoESkillTree.Computation.Parsing;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.PassiveTree;
 using PoESkillTree.GameModel.Skills;
-using POESKillTree.Computation.Model;
-using POESKillTree.SkillTreeFiles;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
+using PoESkillTree.Computation.Model;
+using PoESkillTree.SkillTreeFiles;
 
-namespace PoESkillTree.Tests.Computation.Model
+namespace PoESkillTree.Computation.Model
 {
     [TestFixture]
     public class ComputationObservablesTest

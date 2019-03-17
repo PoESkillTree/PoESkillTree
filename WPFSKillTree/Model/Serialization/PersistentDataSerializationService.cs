@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using log4net;
 using PoESkillTree.Utils;
-using POESKillTree.Controls.Dialogs;
-using POESKillTree.Model.Builds;
-using POESKillTree.Utils;
+using PoESkillTree.Controls.Dialogs;
+using PoESkillTree.Model.Builds;
+using PoESkillTree.Utils;
 
-namespace POESKillTree.Model.Serialization
+namespace PoESkillTree.Model.Serialization
 {
     /// <summary>
     /// Provides services for creating <see cref="IPersistentData"/> instances from the file system.

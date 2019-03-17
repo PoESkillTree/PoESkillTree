@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 
-namespace POESKillTree.Controls.Dialogs
+namespace PoESkillTree.Controls.Dialogs
 {
     // This is a copy of https://github.com/MahApps/MahApps.Metro/blob/1.3.0/MahApps.Metro/Controls/Dialogs/DialogParticipation.cs
     // (MIT licensed) to be able to access its internal methods.

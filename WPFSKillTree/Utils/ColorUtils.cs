@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Media;
 
-namespace POESKillTree.Utils.Converter
+namespace PoESkillTree.Utils.Converter
 {
     public class ColorUtils
     {

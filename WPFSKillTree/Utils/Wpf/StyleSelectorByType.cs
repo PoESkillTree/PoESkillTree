@@ -2,7 +2,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace POESKillTree.Utils.Wpf
+namespace PoESkillTree.Utils.Wpf
 {
     /// <summary>
     /// <see cref="StyleSelector"/> that selects by <see cref="Type"/>.

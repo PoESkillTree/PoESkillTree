@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using POESKillTree.Controls;
-using POESKillTree.Controls.Dialogs;
-using POESKillTree.Model.Builds;
-using POESKillTree.Model.Items;
+using PoESkillTree.Controls;
+using PoESkillTree.Controls.Dialogs;
+using PoESkillTree.Model.Builds;
+using PoESkillTree.Model.Items;
 
-namespace POESKillTree.Model
+namespace PoESkillTree.Model
 {
     /// <summary>
     /// Enables access to all data that persists between program executions.

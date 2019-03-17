@@ -1,9 +1,9 @@
 using System;
-using POESKillTree.Common;
-using POESKillTree.Model.Builds;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
+using PoESkillTree.Common;
+using PoESkillTree.Model.Builds;
 
-namespace POESKillTree.ViewModels.Builds
+namespace PoESkillTree.ViewModels.Builds
 {
     /// <summary>
     /// Abstract implementation of <see cref="IBuildViewModel{T}"/> that extends <see cref="Notifier"/>.

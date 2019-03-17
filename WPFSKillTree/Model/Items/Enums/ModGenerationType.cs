@@ -1,4 +1,4 @@
-﻿namespace POESKillTree.Model.Items.Enums
+﻿namespace PoESkillTree.Model.Items.Enums
 {
     /// <summary>
     /// The generation type of a mod as it appears in the GGPK.

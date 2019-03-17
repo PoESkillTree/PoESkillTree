@@ -1,7 +1,7 @@
 ﻿using PoESkillTree.GameModel.Skills;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
 
-namespace POESKillTree.Computation.ViewModels
+namespace PoESkillTree.Computation.ViewModels
 {
     public class MainSkillViewModel : Notifier
     {

@@ -1,6 +1,6 @@
-﻿using POESKillTree.Utils;
+﻿using PoESkillTree.Utils;
 
-namespace POESKillTree.Common.ViewModels
+namespace PoESkillTree.Common.ViewModels
 {
     /// <summary>
     /// Base class for all ViewModel classes in the application.

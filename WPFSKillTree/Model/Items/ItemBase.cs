@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using PoESkillTree.GameModel.Items;
-using POESKillTree.Model.Items.Mods;
+using PoESkillTree.Model.Items.Mods;
 
-namespace POESKillTree.Model.Items
+namespace PoESkillTree.Model.Items
 {
     /// <summary>
     /// Represents an item base, e.g. Harbinger Bow or Glorious Plate.

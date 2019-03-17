@@ -9,14 +9,14 @@ using PoESkillTree.Computation.Parsing;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
-using POESKillTree.Computation.Model;
-using POESKillTree.Computation.ViewModels;
-using POESKillTree.Model;
-using POESKillTree.SkillTreeFiles;
-using POESKillTree.Utils;
-using POESKillTree.Utils.Extensions;
+using PoESkillTree.Utils;
+using PoESkillTree.Utils.Extensions;
+using PoESkillTree.Computation.Model;
+using PoESkillTree.Computation.ViewModels;
+using PoESkillTree.Model;
+using PoESkillTree.SkillTreeFiles;
 
-namespace POESKillTree.Computation
+namespace PoESkillTree.Computation
 {
     public class ComputationInitializer
     {

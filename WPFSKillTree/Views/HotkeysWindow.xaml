@@ -1,9 +1,9 @@
 ﻿<dialogs:CloseableBaseDialog
-    x:Class="POESKillTree.Views.HotkeysWindow"
+    x:Class="PoESkillTree.Views.HotkeysWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
-    xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
+    xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
+    xmlns:dialogs="clr-namespace:PoESkillTree.Controls.Dialogs"
     MaxContentWidth="600">
     <dialogs:CloseableBaseDialog.Title>
         <l:Catalog Message="Hotkeys"/>

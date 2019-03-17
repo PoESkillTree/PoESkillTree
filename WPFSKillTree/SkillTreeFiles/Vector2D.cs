@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace POESKillTree.SkillTreeFiles
+namespace PoESkillTree.SkillTreeFiles
 {
     [Serializable]
     public struct Vector2D

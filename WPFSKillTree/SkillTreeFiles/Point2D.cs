@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace POESKillTree.SkillTreeFiles
+namespace PoESkillTree.SkillTreeFiles
 {
     [Serializable]
     public struct Point2D

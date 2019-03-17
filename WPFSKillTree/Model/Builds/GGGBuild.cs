@@ -4,11 +4,11 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using Newtonsoft.Json.Linq;
-using POESKillTree.SkillTreeFiles;
-using POESKillTree.Utils;
+using PoESkillTree.SkillTreeFiles;
+using PoESkillTree.Utils;
 using Newtonsoft.Json;
 
-namespace POESKillTree.Model.Builds
+namespace PoESkillTree.Model.Builds
 {
     class GGGBuild
     {

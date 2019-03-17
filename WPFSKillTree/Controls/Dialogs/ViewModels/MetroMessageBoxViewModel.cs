@@ -1,8 +1,8 @@
 using System.Windows;
 using MahApps.Metro.IconPacks;
-using POESKillTree.Common.ViewModels;
+using PoESkillTree.Common.ViewModels;
 
-namespace POESKillTree.Controls.Dialogs.ViewModels
+namespace PoESkillTree.Controls.Dialogs.ViewModels
 {
     public class MetroMessageBoxViewModel : CloseableViewModel<MessageBoxResult>
     {

@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace POESKillTree.Utils.Converter
+namespace PoESkillTree.Utils.Converter
 {
     [ValueConversion(typeof(bool), typeof(string))]
     public class BooleanToStringConverter : IValueConverter

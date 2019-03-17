@@ -6,12 +6,12 @@ using System.Windows.Data;
 using System.Windows.Input;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
-using POESKillTree.Common.ViewModels;
-using POESKillTree.Model.Items;
-using POESKillTree.Utils;
-using POESKillTree.Utils.Wpf;
+using PoESkillTree.Utils;
+using PoESkillTree.Common.ViewModels;
+using PoESkillTree.Model.Items;
+using PoESkillTree.Utils.Wpf;
 
-namespace POESKillTree.ViewModels.Equipment
+namespace PoESkillTree.ViewModels.Equipment
 {
     /// <summary>
     /// View model for a gem socketed in an item. An item will be created from this when the dialog is accepted.

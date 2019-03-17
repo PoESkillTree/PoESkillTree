@@ -1,6 +1,6 @@
 ﻿using PoESkillTree.Computation.Common;
 
-namespace POESKillTree.Computation.ViewModels
+namespace PoESkillTree.Computation.ViewModels
 {
     public class ModifierNodeViewModel
     {

@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using POESKillTree.Common.ViewModels;
-using POESKillTree.Controls.Dialogs.Views;
-using POESKillTree.Controls.Dialogs.ViewModels;
+using PoESkillTree.Common.ViewModels;
+using PoESkillTree.Controls.Dialogs.Views;
+using PoESkillTree.Controls.Dialogs.ViewModels;
 
-namespace POESKillTree.Controls.Dialogs
+namespace PoESkillTree.Controls.Dialogs
 {
     // Adjusted version of https://github.com/MahApps/MahApps.Metro/blob/1.3.0/MahApps.Metro/Controls/Dialogs/DialogCoordinator.cs 
     // (MIT licensed) that uses the methods of ExtendedDialogManager.

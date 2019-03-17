@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 
-namespace POESKillTree.TreeGenerator.Algorithm.Model
+namespace PoESkillTree.TreeGenerator.Algorithm.Model
 {
     /// <summary>
     /// Represents a unidirectional edge between two nodes represented by

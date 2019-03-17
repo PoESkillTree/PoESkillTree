@@ -1,10 +1,10 @@
 using System;
 using System.Text.RegularExpressions;
 using PoESkillTree.GameModel;
-using POESKillTree.Localization;
-using POESKillTree.SkillTreeFiles;
+using PoESkillTree.Localization;
+using PoESkillTree.SkillTreeFiles;
 
-namespace POESKillTree.Utils.UrlProcessing
+namespace PoESkillTree.Utils.UrlProcessing
 {
     /// <summary>
     /// Represents an object that extracts build information from urls.<para/>

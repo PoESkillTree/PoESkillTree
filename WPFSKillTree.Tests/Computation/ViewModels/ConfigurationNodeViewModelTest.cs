@@ -6,8 +6,8 @@ using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
-using POESKillTree.Computation.Model;
-using POESKillTree.Computation.ViewModels;
+using PoESkillTree.Computation.Model;
+using PoESkillTree.Computation.ViewModels;
 
 namespace PoESkillTree.Tests.Computation.ViewModels
 {

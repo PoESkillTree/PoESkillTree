@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using POESKillTree.SkillTreeFiles;
+using PoESkillTree.SkillTreeFiles;
 
-namespace POESKillTree.TreeGenerator.Settings
+namespace PoESkillTree.TreeGenerator.Settings
 {
     /// <summary>
     /// Data class for the settings shared by all tree generator solvers.

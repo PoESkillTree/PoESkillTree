@@ -6,8 +6,8 @@ using MoreLinq;
 using Newtonsoft.Json.Linq;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.Utils.Extensions;
-using POESKillTree.Utils.WikiApi;
-using static POESKillTree.Utils.WikiApi.CargoConstants;
+using PoESkillTree.Utils.WikiApi;
+using static PoESkillTree.Utils.WikiApi.CargoConstants;
 
 namespace UpdateDB.DataLoading
 {

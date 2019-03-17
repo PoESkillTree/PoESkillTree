@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace POESKillTree.SkillTreeFiles
+namespace PoESkillTree.SkillTreeFiles
 {
     public class SkillNodeGroup
     {

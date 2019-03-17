@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
 using PoESkillTree.GameModel.Items;
 
-namespace POESKillTree.Model.Items.Mods
+namespace PoESkillTree.Model.Items.Mods
 {
     /// <summary>
     /// Represents a single mod line on an item

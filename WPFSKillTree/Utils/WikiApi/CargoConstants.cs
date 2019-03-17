@@ -1,4 +1,4 @@
-﻿namespace POESKillTree.Utils.WikiApi
+﻿namespace PoESkillTree.Utils.WikiApi
 {
     /// <summary>
     /// Collection of names of Cargo tables and fields.

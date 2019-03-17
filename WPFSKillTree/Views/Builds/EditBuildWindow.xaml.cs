@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using POESKillTree.Localization;
+using PoESkillTree.Localization;
 
-namespace POESKillTree.Views.Builds
+namespace PoESkillTree.Views.Builds
 {
     public class LastUpdatedStringConverter : IValueConverter
     {

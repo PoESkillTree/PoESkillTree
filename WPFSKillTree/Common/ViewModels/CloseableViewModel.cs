@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace POESKillTree.Common.ViewModels
+namespace PoESkillTree.Common.ViewModels
 {
     /// <summary>
     /// Base class for ViewModels that can be closed.

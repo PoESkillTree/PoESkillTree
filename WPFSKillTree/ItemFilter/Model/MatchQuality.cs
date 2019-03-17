@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace POESKillTree.ItemFilter.Model
+namespace PoESkillTree.ItemFilter.Model
 {
     public class MatchQuality : MatchNumber
     {

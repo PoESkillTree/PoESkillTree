@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace POESKillTree.TreeGenerator.Genetic
+namespace PoESkillTree.TreeGenerator.Genetic
 {
     /// <summary>
     /// An array of bits that allows efficient storage. Implements Equals and GetHashCode.

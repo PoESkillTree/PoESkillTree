@@ -2,9 +2,9 @@
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Documents;
-using POESKillTree.Utils.Converter;
+using PoESkillTree.Utils.Converter;
 
-namespace POESKillTree.Utils.Wpf
+namespace PoESkillTree.Utils.Wpf
 {
     /// <summary>
     /// Contains attached properties usable on Xaml classes.

@@ -2,7 +2,7 @@
 using System.Windows.Data;
 using System.Windows.Input;
 
-namespace POESKillTree.Controls
+namespace PoESkillTree.Controls
 {
     public partial class ItemVisualizer
     {

@@ -1,10 +1,10 @@
 using System;
 using log4net;
 using PoESkillTree.GameModel;
-using POESKillTree.Localization;
-using POESKillTree.Model.Builds;
+using PoESkillTree.Localization;
+using PoESkillTree.Model.Builds;
 
-namespace POESKillTree.ViewModels.Builds
+namespace PoESkillTree.ViewModels.Builds
 {
     /// <summary>
     /// <see cref="IBuildViewModel"/> that wraps a <see cref="PoEBuild"/> and therefore represents a leaf build.
@@ -73,7 +73,7 @@ namespace POESKillTree.ViewModels.Builds
         {
             get
             {
-                var imgPath = "/POESKillTree;component/Images/" + ClassName;
+                var imgPath = "/PoESkillTree;component/Images/" + ClassName;
                 if (CurrentlyOpen)
                     imgPath += "_Highlighted";
                 return imgPath + ".jpg";

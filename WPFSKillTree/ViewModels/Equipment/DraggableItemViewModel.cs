@@ -2,11 +2,11 @@ using System;
 using System.Windows;
 using System.Windows.Input;
 using GongSolutions.Wpf.DragDrop;
-using POESKillTree.Common.ViewModels;
-using POESKillTree.Model.Items;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
+using PoESkillTree.Common.ViewModels;
+using PoESkillTree.Model.Items;
 
-namespace POESKillTree.ViewModels.Equipment
+namespace PoESkillTree.ViewModels.Equipment
 {
     /// <summary>
     /// View model for Items that can be dragged.

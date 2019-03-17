@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using MB.Algodat;
 
-namespace POESKillTree.Model.Items.Mods
+namespace PoESkillTree.Model.Items.Mods
 {
     /// <summary>
     /// Collection of <see cref="IMod"/>s with each mod representing a tier of this affix.

@@ -8,7 +8,7 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
 using PoESkillTree.Utils;
 
-namespace POESKillTree.Computation.Model
+namespace PoESkillTree.Computation.Model
 {
     public class ExplicitlyRegisteredStatsObserver
     {

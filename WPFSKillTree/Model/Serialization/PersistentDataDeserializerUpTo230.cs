@@ -8,12 +8,10 @@ using log4net;
 using MoreLinq;
 using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
-using POESKillTree.Controls;
-using POESKillTree.Model.Builds;
-using POESKillTree.Utils;
-using SerializationUtils = POESKillTree.Utils.SerializationUtils;
+using PoESkillTree.Controls;
+using PoESkillTree.Model.Builds;
 
-namespace POESKillTree.Model.Serialization
+namespace PoESkillTree.Model.Serialization
 {
     /// <summary>
     /// Deserializes PersistentData using the old build saving structure and created without the versioning refactoring.

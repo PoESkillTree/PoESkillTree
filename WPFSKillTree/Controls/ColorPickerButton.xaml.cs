@@ -3,10 +3,10 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using POESKillTree.ItemFilter.Views;
-using ColorType = POESKillTree.ItemFilter.Views.ColorButtonDialog.ColorType;
+using PoESkillTree.ItemFilter.Views;
+using ColorType = PoESkillTree.ItemFilter.Views.ColorButtonDialog.ColorType;
 
-namespace POESKillTree.Controls
+namespace PoESkillTree.Controls
 {
     /// <summary>
     /// Interaction logic for ColorPickerButton.xaml

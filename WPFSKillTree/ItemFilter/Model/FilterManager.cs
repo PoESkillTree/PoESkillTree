@@ -5,10 +5,10 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
-using POESKillTree.Localization;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
+using PoESkillTree.Localization;
 
-namespace POESKillTree.ItemFilter.Model
+namespace PoESkillTree.ItemFilter.Model
 {
     public class FilterManager
     {

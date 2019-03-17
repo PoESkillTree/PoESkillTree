@@ -1,6 +1,6 @@
 using System;
 
-namespace POESKillTree.Utils.UrlProcessing
+namespace PoESkillTree.Utils.UrlProcessing
 {
     /// <summary>
     /// Creates instances of classes derived from the <see cref="BuildUrlDeserializer"/> class.

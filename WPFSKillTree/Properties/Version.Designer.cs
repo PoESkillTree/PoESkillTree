@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace POESKillTree.Properties {
+namespace PoESkillTree.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace POESKillTree.Properties {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("POESKillTree.Properties.Version", typeof(Version).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PoESkillTree.Properties.Version", typeof(Version).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

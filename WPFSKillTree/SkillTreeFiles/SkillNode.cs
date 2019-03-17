@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using PoESkillTree.GameModel.PassiveTree;
 
-namespace POESKillTree.SkillTreeFiles
+namespace PoESkillTree.SkillTreeFiles
 {
     public class SkillNode
     {

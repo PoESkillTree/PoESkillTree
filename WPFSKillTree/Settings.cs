@@ -1,7 +1,7 @@
 ﻿using System.Configuration;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
 
-namespace POESKillTree.Properties {
+namespace PoESkillTree.Properties {
 
     // In case this gets used at some point, there are no changes needed for it to
     // use the correct config files ("user.config" in the "Settings" folder).

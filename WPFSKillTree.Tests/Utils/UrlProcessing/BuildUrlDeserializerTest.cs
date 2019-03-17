@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
 using PoESkillTree.GameModel;
-using POESKillTree.Utils.UrlProcessing;
+using PoESkillTree.Utils.UrlProcessing;
 
 namespace PoESkillTree.Tests.Utils.UrlProcessing
 {

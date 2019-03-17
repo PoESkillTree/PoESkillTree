@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.PassiveTree;
-using POESKillTree.SkillTreeFiles;
+using PoESkillTree.SkillTreeFiles;
 
-namespace POESKillTree.Model
+namespace PoESkillTree.Model
 {
     public class GameDataWithOldTreeModel
     {

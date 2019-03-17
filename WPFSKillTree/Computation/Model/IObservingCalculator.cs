@@ -1,7 +1,7 @@
 ﻿using System;
 using PoESkillTree.Computation.Core;
 
-namespace POESKillTree.Computation.Model
+namespace PoESkillTree.Computation.Model
 {
     public interface IObservingCalculator
     {

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace POESKillTree.Model.Items.Mods
+namespace PoESkillTree.Model.Items.Mods
 {
     // The class used to deserialize RePoE's crafting_bench_options
     public class JsonCraftingBenchOption

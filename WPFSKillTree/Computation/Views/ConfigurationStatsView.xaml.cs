@@ -1,4 +1,4 @@
-﻿namespace POESKillTree.Computation.Views
+﻿namespace PoESkillTree.Computation.Views
 {
     /// <summary>
     /// Interaction logic for ConfigurationStatsView.xaml

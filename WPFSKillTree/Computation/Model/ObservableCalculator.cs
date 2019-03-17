@@ -9,9 +9,9 @@ using log4net;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
 using PoESkillTree.Utils;
-using POESKillTree.Utils.Extensions;
+using PoESkillTree.Utils.Extensions;
 
-namespace POESKillTree.Computation.Model
+namespace PoESkillTree.Computation.Model
 {
     public class ObservableCalculator : IObservingCalculator
     {

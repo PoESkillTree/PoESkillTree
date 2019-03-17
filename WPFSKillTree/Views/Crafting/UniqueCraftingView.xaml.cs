@@ -1,4 +1,4 @@
-﻿namespace POESKillTree.Views.Crafting
+﻿namespace PoESkillTree.Views.Crafting
 {
     /// <summary>
     /// Interaction logic for UniqueCraftingView.xaml

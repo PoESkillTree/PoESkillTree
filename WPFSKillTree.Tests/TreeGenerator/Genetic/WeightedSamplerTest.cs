@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
-using POESKillTree.TreeGenerator.Genetic;
+using PoESkillTree.TreeGenerator.Genetic;
 
 namespace PoESkillTree.Tests.TreeGenerator.Genetic
 {

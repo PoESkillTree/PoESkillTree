@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using POESKillTree.Utils.UrlProcessing;
+using PoESkillTree.Utils.UrlProcessing;
 
 namespace PoESkillTree.Tests.Utils.UrlProcessing
 {

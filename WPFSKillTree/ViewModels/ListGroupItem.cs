@@ -1,4 +1,4 @@
-﻿namespace POESKillTree.ViewModels
+﻿namespace PoESkillTree.ViewModels
 {
     internal class ListGroupItem
     {

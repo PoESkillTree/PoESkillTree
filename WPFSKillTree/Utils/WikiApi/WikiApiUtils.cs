@@ -2,9 +2,9 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using POESKillTree.Utils.Extensions;
+using PoESkillTree.Utils.Extensions;
 
-namespace POESKillTree.Utils.WikiApi
+namespace PoESkillTree.Utils.WikiApi
 {
     public static class WikiApiUtils
     {

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using POESKillTree.TreeGenerator.Algorithm.Model;
+using PoESkillTree.TreeGenerator.Algorithm.Model;
 
-namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
+namespace PoESkillTree.TreeGenerator.Algorithm.SteinerReductions
 {
     /// <summary>
     /// A reduction tests that removes edges with a weight higher than the bottleneck Steiner distance

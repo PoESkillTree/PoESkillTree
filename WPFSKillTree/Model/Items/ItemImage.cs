@@ -2,9 +2,9 @@
 using System.Windows.Media;
 using log4net;
 using PoESkillTree.GameModel.Items;
-using POESKillTree.Utils;
+using PoESkillTree.Utils;
 
-namespace POESKillTree.Model.Items
+namespace PoESkillTree.Model.Items
 {
     /// <summary>
     /// Represents an asynchronously loaded image for an item group or item base or from an url stored in an item's

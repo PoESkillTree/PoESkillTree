@@ -2,9 +2,9 @@ using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows.Data;
-using POESKillTree.Utils.Extensions;
+using PoESkillTree.Utils.Extensions;
 
-namespace POESKillTree.Utils.Converter
+namespace PoESkillTree.Utils.Converter
 {
     /// <summary>
     /// Converts Enum values to their descriptions (Description attribute).

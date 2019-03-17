@@ -1,4 +1,4 @@
-﻿namespace POESKillTree.Model.Items.Enums
+﻿namespace PoESkillTree.Model.Items.Enums
 {
     /// <summary>
     /// The domain of a mod as it appears in the GGPK.
