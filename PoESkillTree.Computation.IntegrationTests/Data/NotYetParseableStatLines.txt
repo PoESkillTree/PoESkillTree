@@ -2,6 +2,7 @@
 // Requires not yet implemented stats
 // - Stat that modifies Mana.Cost(Total). Could be done via behavior.
 Channelling Skills have -3 to Total Mana Cost
+-7 to Total Mana Cost of Skills
 // - Triggered
 35% less Damage if Triggered
 // - Lucky/Unlucky for chances
@@ -14,17 +15,154 @@ Nearby Hindered Enemies deal 15% reduced Damage over Time
 Every second, inflict Withered on nearby Enemies for 15 seconds
 // - Maddening Presence
 Gain Maddening Presence for 10 seconds when you Kill a Rare or Unique Enemy
+// - Item quality as a property stat
++8% to Quality
 // Socketed gem modifiers
 +2 to Level of Socketed Gems
++1 to Level of Socketed Active Skill Gems
++1 to Level of Socketed AoE Gems
++2 to Level of Socketed Aura Gems
++1 to Level of Socketed Bow Gems
++1 to Level of Socketed Chaos Gems
++1 to Level of Socketed Cold Gems
++2 to Level of Socketed Curse Gems
++1 to Level of Socketed Fire Gems
++1 to Level of Socketed Gems
++1 to Level of Socketed Lightning Gems
++1 to Level of Socketed Melee Gems
++1 to Level of Socketed Minion Gems
++1 to Level of Socketed Projectile Gems
++1 to Level of Socketed Spell Gems
++2 to Level of Socketed Trap Gems
+Socketed Attacks have +1% to Critical Strike Chance
+Socketed Attacks have +30% to Critical Strike Multiplier
+Socketed Gems Chain 1 additional times
+Socketed Gems deal 175 to 225 additional Fire Damage
+Socketed Gems deal 30% more Damage over Time
+Socketed Gems deal 30% more Elemental Damage
+Socketed Gems gain 50% of Physical Damage as extra Lightning Damage
+Socketed Gems have 50% chance to Ignite
+Socketed Gems have 20% more Attack and Cast Speed
+Socketed Gems have 10% reduced Mana Reservation
+Socketed Gems have +3.5% Critical Strike Chance
+Socketed Movement Skills have no Mana Cost
+Socketed Non-Curse Aura Gems have 20% increased Aura Effect
+Socketed Spells have +1% to Critical Strike Chance
+Socketed Spells have +30% to Critical Strike Multiplier
++5% to Quality of Socketed Gems
++4% to Quality of Socketed Support Gems
 // Item-inherent skills
 Curse Enemies with Level 10 Flammability on Hit
-Triggers Level 20 Cold Aegis when Equipped
+Curse Enemies with Level 8 Assassin's Mark on Hit
+Curse Enemies with Level 5 Conductivity on Hit
+Curse Enemies with Level 5 Despair on Hit
+Curse Enemies with Level 5 Flammability on Hit
+Curse Enemies with Level 5 Frostbite on Hit
+Curse Enemies with Level 8 Poacher's Mark on Hit
+Curse Enemies with Level 5 Vulnerability on Hit
+Curse Enemies with Level 8 Warlord's Mark on Hit
 25% chance to Curse non-Cursed Enemies with Enfeeble on Hit
-Triggers Level 7 Abberath's Fury when Equipped
+Grants Level 22 Abyssal Cry Skill
+Grants Level 22 Anger Skill
+Grants Level 20 Aspect of the Avian Skill
+Grants Level 20 Aspect of the Cat Skill
+Grants Level 20 Aspect of the Crab Skill
+Grants Level 20 Aspect of the Spider Skill
+Grants Level 22 Clarity Skill
+Grants Level 20 Decoy Totem Skill
+Grants Level 22 Determination Skill
+Grants Level 22 Discipline Skill
+Grants Level 22 Enduring Cry Skill
+Grants Level 15 Envy Skill
+Grants Level 22 Grace Skill
+Grants Level 22 Haste Skill
+Grants Level 22 Hatred Skill
+Grants Level 22 Herald of Ash Skill
+Grants Level 22 Herald of Ice Skill
+Grants Level 22 Herald of Thunder Skill
+Grants Level 22 Rallying Cry Skill
+Grants Level 22 Vitality Skill
+Grants Level 22 Wrath Skill
 Socketed Gems are Supported by Level 10 Added Fire Damage
 Socketed Gems are supported by Level 2 Chance to Flee
+Socketed Gems are Supported by Level 16 Added Fire Damage
+Socketed Gems are supported by Level 16 Additional Accuracy
+Socketed Gems are Supported by Level 16 Advanced Traps
+Socketed Gems are Supported by Level 16 Ancestral Call
+Socketed Gems are Supported by Level 16 Arcane Surge
+Socketed Gems are supported by Level 16 Blind
+Socketed Gems are Supported by Level 1 Blood Magic
+Socketed Gems are Supported by Level 16 Brutality
+Socketed Gems are Supported by Level 16 Burning Damage
+Socketed Gems are supported by Level 18 Cast On Critical Strike
+Socketed Gems are Supported by Level 18 Cast On Melee Kill
+Socketed Gems are Supported by Level 5 Cast when Damage Taken
+Socketed Gems are Supported by Level 18 Cast While Channelling
+Socketed Gems are Supported by Level 16 Chance To Bleed
+Socketed Gems are Supported by Level 16 Cold Penetration
+Socketed Gems are Supported by Level 16 Concentrated Effect
+Socketed Gems are Supported by Level 16 Controlled Destruction
+Socketed Gems are Supported by Level 16 Efficacy
+Socketed Gems are supported by Level 18 Elemental Damage with Attacks
+Socketed Gems are Supported by Level 16 Elemental Focus
+Socketed Gems are Supported by Level 18 Elemental Proliferation
+Socketed Gems are Supported by Level 16 Endurance Charge on Melee Stun
+Socketed Gems are Supported by Level 16 Faster Attacks
+Socketed Gems are Supported by Level 18 Faster Casting
+Socketed Gems are supported by Level 16 Faster Projectiles
+Socketed Gems are Supported by Level 16 Fire Penetration
+Socketed Gems are Supported by Level 16 Fortify
+Socketed Gems are Supported by Level 16 Hypothermia
+Socketed Gems are Supported by Level 16 Immolate
+Socketed Gems are Supported by Level 16 Increased Area of Effect
+Socketed Gems are supported by Level 18 Increased Critical Damage
+Socketed Gems are Supported by Level 18 Increased Critical Strikes
+Socketed Gems are Supported by Level 15 Increased Duration
+Socketed Gems are Supported by Level 16 Innervate
+Socketed Gems are Supported by Level 16 Iron Grip
+Socketed Gems are Supported by Level 10 Item Rarity
+Socketed Gems are Supported by Level 20 Less Duration
+Socketed Gems are Supported by Level 16 Lesser Multiple Projectiles
+Socketed Gems are Supported by Level 18 Lesser Poison
+Socketed Gems are supported by Level 15 Life Leech
+Socketed Gems are Supported by Level 16 Lightning Penetration
+Socketed Gems are Supported by Level 18 Maim
+Socketed Gems are Supported by Level 15 Mana Leech
+Socketed Gems are Supported by Level 16 Melee Physical Damage
+Socketed Gems are supported by Level 16 Melee Splash
+Socketed Gems are Supported by Level 16 Minion Damage
+Socketed Gems are Supported by Level 16 Minion Life
+Socketed Gems are supported by Level 18 Multistrike
+Socketed Gems are Supported by Level 18 Onslaught
+Socketed Gems are Supported by Level 18 Poison
+Socketed Gems are Supported by Level 16 Power Charge On Critical Strike
+Socketed Gems are Supported by Level 18 Ranged Attack Totem
+Socketed Gems are Supported by Level 16 Reduced Mana
+Socketed Gems are Supported by Level 18 Remote Mine
+Socketed Gems are Supported by Level 16 Ruthless
+Socketed Gems are Supported by Level 16 Slower Projectiles
+Socketed Gems are Supported by Level 16 Spell Cascade
+Socketed Gems are Supported by Level 18 Spell Echo
+Socketed Gems are Supported by Level 18 Spell Totem
+Socketed Gems are Supported by Level 18 Trap
+Socketed Gems are Supported by Level 16 Trap And Mine Damage
+Socketed Gems are Supported by Level 18 Unbound Ailments
+Socketed Gems are Supported by Level 16 Vicious Projectiles
+Socketed Gems are Supported by Level 16 Volley
+Trigger a Socketed Spell when you Use a Skill
+Trigger Socketed Spells when you Focus
+Triggers Level 20 Spectral Spirits when Equipped
+Triggers Level 20 Cold Aegis when Equipped
+Triggers Level 7 Abberath's Fury when Equipped
+10% chance to Trigger Level 1 Blood Rage when you Kill an Enemy
+10% Chance to Trigger Level 18 Summon Spectral Wolf on Kill
+10% chance to Cast Level 20 Fire Burst on Hit
+Drops Burning Ground while moving, dealing 2500 Fire Damage per second
+Enemies killed explode dealing 5% of their Life as Fire Damage
+Your Hits inflict Decay, dealing 500 Chaos Damage per second for 8 seconds
 // Minions
 10% increased area of effect for each Summoned Sentinel of Purity
+Minions Regenerate 3 Life per second
 // - modifies minion skill
 Raised Zombies' Slam Attack has 100% increased Area of Effect
 Raised Zombies' Slam Attack has 100% increased Cooldown Recovery Speed

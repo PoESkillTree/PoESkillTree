@@ -1,25 +1,44 @@
 ﻿// not handled (no useful usage)
-// Weapons: ============================================================================================================
-// Armour: =============================================================================================================
+// Magic/Rare items: ===================================================================================================
+-30 Physical Damage taken from Attacks
+Minions deal 35% increased Damage against Abyssal Monsters
+Reflects 35 to 75 Physical Damage to Attackers on Block
+When you Kill a Rare Monster, 17% chance to gain one of its Modifiers for 10 seconds
++1% Chance to Block Projectile Attack Damage
+10% increased Rarity of Items found from Slain Unique Enemies
+12% increased Movement speed while on Burning, Chilled or Shocked ground
+// Master crafted: =====================================================================================================
+15% of Damage Taken from Hits is Leeched as Life during Flask Effect
+7% increased Brand Attachment range
+Area is inhabited by an additional Invasion Boss
+Can have multiple Crafted Modifiers
+Cannot roll Attack Modifiers
+Cannot roll Caster Modifiers
+Cannot roll Modifiers with Required Level above 28
+Item drops on Death if Equipped by an Animated Guardian
+Prefixes Cannot Be Changed
+Suffixes Cannot Be Changed
+// Unique/Implicit Weapons: ============================================================================================
+// Unique/Implicit Armour: =============================================================================================
 Gore Footprints
 Enemies Cannot Leech Mana From you
 Share Endurance Charges with nearby party members
 When you Kill an Ignited Enemy, inflict an equivalent Ignite on each nearby Enemy
 Burning Hoofprints
 -6 Physical Damage taken from Attacks
-// Accessories: ========================================================================================================
+// Unique/Implicit Accessories: ========================================================================================
 Has 1 Socket
 Has 1 Abyssal Socket
 35% increased Fish Bite Sensitivity
 Properties are doubled while in a Breach
 Reflects 240 to 300 Physical Damage to Attackers on Block
 10% chance to Cause Monsters to Flee
-// Flasks: =============================================================================================================
+// Unique/Implicit Flasks: =============================================================================================
 20% of Melee Physical Damage taken reflected to Attacker
 20% chance to Avoid Cold Damage when Hit
 Creates a Smoke Cloud on Use
 Creates Chilled Ground on Use
-// Jewels: =============================================================================================================
+// Unique/Implicit Jewels: =============================================================================================
 Your Golems are aggressive
 #% chance to gain an additional Vaal Soul per Enemy Shattered
 #% chance to gain an additional Vaal Soul on Kill
@@ -37,6 +56,14 @@ Magma Orb has 10% increased Area of Effect per Chain
 each Spectral Throw Projectile gains 5% increased Damage each time it Hits
 Barrage fires an additional 2 projectiles simultaneously on the first and final attacks
 Burning Arrow has a 10% chance to spread Burning Ground if it Ignites an Enemy
+// Fishing Rods: =======================================================================================================
+17% increased Quantity of Fish Caught
+22% reduced Fishing Pool Consumption
+30% increased Fishing Line Strength
+32% increased Rarity of Fish Caught
+40% increased Fishing Range
+Ezomyte Shell Hook
+Siren Worm Bait
 // skills: =============================================================================================================
 // (either irrelevant or already handled by SkillDefinitionExtensions and/or AdditionalSkillStats)
 damage cannot be reflected

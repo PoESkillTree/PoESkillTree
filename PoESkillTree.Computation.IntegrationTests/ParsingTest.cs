@@ -50,6 +50,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         {
             var unparsedGivenStats = new GivenStatsCollection(null, null, null).SelectMany(s => s.GivenStatLines);
             return ReadDataLines("SkillTreeStatLines")
+                .Concat(ReadDataLines("ItemAffixes"))
                 .Concat(ReadDataLines("ParseableStatLines"))
                 .Concat(unparsedGivenStats)
                 .Where(s => !NotParseableStatLines.Value.Contains(s.ToLowerInvariant()));
