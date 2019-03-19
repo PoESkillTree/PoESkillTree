@@ -11,6 +11,8 @@ Chance to Block Spell Damage is Unlucky
 // - Hinder
 Hindered Enemies take 20% increased Chaos Damage
 Nearby Hindered Enemies deal 15% reduced Damage over Time
+4% chance to Hinder Enemies on Hit with Spells, with 30% reduced Movement Speed
+Minions have 4% chance to Hinder Enemies on Hit with Spells, with 30% reduced Movement Speed
 // - Withered
 Every second, inflict Withered on nearby Enemies for 15 seconds
 // - Maddening Presence

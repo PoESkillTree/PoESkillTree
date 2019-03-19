@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
@@ -23,11 +24,9 @@ namespace PoESkillTree.Computation.Builders.Actions
             _statFactory = statFactory;
         }
 
-        public IActionBuilder Kill => Create("Kill");
-
+        public IActionBuilder Kill => Create();
         public IBlockActionBuilder Block => new BlockActionBuilder(_statFactory, _entity);
-
-        public IActionBuilder Hit => Create("Hit");
+        public IActionBuilder Hit => Create();
 
         public IActionBuilder HitWith(IDamageTypeBuilder damageType)
         {
@@ -45,15 +44,14 @@ namespace PoESkillTree.Computation.Builders.Actions
             return damageTypes.Single() + "Hit";
         }
 
-        public IActionBuilder SavageHit => Create("SavageHit");
-
+        public IActionBuilder SavageHit => Create();
         public ICriticalStrikeActionBuilder CriticalStrike => new CriticalStrikeActionBuilder(_statFactory, _entity);
-
-        public IActionBuilder NonCriticalStrike => Create("NonCriticalStrike");
-
-        public IActionBuilder Shatter => Create("Shatter");
-
-        public IActionBuilder ConsumeCorpse => Create("ConsumeCorpse");
+        public IActionBuilder NonCriticalStrike => Create();
+        public IActionBuilder Shatter => Create();
+        public IActionBuilder ConsumeCorpse => Create();
+        public IActionBuilder TakeDamage => Create();
+        public IActionBuilder Die => Create();
+        public IActionBuilder Focus => Create();
 
         public IActionBuilder SpendMana(IValueBuilder amount)
         {
@@ -75,7 +73,7 @@ namespace PoESkillTree.Computation.Builders.Actions
 
         public IActionBuilder Unique(string description) => Create(description);
 
-        private IActionBuilder Create(string identity) =>
+        private IActionBuilder Create([CallerMemberName] string identity = null) =>
             new ActionBuilder(_statFactory, CoreBuilder.Create(identity), _entity);
 
         private class ThrowingContext : IValueCalculationContext

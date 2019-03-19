@@ -78,6 +78,7 @@ namespace PoESkillTree.Computation.Data
                 // buffs
                 { "per buff on you", Buffs(targets: Self).Count() },
                 { "per curse on you", Buffs(targets: Self).With(Keyword.Curse).Count() },
+                { "per curse on enemy", Buffs(targets: Enemy).With(Keyword.Curse).Count() },
                 { "for each curse on that enemy,", Buffs(targets: Enemy).With(Keyword.Curse).Count() },
                 { "for each impale on enemy", Buff.Impale.StackCount.For(Enemy).Value },
                 // ailments
@@ -115,6 +116,10 @@ namespace PoESkillTree.Computation.Data
                     "for each remaining chain",
                     AtLeastZero(
                         Projectile.ChainCount.Value - Stat.UniqueAmount("# of times the Active Skill has Chained"))
+                },
+                {
+                    "for each enemy pierced",
+                    Stat.UniqueAmount("# of times the Active Skill has Pierced")
                 },
                 {
                     "for each of your mines detonated recently, up to #%",

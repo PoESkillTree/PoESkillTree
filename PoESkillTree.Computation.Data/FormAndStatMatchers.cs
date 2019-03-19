@@ -173,14 +173,15 @@ namespace PoESkillTree.Computation.Data
                     TotalOverride, 0, CriticalStrike.Multiplier
                 },
                 { "never deal critical strikes", TotalOverride, 0, CriticalStrike.Chance },
+                { "your critical strike chance is lucky", TotalOverride, 1, Flag.CriticalStrikeChanceIsLucky },
                 // - speed
                 { "actions are #% slower", PercentLess, Value, Stat.ActionSpeed },
                 { @"\+# seconds to attack time", BaseAdd, Value, Stat.BaseCastTime.With(DamageSource.Attack) },
                 // - projectiles
-                { "fires # additional projectiles", BaseAdd, Value, Projectile.Count },
-                { "fires # additional arrows", BaseAdd, Value, Projectile.Count, With(Keyword.Attack) },
-                { "fires an additional projectile", BaseAdd, 1, Projectile.Count },
-                { "fires an additional arrow", BaseAdd, 1, Projectile.Count, With(Keyword.Attack) },
+                { "fires? # additional projectiles", BaseAdd, Value, Projectile.Count },
+                { "fires? # additional arrows", BaseAdd, Value, Projectile.Count, With(Keyword.Attack) },
+                { "fires? an additional projectile", BaseAdd, 1, Projectile.Count },
+                { "fires? an additional arrow", BaseAdd, 1, Projectile.Count, With(Keyword.Attack) },
                 { "skills fire an additional projectile", BaseAdd, 1, Projectile.Count },
                 { "skills fire # additional projectiles", BaseAdd, Value, Projectile.Count },
                 { "supported skills fire # additional projectiles", BaseAdd, Value, Projectile.Count },
@@ -207,7 +208,7 @@ namespace PoESkillTree.Computation.Data
                 { @"chains \+# times", BaseAdd, Value, Projectile.ChainCount },
                 { @"(supported )?skills chain \+# times", BaseAdd, Value, Projectile.ChainCount },
                 // - other
-                { "your hits can't be evaded", TotalOverride, 100, Stat.ChanceToHit },
+                { "(your )?hits can't be evaded", TotalOverride, 100, Stat.ChanceToHit },
                 { "can't be evaded", TotalOverride, 100, Stat.ChanceToHit },
                 // defense
                 // - life, mana, defences
@@ -291,7 +292,7 @@ namespace PoESkillTree.Computation.Data
                     BaseAdd, Value.PercentOf(Reference.AsStat), Reference.AsPoolStat.Gain
                 },
                 {
-                    "recover #% of( their)? ({PoolStatMatchers})",
+                    "recover #% of( their| your)? ({PoolStatMatchers})",
                     BaseAdd, Value.PercentOf(Reference.AsStat), Reference.AsPoolStat.Gain
                 },
                 {
@@ -322,6 +323,11 @@ namespace PoESkillTree.Computation.Data
                 {
                     "(?<!chance to |when you )gain a power or frenzy charge",
                     BaseAdd, 50, Charge.Power.ChanceToGain, Charge.Frenzy.ChanceToGain
+                },
+                {
+                    "(?<!chance to |when you )gain an endurance, frenzy or power charge",
+                    BaseAdd, 100/3.0,
+                    Charge.Endurance.ChanceToGain, Charge.Frenzy.ChanceToGain, Charge.Power.ChanceToGain
                 },
                 // skills
                 { "base duration is # seconds", BaseSet, Value, Stat.Duration },
@@ -394,6 +400,10 @@ namespace PoESkillTree.Computation.Data
                 { "bleed is applied", TotalOverride, 100, Ailment.Bleed.Chance },
                 { "always poison", TotalOverride, 100, Ailment.Poison.Chance },
                 { "always ({AilmentMatchers}) enemies", TotalOverride, 100, Reference.AsAilment.Chance },
+                {
+                    "({AilmentMatchers}) nearby enemies",
+                    TotalOverride, 100, Reference.AsAilment.Chance, Enemy.IsNearby
+                },
                 { "cannot cause bleeding", TotalOverride, 0, Ailment.Bleed.Chance },
                 { "cannot ignite", TotalOverride, 0, Ailment.Ignite.Chance },
                 { "cannot (apply|inflict) shock", TotalOverride, 0, Ailment.Shock.Chance },
@@ -419,6 +429,7 @@ namespace PoESkillTree.Computation.Data
                     "(immune to|cannot be affected by|immunity to) elemental ailments",
                     TotalOverride, 100, Ailment.Elemental.Select(a => a.Avoidance)
                 },
+                { "you are immune to ailments", TotalOverride, 100, AllAilments.Select(a => a.Avoidance) },
                 {
                     "poison you inflict with critical strikes deals #% more damage",
                     PercentMore, Value, CriticalStrike.Multiplier.With(Ailment.Poison)
@@ -432,6 +443,14 @@ namespace PoESkillTree.Computation.Data
                 // stun
                 { "(you )?cannot be stunned", TotalOverride, 100, Effect.Stun.Avoidance },
                 { "additional #% chance to be stunned", BaseAdd, Value, Effect.Stun.Chance.For(Entity.OpponentOfSelf) },
+                // knockback
+                { "knocks back enemies", TotalOverride, 100, Effect.Knockback.Chance },
+                { "knocks enemies back", TotalOverride, 100, Effect.Knockback.Chance },
+                { "knockback(?! distance)", TotalOverride, 100, Effect.Knockback.Chance },
+                {
+                    "adds knockback to melee attacks",
+                    TotalOverride, 100, Effect.Knockback.Chance, Condition.WithPart(Keyword.Melee)
+                },
                 // flasks
                 { "(?<!chance to |when you )gain a flask charge", BaseAdd, 100, Flask.ChanceToGainCharge },
                 { "recharges # charges?", BaseAdd, Value * 100, Flask.ChanceToGainCharge },
@@ -440,13 +459,6 @@ namespace PoESkillTree.Computation.Data
                 // item quantity/quality
                 // range and area of effect
                 // other
-                { "knocks back enemies", TotalOverride, 100, Effect.Knockback.Chance },
-                { "knocks enemies back", TotalOverride, 100, Effect.Knockback.Chance },
-                { "knockback(?! distance)", TotalOverride, 100, Effect.Knockback.Chance },
-                {
-                    "adds knockback to melee attacks",
-                    TotalOverride, 100, Effect.Knockback.Chance, Condition.WithPart(Keyword.Melee)
-                },
             };
     }
 }

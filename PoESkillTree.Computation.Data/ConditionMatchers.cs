@@ -48,6 +48,7 @@ namespace PoESkillTree.Computation.Data
                     And(Enemy.IsUnique, Reference.AsAction.InPastXSeconds(Value))
                 },
                 { "when you ({ActionMatchers}) an enemy, for # seconds", Reference.AsAction.InPastXSeconds(Value) },
+                { "for # seconds when ({ActionMatchers})", Reference.AsAction.By(Enemy).InPastXSeconds(Value) },
                 // - kill
                 {
                     "if you've killed a maimed enemy recently",
@@ -70,6 +71,7 @@ namespace PoESkillTree.Computation.Data
                     Or(Kill.Recently, Kill.By(Entity.Minion).Recently)
                 },
                 // - hit
+                { "if you('ve| have) hit them recently", Hit.Recently },
                 { "if you('ve| have) been hit recently", Hit.By(Enemy).Recently },
                 { "if you haven't been hit recently", Not(Hit.By(Enemy).Recently) },
                 { "if you were damaged by a hit recently", Hit.By(Enemy).Recently },
@@ -91,11 +93,15 @@ namespace PoESkillTree.Computation.Data
                     Action.SpendMana(Values[1]).InPastXSeconds(Values[0])
                 },
                 { "if you have consumed a corpse recently", Action.ConsumeCorpse.Recently },
+                { "if you haven't taken damage recently", Not(Action.TakeDamage.Recently) },
+                { "if a minion has been killed recently", Action.Die.By(Entity.Minion).Recently },
+                { "while focussed", Action.Focus.Recently },
+                { "for # seconds when you focus", Action.Focus.InPastXSeconds(Value) },
                 // damage
                 { "attacks have", Condition.With(DamageSource.Attack) },
                 { "with attacks", Condition.With(DamageSource.Attack) },
                 { "for spells", Condition.With(DamageSource.Spell) },
-                { "your spells have", Condition.With(DamageSource.Spell) },
+                { "(your )?spells have", Condition.With(DamageSource.Spell) },
                 // - by item tag
                 { "with weapons", AttackWith(Tags.Weapon) },
                 { "(?<!this )weapon", AttackWith(Tags.Weapon) },
@@ -104,17 +110,28 @@ namespace PoESkillTree.Computation.Data
                 { "with arrow hits", AttackWith(Tags.Bow) },
                 { "bow", AttackWith(Tags.Bow) },
                 { "with swords", AttackWith(Tags.Sword) },
+                { "to sword attacks", AttackWith(Tags.Sword) },
                 { "with claws", AttackWith(Tags.Claw) },
                 { "claw", AttackWith(Tags.Claw) },
+                { "to claw attacks", AttackWith(Tags.Claw) },
                 { "with daggers", AttackWith(Tags.Dagger) },
+                { "to dagger attacks", AttackWith(Tags.Dagger) },
                 { "with wands", AttackWith(Tags.Wand) },
                 { "wand", AttackWith(Tags.Wand) },
+                { "to wand attacks", AttackWith(Tags.Wand) },
                 { "with axes", AttackWith(Tags.Axe) },
+                { "to axe attacks", AttackWith(Tags.Axe) },
                 { "with staves", AttackWith(Tags.Staff) },
                 { "with a staff", AttackWith(Tags.Staff) },
+                { "to staff attacks", AttackWith(Tags.Staff) },
                 { "with ranged weapons", AttackWith(Tags.Ranged) },
                 {
                     "with maces",
+                    (Or(MainHandAttackWith(Tags.Mace), MainHandAttackWith(Tags.Sceptre)),
+                        Or(OffHandAttackWith(Tags.Mace), OffHandAttackWith(Tags.Sceptre)))
+                },
+                {
+                    "to mace attacks",
                     (Or(MainHandAttackWith(Tags.Mace), MainHandAttackWith(Tags.Sceptre)),
                         Or(OffHandAttackWith(Tags.Mace), OffHandAttackWith(Tags.Sceptre)))
                 },
@@ -223,6 +240,10 @@ namespace PoESkillTree.Computation.Data
                 { "while( you are)? ({AilmentMatchers})", Reference.AsAilment.IsOn(Self) },
                 { "(against|from) ({AilmentMatchers}) enemies", Reference.AsAilment.IsOn(Enemy) },
                 {
+                    "(against|from) ({AilmentMatchers}) or ({AilmentMatchers}) enemies",
+                    Or(References[0].AsAilment.IsOn(Enemy), References[1].AsAilment.IsOn(Enemy))
+                },
+                {
                     "against frozen, shocked or ignited enemies",
                     Or(Ailment.Freeze.IsOn(Enemy), Ailment.Shock.IsOn(Enemy), Ailment.Ignite.IsOn(Enemy))
                 },
@@ -241,11 +262,16 @@ namespace PoESkillTree.Computation.Data
                 // skills
                 // - by keyword
                 { "vaal( skill)?", With(Keyword.Vaal) },
+                { "non-vaal skills deal", Not(With(Keyword.Vaal)) },
                 { "with bow skills", And(MainHand.Has(Tags.Bow), With(Keyword.Bow)) },
                 { "chaos skills have", With(Chaos) },
                 { "spell skills have", With(Keyword.Spell) },
                 { "(with|of|for) ({KeywordMatchers}) skills", With(Reference.AsKeyword) },
                 { "({KeywordMatchers}) skills (have|deal)", With(Reference.AsKeyword) },
+                {
+                    "({KeywordMatchers}) ({KeywordMatchers}) skills (have|deal)",
+                    And(With(References[0].AsKeyword), With(References[1].AsKeyword))
+                },
                 { "caused by melee hits", Condition.WithPart(Keyword.Melee) },
                 // - by damage type
                 { "with elemental skills", ElementalDamageTypes.Select(With).Aggregate((l, r) => l.Or(r)) },
@@ -306,6 +332,7 @@ namespace PoESkillTree.Computation.Data
                 // - mods on flasks are only added when the flask item is enabled
                 { "during (flask )?effect", Condition.True },
                 // other
+                { "enemies have", For(Enemy) },
                 { "against targets they pierce", Projectile.PierceCount.Value >= 1 },
                 { "while stationary", Flag.AlwaysStationary },
                 { "while moving", Flag.AlwaysMoving },
@@ -326,7 +353,6 @@ namespace PoESkillTree.Computation.Data
                 { "while you have at least one nearby ally", Condition.Unique("Is any ally nearby?") },
                 { "while channelling", Condition.Unique("Are you currently channeling?") },
                 { "during soul gain prevention", Condition.Unique("SoulGainPrevention") },
-                { "while focussed", Condition.Unique("Focus") },
                 // support gem mod clarifications. Irrelevant for parsing.
                 { "supported (skills|spells|attacks) (have|deal)", Condition.True },
                 { "(from |with )?supported skills'?", Condition.True },

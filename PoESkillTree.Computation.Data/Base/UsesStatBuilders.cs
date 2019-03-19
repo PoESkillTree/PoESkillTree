@@ -11,6 +11,7 @@ using PoESkillTree.Computation.Common.Builders.Equipment;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel.Items;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Data.Base
 {
@@ -175,5 +176,8 @@ namespace PoESkillTree.Computation.Data.Base
         /// Gets a stat for damage with all damage types.
         /// </summary>
         protected IDamageStatBuilder Damage => AnyDamageType.Damage;
+
+        protected IEnumerable<IAilmentBuilder> AllAilments
+            => Ailment.Elemental.Append(Ailment.Bleed, Ailment.Poison);
     }
 }

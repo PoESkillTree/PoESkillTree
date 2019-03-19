@@ -57,10 +57,6 @@ namespace PoESkillTree.Computation.Data
                     Stat.MovementSpeed.AsItemPropertyForSlot(ItemSlot.OffHand)
                 },
                 {
-                    "your critical strike chance is lucky",
-                    TotalOverride, 1, Flag.CriticalStrikeChanceIsLucky
-                },
-                {
                     "life leech recovers based on your chaos damage instead",
                     BaseAdd, 100, Life.Leech.Of(Chaos.Invert.Damage).ConvertTo(Life.Leech.Of(Chaos.Damage))
                 },
@@ -105,6 +101,10 @@ namespace PoESkillTree.Computation.Data
                 {
                     "({StatMatchers}) is doubled",
                     PercentMore, 100, Reference.AsStat
+                },
+                {
+                    "gain #% of maximum ({PoolStatMatchers}) as extra maximum energy shield",
+                    BaseAdd, Value, Reference.AsPoolStat.ConvertTo(EnergyShield)
                 },
                 // skills
                 {
@@ -441,10 +441,6 @@ namespace PoESkillTree.Computation.Data
                     BaseAdd, Value, Elemental.PenetrationWithNonCrits
                 },
                 // - Hierophant
-                {
-                    "gain #% of maximum mana as extra maximum energy shield",
-                    BaseAdd, Value, Mana.ConvertTo(EnergyShield)
-                },
                 {
                     "enemies take #% increased damage for each of your brands attached to them",
                     PercentIncrease, Value * Stat.AttachedBrands.For(Enemy).Maximum.Value, Damage.Taken.For(Enemy)

@@ -2,6 +2,8 @@
 // Magic/Rare items: ===================================================================================================
 -30 Physical Damage taken from Attacks
 Minions deal 35% increased Damage against Abyssal Monsters
+35% increased Damage against Abyssal Monsters
+5% additional Physical Damage Reduction against Abyssal Monsters
 Reflects 35 to 75 Physical Damage to Attackers on Block
 When you Kill a Rare Monster, 17% chance to gain one of its Modifiers for 10 seconds
 +1% Chance to Block Projectile Attack Damage
@@ -9,6 +11,19 @@ When you Kill a Rare Monster, 17% chance to gain one of its Modifiers for 10 sec
 12% increased Movement speed while on Burning, Chilled or Shocked ground
 Removes 10% of Life Recovered from Mana when used
 Removes 15% of Mana Recovered from Life when used
+4% chance to Avoid Lightning Damage when Hit
+5% chance to Avoid Cold Damage when Hit
+6% chance to Avoid Elemental Damage from Hits during Soul Gain Prevention
+6% chance to Avoid Fire Damage when Hit
+7% chance to avoid Projectiles
+Corrupted Blood cannot be inflicted on you
+Place an additional Mine
+Skills which Throw Traps throw up to 1 additional Trap
+Unaffected by Burning Ground
+Unaffected by Chilled Ground
+Unaffected by Shocked Ground
+Unaffected by Desecrated Ground
+Reflects 2 Physical Damage to Melee Attackers
 // Master crafted: =====================================================================================================
 15% of Damage Taken from Hits is Leeched as Life during Flask Effect
 7% increased Brand Attachment range
@@ -20,6 +35,9 @@ Cannot roll Modifiers with Required Level above 28
 Item drops on Death if Equipped by an Animated Guardian
 Prefixes Cannot Be Changed
 Suffixes Cannot Be Changed
+33% increased Rarity of Items Dropped by Slain Rare or Unique Enemies
+Attack Projectiles Return to you after hitting targets
+Hits with this Weapon have Culling Strike against Bleeding Enemies
 // Unique/Implicit Weapons: ============================================================================================
 // Unique/Implicit Armour: =============================================================================================
 Gore Footprints

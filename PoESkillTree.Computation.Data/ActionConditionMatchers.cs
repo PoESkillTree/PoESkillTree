@@ -84,6 +84,7 @@ namespace PoESkillTree.Computation.Data
                     And(Condition.WithPart(Keyword.Melee), Effect.Stun.InflictionAction.On)
                 },
                 { "after spending( a total of)? # mana", Action.SpendMana(Value).On },
+                { "when you focus", Action.Focus.On },
                 { "when you gain a ({ChargeTypeMatchers})", Reference.AsChargeType.GainAction.On },
                 { "you gain", Condition.True }, // may be left over at the end, does nothing
                 { "you", Condition.True },

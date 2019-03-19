@@ -9,7 +9,6 @@ using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 using PoESkillTree.GameModel.Items;
-using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Data
 {
@@ -47,7 +46,7 @@ namespace PoESkillTree.Computation.Data
                 { "(all )?attributes", ApplyOnce(Attribute.Strength, Attribute.Dexterity, Attribute.Intelligence) },
                 // - requirements
                 {
-                    "attribute requirements",
+                    "(items and gems have )?attribute requirements",
                     Stat.Requirements.Strength, Stat.Requirements.Dexterity, Stat.Requirements.Intelligence
                 },
                 // offense
@@ -128,9 +127,10 @@ namespace PoESkillTree.Computation.Data
                 // - life, mana, defences; see also PoolStatMatchers
                 { "armour", Armour },
                 { "evasion( rating)?", Evasion },
-                { "evasion rating and armour", ApplyOnce(Armour, Evasion) },
                 { "armour and evasion( rating)?", ApplyOnce(Armour, Evasion) },
                 { "armour and energy shield", ApplyOnce(Armour, EnergyShield) },
+                { "evasion rating and armour", ApplyOnce(Armour, Evasion) },
+                { "evasion( rating)? and energy shield", ApplyOnce(Evasion, EnergyShield) },
                 { "armour, evasion( rating)? and energy shield", ApplyOnce(Armour, Evasion, EnergyShield) },
                 { "(global )?defences", ApplyOnce(Armour, Evasion, EnergyShield) },
                 { "minion maximum life", Life.For(Entity.Minion) },
@@ -341,7 +341,7 @@ namespace PoESkillTree.Computation.Data
                 { "chance to fortify", Buff.Fortify.Chance },
                 { "chance to maim", Buff.Maim.Chance },
                 { "chance for attacks to maim", Buff.Maim.Chance.With(DamageSource.Attack) },
-                { "chance to taunt", Buff.Taunt.Chance },
+                { "chance to taunt( enemies)?", Buff.Taunt.Chance },
                 { "chance to blind( enemies)?", Buff.Blind.Chance },
                 { "chance to cover rare or unique enemies in ash", Buff.CoveredInAsh.Chance, Enemy.IsRareOrUnique },
                 { "chance to impale enemies", Buff.Impale.Chance },
@@ -349,23 +349,23 @@ namespace PoESkillTree.Computation.Data
                 { "({BuffMatchers}) duration", Reference.AsBuff.Duration },
                 { "blinding duration", Buff.Blind.Duration },
                 // ailments
-                { "chance to ({AilmentMatchers})( the enemy| enemies)?( on hit)?", Reference.AsAilment.Chance },
+                {
+                    "chance to ({AilmentMatchers})( the enemy| enemies| attackers)?( on hit)?",
+                    Reference.AsAilment.Chance
+                },
                 {
                     "chance to freeze, shock and ignite",
                     Ailment.Freeze.Chance, Ailment.Shock.Chance, Ailment.Ignite.Chance
                 },
                 { "chance to cause bleeding( on hit)?", Ailment.Bleed.Chance.With(DamageSource.Attack) },
-                { "chance to avoid being ({AilmentMatchers})", Reference.AsAilment.Avoidance },
+                { "chance to avoid (being )?({AilmentMatchers})", Reference.AsAilment.Avoidance },
                 { "chance to avoid elemental ailments", Ailment.Elemental.Select(a => a.Avoidance) },
                 { "({AilmentMatchers}) duration( on enemies)?", Reference.AsAilment.Duration },
                 {
                     "({AilmentMatchers}) and ({AilmentMatchers}) duration( on enemies)?",
                     References[0].AsAilment.Duration, References[1].AsAilment.Duration
                 },
-                {
-                    "duration of ailments on enemies",
-                    Ailment.Elemental.Append(Ailment.Bleed, Ailment.Poison).Select(a => a.Duration)
-                },
+                { "duration of ailments (on enemies|you inflict)", AllAilments.Select(a => a.Duration) },
                 { "duration of elemental ailments on enemies", Ailment.Elemental.Select(a => a.Duration) },
                 { "effect of shock", Ailment.ShockEffect },
                 { "effect of chill( on enemies)?", Ailment.ChillEffect },
@@ -384,6 +384,10 @@ namespace PoESkillTree.Computation.Data
                     Effect.Stun.ChanceToAvoidInterruptionWhileCasting
                 },
                 { "chance to double stun duration", Effect.Stun.Duration.ChanceToDouble },
+                // knockback
+                { "chance to knock enemies back", Effect.Knockback.Chance },
+                { "knockback distance", Effect.Knockback.Distance },
+                { "chance to avoid being knocked back", Effect.Knockback.Avoidance },
                 // flasks
                 { "(?<!during (any )?flask )effect", Flask.Effect },
                 { "effect of flasks( on you)?", Flask.Effect },
@@ -423,8 +427,6 @@ namespace PoESkillTree.Computation.Data
                 { "weapon range", Stat.Range },
                 // other
                 { "rampage stacks", Stat.RampageStacks },
-                { "chance to knock enemies back", Effect.Knockback.Chance },
-                { "knockback distance", Effect.Knockback.Distance },
                 { "reflected damage taken", AnyDamageType.ReflectedDamageTaken },
                 { "reflected elemental damage taken", Elemental.ReflectedDamageTaken },
                 { "reflected physical damage taken", Physical.ReflectedDamageTaken },

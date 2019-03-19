@@ -30,7 +30,7 @@ namespace PoESkillTree.Computation.Data
                 { "#% less", PercentLess, Value },
                 { @"\+#%? to", BaseAdd, Value },
                 { @"\+#(?!%)", BaseAdd, Value },
-                { @"\+?#%(?= chance)", BaseAdd, Value },
+                { @"\+?#%( global)?(?= chance)", BaseAdd, Value },
                 { @"\+?#% of", BaseAdd, Value },
                 { "(?<!chance to )gain #", BaseAdd, Value },
                 { "#% additional", BaseAdd, Value },
