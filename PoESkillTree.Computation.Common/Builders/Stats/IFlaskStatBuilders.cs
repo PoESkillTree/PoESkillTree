@@ -1,5 +1,3 @@
-using PoESkillTree.Computation.Common.Builders.Conditions;
-
 namespace PoESkillTree.Computation.Common.Builders.Stats
 {
     /// <summary>
@@ -28,9 +26,19 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder ManaRecovery { get; }
 
         /// <summary>
-        /// Gets a stat representing the modifier to the life and mana recovery speed of flasks.
+        /// Gets a stat representing the modifier to the life recovery speed of flasks.
         /// </summary>
-        IStatBuilder RecoverySpeed { get; }
+        IStatBuilder LifeRecoverySpeed { get; }
+
+        /// <summary>
+        /// Gets a stat representing the modifier to the mana recovery speed of flasks.
+        /// </summary>
+        IStatBuilder ManaRecoverySpeed { get; }
+
+        /// <summary>
+        /// Gets a stat representing the percentage of a flask's recovery that is applied instantly.
+        /// </summary>
+        IStatBuilder InstantRecovery { get; }
 
         /// <summary>
         /// Gets a stat representing the modifier to the charges used by activating a flask.
@@ -41,5 +49,15 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// Gets a stat representing the modifier to flask charges gained.
         /// </summary>
         IStatBuilder ChargesGained { get; }
+
+        /// <summary>
+        /// Gets a stat representing the modifier to the maximum amount of flask charges.
+        /// </summary>
+        IStatBuilder MaximumCharges { get; }
+
+        /// <summary>
+        /// Gets the chance to gain a flask charge. Only useful as ExplicitRegistrationType.GainOnAction.
+        /// </summary>
+        IStatBuilder ChanceToGainCharge { get; }
     }
 }

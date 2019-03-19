@@ -91,6 +91,9 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder IndependentMultiplier(string identity)
             => FromIdentity(identity, typeof(uint), IndependentResult(NodeType.Increase));
 
+        public IStatBuilder IndependentTotal(string identity)
+            => FromIdentity(identity, typeof(uint), IndependentResult(NodeType.Total));
+
         public IAttributeStatBuilders Attribute => new AttributeStatBuilders(StatFactory);
         public IRequirementStatBuilders Requirements => new RequirementStatBuilders(StatFactory);
         public IPoolStatBuilders Pool => new PoolStatBuilders(StatFactory);
@@ -181,9 +184,13 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder Duration => FromIdentity(typeof(double));
         public IStatBuilder LifeRecovery => FromIdentity(typeof(int));
         public IStatBuilder ManaRecovery => FromIdentity(typeof(int));
-        public IStatBuilder RecoverySpeed => FromIdentity(typeof(double));
+        public IStatBuilder LifeRecoverySpeed => FromIdentity(typeof(double));
+        public IStatBuilder ManaRecoverySpeed => FromIdentity(typeof(double));
+        public IStatBuilder InstantRecovery => FromIdentity(typeof(uint));
         public IStatBuilder ChargesUsed => FromIdentity(typeof(int));
         public IStatBuilder ChargesGained => FromIdentity(typeof(double));
+        public IStatBuilder MaximumCharges => FromIdentity(typeof(uint));
+        public IStatBuilder ChanceToGainCharge => FromIdentity(typeof(double));
     }
 
     internal class ProjectileStatBuilders : PrefixedStatBuildersBase, IProjectileStatBuilders

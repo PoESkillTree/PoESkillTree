@@ -56,7 +56,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { BaseSet, AllSkills.ReservationPool, (int) Pool.Mana },
             // flasks
             { BaseSet, Flask.Effect, 1 },
-            { BaseSet, Flask.RecoverySpeed, 1 },
+            { BaseSet, Flask.LifeRecoverySpeed, 1 },
+            { BaseSet, Flask.ManaRecoverySpeed, 1 },
             // Damage Multiplier
             { BaseSet, AnyDamageType.DamageMultiplier, 100 },
             // speed

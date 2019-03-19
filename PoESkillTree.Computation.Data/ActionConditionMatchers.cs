@@ -88,6 +88,8 @@ namespace PoESkillTree.Computation.Data
                 { "you gain", Condition.True }, // may be left over at the end, does nothing
                 { "you", Condition.True },
                 { "grants", Condition.True },
+                { "every # seconds?", Action.EveryXSeconds(Value).On },
+                { "(every|each) second(, up to a maximum of #)?", Action.EveryXSeconds(ValueFactory.Create(1)).On },
                 // unique
                 {
                     "when your trap is triggered by an enemy",
@@ -97,13 +99,10 @@ namespace PoESkillTree.Computation.Data
                     "when your mine is detonated targeting an enemy",
                     Action.Unique("When your Mine is detonated targeting an Enemy").On
                 },
-                {
-                    "on use",
-                    Action.Unique("When your use the Flask").On
-                },
+                { "on use", Action.Unique("When your use the Flask").On },
+                { "when you use a flask", Action.Unique("When your use any Flask").On },
                 { "when you block attack damage", Action.Unique("Block.Attack").On },
                 { "when you block spell damage", Action.Unique("Block.Spell").On },
-                { "(every|each) second(, up to a maximum of #)?", Action.Unique("Interval.OneSecond").On },
                 { "after channelling for # seconds?", Action.Unique("PeriodOfChannelling").On },
             }; // add
     }

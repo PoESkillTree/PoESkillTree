@@ -40,6 +40,7 @@ namespace PoESkillTree.Computation.Builders.Effects
         }
 
         public IStatBuilder CriticalStrikesAlwaysInflict => FromIdentity("CriticalStrikesAlwaysInflict", typeof(bool));
+        public IStatBuilder ChanceToRemove => FromIdentity("ChanceToRemove", typeof(uint));
 
         private IEnumerable<IStat> ConcretizeSourceStat(IReadOnlyList<DamageType> types, IStat stat) =>
             types.Select(t => StatFactory.CopyWithSuffix(stat, t.ToString(), typeof(bool)));

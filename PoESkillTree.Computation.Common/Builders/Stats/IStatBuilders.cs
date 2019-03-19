@@ -144,6 +144,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         ValueBuilder UniqueAmount(string name);
 
         IStatBuilder IndependentMultiplier(string identity);
+        IStatBuilder IndependentTotal(string identity);
 
 
         // Stats from sub factories

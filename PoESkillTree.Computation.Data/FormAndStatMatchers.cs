@@ -371,6 +371,10 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "immun(e|ity) to curses", TotalOverride, 0, Buffs(targets: Self).With(Keyword.Curse).On },
                 {
+                    // Stat isn't useful but has to be parsed successfully because it's part of a replaced stat
+                    "removes curses", BaseAdd, 0, Buff.CurseLimit, Not(Condition.True)
+                },
+                {
                     "monsters are hexproof",
                     TotalOverride, 0, Buffs(Self, Enemy).With(Keyword.Curse).On, Flag.IgnoreHexproof.IsSet.Not
                 },
@@ -398,7 +402,14 @@ namespace PoESkillTree.Computation.Data
                     "(you )?can afflict an additional ignite on an enemy",
                     BaseAdd, 1, Ailment.Ignite.InstancesOn(Enemy).Maximum
                 },
-                { "(you are )?immune to ({AilmentMatchers})", TotalOverride, 100, Reference.AsAilment.Avoidance },
+                {
+                    "(you are )?(immune|immunity) to ({AilmentMatchers})",
+                    TotalOverride, 100, Reference.AsAilment.Avoidance
+                },
+                {
+                    "(immune|immunity) to ({AilmentMatchers}) and ({AilmentMatchers})",
+                    TotalOverride, 100, References[0].AsAilment.Avoidance, References[1].AsAilment.Avoidance
+                },
                 { "cannot be ({AilmentMatchers})", TotalOverride, 100, Reference.AsAilment.Avoidance },
                 {
                     "cannot be ({AilmentMatchers}) or ({AilmentMatchers})",
@@ -412,15 +423,30 @@ namespace PoESkillTree.Computation.Data
                     "poison you inflict with critical strikes deals #% more damage",
                     PercentMore, Value, CriticalStrike.Multiplier.With(Ailment.Poison)
                 },
+                { "removes? ({AilmentMatchers})", TotalOverride, 100, Reference.AsAilment.ChanceToRemove },
+                {
+                    "removes? ({AilmentMatchers}) and ({AilmentMatchers})",
+                    TotalOverride, 100, References[0].AsAilment.ChanceToRemove, References[1].AsAilment.ChanceToRemove
+                },
+                { "removes? (ignite and )?burning", TotalOverride, 100, Ailment.Ignite.ChanceToRemove },
                 // stun
                 { "(you )?cannot be stunned", TotalOverride, 100, Effect.Stun.Avoidance },
                 { "additional #% chance to be stunned", BaseAdd, Value, Effect.Stun.Chance.For(Entity.OpponentOfSelf) },
+                // flasks
+                { "(?<!chance to |when you )gain a flask charge", BaseAdd, 100, Flask.ChanceToGainCharge },
+                { "recharges # charges?", BaseAdd, Value * 100, Flask.ChanceToGainCharge },
+                { "flasks gain # charges?", BaseAdd, Value * 100, Flask.ChanceToGainCharge },
+                { "instant recovery", TotalOverride, 100, Flask.InstantRecovery },
                 // item quantity/quality
                 // range and area of effect
                 // other
                 { "knocks back enemies", TotalOverride, 100, Effect.Knockback.Chance },
                 { "knocks enemies back", TotalOverride, 100, Effect.Knockback.Chance },
                 { "knockback(?! distance)", TotalOverride, 100, Effect.Knockback.Chance },
+                {
+                    "adds knockback to melee attacks",
+                    TotalOverride, 100, Effect.Knockback.Chance, Condition.WithPart(Keyword.Melee)
+                },
             };
     }
 }

@@ -58,6 +58,11 @@ namespace PoESkillTree.Computation.Common.Builders.Actions
         /// </summary>
         IActionBuilder SpendMana(IValueBuilder amount);
 
+        /// <summary>
+        /// Gets an action that occurs every <paramref name="interval"/> seconds.
+        /// </summary>
+        IActionBuilder EveryXSeconds(IValueBuilder interval);
+
         IActionBuilder Unique(string description);
     }
 }

@@ -64,6 +64,15 @@ namespace PoESkillTree.Computation.Builders.Actions
         private static string BuildSpendManaIdentity(BuildParameters parameters, IValueBuilder builder) =>
             $"Spend{builder.Build(parameters).Calculate(new ThrowingContext())}Mana";
 
+        public IActionBuilder EveryXSeconds(IValueBuilder interval)
+        {
+            var stringBuilder = CoreBuilder.Create(interval, BuildEveryXSecondsIdentity);
+            return new ActionBuilder(_statFactory, stringBuilder, _entity);
+        }
+
+        private static string BuildEveryXSecondsIdentity(BuildParameters parameters, IValueBuilder builder)
+            => $"Every{builder.Build(parameters).Calculate(new ThrowingContext())}Seconds";
+
         public IActionBuilder Unique(string description) => Create(description);
 
         private IActionBuilder Create(string identity) =>

@@ -163,6 +163,7 @@ Your Hits inflict Decay, dealing 500 Chaos Damage per second for 8 seconds
 // Minions
 10% increased area of effect for each Summoned Sentinel of Purity
 Minions Regenerate 3 Life per second
+Grants 50% of Life Recovery to Minions
 // - modifies minion skill
 Raised Zombies' Slam Attack has 100% increased Area of Effect
 Raised Zombies' Slam Attack has 100% increased Cooldown Recovery Speed
