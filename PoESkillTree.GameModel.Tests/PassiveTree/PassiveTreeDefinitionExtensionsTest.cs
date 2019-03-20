@@ -17,10 +17,9 @@ namespace PoESkillTree.GameModel.PassiveTree
         public void GetMNodesInRadiusReturnsNodeInsideRadius(int nodeId, int radius, int expectedNodeId)
         {
             var tree = CreateTree();
-            var node = tree.GetNodeById((ushort) nodeId);
             var expected = tree.GetNodeById((ushort) expectedNodeId);
 
-            var actual = tree.GetNodesInRadius(node, (uint) radius);
+            var actual = tree.GetNodesInRadius((ushort) nodeId, (uint) radius);
 
             actual.Should().Contain(expected);
         }
@@ -30,10 +29,9 @@ namespace PoESkillTree.GameModel.PassiveTree
         public void GetNodesInRadiusDoesNotReturnNodeOutsideRadius(int nodeId, int radius, int notExpectedNodeId)
         {
             var tree = CreateTree();
-            var node = tree.GetNodeById((ushort) nodeId);
             var notExpected = tree.GetNodeById((ushort) notExpectedNodeId);
 
-            var actual = tree.GetNodesInRadius(node, (uint) radius);
+            var actual = tree.GetNodesInRadius((ushort) nodeId, (uint) radius);
 
             actual.Should().NotContain(notExpected);
         }

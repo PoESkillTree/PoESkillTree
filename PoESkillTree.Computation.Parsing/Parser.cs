@@ -68,7 +68,7 @@ namespace PoESkillTree.Computation.Parsing
             _itemParser = Caching(new ItemParser(baseItems, builderFactories, _coreParser,
                 statTranslators[StatTranslationFileNames.Main]));
             _itemJewelParser = Caching(new JewelInItemParser(_coreParser));
-            _treeJewelParser = Caching(new JewelInSkillTreeParser(_coreParser));
+            _treeJewelParser = Caching(new JewelInSkillTreeParser(passiveTree, _coreParser));
             _activeSkillParser =
                 Caching(new ActiveSkillParser(skills, builderFactories, GetOrAddUntranslatedStatParser));
             _supportSkillParser =

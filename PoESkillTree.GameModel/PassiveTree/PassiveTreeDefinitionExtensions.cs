@@ -7,6 +7,10 @@ namespace PoESkillTree.GameModel.PassiveTree
     public static class PassiveTreeDefinitionExtensions
     {
         public static IEnumerable<PassiveNodeDefinition> GetNodesInRadius(this PassiveTreeDefinition @this,
+            ushort nodeId, uint radius)
+            => @this.GetNodesInRadius(@this.GetNodeById(nodeId), radius);
+
+        public static IEnumerable<PassiveNodeDefinition> GetNodesInRadius(this PassiveTreeDefinition @this,
             PassiveNodeDefinition node, uint radius)
             => @this.Nodes.Where(n => Distance(n.Position, node.Position) <= radius);
 
