@@ -4,9 +4,8 @@ using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Forms;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
-using PoESkillTree.Computation.Data.Collections;
 
-namespace PoESkillTree.Computation.Data.Tests.Collections
+namespace PoESkillTree.Computation.Data.Collections
 {
     [TestFixture]
     public class EffectStatCollectionTest

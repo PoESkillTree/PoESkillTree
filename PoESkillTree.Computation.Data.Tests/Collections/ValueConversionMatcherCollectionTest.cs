@@ -2,10 +2,9 @@
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common.Builders.Values;
-using PoESkillTree.Computation.Data.Collections;
 using PoESkillTree.Utils;
 
-namespace PoESkillTree.Computation.Data.Tests.Collections
+namespace PoESkillTree.Computation.Data.Collections
 {
     [TestFixture]
     public class ValueConversionMatcherCollectionTest

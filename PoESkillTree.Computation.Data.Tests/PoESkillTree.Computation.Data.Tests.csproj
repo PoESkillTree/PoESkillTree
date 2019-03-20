@@ -81,7 +81,6 @@
     <Compile Include="Collections\ModifierBuilderStub.cs" />
     <Compile Include="Collections\MatcherCollectionHelpers.cs" />
     <Compile Include="Collections\PropertyMatcherCollectionTest.cs" />
-    <Compile Include="Collections\SpecialMatcherCollectionTest.cs" />
     <Compile Include="Collections\StatManipulatorMatcherCollectionTest.cs" />
     <Compile Include="Collections\StatMatcherCollectionTest.cs" />
     <Compile Include="Collections\StatReplacerCollectionTest.cs" />

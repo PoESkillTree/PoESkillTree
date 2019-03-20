@@ -4,7 +4,7 @@ using NUnit.Framework;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Data;
 
-namespace PoESkillTree.Computation.Data.Tests.Collections
+namespace PoESkillTree.Computation.Data.Collections
 {
     internal static class MatcherCollectionHelpers
     {

@@ -3,9 +3,8 @@ using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Stats;
-using PoESkillTree.Computation.Data.Collections;
 
-namespace PoESkillTree.Computation.Data.Tests.Collections
+namespace PoESkillTree.Computation.Data.Collections
 {
     [TestFixture]
     public class StatMatcherCollectionTest

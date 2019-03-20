@@ -74,7 +74,6 @@
     <Compile Include="Collections\FormMatcherCollection.cs" />
     <Compile Include="Collections\PropertyMatcherCollection.cs" />
     <Compile Include="Collections\ReferencedMatcherCollection.cs" />
-    <Compile Include="Collections\SpecialMatcherCollection.cs" />
     <Compile Include="Collections\StatManipulatorMatcherCollection.cs" />
     <Compile Include="Collections\StatMatcherCollection.cs" />
     <Compile Include="Collections\StatReplacerCollection.cs" />

@@ -36,7 +36,7 @@ namespace PoESkillTree.Computation.Data
         public override bool MatchesWholeLineOnly => true;
 
         protected override IReadOnlyList<MatcherData> CreateCollection() =>
-            new SpecialMatcherCollection(_modifierBuilder, ValueFactory)
+            new FormAndStatMatcherCollection(_modifierBuilder, ValueFactory)
             {
                 {
                     @"\+# to level of socketed support gems",
@@ -490,7 +490,7 @@ namespace PoESkillTree.Computation.Data
                 { "nearby enemies are blinded", TotalOverride, 1, Buff.Blind.On(Enemy), Enemy.IsNearby },
             };
 
-        private IEnumerable<(IFormBuilder form, IValueBuilder value, IStatBuilder stat, IConditionBuilder condition)>
+        private IEnumerable<(IFormBuilder form, IValueBuilder value, IStatBuilder stat)>
             UndeniableAttackSpeed()
         {
             var attackSpeed = Stat.CastRate.With(DamageSource.Attack);
@@ -499,7 +499,7 @@ namespace PoESkillTree.Computation.Data
                 IValueBuilder PerAccuracy(ValueBuilder value) =>
                     ValueBuilderUtils.PerStat(Stat.Accuracy.With(hand), Values[1])(value);
 
-                yield return (PercentIncrease, PerAccuracy(Values[0]), attackSpeed.With(hand), Condition.True);
+                yield return (PercentIncrease, PerAccuracy(Values[0]), attackSpeed.With(hand));
             }
         }
 
