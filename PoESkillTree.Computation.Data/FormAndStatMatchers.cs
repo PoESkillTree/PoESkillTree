@@ -182,6 +182,10 @@ namespace PoESkillTree.Computation.Data
                 { "fires? # additional arrows", BaseAdd, Value, Projectile.Count, With(Keyword.Attack) },
                 { "fires? an additional projectile", BaseAdd, 1, Projectile.Count },
                 { "fires? an additional arrow", BaseAdd, 1, Projectile.Count, With(Keyword.Attack) },
+                {
+                    "bow attacks fire an additional arrow",
+                    BaseAdd, 1, Projectile.Count, And(With(Keyword.Attack), MainHand.Has(Tags.Bow))
+                },
                 { "skills fire an additional projectile", BaseAdd, 1, Projectile.Count },
                 { "skills fire # additional projectiles", BaseAdd, Value, Projectile.Count },
                 { "supported skills fire # additional projectiles", BaseAdd, Value, Projectile.Count },
@@ -294,6 +298,11 @@ namespace PoESkillTree.Computation.Data
                 {
                     "recover #% of( their| your)? ({PoolStatMatchers})",
                     BaseAdd, Value.PercentOf(Reference.AsStat), Reference.AsPoolStat.Gain
+                },
+                {
+                    "recover #% of( their| your)? ({PoolStatMatchers}) and ({PoolStatMatchers})",
+                    (BaseAdd, Value.PercentOf(References[0].AsStat), References[0].AsPoolStat.Gain),
+                    (BaseAdd, Value.PercentOf(References[1].AsStat), References[1].AsPoolStat.Gain)
                 },
                 {
                     "removes #% of ({PoolStatMatchers})",
