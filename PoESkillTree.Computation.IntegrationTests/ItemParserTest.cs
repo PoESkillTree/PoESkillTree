@@ -2,13 +2,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Moq;
-using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Parsing;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
+using PoESkillTree.GameModel.Modifiers;
 using PoESkillTree.GameModel.StatTranslation;
 using static PoESkillTree.Computation.IntegrationTests.ParsingTestUtils;
 
@@ -17,10 +17,9 @@ namespace PoESkillTree.Computation.IntegrationTests
     [TestFixture]
     public class ItemParserTest : CompositionRootTestBase
     {
-        private static Task<StatTranslator> _statTranslatorTask;
         private static Task<XmlUniqueList> _uniqueDefinitionsTask;
-        private static Task<Dictionary<string, IReadOnlyList<CraftableStat>>> _modDefinitionsTask;
 
+        private ModifierDefinitions _modifierDefinitions;
         private BaseItemDefinitions _baseItemDefinitions;
         private IStatTranslator _statTranslator;
         private IParser _parser;
@@ -28,16 +27,15 @@ namespace PoESkillTree.Computation.IntegrationTests
         [OneTimeSetUp]
         public static void OneTimeSetUp()
         {
-            _statTranslatorTask = StatTranslators.CreateFromMainFileAsync();
             _uniqueDefinitionsTask = DataUtils.LoadXmlAsync<XmlUniqueList>("Equipment.Uniques.xml");
-            _modDefinitionsTask = LoadModsAsync();
         }
 
         [SetUp]
         public async Task SetUpAsync()
         {
+            _modifierDefinitions = await GameData.Modifiers.ConfigureAwait(false);
             _baseItemDefinitions = await GameData.BaseItems.ConfigureAwait(false);
-            _statTranslator = await _statTranslatorTask.ConfigureAwait(false);
+            _statTranslator = (await GameData.StatTranslators.ConfigureAwait(false))[StatTranslationFileNames.Main];
             _parser = await ParserTask.ConfigureAwait(false);
         }
 
@@ -163,7 +161,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         private ParseResult Parse(string metadataId)
         {
             var definition = _baseItemDefinitions.GetBaseItemById(metadataId);
-            var mods = Translate(definition.ImplicitModifiers);
+            var mods = Translate(definition.ImplicitModifiers, _statTranslator);
             var item = new Item(metadataId, definition.Name, 20, definition.Requirements.Level,
                 FrameType.White, false, mods, true);
             var slot = SlotForClass(definition.ItemClass);
@@ -177,9 +175,11 @@ namespace PoESkillTree.Computation.IntegrationTests
         public async Task UniqueItemIsParsedSuccessfully(string uniqueName)
         {
             var uniqueDefinitions = await _uniqueDefinitionsTask.ConfigureAwait(false);
-            var modDefinitions = await _modDefinitionsTask.ConfigureAwait(false);
-            var unique = uniqueDefinitions.Uniques.First(u => u.Name == uniqueName);
-            var explicitMods = unique.Explicit.SelectMany(s => modDefinitions[s]);
+            var uniques = uniqueDefinitions.Uniques.Where(u => u.Name == uniqueName).ToList();
+            var unique = uniques.First(u => u.Name == uniqueName);
+            var explicitMods = uniques
+                .SelectMany(u => u.Explicit)
+                .SelectMany(m => _modifierDefinitions.GetModifierById(m).Stats);
 
             var actual = Parse(unique, explicitMods);
 
@@ -190,7 +190,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         {
             var definition = _baseItemDefinitions.GetBaseItemById(unique.BaseMetadataId);
             var craftableStats = definition.ImplicitModifiers.Concat(explicitMods);
-            var mods = Translate(craftableStats);
+            var mods = Translate(craftableStats, _statTranslator);
             var item = new Item(unique.BaseMetadataId, unique.Name, 20, unique.Level,
                 FrameType.Unique, false, mods, true);
             var slot = SlotForClass(definition.ItemClass);
@@ -200,13 +200,6 @@ namespace PoESkillTree.Computation.IntegrationTests
         private static IEnumerable<string> ReadParseableUniqueItems()
             => ReadDataLines("ParseableUniqueItems");
 
-        private IReadOnlyList<string> Translate(IEnumerable<CraftableStat> craftableStats)
-        {
-            var untranslatedStats =
-                craftableStats.Select(s => new UntranslatedStat(s.StatId, (s.MinValue + s.MaxValue) / 2));
-            return _statTranslator.Translate(untranslatedStats).TranslatedStats;
-        }
-
         private static ItemSlot SlotForClass(ItemClass itemClass)
         {
             var slot = itemClass.ItemSlots();
@@ -215,18 +208,6 @@ namespace PoESkillTree.Computation.IntegrationTests
             else if (slot.HasFlag(ItemSlot.Ring))
                 slot = ItemSlot.Ring;
             return slot;
-        }
-
-        private static async Task<Dictionary<string, IReadOnlyList<CraftableStat>>> LoadModsAsync()
-        {
-            var json = await DataUtils.LoadRePoEAsObjectAsync("mods").ConfigureAwait(false);
-            return json.Properties().ToDictionary(p => p.Name,
-                p => SelectCraftableStats(p.Value.Value<JArray>("stats")));
-
-            IReadOnlyList<CraftableStat> SelectCraftableStats(JArray jsonStats)
-                => jsonStats
-                    .Select(j => new CraftableStat(j.Value<string>("id"), j.Value<int>("min"), j.Value<int>("max")))
-                    .ToList();
         }
     }
 }

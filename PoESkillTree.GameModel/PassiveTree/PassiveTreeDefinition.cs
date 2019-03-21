@@ -16,7 +16,16 @@ namespace PoESkillTree.GameModel.PassiveTree
         // TODO Replace by real skill tree data
         public static IReadOnlyList<PassiveNodeDefinition> CreateKeystoneDefinitions()
         {
-            ushort id = 0;
+            var nodes = new List<PassiveNodeDefinition>
+            {
+                new PassiveNodeDefinition(0, PassiveNodeType.JewelSocket, "jewel", false,
+                    true, 0, default, new string[0]),
+                new PassiveNodeDefinition(1, PassiveNodeType.Normal, "attributes", false,
+                    true, 0, new NodePosition(10, 10), 
+                    new[] { "+100 to Strength", "+100 to Dexterity", "+100 to Intelligence" }),
+            };
+
+            ushort id = 2;
             var keystones = new[]
             {
                 "Acrobatics", "Ancestral Bond", "Arrow Dancing", "Avatar of Fire", "Blood Magic", "Chaos Inoculation",
@@ -25,11 +34,12 @@ namespace PoESkillTree.GameModel.PassiveTree
                 "Necromantic Aegis", "Pain Attunement", "Perfect Agony", "Phase Acrobatics", "Point Blank",
                 "Resolute Technique", "Runebinder", "Unwavering Stance", "Vaal Pact", "Zealot's Oath",
             };
-            return keystones.Select(Create).ToList();
+            nodes.AddRange(keystones.Select(Create));
+            return nodes;
 
             PassiveNodeDefinition Create(string name)
                 => new PassiveNodeDefinition(id++, PassiveNodeType.Keystone, name, false,
-                    true, 0, default, new string[0]);
+                    true, 0, new NodePosition(id, 1000), new string[0]);
         }
     }
 }

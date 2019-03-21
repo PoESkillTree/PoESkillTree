@@ -1,10 +1,14 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Parsing;
+using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
+using PoESkillTree.GameModel.Modifiers;
+using PoESkillTree.GameModel.StatTranslation;
 using static PoESkillTree.Computation.IntegrationTests.ParsingTestUtils;
 
 namespace PoESkillTree.Computation.IntegrationTests
@@ -12,11 +16,23 @@ namespace PoESkillTree.Computation.IntegrationTests
     [TestFixture]
     public class JewelParserTest : CompositionRootTestBase
     {
+        private static Task<XmlUniqueList> _uniqueDefinitionsTask;
+
+        private ModifierDefinitions _modifierDefinitions;
+        private IStatTranslator _statTranslator;
         private IParser _parser;
+
+        [OneTimeSetUp]
+        public static void OneTimeSetUp()
+        {
+            _uniqueDefinitionsTask = DataUtils.LoadXmlAsync<XmlUniqueList>("Equipment.Uniques.xml");
+        }
 
         [SetUp]
         public async Task SetUpAsync()
         {
+            _modifierDefinitions = await GameData.Modifiers.ConfigureAwait(false);
+            _statTranslator = (await GameData.StatTranslators.ConfigureAwait(false))[StatTranslationFileNames.Main];
             _parser = await ParserTask.ConfigureAwait(false);
         }
 
@@ -71,5 +87,31 @@ namespace PoESkillTree.Computation.IntegrationTests
 
             AssertCorrectModifiers(valueCalculationContext, expectedModifiers, actual);
         }
+
+        [TestCaseSource(nameof(ReadParseableUniqueJewels))]
+        public async Task UniqueJewelIsParsedSuccessfully(string uniqueName)
+        {
+            var uniqueDefinitions = await _uniqueDefinitionsTask.ConfigureAwait(false);
+            var uniques = uniqueDefinitions.Uniques.Where(u => u.Name == uniqueName).ToList();
+            var unique = uniques.First(u => u.Name == uniqueName);
+            var explicitMods = uniques
+                .SelectMany(u => u.Explicit)
+                .SelectMany(m => _modifierDefinitions.GetModifierById(m).Stats);
+
+            var actual = Parse(unique, explicitMods);
+
+            AssertIsParsedSuccessfully(actual, NotParseableStatLines.Value);
+        }
+
+        private ParseResult Parse(XmlUnique unique, IEnumerable<CraftableStat> craftableStats)
+        {
+            var mods = Translate(craftableStats, _statTranslator);
+            var item = new Item(unique.BaseMetadataId, unique.Name, 0, unique.Level,
+                FrameType.Unique, false, mods, true);
+            return _parser.ParseJewelSocketedInSkillTree(item, JewelRadius.Small, 0);
+        }
+
+        private static IEnumerable<string> ReadParseableUniqueJewels()
+            => ReadDataLines("ParseableUniqueJewels");
     }
 }

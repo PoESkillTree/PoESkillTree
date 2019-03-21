@@ -7,6 +7,7 @@ using NUnit.Framework;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Parsing;
 using PoESkillTree.GameModel;
+using PoESkillTree.GameModel.StatTranslation;
 
 namespace PoESkillTree.Computation.IntegrationTests
 {
@@ -83,5 +84,13 @@ namespace PoESkillTree.Computation.IntegrationTests
             => File.ReadAllLines(TestContext.CurrentContext.TestDirectory + $"/Data/{fileName}.txt")
                 .Where(s => !s.StartsWith("//", StringComparison.Ordinal))
                 .Distinct();
+
+        public static IReadOnlyList<string> Translate(
+            IEnumerable<CraftableStat> craftableStats, IStatTranslator translator)
+        {
+            var untranslatedStats =
+                craftableStats.Select(s => new UntranslatedStat(s.StatId, (s.MinValue + s.MaxValue) / 2));
+            return translator.Translate(untranslatedStats).TranslatedStats;
+        }
     }
 }
