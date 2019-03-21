@@ -43,14 +43,6 @@ namespace PoESkillTree.Computation.Data
                     BaseAdd, Value, Gem.IncreaseSupportLevel
                 },
                 {
-                    "primordial",
-                    BaseAdd, 1, Stat.PrimordialJewelsSocketed
-                },
-                {
-                    "grand spectrum",
-                    BaseAdd, 1, Stat.GrandSpectrumJewelsSocketed
-                },
-                {
                     "ignore all movement penalties from armour",
                     TotalOverride, 0,
                     Stat.MovementSpeed.AsItemPropertyForSlot(ItemSlot.BodyArmour),
@@ -105,6 +97,42 @@ namespace PoESkillTree.Computation.Data
                 {
                     "gain #% of maximum ({PoolStatMatchers}) as extra maximum energy shield",
                     BaseAdd, Value, Reference.AsPoolStat.ConvertTo(EnergyShield)
+                },
+                // Jewels
+                {
+                    "primordial",
+                    BaseAdd, 1, Stat.PrimordialJewelsSocketed
+                },
+                {
+                    "grand spectrum",
+                    BaseAdd, 1, Stat.GrandSpectrumJewelsSocketed
+                },
+                {
+                    // Combat Focus
+                    "elemental hit cannot choose fire",
+                    TotalOverride, 0, Fire.Damage,
+                    And(With(Skills.FromId("ElementalHit")), Stat.MainSkillPart.Value.Eq(0))
+                },
+                {
+                    "elemental hit cannot choose cold",
+                    TotalOverride, 0, Cold.Damage,
+                    And(With(Skills.FromId("ElementalHit")), Stat.MainSkillPart.Value.Eq(1))
+                },
+                {
+                    "elemental hit cannot choose lightning",
+                    TotalOverride, 0, Lightning.Damage,
+                    And(With(Skills.FromId("ElementalHit")), Stat.MainSkillPart.Value.Eq(2))
+                },
+                {
+                    // Soul's Wick
+                    "spectres have a base duration of # seconds spectres do not travel between areas",
+                    BaseSet, Value, Stat.Duration, With(Skills.RaiseSpectre)
+                },
+                {
+                    // The Vigil
+                    "({SkillMatchers}) fortifies you and nearby allies for # seconds",
+                    TotalOverride, 1, Buff.Fortify.On(Self).Concat(Buff.Fortify.On(Ally)),
+                    Reference.AsSkill.Cast.InPastXSeconds(Value)
                 },
                 // skills
                 {

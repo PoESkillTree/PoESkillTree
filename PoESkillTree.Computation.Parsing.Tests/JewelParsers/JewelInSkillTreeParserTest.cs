@@ -47,6 +47,7 @@ namespace PoESkillTree.Computation.Parsing.JewelParsers
         [TestCase("at least 23 dexterity", JewelRadius.Small, 14)]
         [TestCase("at least 17 intelligence", JewelRadius.Small, 14)]
         [TestCase("40 total intelligence and dexterity", JewelRadius.Small, 14)]
+        [TestCase("17 intelligence", JewelRadius.Small, 14)]
         public void ParseReturnsCorrectModifierIfThresholdIsMet(string modifier, JewelRadius radius, int nodeId)
         {
             var parserParam = CreateItem($"With {modifier} in Radius, +1 to A", radius, (ushort) nodeId);
@@ -77,6 +78,21 @@ namespace PoESkillTree.Computation.Parsing.JewelParsers
             var result = sut.Parse(parserParam);
 
             result.Modifiers.Should().BeEmpty();
+        }
+
+        [Test]
+        public void ParseRespectsNewlines()
+        {
+            var parserParam = CreateItem("With at least 1 strength in Radius, +1 to\nA", JewelRadius.Small, 0);
+            var source = CreateGlobalSource(parserParam);
+            var coreParser = Mock.Of<ICoreParser>(p =>
+                p.Parse(new CoreParserParameter("+1 to\nA", source, Entity.Character))
+                == ParseResult.Success(new[] { CreateModifier("", default, 2, source) }));
+            var sut = CreateSut(coreParser);
+
+            var result = sut.Parse(parserParam);
+
+            result.Modifiers.Should().NotBeEmpty();
         }
 
         private static JewelInSkillTreeParser CreateSut(ICoreParser coreParser = null)

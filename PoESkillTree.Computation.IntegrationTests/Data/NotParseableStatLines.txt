@@ -60,22 +60,26 @@ Creates a Smoke Cloud on Use
 Creates Chilled Ground on Use
 // Unique/Implicit Jewels: =============================================================================================
 Your Golems are aggressive
-#% chance to gain an additional Vaal Soul per Enemy Shattered
-#% chance to gain an additional Vaal Soul on Kill
+Golems Summoned in the past 8 seconds deal 40% increased Damage
+50% chance to gain an additional Vaal Soul per Enemy Shattered
+25% chance to gain an additional Vaal Soul on Kill
 Frostbolt Projectiles gain 40% increased Projectile Speed per second
 Ethereal Knives fires Projectiles in a Nova
-#% increased Experience Gain for Corrupted Gems
+Spark fires Projectiles in a Nova
+10% increased Experience Gain for Corrupted Gems
 Fireball Projectiles gain Radius as they travel farther, up to +4 Radius
 Raised Spectres have a 50% chance to gain Soul Eater for 30 seconds on Kill
-Ground Slam has a 35% increased angle
-Vigilant Strike Fortifies you and Nearby Allies for 12 seconds
+Ground Slam has a 50% increased angle
 Burning Arrow has a 10% chance to spread Tar if it does not Ignite an Enemy
-#% additional Chance to receive a Critical Strike
-#% increased Rarity of Items dropped by Enemies Shattered by Glacial Hammer
-Magma Orb has 10% increased Area of Effect per Chain
+Hits have +160% additional Critical Stike Chance against you
+20% increased Rarity of Items dropped by Enemies Shattered by Glacial Hammer
 each Spectral Throw Projectile gains 5% increased Damage each time it Hits
 Barrage fires an additional 2 projectiles simultaneously on the first and final attacks
 Burning Arrow has a 10% chance to spread Burning Ground if it Ignites an Enemy
+Cold Snap grants Power Charges instead of Frenzy Charges when Enemies die in its Area With at least 40 Intelligence in Radius, Cold Snap's Cooldown can be bypassed by Power Charges instead of Frenzy Charges
+Bleeding you inflict is Reflected to you
+Poison you inflict is Reflected to you
+Glacial Cascade has an additional Burst
 // Fishing Rods: =======================================================================================================
 17% increased Quantity of Fish Caught
 22% reduced Fishing Pool Consumption
@@ -87,7 +91,6 @@ Siren Worm Bait
 // skills: =============================================================================================================
 // (either irrelevant or already handled by SkillDefinitionExtensions and/or AdditionalSkillStats)
 damage cannot be reflected
-0.86% reduced movement speed per nearby enemy
 summons a totem which uses this skill
 Enemies have 80% less Movement Speed when the Debuff starts
 Locks enemy in place

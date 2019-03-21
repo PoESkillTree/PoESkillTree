@@ -44,7 +44,7 @@ namespace PoESkillTree.Computation.Data
                 { "for each hit you've blocked recently", Block.CountRecently },
                 { "for each corpse consumed recently", Action.ConsumeCorpse.CountRecently },
                 // equipment
-                { "for each magic item you have equipped", Equipment.Count(e => e.Has(FrameType.Magic)) },
+                { "for each magic item( you have)? equipped", Equipment.Count(e => e.Has(FrameType.Magic)) },
                 // stats
                 { "per # accuracy rating", PerStat(Stat.Accuracy.With(AttackDamageHand.MainHand)) },
                 { "per #%? ({StatMatchers})(?! leech)", PerStat(stat: Reference.AsStat, divideBy: Value) },
@@ -75,6 +75,7 @@ namespace PoESkillTree.Computation.Data
                     "when placed, (?<inner>.*) per stage",
                     Skills.ModifierSourceSkill.Buff.StackCount.Value, Flag.IsBannerPlanted, "${inner}"
                 },
+                { "per nearby enemy", Enemy.CountNearby },
                 // buffs
                 { "per buff on you", Buffs(targets: Self).Count() },
                 { "per curse on you", Buffs(targets: Self).With(Keyword.Curse).Count() },
@@ -84,6 +85,7 @@ namespace PoESkillTree.Computation.Data
                 // ailments
                 { "for each poison on the enemy", Ailment.Poison.InstancesOn(Enemy).Value },
                 { "per poison on enemy", Ailment.Poison.InstancesOn(Enemy).Value },
+                { "per poison on you", Ailment.Poison.InstancesOn(Self).Value },
                 {
                     @"per poison affecting enemy, up to \+#%",
                     CappedMultiplier(Ailment.Poison.InstancesOn(Enemy).Value, Value)
@@ -114,12 +116,10 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "for each remaining chain",
-                    AtLeastZero(
-                        Projectile.ChainCount.Value - Stat.UniqueAmount("# of times the Active Skill has Chained"))
+                    AtLeastZero(Projectile.ChainCount.Value - Stat.UniqueAmount("Projectile.ChainedCount"))
                 },
-                {
-                    "for each enemy pierced",
-                    Stat.UniqueAmount("# of times the Active Skill has Pierced")
+                { "per chain", Stat.UniqueAmount("Projectile.ChainedCount") },
+                { "for each enemy pierced", Stat.UniqueAmount("Projectile.PiercedCount")
                 },
                 {
                     "for each of your mines detonated recently, up to #%",

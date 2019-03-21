@@ -13,11 +13,12 @@ namespace PoESkillTree.Computation.Parsing.JewelParsers
         private const string AttributeGroup = "(strength|dexterity|intelligence)";
 
         private static readonly Regex SingleThresholdRegex =
-            new Regex($@"^with at least (\d+) {AttributeGroup} in radius, (.*)$", RegexOptions.IgnoreCase);
+            new Regex($@"^with(?: at least)? (\d+) {AttributeGroup} in radius, (.*)$",
+                RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         private static readonly Regex DoubleThresholdRegex =
             new Regex($@"^with (\d+) total {AttributeGroup} and {AttributeGroup} in radius, (.*)$",
-                RegexOptions.IgnoreCase);
+                RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         private static readonly Regex SingleAttributeRegex =
             new Regex($@"^\+(\d+) to {AttributeGroup}$", RegexOptions.IgnoreCase);

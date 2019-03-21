@@ -45,7 +45,7 @@ namespace PoESkillTree.Computation.Data
                     BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]), Reference.AsDamageType.Damage.WithHits
                 },
                 {
-                    @"adds # to # ({DamageTypeMatchers}) damage to attacks",
+                    @"adds # to # ({DamageTypeMatchers}) (damage to attacks|attack damage)",
                     BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]),
                     Reference.AsDamageType.Damage.WithSkills(DamageSource.Attack)
                 },
@@ -62,7 +62,7 @@ namespace PoESkillTree.Computation.Data
                     MainHand.Has(Tags.Bow)
                 },
                 {
-                    @"adds # to # ({DamageTypeMatchers}) damage to spells",
+                    @"adds # to # ({DamageTypeMatchers}) (damage to spells|spell damage)",
                     BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]),
                     Reference.AsDamageType.Damage.WithSkills(DamageSource.Spell)
                 },
@@ -125,11 +125,6 @@ namespace PoESkillTree.Computation.Data
                         .WithCondition(OffHand.Has(Tags.Wand))
                 },
                 {
-                    "#% of ({DamageTypeMatchers}) damage converted to ({DamageTypeMatchers}) damage",
-                    BaseAdd, Value, References[0].AsDamageType.Damage.WithHitsAndAilments
-                        .ConvertTo(References[1].AsDamageType.Damage.WithHitsAndAilments)
-                },
-                {
                     "({DamageTypeMatchers}) spells have #% of ({DamageTypeMatchers}) damage converted to ({DamageTypeMatchers}) damage",
                     BaseAdd, Value, References[1].AsDamageType.Damage.With(DamageSource.Spell)
                         .ConvertTo(References[2].AsDamageType.Damage.With(DamageSource.Spell)),
@@ -189,6 +184,7 @@ namespace PoESkillTree.Computation.Data
                 { "skills fire an additional projectile", BaseAdd, 1, Projectile.Count },
                 { "skills fire # additional projectiles", BaseAdd, Value, Projectile.Count },
                 { "supported skills fire # additional projectiles", BaseAdd, Value, Projectile.Count },
+                { "totems fire # additional projectiles", BaseAdd, 1, Projectile.Count, With(Keyword.Totem) },
                 { "pierces # additional targets", BaseAdd, Value, Projectile.PierceCount },
                 { "projectiles pierce an additional target", BaseAdd, 1, Projectile.PierceCount },
                 { "arrows pierce an additional target", BaseAdd, 1, Projectile.PierceCount, With(Keyword.Attack) },
@@ -339,8 +335,12 @@ namespace PoESkillTree.Computation.Data
                     Charge.Endurance.ChanceToGain, Charge.Frenzy.ChanceToGain, Charge.Power.ChanceToGain
                 },
                 // skills
+                {
+                    @"\+# seconds? to ({SkillMatchers}) cooldown",
+                    BaseAdd, Value, Stat.Cooldown, With(Reference.AsSkill)
+                },
                 { "base duration is # seconds", BaseSet, Value, Stat.Duration },
-                { @"\+# seconds to base duration", BaseAdd, Value, Stat.Duration },
+                { @"\+# seconds? to base duration", BaseAdd, Value, Stat.Duration },
                 { "base secondary duration is # seconds", BaseSet, Value, Stat.SecondaryDuration },
                 {
                     "#% increased duration(?! of)",
@@ -370,14 +370,9 @@ namespace PoESkillTree.Computation.Data
                     "(?<!while |chance to )gain ({BuffMatchers})",
                     TotalOverride, 1, Reference.AsBuff.On(Self)
                 },
-                {
-                    "you can have one additional curse",
-                    BaseAdd, 1, Buff.CurseLimit
-                },
-                {
-                    "enemies can have # additional curse",
-                    BaseAdd, Value, Buff.CurseLimit.For(Enemy)
-                },
+                { "you can have one additional curse", BaseAdd, 1, Buff.CurseLimit },
+                { "an additional curse can be applied to you", BaseAdd, 1, Buff.CurseLimit },
+                { "enemies can have # additional curse", BaseAdd, Value, Buff.CurseLimit.For(Enemy) },
                 { "you can apply an additional curse", BaseAdd, 1, Buff.CurseLimit.For(Enemy) },
                 { "unaffected by curses", PercentLess, 100, Buffs(targets: Self).With(Keyword.Curse).Effect },
                 {
@@ -418,7 +413,7 @@ namespace PoESkillTree.Computation.Data
                 { "cannot (apply|inflict) shock", TotalOverride, 0, Ailment.Shock.Chance },
                 { "cannot inflict elemental ailments", TotalOverride, 0, Ailment.Elemental.Select(s => s.Chance) },
                 {
-                    "(you )?can afflict an additional ignite on an enemy",
+                    "(you )?can (afflict|inflict) an additional ignite on an enemy",
                     BaseAdd, 1, Ailment.Ignite.InstancesOn(Enemy).Maximum
                 },
                 {

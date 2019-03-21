@@ -209,7 +209,10 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "lose a ({ChargeTypeMatchers}) and", Reference.AsChargeType.Amount.Value > 0 },
                 // - other
-                { "if you have # primordial jewels,", Stat.PrimordialJewelsSocketed.Value >= Value },
+                {
+                    "if you have # primordial (jewels|items socketed or equipped)",
+                    Stat.PrimordialJewelsSocketed.Value >= Value
+                },
                 // - on enemy
                 { "(against enemies )?that are on low life", Life.For(Enemy).IsLow },
                 { "against enemies on low life", Life.For(Enemy).IsLow },
@@ -277,8 +280,8 @@ namespace PoESkillTree.Computation.Data
                 { "with elemental skills", ElementalDamageTypes.Select(With).Aggregate((l, r) => l.Or(r)) },
                 { "with ({DamageTypeMatchers}) skills", With(Reference.AsDamageType) },
                 // - by single skill
-                { "({SkillMatchers})", With(Reference.AsSkill) },
-                { "({SkillMatchers})('|s)? (fires|has a|have a|has|deals|gain)", With(Reference.AsSkill) },
+                { "({SkillMatchers})('s)?", With(Reference.AsSkill) },
+                { "({SkillMatchers}) (fires|has a|have a|has|deals|gain)", With(Reference.AsSkill) },
                 { "dealt by ({SkillMatchers})", With(Reference.AsSkill) },
                 {
                     "({SkillMatchers}) and ({SkillMatchers})",
@@ -298,7 +301,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "if you summoned a golem in the past # seconds", Golems.Cast.InPastXSeconds(Value) },
                 // - by skill part
-                { "(beams?|final wave|shockwaves?) deals?", Stat.MainSkillPart.Value.Eq(1) },
+                { "(beams?|final wave|shockwaves?|cone) (has a|deals?)", Stat.MainSkillPart.Value.Eq(1) },
                 // - other
                 { "to enemies they're attached to", Flag.IsBrandAttachedToEnemy },
                 { "to branded enemy", Flag.IsBrandAttachedToEnemy },
@@ -313,7 +316,6 @@ namespace PoESkillTree.Computation.Data
                 // totems
                 { "totems (gain|have)", For(Entity.Totem) },
                 { "you and your totems", Or(For(Self), For(Entity.Totem)) },
-                { "totems fire", With(Keyword.Totem) },
                 { "(spells cast|attacks used|skills used) by totems (have a|have)", With(Keyword.Totem) },
                 { "of totem skills that cast an aura", And(With(Keyword.Totem), With(Keyword.Aura)) },
                 { "while you have a totem", Totems.CombinedInstances.Value > 0 },
@@ -323,6 +325,7 @@ namespace PoESkillTree.Computation.Data
                 { "minions (deal|have|gain)", For(Entity.Minion) },
                 { "supported skills have minion", For(Entity.Minion) },
                 { "you and your minions have", For(Entity.Minion).Or(For(Self)) },
+                { "golems", And(For(Entity.Minion), With(Keyword.Golem)) },
                 { "golems have", And(For(Entity.Minion), With(Keyword.Golem)) },
                 { "spectres have", And(For(Entity.Minion), With(Skills.RaiseSpectre)) },
                 { "skeletons deal", And(For(Entity.Minion), WithSkeletonSkills) },

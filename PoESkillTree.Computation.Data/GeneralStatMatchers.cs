@@ -106,6 +106,12 @@ namespace PoESkillTree.Computation.Data
                     "({DamageTypeMatchers}) damage from hits taken as chaos damage",
                     Reference.AsDamageType.HitDamageTakenAs(DamageType.Chaos)
                 },
+                // - conversion and gain
+                {
+                    "({DamageTypeMatchers}) damage converted to ({DamageTypeMatchers}) damage",
+                    References[0].AsDamageType.Damage.WithHitsAndAilments
+                        .ConvertTo(References[1].AsDamageType.Damage.WithHitsAndAilments)
+                },
                 // - penetration
                 // - exposure
                 // - crit
@@ -276,6 +282,7 @@ namespace PoESkillTree.Computation.Data
                     "mana cost of skills that place mines or throw traps",
                     Mana.Cost, Or(With(Keyword.Mine), With(Keyword.Trap))
                 },
+                { "mana cost of ({SkillMatchers})", Mana.Cost, With(Reference.AsSkill) },
                 { "mana reserved", AllSkills.Reservation },
                 { "mana reservation of skills", AllSkills.Reservation },
                 { "mana reservation of ({KeywordMatchers}) skills", Skills[Reference.AsKeyword].Reservation },
@@ -285,6 +292,7 @@ namespace PoESkillTree.Computation.Data
                 { "buff duration", Stat.Duration },
                 { "warcry duration", Stat.Duration, With(Keyword.Warcry) },
                 { "curse duration", Stat.Duration, With(Keyword.Curse) },
+                { "({SkillMatchers}) duration", Stat.Duration, With(Reference.AsSkill) },
                 // traps, mines, totems
                 { "trap duration", Stat.Trap.Duration },
                 { "mine duration", Stat.Mine.Duration },
@@ -310,6 +318,7 @@ namespace PoESkillTree.Computation.Data
                 { "skeleton duration", Stat.Duration, WithSkeletonSkills },
                 { "skeleton movement speed", Stat.MovementSpeed.For(Entity.Minion), WithSkeletonSkills },
                 { "golem at a time", Golems.CombinedInstances.Maximum },
+                { "maximum number of summoned golems", Golems.CombinedInstances.Maximum },
                 // buffs
                 // - effect
                 { "({BuffMatchers}) effect", Reference.AsBuff.Effect },

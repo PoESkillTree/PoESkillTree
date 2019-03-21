@@ -13,8 +13,10 @@ Hindered Enemies take 20% increased Chaos Damage
 Nearby Hindered Enemies deal 15% reduced Damage over Time
 4% chance to Hinder Enemies on Hit with Spells, with 30% reduced Movement Speed
 Minions have 4% chance to Hinder Enemies on Hit with Spells, with 30% reduced Movement Speed
+Blight has 50% increased Hinder Duration
 // - Withered
 Every second, inflict Withered on nearby Enemies for 15 seconds
+Blight inflicts Withered for 2 seconds
 // - Maddening Presence
 Gain Maddening Presence for 10 seconds when you Kill a Rare or Unique Enemy
 // - Item quality as a property stat
@@ -167,11 +169,12 @@ Your Hits inflict Decay, dealing 500 Chaos Damage per second for 8 seconds
 Minions Regenerate 3 Life per second
 Grants 50% of Life Recovery to Minions
 // - modifies minion skill
+Raised Zombies' Slam Attack deals 30% increased Damage
 Raised Zombies' Slam Attack has 100% increased Area of Effect
 Raised Zombies' Slam Attack has 100% increased Cooldown Recovery Speed
 Summoned Sentinels of Purity have 50% increased Area of effect
 // - adds new minion skill
-can summon up to 3 Skeleton Mages with Summon Skeletons
+Summon Skeleton can summon up to 5 Skeleton Mages
 summon 2 additional skeleton warriors with summon skeleton
 Animate Weapon can Animate up to 8 Ranged Weapons
 Minions explode when reduced to Low Life, dealing 33% of their maximum Life as Fire Damage to surrounding Enemies
