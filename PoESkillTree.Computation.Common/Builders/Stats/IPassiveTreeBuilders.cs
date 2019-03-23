@@ -10,5 +10,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder NodeSkilled(ushort nodeId);
 
         ValueBuilder TotalInModifierSourceJewelRadius(IStatBuilder stat);
+        ValueBuilder AllocatedInModifierSourceJewelRadius(IStatBuilder stat);
+        ValueBuilder UnallocatedInModifierSourceJewelRadius(IStatBuilder stat);
     }
 }

@@ -314,6 +314,7 @@ namespace PoESkillTree.Computation.Data
                 { "if you detonated mines recently", Skills.DetonateMines.Cast.Recently },
                 { "if you've placed a mine or thrown a trap recently", Or(Traps.Cast.Recently, Mines.Cast.Recently) },
                 // totems
+                { "^totems", For(Entity.Totem) },
                 { "totems (gain|have)", For(Entity.Totem) },
                 { "you and your totems", Or(For(Self), For(Entity.Totem)) },
                 { "(spells cast|attacks used|skills used) by totems (have a|have)", With(Keyword.Totem) },

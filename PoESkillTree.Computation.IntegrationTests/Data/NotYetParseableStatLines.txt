@@ -171,6 +171,7 @@ Grants 50% of Life Recovery to Minions
 // - modifies minion skill
 With at least 40 Intelligence in Radius, Raised Zombies' Slam Attack deals 30% increased Damage
 Raised Zombies' Slam Attack has 100% increased Area of Effect
+Raised Zombies' Slam Attack has 100% increased Cooldown Recovery Speed
 With at least 40 Intelligence in Radius, Raised Zombies' Slam Attack has 100% increased Cooldown Recovery Speed
 Summoned Sentinels of Purity have 50% increased Area of effect
 // - adds new minion skill

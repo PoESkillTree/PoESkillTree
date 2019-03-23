@@ -80,6 +80,7 @@ With at least 40 Intelligence in Radius, Cold Snap grants Power Charges instead 
 Bleeding you inflict is Reflected to you
 Poison you inflict is Reflected to you
 With 40 Intelligence in Radius, Glacial Cascade has an additional Burst
+With 4 Notables Allocated in Radius, When you Kill a Rare monster, you gain 1 of its Modifiers for 20 seconds
 // Fishing Rods: =======================================================================================================
 17% increased Quantity of Fish Caught
 22% reduced Fishing Pool Consumption

@@ -1,4 +1,4 @@
-﻿//Anatomical Knowledge
+﻿Anatomical Knowledge
 Apparitions
 Assassin's Haste
 Brawn
@@ -15,7 +15,7 @@ Conqueror's Longevity
 Conqueror's Potency
 Dead Reckoning
 //Efficient Training
-//Eldritch Knowledge
+Eldritch Knowledge
 Emperor's Cunning
 Emperor's Mastery
 Emperor's Might
@@ -40,7 +40,7 @@ Hidden Potential
 Hotfooted
 //Intertia
 Inevitability
-//Inspired Learning
+Inspired Learning
 //Intuitive Leap
 Izaro's Turmoil
 //Lioneye's Fall
@@ -57,7 +57,7 @@ Poacher's Aim
 Primordial Eminence
 Primordial Harmony
 Primordial Might
-//Pugilist
+Pugilist
 //Pure Talent
 Rain of Splinters
 Rapid Expansion
@@ -66,19 +66,19 @@ Ring of Blades
 Rolling Flames
 Shattered Chains
 Soul's Wick
-//Spire of Stone
+Spire of Stone
 Spirit Guards
 Spirited Response
 Spreading Rot
-//Static Electricity
+Static Electricity
 Steel Spirit
 Sudden Ignition
 Survival Instincts
 Survival Secrets
 Survival Skills
-//Tempered Flesh
-//Tempered Mind
-//Tempered Spirit
+Tempered Flesh
+Tempered Mind
+Tempered Spirit
 The Anima Stone
 //The Blue Dream
 //The Blue Nightmare
@@ -89,9 +89,9 @@ The Long Winter
 //The Red Dream
 //The Red Nightmare
 The Vigil
-//Transcendent Flesh
-//Transcendent Mind
-//Transcendent Spirit
+Transcendent Flesh
+Transcendent Mind
+Transcendent Spirit
 Unending Hunger
 //Unnatural Instinct
 Unstable Payload

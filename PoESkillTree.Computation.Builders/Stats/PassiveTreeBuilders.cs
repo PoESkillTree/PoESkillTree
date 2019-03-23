@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
@@ -22,17 +23,32 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public ValueBuilder TotalInModifierSourceJewelRadius(IStatBuilder stat)
             => new ValueBuilder(new ValueBuilderImpl(
-                ps => BuildTotalInModifierSourceJewelRadiusValue(ps, stat),
+                ps => BuildInModifierSourceJewelRadiusValue(ps, stat, _ => new Constant(true)),
                 c => TotalInModifierSourceJewelRadius(stat.Resolve(c))));
 
-        private IValue BuildTotalInModifierSourceJewelRadiusValue(BuildParameters parameters, IStatBuilder stat)
+        public ValueBuilder AllocatedInModifierSourceJewelRadius(IStatBuilder stat)
+            => new ValueBuilder(new ValueBuilderImpl(
+                ps => BuildInModifierSourceJewelRadiusValue(ps, stat, v => v),
+                c => TotalInModifierSourceJewelRadius(stat.Resolve(c))));
+
+        public ValueBuilder UnallocatedInModifierSourceJewelRadius(IStatBuilder stat)
+            => new ValueBuilder(new ValueBuilderImpl(
+                ps => BuildInModifierSourceJewelRadiusValue(ps, stat,
+                    v => new ConditionalValue(c => !v.Calculate(c).IsTrue(), $"!{v}")),
+                c => TotalInModifierSourceJewelRadius(stat.Resolve(c))));
+
+        private IValue BuildInModifierSourceJewelRadiusValue(
+            BuildParameters parameters, IStatBuilder stat, Func<IValue, IValue> condition)
         {
             var modifierSource = GetJewelSource(parameters);
             return _tree.GetNodesInRadius(modifierSource.PassiveNodeId, modifierSource.Radius)
-                .Select(d => stat.AsPassiveNodePropertyFor(d.Id))
-                .Select(b => b.Value)
+                .Select(GetValue)
                 .Aggregate((l, r) => l + r)
                 .Build(parameters);
+
+            ValueBuilder GetValue(PassiveNodeDefinition d)
+                => stat.AsPassiveNodePropertyFor(d.Id).Value
+                    .If(condition(NodeSkilled(d.Id).Value.Build(parameters)));
         }
 
         private static ModifierSource.Local.Jewel GetJewelSource(BuildParameters parameters)

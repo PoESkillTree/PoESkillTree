@@ -109,6 +109,15 @@ namespace PoESkillTree.Computation.Data
                 { "for each mine", Mines.CombinedInstances.Value },
                 { "for each trap and mine you have", Traps.CombinedInstances.Value + Mines.CombinedInstances.Value },
                 { "per totem", Totems.CombinedInstances.Value },
+                // jewels
+                {
+                    "(per|for every) # ({AttributeStatMatchers}) (allocated|(from|on) allocated passives) in radius",
+                    PerStat(PassiveTree.AllocatedInModifierSourceJewelRadius(Reference.AsStat), Value)
+                },
+                {
+                    "(per|for every) # ({AttributeStatMatchers}) (allocated|(from|on) unallocated passives) in radius",
+                    PerStat(PassiveTree.UnallocatedInModifierSourceJewelRadius(Reference.AsStat), Value)
+                },
                 // unique
                 {
                     "for each poison you have inflicted recently",
