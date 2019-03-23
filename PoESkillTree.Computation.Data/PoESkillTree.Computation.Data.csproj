@@ -65,6 +65,7 @@
     <Compile Include="ActionConditionMatchers.cs" />
     <Compile Include="ActionMatchers.cs" />
     <Compile Include="AilmentMatchers.cs" />
+    <Compile Include="AttributeStatMatchers.cs" />
     <Compile Include="Base\ReferencedMatchersBase.cs" />
     <Compile Include="Base\StatMatchersBase.cs" />
     <Compile Include="ChargeTypeMatchers.cs" />

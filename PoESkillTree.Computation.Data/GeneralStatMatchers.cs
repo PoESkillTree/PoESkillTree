@@ -15,9 +15,10 @@ namespace PoESkillTree.Computation.Data
     /// <inheritdoc />
     /// <summary>
     /// <see cref="IStatMatchers"/> implementation matching stat parts specifying stats 
-    /// (excluding pool and damage stats).
-    /// <para>These matchers are referenceable. They can reference <see cref="DamageStatMatchers"/> and
-    /// <see cref="PoolStatMatchers"/> in addition to the <see cref="IReferencedMatchers"/> themselves.</para>
+    /// (excluding pool, damage and attribute stats).
+    /// <para>These matchers are referenceable. They can reference <see cref="DamageStatMatchers"/>,
+    /// <see cref="PoolStatMatchers"/> and <see cref="AttributeStatMatchers"/> in addition to the
+    /// <see cref="IReferencedMatchers"/> themselves.</para>
     /// </summary>
     public class GeneralStatMatchers : StatMatchersBase
     {
@@ -35,14 +36,12 @@ namespace PoESkillTree.Computation.Data
             new StatMatcherCollection<IStatBuilder>(_modifierBuilder)
             {
                 // attributes
-                { "strength", Attribute.Strength },
                 { "strength damage bonus", Attribute.StrengthDamageBonus },
-                { "dexterity", Attribute.Dexterity },
                 { "dexterity evasion bonus", Attribute.DexterityEvasionBonus },
-                { "intelligence", Attribute.Intelligence },
-                { "strength and dexterity", ApplyOnce(Attribute.Strength, Attribute.Dexterity) },
-                { "strength and intelligence", ApplyOnce(Attribute.Strength, Attribute.Intelligence) },
-                { "dexterity and intelligence", ApplyOnce(Attribute.Dexterity, Attribute.Intelligence) },
+                {
+                    "({AttributeStatMatchers}) and ({AttributeStatMatchers})",
+                    ApplyOnce(References[0].AsStat, References[1].AsStat)
+                },
                 { "(all )?attributes", ApplyOnce(Attribute.Strength, Attribute.Dexterity, Attribute.Intelligence) },
                 // - requirements
                 {

@@ -91,6 +91,7 @@ namespace PoESkillTree.Computation.Data
                 new GeneralStatMatchers(_builderFactories, modifierBuilder),
                 new DamageStatMatchers(_builderFactories, modifierBuilder),
                 new PoolStatMatchers(_builderFactories, modifierBuilder),
+                new AttributeStatMatchers(_builderFactories, modifierBuilder),
                 new ConditionMatchers(_builderFactories, modifierBuilder),
                 new ActionConditionMatchers(_builderFactories, modifierBuilder),
             };
