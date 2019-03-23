@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.GameModel;
@@ -27,7 +26,7 @@ namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
         public ParseResult Parse(ushort nodeId)
         {
             var nodeDefinition = _passiveTreeDefinition.GetNodeById(nodeId);
-            var localSource = new ModifierSource.Local.Tree(nodeDefinition.Name);
+            var localSource = new ModifierSource.Local.PassiveNode(nodeId, nodeDefinition.Name);
             var globalSource = new ModifierSource.Global(localSource);
             var isSkilledStat = _builderFactories.StatBuilders.PassiveNodeSkilled(nodeId);
             var isSkilled = isSkilledStat.IsSet;

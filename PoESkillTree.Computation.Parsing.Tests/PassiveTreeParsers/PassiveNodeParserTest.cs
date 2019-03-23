@@ -101,6 +101,6 @@ namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
                 CreateGlobalSource(nodeDefinition));
 
         private static ModifierSource.Global CreateGlobalSource(PassiveNodeDefinition nodeDefinition)
-            => new ModifierSource.Global(new ModifierSource.Local.Tree(nodeDefinition.Name));
+            => new ModifierSource.Global(new ModifierSource.Local.PassiveNode(nodeDefinition.Id, nodeDefinition.Name));
     }
 }

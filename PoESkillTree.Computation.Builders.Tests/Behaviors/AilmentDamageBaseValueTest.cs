@@ -49,7 +49,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
         public void CalculateUsesCurrentPathOfContext()
         {
             var skillDamage = new Stat("");
-            var path = new PathDefinition(new ModifierSource.Local.Tree());
+            var path = new PathDefinition(new ModifierSource.Local.PassiveNode(0));
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.CurrentPath == path &&
                 c.GetValue(skillDamage, NodeType.Base, path) == new NodeValue(3));

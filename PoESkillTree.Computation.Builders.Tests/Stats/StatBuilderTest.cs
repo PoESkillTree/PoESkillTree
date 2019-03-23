@@ -234,7 +234,9 @@ namespace PoESkillTree.Computation.Builders.Stats
         public void CombineWithChainsModifierSource()
         {
             var sources = new ModifierSource[]
-                { new ModifierSource.Global(), new ModifierSource.Local.Given(), new ModifierSource.Local.Tree(), };
+            {
+                new ModifierSource.Global(), new ModifierSource.Local.Given(), new ModifierSource.Local.PassiveNode(0),
+            };
             var sut = CreateSut();
             var other1Mock = new Mock<IStatBuilder>();
             other1Mock.Setup(b => b.Build(Parameters(sources[0])))
