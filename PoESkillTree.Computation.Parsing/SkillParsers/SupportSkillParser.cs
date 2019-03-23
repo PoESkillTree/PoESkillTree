@@ -15,16 +15,12 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         private readonly SkillDefinitions _skillDefinitions;
         private readonly IBuilderFactories _builderFactories;
         private readonly UntranslatedStatParserFactory _statParserFactory;
-        private readonly IPartialSkillParser[] _partialParsers;
 
         public SupportSkillParser(
             SkillDefinitions skillDefinitions, IBuilderFactories builderFactories,
             UntranslatedStatParserFactory statParserFactory)
-        {
-            (_skillDefinitions, _builderFactories, _statParserFactory) =
+            => (_skillDefinitions, _builderFactories, _statParserFactory) =
                 (skillDefinitions, builderFactories, statParserFactory);
-            _partialParsers = CreatePartialParsers();
-        }
 
         public ParseResult Parse(SupportSkillParserParameter parameter)
         {
@@ -38,7 +34,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             var preParser = new SkillPreParser(_skillDefinitions, _builderFactories.MetaStatBuilders);
             var preParseResult = preParser.ParseSupport(active, support);
 
-            foreach (var partialParser in _partialParsers)
+            foreach (var partialParser in CreatePartialParsers())
             {
                 var (newlyParsedModifiers, newlyParsedStats) = partialParser.Parse(active, support, preParseResult);
                 modifiers.AddRange(newlyParsedModifiers);
