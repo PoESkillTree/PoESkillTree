@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.GameModel.PassiveTree
 {
     public static class PassiveTreeDefinitionExtensions
     {
+        public static IEnumerable<PassiveNodeDefinition> GetNodesInRadius(this PassiveTreeDefinition @this,
+            ushort nodeId, JewelRadius radius)
+            => @this.GetNodesInRadius(nodeId, radius.GetRadius());
+
         public static IEnumerable<PassiveNodeDefinition> GetNodesInRadius(this PassiveTreeDefinition @this,
             ushort nodeId, uint radius)
             => @this.GetNodesInRadius(@this.GetNodeById(nodeId), radius);

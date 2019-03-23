@@ -73,7 +73,7 @@ namespace PoESkillTree.Computation.IntegrationTests
             };
             var item = new Item("Metadata/Items/Jewels/JewelInt",
                 "Entropy Splinter Cobalt Jewel", 0, 0, FrameType.Rare, false, mods, true);
-            var local = new ModifierSource.Local.Item(ItemSlot.SkillTree, item.Name);
+            var local = new ModifierSource.Local.Jewel(JewelRadius.None, 0, item.Name);
             var global = new ModifierSource.Global(local);
             var valueCalculationContext = Mock.Of<IValueCalculationContext>();
             var expectedModifiers = new (string stat, Form form, double? value)[]

@@ -39,7 +39,7 @@ namespace PoESkillTree.Computation.Data
                 { "strength damage bonus", Attribute.StrengthDamageBonus },
                 { "dexterity evasion bonus", Attribute.DexterityEvasionBonus },
                 {
-                    "({AttributeStatMatchers}) and ({AttributeStatMatchers})",
+                    "({AttributeStatMatchers}) and ({AttributeStatMatchers})(?! in radius)",
                     ApplyOnce(References[0].AsStat, References[1].AsStat)
                 },
                 { "(all )?attributes", ApplyOnce(Attribute.Strength, Attribute.Dexterity, Attribute.Intelligence) },
@@ -426,7 +426,7 @@ namespace PoESkillTree.Computation.Data
                 // range and area of effect
                 { "area of effect", Stat.AreaOfEffect },
                 { "aura area of effect", Stat.AreaOfEffect, With(Keyword.Aura) },
-                { "radius", Stat.Radius },
+                { "(?<!in )radius", Stat.Radius },
                 { "explosion radius", Stat.Radius },
                 { "area of effect length", Stat.Radius },
                 { "melee weapon and unarmed( attack)? range", Stat.Range.With(Keyword.Melee) },

@@ -2,7 +2,6 @@
 using PoESkillTree.Computation.Common;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
-using PoESkillTree.GameModel.PassiveTree;
 using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Parsing.JewelParsers
@@ -10,12 +9,10 @@ namespace PoESkillTree.Computation.Parsing.JewelParsers
     public class JewelInSkillTreeParser : IParser<JewelInSkillTreeParserParameter>
     {
         private readonly ICoreParser _coreParser;
-        private readonly ThresholdJewelParser _thresholdParser;
 
-        public JewelInSkillTreeParser(PassiveTreeDefinition treeDefinition, ICoreParser coreParser)
+        public JewelInSkillTreeParser(ICoreParser coreParser)
         {
             _coreParser = coreParser;
-            _thresholdParser = new ThresholdJewelParser(treeDefinition);
         }
 
         public ParseResult Parse(JewelInSkillTreeParserParameter parameter)
@@ -30,10 +27,7 @@ namespace PoESkillTree.Computation.Parsing.JewelParsers
             var results = new List<ParseResult>(item.Modifiers.Count);
             foreach (var modifier in item.Modifiers)
             {
-                if (_thresholdParser.ReplaceThresholdIfMet(parameter, modifier, out var replacedModifier))
-                {
-                    results.Add(_coreParser.Parse(replacedModifier, globalSource, Entity.Character));
-                }
+                results.Add(_coreParser.Parse(modifier, globalSource, Entity.Character));
             }
             return ParseResult.Aggregate(results);
         }

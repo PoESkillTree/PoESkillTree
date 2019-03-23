@@ -334,6 +334,18 @@ namespace PoESkillTree.Computation.Data
                 { "during any flask effect", Equipment.IsAnyFlaskActive() },
                 // - mods on flasks are only added when the flask item is enabled
                 { "during (flask )?effect", Condition.True },
+                // jewels
+                // - thresholds
+                {
+                    "with( at least)? # ({AttributeStatMatchers}) in radius",
+                    PassiveTree.TotalInModifierSourceJewelRadius(Reference.AsStat) >= Value
+                },
+                {
+                    "with # total ({AttributeStatMatchers}) and ({AttributeStatMatchers}) in radius",
+                    (PassiveTree.TotalInModifierSourceJewelRadius(References[0].AsStat)
+                     + PassiveTree.TotalInModifierSourceJewelRadius(References[1].AsStat))
+                    >= Value
+                },
                 // other
                 { "enemies have", For(Enemy) },
                 { "against targets they pierce", Projectile.PierceCount.Value >= 1 },

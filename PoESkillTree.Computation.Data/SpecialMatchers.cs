@@ -109,19 +109,16 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     // Combat Focus
-                    "elemental hit cannot choose fire",
-                    TotalOverride, 0, Fire.Damage,
-                    And(With(Skills.FromId("ElementalHit")), Stat.MainSkillPart.Value.Eq(0))
+                    "with # total ({AttributeStatMatchers}) and ({AttributeStatMatchers}) in radius, elemental hit cannot choose fire",
+                    TotalOverride, 0, Fire.Damage, CombatFocusCondition(0)
                 },
                 {
-                    "elemental hit cannot choose cold",
-                    TotalOverride, 0, Cold.Damage,
-                    And(With(Skills.FromId("ElementalHit")), Stat.MainSkillPart.Value.Eq(1))
+                    "with # total ({AttributeStatMatchers}) and ({AttributeStatMatchers}) in radius, elemental hit cannot choose cold",
+                    TotalOverride, 0, Cold.Damage, CombatFocusCondition(1)
                 },
                 {
-                    "elemental hit cannot choose lightning",
-                    TotalOverride, 0, Lightning.Damage,
-                    And(With(Skills.FromId("ElementalHit")), Stat.MainSkillPart.Value.Eq(2))
+                    "with # total ({AttributeStatMatchers}) and ({AttributeStatMatchers}) in radius, elemental hit cannot choose lightning",
+                    TotalOverride, 0, Lightning.Damage, CombatFocusCondition(2)
                 },
                 {
                     // Soul's Wick
@@ -130,9 +127,10 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     // The Vigil
-                    "({SkillMatchers}) fortifies you and nearby allies for # seconds",
+                    "with at least # strength in radius, ({SkillMatchers}) fortifies you and nearby allies for # seconds",
                     TotalOverride, 1, Buff.Fortify.On(Self).Concat(Buff.Fortify.On(Ally)),
-                    Reference.AsSkill.Cast.InPastXSeconds(Value)
+                    And(PassiveTree.TotalInModifierSourceJewelRadius(Attribute.Strength) >= Values[0],
+                        Reference.AsSkill.Cast.InPastXSeconds(Values[1]))
                 },
                 // skills
                 {
@@ -517,6 +515,12 @@ namespace PoESkillTree.Computation.Data
                 // - Saboteur
                 { "nearby enemies are blinded", TotalOverride, 1, Buff.Blind.On(Enemy), Enemy.IsNearby },
             };
+
+        private IConditionBuilder CombatFocusCondition(int skillPart)
+            => And(With(Skills.FromId("ElementalHit")), Stat.MainSkillPart.Value.Eq(skillPart),
+                (PassiveTree.TotalInModifierSourceJewelRadius(References[0].AsStat)
+                 + PassiveTree.TotalInModifierSourceJewelRadius(References[1].AsStat))
+                >= Value);
 
         private IEnumerable<(IFormBuilder form, IValueBuilder value, IStatBuilder stat)>
             UndeniableAttackSpeed()
