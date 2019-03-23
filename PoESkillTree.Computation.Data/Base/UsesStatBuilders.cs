@@ -109,6 +109,10 @@ namespace PoESkillTree.Computation.Data.Base
         protected ISkillBuilders Skills => BuilderFactories.SkillBuilders;
         protected ISkillBuilderCollection AllSkills => Skills.AllSkills;
 
+        // Passive tree
+
+        protected IPassiveTreeBuilders PassiveTree => BuilderFactories.PassiveTreeBuilders;
+
 
         // Convenience methods
         

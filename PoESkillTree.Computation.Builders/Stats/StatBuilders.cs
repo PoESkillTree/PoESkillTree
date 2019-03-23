@@ -81,8 +81,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder RampageStacks => FromIdentity(typeof(uint));
         public IStatBuilder AttachedBrands => FromIdentity(typeof(uint));
 
-        public IStatBuilder PassiveNodeSkilled(ushort nodeId) => FromIdentity($"{nodeId}.Skilled", typeof(bool));
-
         public IStatBuilder DamageTakenGainedAsMana => FromIdentity(typeof(uint));
 
         public ValueBuilder UniqueAmount(string name)

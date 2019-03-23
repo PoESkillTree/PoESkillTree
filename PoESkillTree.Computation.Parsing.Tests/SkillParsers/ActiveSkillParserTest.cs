@@ -10,6 +10,7 @@ using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
+using PoESkillTree.GameModel.PassiveTree;
 using PoESkillTree.GameModel.Skills;
 using PoESkillTree.GameModel.StatTranslation;
 using PoESkillTree.Utils.Extensions;
@@ -1296,7 +1297,8 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             SkillDefinition skillDefinition, UntranslatedStatParserFactory statParserFactory)
         {
             var skillDefinitions = new SkillDefinitions(new[] { skillDefinition });
-            var builderFactories = new BuilderFactories(skillDefinitions);
+            var builderFactories =
+                new BuilderFactories(new PassiveTreeDefinition(new PassiveNodeDefinition[0]),skillDefinitions);
             return new ActiveSkillParser(skillDefinitions, builderFactories, statParserFactory);
         }
 

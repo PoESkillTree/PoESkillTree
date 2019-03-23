@@ -130,6 +130,7 @@
     <Compile Include="Builders\Stats\IGemStatBuilders.cs" />
     <Compile Include="Builders\Stats\ILeechStatBuilder.cs" />
     <Compile Include="Builders\Stats\IMetaStatBuilders.cs" />
+    <Compile Include="Builders\Stats\IPassiveTreeBuilders.cs" />
     <Compile Include="Builders\Stats\IPoolStatBuilder.cs" />
     <Compile Include="Builders\Stats\IPoolStatBuilders.cs" />
     <Compile Include="Builders\Stats\IProjectileStatBuilders.cs" />

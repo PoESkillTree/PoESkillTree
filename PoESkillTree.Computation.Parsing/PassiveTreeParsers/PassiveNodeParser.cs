@@ -31,7 +31,7 @@ namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
             var nodeDefinition = _passiveTreeDefinition.GetNodeById(nodeId);
             var localSource = new ModifierSource.Local.PassiveNode(nodeId, nodeDefinition.Name);
             var globalSource = new ModifierSource.Global(localSource);
-            var isSkilledStat = _builderFactories.StatBuilders.PassiveNodeSkilled(nodeId);
+            var isSkilledStat = _builderFactories.PassiveTreeBuilders.NodeSkilled(nodeId);
             var isSkilled = isSkilledStat.IsSet;
 
             var results = new List<ParseResult>(nodeDefinition.Modifiers.Count + 1);

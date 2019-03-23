@@ -139,6 +139,7 @@
     <Compile Include="Stats\LeafCoreStatBuilder.cs" />
     <Compile Include="Stats\MetaStatBuilders.cs" />
     <Compile Include="Stats\ParametrisedCoreStatBuilder.cs" />
+    <Compile Include="Stats\PassiveTreeBuilders.cs" />
     <Compile Include="Stats\PoolStatBuilder.cs" />
     <Compile Include="Stats\StatBuilders.cs" />
     <Compile Include="Stats\Stat.cs" />

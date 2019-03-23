@@ -22,7 +22,7 @@ namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
             var nodeDefinition = _passiveTreeDefinition.GetNodeById(nodeId);
             var localSource = new ModifierSource.Local.PassiveNode(nodeId, nodeDefinition.Name);
             var modifiers = new ModifierCollection(_builderFactories, localSource);
-            modifiers.AddGlobal(_builderFactories.StatBuilders.PassiveNodeSkilled(nodeId), Form.TotalOverride, 1);
+            modifiers.AddGlobal(_builderFactories.PassiveTreeBuilders.NodeSkilled(nodeId), Form.TotalOverride, 1);
             return ParseResult.Success(modifiers.Modifiers);
         }
     }
