@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Conditions;
+using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
+using PoESkillTree.GameModel.Modifiers;
 using PoESkillTree.GameModel.PassiveTree;
 
 namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
@@ -34,7 +37,9 @@ namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
             var results = new List<ParseResult>(nodeDefinition.Modifiers.Count + 1);
             foreach (var modifier in nodeDefinition.Modifiers)
             {
-                var result = Parse(modifier, globalSource).ApplyCondition(isSkilled.Build);
+                var result = ModifierLocalityTester.AffectsPassiveNodeProperty(modifier)
+                    ? Parse(modifier + " (AsPassiveNodeProperty)", localSource)
+                    : Parse(modifier, globalSource).ApplyCondition(isSkilled.Build);
                 results.Add(result);
             }
             
@@ -52,10 +57,19 @@ namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
                 modifiers.AddGlobal(_builderFactories.StatBuilders.PassivePoints.Maximum,
                     Form.BaseAdd, nodeDefinition.PassivePointsGranted, isSkilled);
             }
+
+            var attributes = _builderFactories.StatBuilders.Attribute;
+            SetupProperty(modifiers, attributes.Strength, isSkilled);
+            SetupProperty(modifiers, attributes.Dexterity, isSkilled);
+            SetupProperty(modifiers, attributes.Intelligence, isSkilled);
+
             results.Add(ParseResult.Success(modifiers.Modifiers));
 
             return ParseResult.Aggregate(results);
         }
+
+        private static void SetupProperty(ModifierCollection modifiers, IStatBuilder stat, IConditionBuilder condition)
+            => modifiers.AddGlobal(stat, Form.BaseSet, stat.AsPassiveNodeProperty.Value, condition);
 
         private ParseResult Parse(string modifierLine, ModifierSource modifierSource)
             => _coreParser.Parse(modifierLine, modifierSource, Entity.Character);

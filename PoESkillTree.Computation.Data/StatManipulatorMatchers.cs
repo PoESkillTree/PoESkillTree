@@ -52,6 +52,7 @@ namespace PoESkillTree.Computation.Data
                 { "({BuffMatchers}) grants", Reference.AsBuff.AddStat },
                 { "during ({SkillMatchers}) for you and allies", Reference.AsSkill.Buff.AddStat },
                 { @"\(AsItemProperty\)", s => s.AsItemProperty },
+                { @"\(AsPassiveNodeProperty\)", s => s.AsPassiveNodeProperty },
             };
     }
 }
