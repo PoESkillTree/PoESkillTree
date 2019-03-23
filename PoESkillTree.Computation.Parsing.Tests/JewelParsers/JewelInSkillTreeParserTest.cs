@@ -109,8 +109,8 @@ namespace PoESkillTree.Computation.Parsing.JewelParsers
         private static ModifierSource.Global CreateGlobalSource(JewelInSkillTreeParserParameter parserParam)
             => new ModifierSource.Global(CreateLocalSource(parserParam));
 
-        private static ModifierSource.Local.Item CreateLocalSource(JewelInSkillTreeParserParameter parserParam)
-            => new ModifierSource.Local.Item(ItemSlot.SkillTree, parserParam.Item.Name);
+        private static ModifierSource.Local.Jewel CreateLocalSource(JewelInSkillTreeParserParameter parserParam)
+            => new ModifierSource.Local.Jewel(parserParam.JewelRadius, parserParam.PassiveNodeId, parserParam.Item.Name);
 
         private static PassiveTreeDefinition CreateThresholdTree()
             => new PassiveTreeDefinition(CreateThresholdNodes().ToList());

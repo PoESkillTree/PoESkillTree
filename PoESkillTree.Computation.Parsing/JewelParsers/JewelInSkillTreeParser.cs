@@ -20,11 +20,11 @@ namespace PoESkillTree.Computation.Parsing.JewelParsers
 
         public ParseResult Parse(JewelInSkillTreeParserParameter parameter)
         {
-            var (item, _, _) = parameter;
+            var (item, radius, nodeId) = parameter;
             if (!item.IsEnabled)
                 return ParseResult.Empty;
 
-            var localSource = new ModifierSource.Local.Item(ItemSlot.SkillTree, item.Name);
+            var localSource = new ModifierSource.Local.Jewel(radius, nodeId, item.Name);
             var globalSource = new ModifierSource.Global(localSource);
 
             var results = new List<ParseResult>(item.Modifiers.Count);

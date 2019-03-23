@@ -164,6 +164,31 @@ namespace PoESkillTree.Computation.Common
                 public override string ToString() => Slot.ToString();
             }
 
+            /// <summary>
+            /// ModifierSource for jewels that are socketed into the skill tree.
+            /// Other jewels use ModifierSource.Local.Item.
+            /// </summary>
+            public sealed class Jewel : Local
+            {
+                public Jewel(JewelRadius radius, ushort passiveNodeId, string itemName)
+                    : base(new Jewel(radius, passiveNodeId), itemName)
+                {
+                    Radius = radius;
+                    PassiveNodeId = passiveNodeId;
+                }
+
+                public Jewel(JewelRadius radius, ushort passiveNodeId)
+                {
+                    Radius = radius;
+                    PassiveNodeId = passiveNodeId;
+                }
+
+                public JewelRadius Radius { get; }
+                public ushort PassiveNodeId { get; }
+
+                protected override object ToTuple() => (base.ToTuple(), Radius, PassiveNodeId);
+            }
+
             public sealed class Skill : Local
             {
                 public Skill(string skillId, string displayName) : base(new Skill(), displayName)
