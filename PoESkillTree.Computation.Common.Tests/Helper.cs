@@ -2,7 +2,7 @@
 using System.Linq;
 using Moq;
 
-namespace PoESkillTree.Computation.Common.Tests
+namespace PoESkillTree.Computation.Common
 {
     public static class Helper
     {

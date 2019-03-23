@@ -2,10 +2,9 @@
 using MoreLinq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Skills;
-using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.GameModel.Skills;
 
-namespace PoESkillTree.Computation.Builders.Tests.Stats
+namespace PoESkillTree.Computation.Builders.Stats
 {
     [TestFixture]
     public class CastRateStatBuilderTest

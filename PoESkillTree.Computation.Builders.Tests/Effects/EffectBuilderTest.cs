@@ -1,15 +1,13 @@
 ﻿using System.Linq;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Builders.Effects;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
-using PoESkillTree.Computation.Builders.Tests.Stats;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.GameModel;
 
-namespace PoESkillTree.Computation.Builders.Tests.Effects
+namespace PoESkillTree.Computation.Builders.Effects
 {
     [TestFixture]
     public class EffectBuilderTest

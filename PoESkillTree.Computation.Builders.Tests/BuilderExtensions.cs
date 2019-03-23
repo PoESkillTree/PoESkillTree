@@ -2,7 +2,7 @@
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Values;
 
-namespace PoESkillTree.Computation.Builders.Tests
+namespace PoESkillTree.Computation.Builders
 {
     internal static class BuilderExtensions
     {

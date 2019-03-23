@@ -2,12 +2,10 @@
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Common.Tests;
 using PoESkillTree.Computation.Core.Events;
-using PoESkillTree.Computation.Core.Graphs;
 using PoESkillTree.Computation.Core.NodeCollections;
 
-namespace PoESkillTree.Computation.Core.Tests.Graphs
+namespace PoESkillTree.Computation.Core.Graphs
 {
     [TestFixture]
     public class StatRegistryTest

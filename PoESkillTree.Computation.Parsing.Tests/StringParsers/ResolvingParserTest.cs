@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
@@ -9,9 +8,8 @@ using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.Computation.Parsing.Referencing;
-using PoESkillTree.Computation.Parsing.StringParsers;
 
-namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
+namespace PoESkillTree.Computation.Parsing.StringParsers
 {
     [TestFixture]
     public class ResolvingParserTest

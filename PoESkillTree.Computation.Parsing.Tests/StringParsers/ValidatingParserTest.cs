@@ -1,9 +1,7 @@
-﻿using Moq;
-using NUnit.Framework;
-using PoESkillTree.Computation.Parsing.StringParsers;
+﻿using NUnit.Framework;
 using PoESkillTree.GameModel.Items;
 
-namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
+namespace PoESkillTree.Computation.Parsing.StringParsers
 {
     [TestFixture]
     public class ValidatingParserTest

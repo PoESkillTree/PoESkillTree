@@ -1,17 +1,15 @@
 ﻿using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Builders.Actions;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
-using PoESkillTree.Computation.Builders.Tests.Stats;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
 
-namespace PoESkillTree.Computation.Builders.Tests.Actions
+namespace PoESkillTree.Computation.Builders.Actions
 {
     [TestFixture]
     public class ActionBuilderTest

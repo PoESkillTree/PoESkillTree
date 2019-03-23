@@ -8,9 +8,8 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
 using PoESkillTree.Computation.Core.Events;
 using PoESkillTree.Computation.Core.NodeCollections;
-using PoESkillTree.Computation.Model;
 
-namespace PoESkillTree.Tests.Computation.Model
+namespace PoESkillTree.Computation.Model
 {
     [TestFixture]
     public class ExplicitlyRegisteredStatsObserverTest

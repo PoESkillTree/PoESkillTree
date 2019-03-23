@@ -2,13 +2,12 @@
 using Moq;
 using MoreLinq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.Utils;
 
-namespace PoESkillTree.Computation.Builders.Tests.Stats
+namespace PoESkillTree.Computation.Builders.Stats
 {
     // CompositeCoreStatBuilder is also tested from StatBuilderTest.
     [TestFixture]

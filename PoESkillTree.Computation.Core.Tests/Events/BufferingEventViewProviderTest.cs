@@ -1,8 +1,7 @@
 ﻿using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Core.Events;
 
-namespace PoESkillTree.Computation.Core.Tests.Events
+namespace PoESkillTree.Computation.Core.Events
 {
     [TestFixture]
     public class BufferingEventViewProviderTest

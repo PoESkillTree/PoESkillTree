@@ -3,10 +3,9 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common.Builders.Values;
-using PoESkillTree.Computation.Parsing.Referencing;
 using static PoESkillTree.Computation.Common.Parsing.ReferenceConstants;
 
-namespace PoESkillTree.Computation.Parsing.Tests.Referencing
+namespace PoESkillTree.Computation.Parsing.Referencing
 {
     [TestFixture]
     public class RegexGroupServiceParserTest

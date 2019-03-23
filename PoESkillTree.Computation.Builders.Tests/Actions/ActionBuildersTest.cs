@@ -1,17 +1,15 @@
 ﻿using Moq;
 using MoreLinq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Builders.Actions;
 using PoESkillTree.Computation.Builders.Damage;
 using PoESkillTree.Computation.Builders.Stats;
-using PoESkillTree.Computation.Builders.Tests.Stats;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Parsing;
 
-namespace PoESkillTree.Computation.Builders.Tests.Actions
+namespace PoESkillTree.Computation.Builders.Actions
 {
     [TestFixture]
     public class ActionBuildersTest

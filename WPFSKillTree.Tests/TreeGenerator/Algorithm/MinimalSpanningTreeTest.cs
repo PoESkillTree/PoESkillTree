@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using PoESkillTree.SkillTreeFiles;
-using PoESkillTree.TreeGenerator.Algorithm;
 using PoESkillTree.TreeGenerator.Algorithm.Model;
 
-namespace PoESkillTree.Tests.TreeGenerator.Algorithm
+namespace PoESkillTree.TreeGenerator.Algorithm
 {
     [TestFixture]
     public class MinimalSpanningTreeTest

@@ -7,7 +7,7 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.PassiveTree;
-using static PoESkillTree.Computation.Parsing.Tests.ParserTestUtils;
+using static PoESkillTree.Computation.Parsing.ParserTestUtils;
 
 namespace PoESkillTree.Computation.Parsing.JewelParsers
 {

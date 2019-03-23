@@ -1,11 +1,10 @@
 ﻿using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Builders.Equipment;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.GameModel.Items;
 
-namespace PoESkillTree.Computation.Builders.Tests.Equipment
+namespace PoESkillTree.Computation.Builders.Equipment
 {
     [TestFixture]
     public class EquipmentBuilderTest

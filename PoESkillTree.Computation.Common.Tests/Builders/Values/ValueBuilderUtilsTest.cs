@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
-using PoESkillTree.Computation.Common.Builders.Values;
 
-namespace PoESkillTree.Computation.Common.Tests.Builders.Values
+namespace PoESkillTree.Computation.Common.Builders.Values
 {
     [TestFixture]
     public class ValueBuilderUtilsTest

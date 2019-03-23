@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
 using PoESkillTree.GameModel;
-using PoESkillTree.Utils.UrlProcessing;
 
-namespace PoESkillTree.Tests.Utils.UrlProcessing
+namespace PoESkillTree.Utils.UrlProcessing
 {
     [TestFixture]
     public class BuildUrlDeserializerTest

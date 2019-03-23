@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
@@ -15,7 +14,7 @@ using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
 
-namespace PoESkillTree.Computation.Builders.Tests.Conditions
+namespace PoESkillTree.Computation.Builders.Conditions
 {
     [TestFixture]
     public class ConditionBuildersTest

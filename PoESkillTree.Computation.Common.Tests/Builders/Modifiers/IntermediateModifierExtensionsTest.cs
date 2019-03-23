@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Forms;
-using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.GameModel;
 using PoESkillTree.Utils;
 
-namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
+namespace PoESkillTree.Computation.Common.Builders.Modifiers
 {
     [TestFixture]
     public class IntermediateModifierExtensionsTest

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
-using PoESkillTree.TreeGenerator.Genetic;
 
-namespace PoESkillTree.Tests.TreeGenerator.Genetic
+namespace PoESkillTree.TreeGenerator.Genetic
 {
     [TestFixture]
     public class WeightedSamplerTest

@@ -3,15 +3,13 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Conditions;
-using PoESkillTree.Computation.Builders.Equipment;
 using PoESkillTree.Computation.Builders.Stats;
-using PoESkillTree.Computation.Builders.Tests.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.Utils;
 
-namespace PoESkillTree.Computation.Builders.Tests.Equipment
+namespace PoESkillTree.Computation.Builders.Equipment
 {
     [TestFixture]
     public class EquipmentBuilderCollectionTest

@@ -3,10 +3,9 @@ using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Data;
-using PoESkillTree.Computation.Parsing.StringParsers;
 using PoESkillTree.Utils;
 
-namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
+namespace PoESkillTree.Computation.Parsing.StringParsers
 {
     [TestFixture]
     public class MatcherDataParserTest

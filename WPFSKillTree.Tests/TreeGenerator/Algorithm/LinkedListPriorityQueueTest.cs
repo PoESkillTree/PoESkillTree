@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
-using PoESkillTree.TreeGenerator.Algorithm;
 
-namespace PoESkillTree.Tests.TreeGenerator.Algorithm
+namespace PoESkillTree.TreeGenerator.Algorithm
 {
     [TestFixture]
     public class LinkedListPriorityQueueTest

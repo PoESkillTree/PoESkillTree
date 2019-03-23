@@ -2,11 +2,10 @@
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Common.Tests;
 using PoESkillTree.Computation.Core.Events;
 using PoESkillTree.Computation.Core.Nodes;
 
-namespace PoESkillTree.Computation.Core.Tests
+namespace PoESkillTree.Computation.Core
 {
     internal static class NodeHelper
     {

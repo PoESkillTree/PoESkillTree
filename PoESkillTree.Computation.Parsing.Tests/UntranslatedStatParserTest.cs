@@ -4,7 +4,7 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.StatTranslation;
 
-namespace PoESkillTree.Computation.Parsing.Tests
+namespace PoESkillTree.Computation.Parsing
 {
     [TestFixture]
     public class UntranslatedStatParserTest

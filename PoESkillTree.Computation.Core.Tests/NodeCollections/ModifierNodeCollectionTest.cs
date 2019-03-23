@@ -2,11 +2,10 @@
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core.Events;
-using PoESkillTree.Computation.Core.NodeCollections;
-using static PoESkillTree.Computation.Common.Tests.Helper;
-using static PoESkillTree.Computation.Core.Tests.NodeHelper;
+using static PoESkillTree.Computation.Common.Helper;
+using static PoESkillTree.Computation.Core.NodeHelper;
 
-namespace PoESkillTree.Computation.Core.Tests.NodeCollections
+namespace PoESkillTree.Computation.Core.NodeCollections
 {
     [TestFixture]
     public class ModifierNodeCollectionTest

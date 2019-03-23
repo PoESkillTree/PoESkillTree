@@ -1,13 +1,11 @@
 ﻿using System;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Utils;
-using PoESkillTree.Utils.Extensions;
 
-namespace PoESkillTree.Computation.Builders.Tests.Values
+namespace PoESkillTree.Computation.Builders.Values
 {
     [TestFixture]
     public class ValueBuilderTest

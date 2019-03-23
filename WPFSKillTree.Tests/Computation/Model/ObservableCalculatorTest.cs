@@ -10,9 +10,8 @@ using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
 using PoESkillTree.Utils;
-using PoESkillTree.Computation.Model;
 
-namespace PoESkillTree.Tests.Computation.Model
+namespace PoESkillTree.Computation.Model
 {
     [TestFixture]
     public class ObservableCalculatorTest

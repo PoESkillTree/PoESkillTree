@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
-using PoESkillTree.Utils.UrlProcessing;
 
-namespace PoESkillTree.Tests.Utils.UrlProcessing
+namespace PoESkillTree.Utils.UrlProcessing
 {
     [TestFixture]
     public class BuildConverterTest

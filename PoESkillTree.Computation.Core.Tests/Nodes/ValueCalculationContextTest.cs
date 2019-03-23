@@ -2,11 +2,9 @@
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Common.Tests;
-using PoESkillTree.Computation.Core.Nodes;
-using static PoESkillTree.Computation.Core.Tests.NodeHelper;
+using static PoESkillTree.Computation.Core.NodeHelper;
 
-namespace PoESkillTree.Computation.Core.Tests.Nodes
+namespace PoESkillTree.Computation.Core.Nodes
 {
     [TestFixture]
     public class ValueCalculationContextTest

@@ -4,13 +4,12 @@ using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Parsing.ItemParsers;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.StatTranslation;
-using static PoESkillTree.Computation.Parsing.Tests.ParserTestUtils;
+using static PoESkillTree.Computation.Parsing.ParserTestUtils;
 
-namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
+namespace PoESkillTree.Computation.Parsing.ItemParsers
 {
     [TestFixture]
     public class ItemParserTest

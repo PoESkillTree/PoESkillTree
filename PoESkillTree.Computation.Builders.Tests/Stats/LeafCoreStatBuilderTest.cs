@@ -1,10 +1,9 @@
 ﻿using System.Linq;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 
-namespace PoESkillTree.Computation.Builders.Tests.Stats
+namespace PoESkillTree.Computation.Builders.Stats
 {
     // Most of the tests for LeafCoreStatBuilder are in StatBuilderTest. This only tests things not tested through
     // StatBuilder.

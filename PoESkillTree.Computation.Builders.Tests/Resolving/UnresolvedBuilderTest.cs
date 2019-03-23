@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
-using PoESkillTree.Computation.Builders.Resolving;
 
-namespace PoESkillTree.Computation.Builders.Tests.Resolving
+namespace PoESkillTree.Computation.Builders.Resolving
 {
     [TestFixture]
     public class UnresolvedBuilderTest

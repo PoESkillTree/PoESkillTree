@@ -5,16 +5,15 @@ using PoESkillTree.Computation.Builders;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Stats;
-using PoESkillTree.Computation.Parsing.SkillParsers;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
 using PoESkillTree.GameModel.StatTranslation;
-using static PoESkillTree.Computation.Common.Tests.Helper;
-using static PoESkillTree.Computation.Parsing.Tests.ParserTestUtils;
-using static PoESkillTree.Computation.Parsing.Tests.SkillParsers.SkillParserTestUtils;
+using static PoESkillTree.Computation.Common.Helper;
+using static PoESkillTree.Computation.Parsing.ParserTestUtils;
+using static PoESkillTree.Computation.Parsing.SkillParsers.SkillParserTestUtils;
 
-namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
+namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
     [TestFixture]
     public class SupportSkillParserTest

@@ -2,9 +2,8 @@
 using System.Linq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common.Data;
-using PoESkillTree.Computation.Parsing.StringParsers;
 
-namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
+namespace PoESkillTree.Computation.Parsing.StringParsers
 {
     [TestFixture]
     public class StatReplacingParserTest

@@ -5,7 +5,7 @@ using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.GameModel.Skills;
 
-namespace PoESkillTree.Computation.Parsing.Tests
+namespace PoESkillTree.Computation.Parsing
 {
     public static class ParserTestUtils
     {

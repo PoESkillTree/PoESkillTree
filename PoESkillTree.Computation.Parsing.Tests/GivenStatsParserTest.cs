@@ -9,11 +9,10 @@ using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Common.Parsing;
-using PoESkillTree.Computation.Common.Tests;
 using PoESkillTree.GameModel;
 using PoESkillTree.Utils;
 
-namespace PoESkillTree.Computation.Parsing.Tests
+namespace PoESkillTree.Computation.Parsing
 {
     [TestFixture]
     public class GivenStatsParserTest

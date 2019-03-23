@@ -2,11 +2,10 @@
 using MoreLinq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Common.Tests;
 using PoESkillTree.Computation.Core.Events;
 using PoESkillTree.Computation.Core.Graphs;
 
-namespace PoESkillTree.Computation.Core.Tests
+namespace PoESkillTree.Computation.Core
 {
     [TestFixture]
     public class CalculatorTest

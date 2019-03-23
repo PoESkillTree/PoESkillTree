@@ -2,10 +2,8 @@
 using EnumsNET;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Builders.Damage;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
-using PoESkillTree.Computation.Builders.Tests.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -14,7 +12,7 @@ using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Skills;
 using PoESkillTree.Utils.Extensions;
 
-namespace PoESkillTree.Computation.Builders.Tests.Damage
+namespace PoESkillTree.Computation.Builders.Damage
 {
     [TestFixture]
     public class DamageTypeBuilderTest

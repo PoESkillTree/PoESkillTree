@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Builders.Behaviors;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 
-namespace PoESkillTree.Computation.Builders.Tests.Behaviors
+namespace PoESkillTree.Computation.Builders.Behaviors
 {
     [TestFixture]
     public class MaximumFormAggregatingValueTest

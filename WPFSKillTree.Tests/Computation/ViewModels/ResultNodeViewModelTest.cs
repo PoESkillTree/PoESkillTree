@@ -4,9 +4,8 @@ using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.GameModel;
-using PoESkillTree.Computation.ViewModels;
 
-namespace PoESkillTree.Tests.Computation.ViewModels
+namespace PoESkillTree.Computation.ViewModels
 {
     [TestFixture]
     public class ResultNodeViewModelTest

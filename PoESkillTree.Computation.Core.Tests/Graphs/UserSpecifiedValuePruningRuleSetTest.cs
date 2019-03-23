@@ -3,14 +3,12 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Common.Tests;
 using PoESkillTree.Computation.Core.Events;
-using PoESkillTree.Computation.Core.Graphs;
 using PoESkillTree.Computation.Core.NodeCollections;
 using static PoESkillTree.Computation.Common.ExplicitRegistrationTypes;
-using static PoESkillTree.Computation.Core.Tests.Graphs.NodeSelectorHelper;
+using static PoESkillTree.Computation.Core.Graphs.NodeSelectorHelper;
 
-namespace PoESkillTree.Computation.Core.Tests.Graphs
+namespace PoESkillTree.Computation.Core.Graphs
 {
     [TestFixture]
     public class UserSpecifiedValuePruningRuleSetTest

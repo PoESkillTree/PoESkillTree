@@ -1,11 +1,10 @@
 ﻿using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Builders.Behaviors;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
 
-namespace PoESkillTree.Computation.Builders.Tests.Behaviors
+namespace PoESkillTree.Computation.Builders.Behaviors
 {
     [TestFixture]
     public class AilmentDamageBaseValueTest

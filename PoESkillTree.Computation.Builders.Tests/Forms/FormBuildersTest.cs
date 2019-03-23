@@ -1,11 +1,10 @@
 ﻿using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Builders.Forms;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Forms;
 using PoESkillTree.Computation.Common.Builders.Values;
 
-namespace PoESkillTree.Computation.Builders.Tests.Forms
+namespace PoESkillTree.Computation.Builders.Forms
 {
     [TestFixture]
     public class FormBuildersTest

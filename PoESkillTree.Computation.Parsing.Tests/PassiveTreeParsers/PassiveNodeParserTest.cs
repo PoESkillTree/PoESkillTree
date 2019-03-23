@@ -1,12 +1,11 @@
 ﻿using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Parsing.PassiveTreeParsers;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.PassiveTree;
-using static PoESkillTree.Computation.Parsing.Tests.ParserTestUtils;
+using static PoESkillTree.Computation.Parsing.ParserTestUtils;
 
-namespace PoESkillTree.Computation.Parsing.Tests.PassiveTreeParsers
+namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
 {
     [TestFixture]
     public class PassiveNodeParserTest

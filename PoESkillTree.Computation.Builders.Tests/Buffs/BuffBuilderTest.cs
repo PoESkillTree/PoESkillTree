@@ -1,17 +1,15 @@
 ﻿using System.Linq;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Builders.Buffs;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Resolving;
 using PoESkillTree.Computation.Builders.Stats;
-using PoESkillTree.Computation.Builders.Tests.Stats;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.GameModel;
 
-namespace PoESkillTree.Computation.Builders.Tests.Buffs
+namespace PoESkillTree.Computation.Builders.Buffs
 {
     [TestFixture]
     public class BuffBuilderTest
