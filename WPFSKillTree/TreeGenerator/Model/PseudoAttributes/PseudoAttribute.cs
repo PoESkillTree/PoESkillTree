@@ -11,20 +11,19 @@ namespace PoESkillTree.TreeGenerator.Model.PseudoAttributes
         /// <summary>
         /// Gets the name of the PseudoAttribute.
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; }
 
         /// <summary>
         /// Gets the list of Attributes this PseudoAttribute contains.
         /// </summary>
-        public List<Attribute> Attributes { get; private set; }
+        public List<Attribute> Attributes { get; }
 
         /// <summary>
         /// Gets the name of the group this PseudoAttribute belongs to.
         /// </summary>
-        // ReSharper disable once MemberCanBePrivate.Global
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         // Used in group and sort descriptions.
-        public string Group { get; private set; }
+        public string Group { get; }
 
         /// <summary>
         /// Creates a new PseudoAttribute with the given name and group
@@ -34,16 +33,11 @@ namespace PoESkillTree.TreeGenerator.Model.PseudoAttributes
         /// <param name="group">Group (not null)</param>
         internal PseudoAttribute(string name, string group)
         {
-            if (name == null) throw new ArgumentNullException("name");
-            if (group == null) throw new ArgumentNullException("group");
-            Name = name;
-            Group = group;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
+            Group = @group ?? throw new ArgumentNullException(nameof(@group));
             Attributes = new List<Attribute>();
         }
 
-        public override string ToString()
-        {
-            return Name;
-        }
+        public override string ToString() => Name;
     }
 }
