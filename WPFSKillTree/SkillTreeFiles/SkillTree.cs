@@ -777,7 +777,7 @@ namespace PoESkillTree.SkillTreeFiles
 
         public void AllocateSkillNodes(IReadOnlyCollection<SkillNode> toAdd)
         {
-            var toRemove = toAdd.SelectMany(SelectAscendancyNodesToRemove);
+            var toRemove = toAdd.SelectMany(SelectAscendancyNodesToRemove).ToList();
             SkilledNodes.ExceptAndUnionWith(toRemove, toAdd);
             if (SelectAscendancyFromNodes(toAdd) is int ascType)
                 AscType = ascType;
