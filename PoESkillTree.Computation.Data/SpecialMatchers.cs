@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using EnumsNET;
 using PoESkillTree.Computation.Common;
@@ -14,7 +13,6 @@ using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 using PoESkillTree.GameModel.Items;
-using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Data
@@ -126,6 +124,12 @@ namespace PoESkillTree.Computation.Data
                 {
                     "with # total ({AttributeStatMatchers}) and ({AttributeStatMatchers}) in radius, elemental hit cannot choose lightning",
                     TotalOverride, 0, Lightning.Damage, CombatFocusCondition(2)
+                },
+                {
+                    // Might in All Forms
+                    "({AttributeStatMatchers}) and ({AttributeStatMatchers}) from passives in radius count towards strength melee damage bonus",
+                    (BaseAdd, PassiveTree.AllocatedInModifierSourceJewelRadius(References[0].AsStat), Attribute.StrengthDamageBonus),
+                    (BaseAdd, PassiveTree.AllocatedInModifierSourceJewelRadius(References[1].AsStat), Attribute.StrengthDamageBonus)
                 },
                 {
                     // Soul's Wick

@@ -1,4 +1,4 @@
-Anatomical Knowledge
+﻿Anatomical Knowledge
 Apparitions
 Assassin's Haste
 Brawn
@@ -48,7 +48,7 @@ Malicious Intent
 Mantra of Flames
 Martial Artistry
 Might and Influence
-//Might in All Forms
+Might in All Forms
 //Might of the Meek
 Omen on the Winds
 Overwhelming Odds
