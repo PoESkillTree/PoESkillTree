@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
@@ -29,19 +30,18 @@ namespace PoESkillTree.Computation.Builders.Stats
         public ValueBuilder AllocatedInModifierSourceJewelRadius(IStatBuilder stat)
             => new ValueBuilder(new ValueBuilderImpl(
                 ps => BuildInModifierSourceJewelRadiusValue(ps, stat, v => v),
-                c => TotalInModifierSourceJewelRadius(stat.Resolve(c))));
+                c => AllocatedInModifierSourceJewelRadius(stat.Resolve(c))));
 
         public ValueBuilder UnallocatedInModifierSourceJewelRadius(IStatBuilder stat)
             => new ValueBuilder(new ValueBuilderImpl(
                 ps => BuildInModifierSourceJewelRadiusValue(ps, stat,
                     v => new ConditionalValue(c => !v.Calculate(c).IsTrue(), $"!{v}")),
-                c => TotalInModifierSourceJewelRadius(stat.Resolve(c))));
+                c => UnallocatedInModifierSourceJewelRadius(stat.Resolve(c))));
 
         private IValue BuildInModifierSourceJewelRadiusValue(
             BuildParameters parameters, IStatBuilder stat, Func<IValue, IValue> condition)
         {
-            var modifierSource = GetJewelSource(parameters);
-            return _tree.GetNodesInRadius(modifierSource.PassiveNodeId, modifierSource.Radius)
+            return GetNodesInRadius(parameters)
                 .Select(GetValue)
                 .Aggregate((l, r) => l + r)
                 .Build(parameters);
@@ -49,6 +49,17 @@ namespace PoESkillTree.Computation.Builders.Stats
             ValueBuilder GetValue(PassiveNodeDefinition d)
                 => stat.AsPassiveNodePropertyFor(d.Id).Value
                     .If(condition(NodeSkilled(d.Id).Value.Build(parameters)));
+        }
+
+        public IStatBuilder MultipliedAttributeForNodesInModifierSourceJewelRadius(
+            IStatBuilder sourceAttribute, IStatBuilder targetAttribute)
+            => new StatBuilder(StatFactory,
+                new MultipliedAttributeForEachNodeInRadiusStatBuilder(GetNodesInRadius, sourceAttribute, targetAttribute));
+
+        private IEnumerable<PassiveNodeDefinition> GetNodesInRadius(BuildParameters parameters)
+        {
+            var modifierSource = GetJewelSource(parameters);
+            return _tree.GetNodesInRadius(modifierSource.PassiveNodeId, modifierSource.Radius);
         }
 
         private static ModifierSource.Local.Jewel GetJewelSource(BuildParameters parameters)
@@ -59,7 +70,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             if (modifierSource is ModifierSource.Local.Jewel jewelSource)
                 return jewelSource;
             throw new ParseException(
-                "IPassiveTreeBuilders.TotalInModifierSourceJewelRadius can only be used with a source of type ModifierSource.Local.Jewel");
+                "IPassiveTreeBuilders.*InModifierSourceJewelRadius can only be used with a source of type ModifierSource.Local.Jewel");
         }
     }
 }

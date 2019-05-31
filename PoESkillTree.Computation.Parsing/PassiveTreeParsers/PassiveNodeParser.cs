@@ -38,7 +38,7 @@ namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
             foreach (var modifier in nodeDefinition.Modifiers)
             {
                 var result = ModifierLocalityTester.AffectsPassiveNodeProperty(modifier)
-                    ? Parse(modifier + " (AsPassiveNodeProperty)", localSource)
+                    ? Parse(modifier + " (AsPassiveNodeBaseProperty)", globalSource)
                     : Parse(modifier, globalSource).ApplyCondition(isSkilled.Build);
                 results.Add(result);
             }
@@ -69,7 +69,10 @@ namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
         }
 
         private static void SetupProperty(ModifierCollection modifiers, IStatBuilder stat, IConditionBuilder condition)
-            => modifiers.AddGlobal(stat, Form.BaseSet, stat.AsPassiveNodeProperty.Value, condition);
+        {
+            modifiers.AddGlobal(stat, Form.BaseSet, stat.AsPassiveNodeProperty.Value, condition);
+            modifiers.AddGlobal(stat.AsPassiveNodeProperty, Form.BaseSet, stat.AsPassiveNodeBaseProperty.Value);
+        }
 
         private ParseResult Parse(string modifierLine, ModifierSource modifierSource)
             => _coreParser.Parse(modifierLine, modifierSource, Entity.Character);

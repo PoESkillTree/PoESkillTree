@@ -101,6 +101,9 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder AsPassiveNodeProperty
             => WithStatConverter((m, s) => PassiveNodeProperty(s, GetPassiveNodeId(m)));
 
+        public IStatBuilder AsPassiveNodeBaseProperty
+            => WithStatConverter((m, s) => PassiveNodeBaseProperty(s, GetPassiveNodeId(m)));
+
         private static ushort GetPassiveNodeId(ModifierSource modifierSource)
         {
             if (modifierSource is ModifierSource.Global globalSource)
@@ -116,6 +119,9 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         private IStat PassiveNodeProperty(IStat source, ushort nodeId)
             => StatFactory.FromIdentity(nodeId + "." + source.Identity, source.Entity, source.DataType);
+
+        private IStat PassiveNodeBaseProperty(IStat source, ushort nodeId)
+            => StatFactory.FromIdentity(nodeId + "." + source.Identity + ".Base", source.Entity, source.DataType);
 
         public IStatBuilder For(IEntityBuilder entity) => With(CoreStatBuilder.WithEntity(entity));
 

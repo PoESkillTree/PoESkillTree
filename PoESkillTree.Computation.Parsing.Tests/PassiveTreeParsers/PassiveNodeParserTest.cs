@@ -3,6 +3,7 @@ using FluentAssertions;
 using Moq;
 using MoreLinq;
 using NUnit.Framework;
+using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.PassiveTree;
@@ -88,8 +89,14 @@ namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
         public void SetsUpAttributeProperties(string attribute)
         {
             var definition = CreateNode();
-            var expected = CreateConditionalModifier(definition, $"{attribute}", Form.BaseSet,
-                $"Character.{definition.Id}.{attribute}.Value(Total, Global)");
+            var expected = new[]
+            {
+                CreateConditionalModifier(definition, $"{attribute}", Form.BaseSet,
+                    $"Character.{definition.Id}.{attribute}.Value(Total, Global)"),
+                CreateModifier($"{definition.Id}.{attribute}", Form.BaseSet,
+                    new StatValue(new Stat($"{definition.Id}.{attribute}.Base")),
+                    CreateGlobalSource(definition)),
+            };
             var sut = CreateSut(definition);
 
             var result = sut.Parse(definition.Id);
@@ -104,12 +111,12 @@ namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
         {
             var modifier = "+1 to " + attributes.ToDelimitedString(" and ");
             var definition = CreateNode(modifier);
-            var source = CreateLocalSource(definition);
+            var source = CreateGlobalSource(definition);
             var expected = attributes
                 .Select(a => CreateModifier(a, Form.BaseAdd, 1, source))
                 .ToList();
             var coreParser = Mock.Of<ICoreParser>(p =>
-                p.Parse(new CoreParserParameter(modifier + " (AsPassiveNodeProperty)", source, Entity.Character))
+                p.Parse(new CoreParserParameter(modifier + " (AsPassiveNodeBaseProperty)", source, Entity.Character))
                 == ParseResult.Success(expected));
             var sut = CreateSut(definition, coreParser);
 

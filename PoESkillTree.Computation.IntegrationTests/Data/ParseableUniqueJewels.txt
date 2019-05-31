@@ -1,9 +1,9 @@
-﻿Anatomical Knowledge
+Anatomical Knowledge
 Apparitions
 Assassin's Haste
 Brawn
-//Brute Force Solution
-//Careful Planning
+Brute Force Solution
+Careful Planning
 Cheap Construction
 Clear Mind
 Coated Shrapnel
@@ -14,7 +14,7 @@ Conqueror's Efficiency
 Conqueror's Longevity
 Conqueror's Potency
 Dead Reckoning
-//Efficient Training
+Efficient Training
 Eldritch Knowledge
 Emperor's Cunning
 Emperor's Mastery
@@ -22,11 +22,11 @@ Emperor's Might
 Emperor's Wit
 //Energised Armour
 //Energy From Within
-//Fertile Mind
+Fertile Mind
 Fight for Survival
 //Fireborn
 First Snow
-//Fluid Motion
+Fluid Motion
 Fortified Legion
 Fragile Bloom
 From Dust
@@ -38,7 +38,7 @@ Hazardous Research
 //Healthy Mind
 Hidden Potential
 Hotfooted
-//Intertia
+Inertia
 Inevitability
 Inspired Learning
 //Intuitive Leap

@@ -71,6 +71,8 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
 
         IStatBuilder AsPassiveNodeProperty { get; }
 
+        IStatBuilder AsPassiveNodeBaseProperty { get; }
+
         IStatBuilder AsPassiveNodePropertyFor(ushort nodeId);
 
         /// <summary>

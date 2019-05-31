@@ -53,6 +53,7 @@ namespace PoESkillTree.Computation.Data
                 { "during ({SkillMatchers}) for you and allies", Reference.AsSkill.Buff.AddStat },
                 { @"\(AsItemProperty\)", s => s.AsItemProperty },
                 { @"\(AsPassiveNodeProperty\)", s => s.AsPassiveNodeProperty },
+                { @"\(AsPassiveNodeBaseProperty\)", s => s.AsPassiveNodeBaseProperty },
             };
     }
 }

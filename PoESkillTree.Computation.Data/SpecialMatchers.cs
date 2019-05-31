@@ -14,6 +14,7 @@ using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 using PoESkillTree.GameModel.Items;
+using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Data
@@ -106,6 +107,12 @@ namespace PoESkillTree.Computation.Data
                 {
                     "grand spectrum",
                     BaseAdd, 1, Stat.GrandSpectrumJewelsSocketed
+                },
+                {
+                    // Brute Force Solution, Careful Planning, Efficient Training, Fertile Mind, Fluid Motion, Inertia
+                    "({AttributeStatMatchers}) from passives in radius is transformed to ({AttributeStatMatchers})",
+                    (BaseSubtract, 1, PassiveTree.MultipliedAttributeForNodesInModifierSourceJewelRadius(References[0].AsStat, References[0].AsStat)),
+                    (BaseAdd, 1, PassiveTree.MultipliedAttributeForNodesInModifierSourceJewelRadius(References[0].AsStat, References[1].AsStat))
                 },
                 {
                     // Combat Focus
