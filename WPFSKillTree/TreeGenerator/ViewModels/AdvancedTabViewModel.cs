@@ -594,9 +594,9 @@ namespace PoESkillTree.TreeGenerator.ViewModels
             {
                 Filter = item => !_addedPseudoAttributes.Contains((PseudoAttribute) item)
             };
-            PseudoAttributesView.SortDescriptions.Add(new SortDescription("Group", ListSortDirection.Ascending));
-            PseudoAttributesView.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
-            PseudoAttributesView.GroupDescriptions.Add(new PropertyGroupDescription("Group"));
+            PseudoAttributesView.SortDescriptions.Add(new SortDescription(nameof(PseudoAttribute.Group), ListSortDirection.Ascending));
+            PseudoAttributesView.SortDescriptions.Add(new SortDescription(nameof(PseudoAttribute.Name), ListSortDirection.Ascending));
+            PseudoAttributesView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(PseudoAttribute.Group)));
             PseudoAttributeConstraints = new ObservableCollection<PseudoAttributeConstraint>();
 
             ReloadPseudoAttributes();
