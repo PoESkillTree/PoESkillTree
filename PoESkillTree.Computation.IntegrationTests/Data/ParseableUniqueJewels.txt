@@ -1,4 +1,4 @@
-﻿Anatomical Knowledge
+Anatomical Knowledge
 Apparitions
 Assassin's Haste
 Brawn
@@ -7,7 +7,7 @@ Careful Planning
 Cheap Construction
 Clear Mind
 Coated Shrapnel
-//Cold Steel
+Cold Steel
 Collateral Damage
 Combat Focus
 Conqueror's Efficiency

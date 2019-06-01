@@ -81,6 +81,7 @@
     <Compile Include="ItemParsers\ItemParserTest.cs" />
     <Compile Include="JewelParsers\JewelInItemParserTest.cs" />
     <Compile Include="JewelParsers\JewelInSkillTreeParserTest.cs" />
+    <Compile Include="JewelParsers\TransformationJewelParserTest.cs" />
     <Compile Include="ParserTestUtils.cs" />
     <Compile Include="PassiveTreeParsers\PassiveNodeParserTest.cs" />
     <Compile Include="PassiveTreeParsers\SkilledPassiveNodeParserTest.cs" />

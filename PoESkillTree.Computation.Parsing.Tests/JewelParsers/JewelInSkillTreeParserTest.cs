@@ -41,14 +41,16 @@ namespace PoESkillTree.Computation.Parsing.JewelParsers
         }
 
         private static JewelInSkillTreeParser CreateSut(ICoreParser coreParser = null)
-            => new JewelInSkillTreeParser(coreParser ?? Mock.Of<ICoreParser>());
+            => new JewelInSkillTreeParser(
+                new PassiveTreeDefinition(new[] { CreateNode(0) }),
+                CreateBuilderFactories(),
+                coreParser ?? Mock.Of<ICoreParser>());
 
-        private static JewelInSkillTreeParserParameter CreateItem(
-            string mod, JewelRadius radius = JewelRadius.None, ushort nodeId = 0, bool isEnabled = true)
+        private static JewelInSkillTreeParserParameter CreateItem(string mod, bool isEnabled = true)
         {
             var item = new Item("metadataId", "itemName", 0, 0, default,
                 false, new[] { mod }, isEnabled);
-            return new JewelInSkillTreeParserParameter(item, radius, nodeId);
+            return new JewelInSkillTreeParserParameter(item, default, 0);
         }
 
         private static ModifierSource.Global CreateGlobalSource(JewelInSkillTreeParserParameter parserParam)
@@ -57,8 +59,8 @@ namespace PoESkillTree.Computation.Parsing.JewelParsers
         private static ModifierSource.Local.Jewel CreateLocalSource(JewelInSkillTreeParserParameter parserParam)
             => new ModifierSource.Local.Jewel(parserParam.JewelRadius, parserParam.PassiveNodeId, parserParam.Item.Name);
 
-        private static PassiveNodeDefinition CreateNode(ushort id, NodePosition position, string modifier)
+        private static PassiveNodeDefinition CreateNode(ushort id)
             => new PassiveNodeDefinition(id, default, "", false, false,
-                0, position, new[] { modifier });
+                0, default, new string[0]);
     }
 }

@@ -74,6 +74,8 @@
     <Compile Include="ItemParsers\PartialItemParserParameter.cs" />
     <Compile Include="JewelParsers\JewelInItemParser.cs" />
     <Compile Include="JewelParsers\JewelInSkillTreeParser.cs" />
+    <Compile Include="JewelParsers\TransformationJewelParser.cs" />
+    <Compile Include="JewelParsers\TransformedNodeModifier.cs" />
     <Compile Include="ModifierCollection.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="ParseResultExtensions.cs" />
@@ -100,6 +102,7 @@
     <Compile Include="SkillParsers\SupportSkillLevelParser.cs" />
     <Compile Include="SkillParsers\SupportSkillParser.cs" />
     <Compile Include="SkillParsers\TranslatingSkillParser.cs" />
+    <Compile Include="StringNormalizer.cs" />
     <Compile Include="StringParsers\IStringParser.cs" />
     <Compile Include="Referencing\ResolvedMatchContext.cs" />
     <Compile Include="ICoreParser.cs" />
