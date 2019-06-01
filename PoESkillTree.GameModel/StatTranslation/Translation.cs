@@ -69,24 +69,32 @@ namespace PoESkillTree.GameModel.StatTranslation
                     .All();
                 if (match)
                 {
-                    var formatInputs = new List<string>();
-                    for (var i = 0; i < values.Count; i++)
-                    {
-                        var value = (double) values[i];
-                        foreach (var handler in entry.IndexHandlers[i])
-                        {
-                            value = handler.Apply(value);
-                        }
-                        formatInputs.Add(entry.Formats[i].Apply(value));
-                    }
-                    var suffix = _jsonTranslation.IsHidden
-                        ? " " + ItemConstants.HiddenStatSuffix
-                        : "";
-                    return string.Format(CultureInfo.InvariantCulture, entry.FormatString,
-                               formatInputs.ToArray<object>()) + suffix;
+                    if (entry.FormatString == string.Empty)
+                        return null;
+
+                    return FormatEntry(entry, values);
                 }
             }
             return null;
+        }
+
+        private string FormatEntry(JsonTranslationEntry entry, IReadOnlyList<int> values)
+        {
+            var formatInputs = new List<string>();
+            for (var i = 0; i < values.Count; i++)
+            {
+                var value = (double) values[i];
+                foreach (var handler in entry.IndexHandlers[i])
+                {
+                    value = handler.Apply(value);
+                }
+                formatInputs.Add(entry.Formats[i].Apply(value));
+            }
+            var suffix = _jsonTranslation.IsHidden
+                ? " " + ItemConstants.HiddenStatSuffix
+                : "";
+            return string.Format(CultureInfo.InvariantCulture, entry.FormatString,
+                       formatInputs.ToArray<object>()) + suffix;
         }
 
         /// <summary>

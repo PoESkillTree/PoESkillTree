@@ -90,6 +90,21 @@ namespace PoESkillTree.GameModel.StatTranslation
         }
 
         [Test]
+        public void GetTranslations_DummyStatDisplayNothing()
+        {
+            IReadOnlyDictionary<string, int> statDict = new Dictionary<string, int>
+            {
+                { "dummy_stat_display_nothing", 1 },
+            };
+            string[] expected =
+            {
+                null,
+            };
+            var actual = _translator.GetTranslations(statDict);
+            CollectionAssert.AreEqual(expected, actual.ToArray());
+        }
+
+        [Test]
         public void TranslateFiltersNullTranslations()
         {
             var untranslatedStats = new[]
