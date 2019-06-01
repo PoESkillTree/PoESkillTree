@@ -72,6 +72,8 @@
     <Compile Include="ItemParsers\ItemParser.cs" />
     <Compile Include="ItemParsers\ItemPropertyParser.cs" />
     <Compile Include="ItemParsers\PartialItemParserParameter.cs" />
+    <Compile Include="JewelParsers\CompositeTransformationJewelParser.cs" />
+    <Compile Include="JewelParsers\ITransformationJewelParser.cs" />
     <Compile Include="JewelParsers\JewelInItemParser.cs" />
     <Compile Include="JewelParsers\JewelInSkillTreeParser.cs" />
     <Compile Include="JewelParsers\TransformationJewelParser.cs" />

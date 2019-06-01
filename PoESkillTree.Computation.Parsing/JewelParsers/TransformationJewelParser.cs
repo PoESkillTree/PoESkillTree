@@ -8,7 +8,7 @@ using PoESkillTree.GameModel.PassiveTree;
 
 namespace PoESkillTree.Computation.Parsing.JewelParsers
 {
-    public class TransformationJewelParser
+    public class TransformationJewelParser : ITransformationJewelParser
     {
         private static readonly Regex JewelRegex = new Regex(
             @"increases and reductions to (?<source>\w+) damage in radius are transformed to apply to (?<target>\w+) damage",

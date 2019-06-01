@@ -12,14 +12,14 @@ namespace PoESkillTree.Computation.Parsing.JewelParsers
     public class JewelInSkillTreeParser : IParser<JewelInSkillTreeParserParameter>
     {
         private readonly PassiveTreeDefinition _tree;
-        private readonly TransformationJewelParser _transformationParser;
+        private readonly ITransformationJewelParser _transformationParser;
         private readonly ICoreParser _coreParser;
 
         public JewelInSkillTreeParser(
             PassiveTreeDefinition tree, IBuilderFactories builderFactories, ICoreParser coreParser)
         {
             _tree = tree;
-            _transformationParser = new TransformationJewelParser(
+            _transformationParser = CompositeTransformationJewelParser.Create(
                 i => builderFactories.PassiveTreeBuilders.NodeSkilled(i).IsSet);
             _coreParser = coreParser;
         }
