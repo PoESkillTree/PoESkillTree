@@ -17,8 +17,13 @@ namespace PoESkillTree.Computation.Parsing.JewelParsers
 
         public static ITransformationJewelParser Create(
             Func<ushort, IConditionBuilder> createIsSkilledConditionForNode)
-            => new CompositeTransformationJewelParser(
-                new TransformationJewelParser(createIsSkilledConditionForNode));
+        {
+            var components = TransformationJewelParserData.CreateAll()
+                .Select(d => new TransformationJewelParser(createIsSkilledConditionForNode, d))
+                .Cast<ITransformationJewelParser>()
+                .ToArray();
+            return new CompositeTransformationJewelParser(components);
+        }
 
         public bool IsTransformationJewelModifier(string jewelModifier)
             => _components.Any(c => c.IsTransformationJewelModifier(jewelModifier));

@@ -125,12 +125,83 @@ namespace PoESkillTree.Computation.Parsing.JewelParsers
             actual.Should().Equal(expected, (a, e) => a.Modifier == e);
         }
 
+        [Test]
+        public void ReturnsNegativeAndMultipliedValueMultipliersGivenEnergisedArmour()
+        {
+            var expected = new[]
+            {
+                new Constant(-1),
+                new Constant(2),
+            };
+            var nodesInRadius = new[]
+            {
+                CreateNode(0, "1% increased energy shield"),
+            };
+            var data = new TransformationJewelParserData.GenericTransformation();
+            var sut = CreateSut(data: data);
+
+            var actual = sut.ApplyTransformation(EnergisedArmourModifier, nodesInRadius);
+
+            actual.Should().Equal(expected, (a, e) => a.ValueMultiplier.Equals(e));
+        }
+
+        [Test]
+        public void DoesNotCancelOutOriginalModifiersGivenTheBlueDream()
+        {
+            var expected = new[]
+            {
+                "+1% chance to gain a Power Charge on Kill",
+            };
+            var nodesInRadius = new[]
+            {
+                CreateNode(0, "+1% to lightning resistance"),
+            };
+            var data = new TransformationJewelParserData.DreamTransformation();
+            var sut = CreateSut(data: data);
+
+            var actual = sut.ApplyTransformation(TheBlueDreamModifier, nodesInRadius);
+
+            actual.Should().Equal(expected, (a, e) => a.Modifier == e);
+        }
+
+        [Test]
+        public void OnlyUsesFirstNodeModifierMatchGivenLioneyesFall()
+        {
+            var expected = new[]
+            {
+                "1% increased damage with one handed melee weapons",
+                "1% increased damage with bows",
+            };
+            var nodesInRadius = new[]
+            {
+                CreateNode(0, "1% increased damage with one handed melee weapons"),
+            };
+            var data = new TransformationJewelParserData.LioneyesFallTransformation();
+            var sut = CreateSut(data: data);
+
+            var actual = sut.ApplyTransformation(LioneyesFallModifier, nodesInRadius);
+
+            actual.Should().Equal(expected, (a, e) => a.Modifier == e);
+        }
+
         private const string ColdSteelModifier =
             "Increases and Reductions to Physical Damage in Radius are Transformed to apply to Cold Damage";
 
+        private const string EnergisedArmourModifier =
+            "Increases and Reductions to Energy Shield in Radius are Transformed to apply to Armour at 200% of their value";
+
+        private const string TheBlueDreamModifier =
+            "Passives granting Lightning Resistance or all Elemental Resistances in Radius also grant an equal chance to gain a Power Charge on Kill";
+
+        private const string LioneyesFallModifier =
+            "Melee and Melee Weapon Type modifiers in Radius are Transformed to Bow Modifiers";
+
         private static TransformationJewelParser CreateSut(
-            Func<ushort, IConditionBuilder> createIsSkilledConditionForNode = null)
-            => new TransformationJewelParser(createIsSkilledConditionForNode ?? (_ => Mock.Of<IConditionBuilder>()));
+            Func<ushort, IConditionBuilder> createIsSkilledConditionForNode = null,
+            TransformationJewelParserData data = null)
+            => new TransformationJewelParser(
+                createIsSkilledConditionForNode ?? (_ => Mock.Of<IConditionBuilder>()),
+                data ?? new TransformationJewelParserData.SingleDamageTypeTransformation());
 
         private static PassiveNodeDefinition CreateNode(ushort id, params string[] modifiers)
             => new PassiveNodeDefinition(id, default, default, default,

@@ -10,46 +10,57 @@ namespace PoESkillTree.Computation.Parsing.JewelParsers
 {
     public class TransformationJewelParser : ITransformationJewelParser
     {
-        private static readonly Regex JewelRegex = new Regex(
-            @"increases and reductions to (?<source>\w+) damage in radius are transformed to apply to (?<target>\w+) damage",
-            RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
-
         private readonly Func<ushort, IConditionBuilder> _createIsSkilledConditionForNode;
+        private readonly TransformationJewelParserData _jewelData;
 
-        public TransformationJewelParser(Func<ushort, IConditionBuilder> createIsSkilledConditionForNode)
+        public TransformationJewelParser(
+            Func<ushort, IConditionBuilder> createIsSkilledConditionForNode, TransformationJewelParserData jewelData)
         {
             _createIsSkilledConditionForNode = createIsSkilledConditionForNode;
+            _jewelData = jewelData;
         }
 
         public bool IsTransformationJewelModifier(string jewelModifier)
-            => JewelRegex.IsMatch(StringNormalizer.MergeWhiteSpace(jewelModifier));
+            => _jewelData.JewelModifierRegex.IsMatch(StringNormalizer.MergeWhiteSpace(jewelModifier));
 
         public IEnumerable<TransformedNodeModifier> ApplyTransformation(
             string jewelModifier, IEnumerable<PassiveNodeDefinition> nodesInRadius)
         {
             jewelModifier = StringNormalizer.MergeWhiteSpace(jewelModifier);
-            var jewelMatch = JewelRegex.Match(jewelModifier);
+            var jewelMatch = _jewelData.JewelModifierRegex.Match(jewelModifier);
             if (!jewelMatch.Success)
                 yield break;
-
-            var nodeRegex = new Regex(
-                $@"((increased|reduced).*) {jewelMatch.Groups["source"]} (.*damage)",
-                RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+            
+            var valueMultiplier = _jewelData.GetValueMultiplier(jewelMatch);
+            var nodeRegexes = _jewelData.GetNodeModifierRegexes(jewelMatch).ToList();
             foreach (var node in nodesInRadius)
             {
                 var condition = _createIsSkilledConditionForNode(node.Id);
-                foreach (var nodeModifier in node.Modifiers.Select(StringNormalizer.MergeWhiteSpace))
+                var transformedModifiers = node.Modifiers
+                    .Select(StringNormalizer.MergeWhiteSpace)
+                    .SelectMany(m => TransformNodeModifier(m, nodeRegexes, valueMultiplier, condition));
+                foreach (var transformedNodeModifier in transformedModifiers)
                 {
-                    var nodeMatch = nodeRegex.Match(nodeModifier);
-                    if (nodeMatch.Success)
-                    {
-                        yield return new TransformedNodeModifier(nodeModifier, condition, new Constant(-1));
-                        var newModifier =
-                            nodeRegex.Replace(nodeModifier, $"$1 {jewelMatch.Groups["target"]} $3");
-                        yield return new TransformedNodeModifier(newModifier, condition, new Constant(1));
-                    }
+                    yield return transformedNodeModifier;
                 }
             }
+        }
+
+        private IEnumerable<TransformedNodeModifier> TransformNodeModifier(
+            string nodeModifier,
+            IEnumerable<(Regex regex, string replacement)> nodeRegexes,
+            double valueMultiplier,
+            IConditionBuilder condition)
+        {
+            var (nodeRegex, replacement) = nodeRegexes.FirstOrDefault(t => t.regex.IsMatch(nodeModifier));
+            if (nodeRegex is null)
+                yield break;
+            
+            if (_jewelData.CancelOutOriginalModifier)
+                yield return new TransformedNodeModifier(nodeModifier, condition, new Constant(-1));
+
+            var newModifier = nodeRegex.Replace(nodeModifier, replacement);
+            yield return new TransformedNodeModifier(newModifier, condition, new Constant(valueMultiplier));
         }
     }
 }

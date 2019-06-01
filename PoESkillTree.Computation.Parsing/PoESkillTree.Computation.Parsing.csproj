@@ -76,6 +76,7 @@
     <Compile Include="JewelParsers\ITransformationJewelParser.cs" />
     <Compile Include="JewelParsers\JewelInItemParser.cs" />
     <Compile Include="JewelParsers\JewelInSkillTreeParser.cs" />
+    <Compile Include="JewelParsers\TransformationJewelParserData.cs" />
     <Compile Include="JewelParsers\TransformationJewelParser.cs" />
     <Compile Include="JewelParsers\TransformedNodeModifier.cs" />
     <Compile Include="ModifierCollection.cs" />

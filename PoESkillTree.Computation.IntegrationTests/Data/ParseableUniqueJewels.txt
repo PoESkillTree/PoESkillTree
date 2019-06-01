@@ -1,4 +1,4 @@
-Anatomical Knowledge
+﻿Anatomical Knowledge
 Apparitions
 Assassin's Haste
 Brawn
@@ -20,11 +20,11 @@ Emperor's Cunning
 Emperor's Mastery
 Emperor's Might
 Emperor's Wit
-//Energised Armour
-//Energy From Within
+Energised Armour
+Energy From Within
 Fertile Mind
 Fight for Survival
-//Fireborn
+Fireborn
 First Snow
 Fluid Motion
 Fortified Legion
@@ -35,7 +35,7 @@ Grand Spectrum
 Growing Agony
 Hair Trigger
 Hazardous Research
-//Healthy Mind
+Healthy Mind
 Hidden Potential
 Hotfooted
 Inertia
@@ -43,7 +43,7 @@ Inevitability
 Inspired Learning
 //Intuitive Leap
 Izaro's Turmoil
-//Lioneye's Fall
+Lioneye's Fall
 Malicious Intent
 Mantra of Flames
 Martial Artistry
@@ -80,14 +80,14 @@ Tempered Flesh
 Tempered Mind
 Tempered Spirit
 The Anima Stone
-//The Blue Dream
-//The Blue Nightmare
+The Blue Dream
+The Blue Nightmare
 The Golden Rule
-//The Green Dream
-//The Green Nightmare
+The Green Dream
+The Green Nightmare
 The Long Winter
-//The Red Dream
-//The Red Nightmare
+The Red Dream
+The Red Nightmare
 The Vigil
 Transcendent Flesh
 Transcendent Mind
