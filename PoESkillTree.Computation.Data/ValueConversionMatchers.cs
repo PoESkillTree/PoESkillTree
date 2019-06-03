@@ -115,7 +115,7 @@ namespace PoESkillTree.Computation.Data
                     PerStat(PassiveTree.AllocatedInModifierSourceJewelRadius(Reference.AsStat), Value)
                 },
                 {
-                    "(per|for every) # ({AttributeStatMatchers}) (allocated|(from|on) unallocated passives) in radius",
+                    "(per|for every) # ({AttributeStatMatchers}) (from|on) unallocated passives in radius",
                     PerStat(PassiveTree.UnallocatedInModifierSourceJewelRadius(Reference.AsStat), Value)
                 },
                 // unique

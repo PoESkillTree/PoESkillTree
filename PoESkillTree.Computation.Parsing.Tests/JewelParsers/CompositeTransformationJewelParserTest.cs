@@ -44,7 +44,7 @@ namespace PoESkillTree.Computation.Parsing.JewelParsers
         [Test]
         public void TransformationResultIsThatOfMatchingComponentGivenAComponentMatches()
         {
-            var expected = new[] { new TransformedNodeModifier("", null, null), };
+            var expected = new[] { new TransformedNodeModifier("", null), };
             var nodesInRadius = new PassiveNodeDefinition[0];
             var component = Mock.Of<ITransformationJewelParser>(p => 
                 p.IsTransformationJewelModifier(JewelModifier) &&

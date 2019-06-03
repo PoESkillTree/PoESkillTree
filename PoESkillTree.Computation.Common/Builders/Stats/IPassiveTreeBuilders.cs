@@ -8,6 +8,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
     public interface IPassiveTreeBuilders
     {
         IStatBuilder NodeSkilled(ushort nodeId);
+        IStatBuilder NodeEffectiveness(ushort nodeId);
 
         ValueBuilder TotalInModifierSourceJewelRadius(IStatBuilder stat);
         ValueBuilder AllocatedInModifierSourceJewelRadius(IStatBuilder stat);

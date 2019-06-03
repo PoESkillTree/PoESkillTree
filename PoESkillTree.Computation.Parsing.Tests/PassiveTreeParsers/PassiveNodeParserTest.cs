@@ -125,6 +125,20 @@ namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
             result.Modifiers.Should().Contain(expected);
         }
 
+        [Test]
+        public void SetsEffectivenessToSkilled()
+        {
+            var definition = CreateNode();
+            var expected = CreateModifier($"{definition.Id}.Effectiveness", Form.BaseSet,
+                new StatValue(new Stat($"{definition.Id}.Skilled")),
+                CreateGlobalSource(definition));
+            var sut = CreateSut(definition);
+
+            var result = sut.Parse(definition.Id);
+
+            Assert.That(result.Modifiers, Has.Member(expected));
+        }
+
         private static PassiveNodeParser CreateSut(PassiveNodeDefinition nodeDefinition, ICoreParser coreParser = null)
         {
             coreParser = coreParser ?? Mock.Of<ICoreParser>();
@@ -147,7 +161,7 @@ namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
         private static Modifier CreateConditionalModifier(
             PassiveNodeDefinition nodeDefinition, string stat, Form form, string value)
             => CreateModifier(stat, form, new FunctionalValue(null,
-                    $"Character.{nodeDefinition.Id}.Skilled.Value(Total, Global).IsSet ? {value} : null"),
+                    $"{value} * Character.{nodeDefinition.Id}.Effectiveness.Value(Total, Global)"),
                 CreateGlobalSource(nodeDefinition));
 
         private static ModifierSource.Global CreateGlobalSource(PassiveNodeDefinition nodeDefinition)

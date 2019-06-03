@@ -2,21 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Common.Builders.Conditions;
+using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.GameModel.PassiveTree;
 
 namespace PoESkillTree.Computation.Parsing.JewelParsers
 {
     public class TransformationJewelParser : ITransformationJewelParser
     {
-        private readonly Func<ushort, IConditionBuilder> _createIsSkilledConditionForNode;
+        private readonly Func<ushort, IValueBuilder> _createEffectivenessForNode;
         private readonly TransformationJewelParserData _jewelData;
 
         public TransformationJewelParser(
-            Func<ushort, IConditionBuilder> createIsSkilledConditionForNode, TransformationJewelParserData jewelData)
+            Func<ushort, IValueBuilder> createEffectivenessForNode, TransformationJewelParserData jewelData)
         {
-            _createIsSkilledConditionForNode = createIsSkilledConditionForNode;
+            _createEffectivenessForNode = createEffectivenessForNode;
             _jewelData = jewelData;
         }
 
@@ -35,10 +34,10 @@ namespace PoESkillTree.Computation.Parsing.JewelParsers
             var nodeRegexes = _jewelData.GetNodeModifierRegexes(jewelMatch).ToList();
             foreach (var node in nodesInRadius)
             {
-                var condition = _createIsSkilledConditionForNode(node.Id);
+                var effectiveness = _createEffectivenessForNode(node.Id);
                 var transformedModifiers = node.Modifiers
                     .Select(StringNormalizer.MergeWhiteSpace)
-                    .SelectMany(m => TransformNodeModifier(m, nodeRegexes, valueMultiplier, condition));
+                    .SelectMany(m => TransformNodeModifier(m, nodeRegexes, valueMultiplier, effectiveness));
                 foreach (var transformedNodeModifier in transformedModifiers)
                 {
                     yield return transformedNodeModifier;
@@ -50,17 +49,19 @@ namespace PoESkillTree.Computation.Parsing.JewelParsers
             string nodeModifier,
             IEnumerable<(Regex regex, string replacement)> nodeRegexes,
             double valueMultiplier,
-            IConditionBuilder condition)
+            IValueBuilder effectiveness)
         {
             var (nodeRegex, replacement) = nodeRegexes.FirstOrDefault(t => t.regex.IsMatch(nodeModifier));
             if (nodeRegex is null)
                 yield break;
             
             if (_jewelData.CancelOutOriginalModifier)
-                yield return new TransformedNodeModifier(nodeModifier, condition, new Constant(-1));
+                yield return new TransformedNodeModifier(nodeModifier,
+                    effectiveness.Multiply(effectiveness.Create(-1)));
 
             var newModifier = nodeRegex.Replace(nodeModifier, replacement);
-            yield return new TransformedNodeModifier(newModifier, condition, new Constant(valueMultiplier));
+            yield return new TransformedNodeModifier(newModifier,
+                effectiveness.Multiply(effectiveness.Create(valueMultiplier)));
         }
     }
 }

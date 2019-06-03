@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using PoESkillTree.Computation.Common.Builders.Conditions;
+using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.GameModel.PassiveTree;
 
 namespace PoESkillTree.Computation.Parsing.JewelParsers
@@ -15,11 +15,10 @@ namespace PoESkillTree.Computation.Parsing.JewelParsers
             _components = components;
         }
 
-        public static ITransformationJewelParser Create(
-            Func<ushort, IConditionBuilder> createIsSkilledConditionForNode)
+        public static ITransformationJewelParser Create(Func<ushort, IValueBuilder> createEffectivenessForNode)
         {
             var components = TransformationJewelParserData.CreateAll()
-                .Select(d => new TransformationJewelParser(createIsSkilledConditionForNode, d))
+                .Select(d => new TransformationJewelParser(createEffectivenessForNode, d))
                 .Cast<ITransformationJewelParser>()
                 .ToArray();
             return new CompositeTransformationJewelParser(components);

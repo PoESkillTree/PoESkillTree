@@ -3,6 +3,7 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Modifiers;
 using PoESkillTree.GameModel.PassiveTree;
@@ -32,45 +33,48 @@ namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
             var localSource = new ModifierSource.Local.PassiveNode(nodeId, nodeDefinition.Name);
             var globalSource = new ModifierSource.Global(localSource);
             var isSkilledStat = _builderFactories.PassiveTreeBuilders.NodeSkilled(nodeId);
-            var isSkilled = isSkilledStat.IsSet;
+            var effectivenessStat = _builderFactories.PassiveTreeBuilders.NodeEffectiveness(nodeId);
+            var effectiveness = effectivenessStat.Value;
 
             var results = new List<ParseResult>(nodeDefinition.Modifiers.Count + 1);
             foreach (var modifier in nodeDefinition.Modifiers)
             {
                 var result = ModifierLocalityTester.AffectsPassiveNodeProperty(modifier)
                     ? Parse(modifier + " (AsPassiveNodeBaseProperty)", globalSource)
-                    : Parse(modifier, globalSource).ApplyCondition(isSkilled.Build);
+                    : Parse(modifier, globalSource).ApplyMultiplier(effectiveness.Build);
                 results.Add(result);
             }
             
             var modifiers = new ModifierCollection(_builderFactories, localSource);
             modifiers.AddGlobal(isSkilledStat, Form.BaseSet, false);
+            modifiers.AddGlobal(effectivenessStat, Form.BaseSet, isSkilledStat.Value);
+
             if (nodeDefinition.CostsPassivePoint)
             {
                 var passivePointStat = nodeDefinition.IsAscendancyNode
                     ? _builderFactories.StatBuilders.AscendancyPassivePoints
                     : _builderFactories.StatBuilders.PassivePoints;
-                modifiers.AddGlobal(passivePointStat, Form.BaseAdd, 1, isSkilled);
+                modifiers.AddGlobal(passivePointStat, Form.BaseAdd, 1 * effectiveness);
             }
             if (nodeDefinition.PassivePointsGranted > 0)
             {
                 modifiers.AddGlobal(_builderFactories.StatBuilders.PassivePoints.Maximum,
-                    Form.BaseAdd, nodeDefinition.PassivePointsGranted, isSkilled);
+                    Form.BaseAdd, nodeDefinition.PassivePointsGranted * effectiveness);
             }
 
             var attributes = _builderFactories.StatBuilders.Attribute;
-            SetupProperty(modifiers, attributes.Strength, isSkilled);
-            SetupProperty(modifiers, attributes.Dexterity, isSkilled);
-            SetupProperty(modifiers, attributes.Intelligence, isSkilled);
+            SetupProperty(modifiers, attributes.Strength, effectiveness);
+            SetupProperty(modifiers, attributes.Dexterity, effectiveness);
+            SetupProperty(modifiers, attributes.Intelligence, effectiveness);
 
             results.Add(ParseResult.Success(modifiers.Modifiers));
 
             return ParseResult.Aggregate(results);
         }
 
-        private static void SetupProperty(ModifierCollection modifiers, IStatBuilder stat, IConditionBuilder condition)
+        private static void SetupProperty(ModifierCollection modifiers, IStatBuilder stat, ValueBuilder effectiveness)
         {
-            modifiers.AddGlobal(stat, Form.BaseSet, stat.AsPassiveNodeProperty.Value, condition);
+            modifiers.AddGlobal(stat, Form.BaseSet, stat.AsPassiveNodeProperty.Value * effectiveness);
             modifiers.AddGlobal(stat.AsPassiveNodeProperty, Form.BaseSet, stat.AsPassiveNodeBaseProperty.Value);
         }
 

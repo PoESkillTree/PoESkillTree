@@ -22,6 +22,9 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStatBuilder NodeSkilled(ushort nodeId) => FromIdentity($"{nodeId}.Skilled", typeof(bool));
 
+        public IStatBuilder NodeEffectiveness(ushort nodeId)
+            => FromIdentity($"{nodeId}.Effectiveness", typeof(bool));
+
         public ValueBuilder TotalInModifierSourceJewelRadius(IStatBuilder stat)
             => new ValueBuilder(new ValueBuilderImpl(
                 ps => BuildInModifierSourceJewelRadiusValue(ps, stat, _ => new Constant(true)),

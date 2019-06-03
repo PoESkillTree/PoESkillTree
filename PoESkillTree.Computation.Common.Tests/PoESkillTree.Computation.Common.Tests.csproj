@@ -76,6 +76,8 @@
     <Compile Include="Builders\Modifiers\IntermediateModifierExtensionsTest.cs" />
     <Compile Include="Builders\Modifiers\IntermediateModifierResolverTest.cs" />
     <Compile Include="Builders\Modifiers\ModifierBuilderTest.cs" />
+    <Compile Include="Builders\Values\ConditionBuilderStub.cs" />
+    <Compile Include="Builders\Values\ValueBuilderStub.cs" />
     <Compile Include="Builders\Values\ValueBuilderUtilsTest.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

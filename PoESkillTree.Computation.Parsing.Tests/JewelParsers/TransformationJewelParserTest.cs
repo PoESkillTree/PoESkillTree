@@ -5,6 +5,7 @@ using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Conditions;
+using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.GameModel.PassiveTree;
 using static PoESkillTree.Computation.Common.Helper;
 
@@ -69,39 +70,33 @@ namespace PoESkillTree.Computation.Parsing.JewelParsers
         }
 
         [Test]
-        public void ReturnsNodeSkilledConditionsGivenColdSteel()
-        {
-            var nodeConditions = MockMany<IConditionBuilder>(2);
-            var expected = nodeConditions.SelectMany(b => Enumerable.Repeat(b, 2));
-            var nodesInRadius = new[]
-            {
-                CreateNode(0, "1% increased physical weapon damage"),
-                CreateNode(1, "3% reduced physical damage"),
-            };
-            var sut = CreateSut(i => nodeConditions[i]);
-
-            var actual = sut.ApplyTransformation(ColdSteelModifier, nodesInRadius);
-
-            actual.Should().Equal(expected, (a, e) => a.Condition == e);
-        }
-
-        [Test]
         public void ReturnsNegativeAndSameValueMultipliersGivenColdSteel()
         {
-            var expected = new[]
-            {
-                new Constant(-1),
-                new Constant(1),
-            };
+            var expected = new[] { (NodeValue?) -1, (NodeValue?) 1 };
             var nodesInRadius = new[]
             {
-                CreateNode(0, "1% increased physical weapon damage"),
+                CreateNode(1, "1% increased physical weapon damage"),
             };
             var sut = CreateSut();
 
             var actual = sut.ApplyTransformation(ColdSteelModifier, nodesInRadius);
 
-            actual.Should().Equal(expected, (a, e) => a.ValueMultiplier.Equals(e));
+            actual.Should().Equal(expected, (a, e) => BuildAndCalculate(a.ValueMultiplier).Equals(e));
+        }
+
+        [Test]
+        public void MultipliesValuesByNodeEffectivenessGivenColdSteel()
+        {
+            var expected = new[] { (NodeValue?) -3, (NodeValue?) 3 };
+            var nodesInRadius = new[]
+            {
+                CreateNode(3, "1% increased physical weapon damage"),
+            };
+            var sut = CreateSut();
+
+            var actual = sut.ApplyTransformation(ColdSteelModifier, nodesInRadius);
+
+            actual.Should().Equal(expected, (a, e) => BuildAndCalculate(a.ValueMultiplier).Equals(e));
         }
 
         [Test]
@@ -128,21 +123,17 @@ namespace PoESkillTree.Computation.Parsing.JewelParsers
         [Test]
         public void ReturnsNegativeAndMultipliedValueMultipliersGivenEnergisedArmour()
         {
-            var expected = new[]
-            {
-                new Constant(-1),
-                new Constant(2),
-            };
+            var expected = new[] { (NodeValue?) -1, (NodeValue?) 2 };
             var nodesInRadius = new[]
             {
-                CreateNode(0, "1% increased energy shield"),
+                CreateNode(1, "1% increased energy shield"),
             };
             var data = new TransformationJewelParserData.GenericTransformation();
-            var sut = CreateSut(data: data);
+            var sut = CreateSut(data);
 
             var actual = sut.ApplyTransformation(EnergisedArmourModifier, nodesInRadius);
-
-            actual.Should().Equal(expected, (a, e) => a.ValueMultiplier.Equals(e));
+            
+            actual.Should().Equal(expected, (a, e) => BuildAndCalculate(a.ValueMultiplier).Equals(e));
         }
 
         [Test]
@@ -157,7 +148,7 @@ namespace PoESkillTree.Computation.Parsing.JewelParsers
                 CreateNode(0, "+1% to lightning resistance"),
             };
             var data = new TransformationJewelParserData.DreamTransformation();
-            var sut = CreateSut(data: data);
+            var sut = CreateSut(data);
 
             var actual = sut.ApplyTransformation(TheBlueDreamModifier, nodesInRadius);
 
@@ -177,7 +168,7 @@ namespace PoESkillTree.Computation.Parsing.JewelParsers
                 CreateNode(0, "1% increased damage with one handed melee weapons"),
             };
             var data = new TransformationJewelParserData.LioneyesFallTransformation();
-            var sut = CreateSut(data: data);
+            var sut = CreateSut(data);
 
             var actual = sut.ApplyTransformation(LioneyesFallModifier, nodesInRadius);
 
@@ -196,12 +187,13 @@ namespace PoESkillTree.Computation.Parsing.JewelParsers
         private const string LioneyesFallModifier =
             "Melee and Melee Weapon Type modifiers in Radius are Transformed to Bow Modifiers";
 
-        private static TransformationJewelParser CreateSut(
-            Func<ushort, IConditionBuilder> createIsSkilledConditionForNode = null,
-            TransformationJewelParserData data = null)
+        private static TransformationJewelParser CreateSut(TransformationJewelParserData data = null)
             => new TransformationJewelParser(
-                createIsSkilledConditionForNode ?? (_ => Mock.Of<IConditionBuilder>()),
+                id => new ValueBuilderStub(id), 
                 data ?? new TransformationJewelParserData.SingleDamageTypeTransformation());
+
+        private static NodeValue? BuildAndCalculate(IValueBuilder valueBuilder)
+            => valueBuilder.Build(default).Calculate(default);
 
         private static PassiveNodeDefinition CreateNode(ushort id, params string[] modifiers)
             => new PassiveNodeDefinition(id, default, default, default,

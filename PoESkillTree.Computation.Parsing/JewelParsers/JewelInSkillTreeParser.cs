@@ -20,7 +20,7 @@ namespace PoESkillTree.Computation.Parsing.JewelParsers
         {
             _tree = tree;
             _transformationParser = CompositeTransformationJewelParser.Create(
-                i => builderFactories.PassiveTreeBuilders.NodeSkilled(i).IsSet);
+                i => builderFactories.PassiveTreeBuilders.NodeEffectiveness(i).Value);
             _coreParser = coreParser;
         }
 
@@ -57,8 +57,7 @@ namespace PoESkillTree.Computation.Parsing.JewelParsers
             foreach (var transformedModifier in transformedNodeModifiers)
             {
                 var parseResult = _coreParser.Parse(transformedModifier.Modifier, modifierSource, Entity.Character)
-                    .ApplyCondition(transformedModifier.Condition.Build)
-                    .ApplyMultiplier(_ => transformedModifier.ValueMultiplier);
+                    .ApplyMultiplier(transformedModifier.ValueMultiplier.Build);
                 results.Add(parseResult);
             }
             return ParseResult.Aggregate(results);
