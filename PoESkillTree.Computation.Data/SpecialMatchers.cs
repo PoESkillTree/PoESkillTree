@@ -13,6 +13,7 @@ using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 using PoESkillTree.GameModel.Items;
+using PoESkillTree.GameModel.PassiveTree;
 using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Data
@@ -132,6 +133,17 @@ namespace PoESkillTree.Computation.Data
                     (BaseAdd, PassiveTree.AllocatedInModifierSourceJewelRadius(References[1].AsStat), Attribute.StrengthDamageBonus)
                 },
                 {
+                    // Might of the Meek
+                    "#% increased effect of non-keystone passive skills in radius",
+                    PercentIncrease, Value, PassiveTree.ModifyNodeEffectivenessInModifierSourceJewelRadius(false,
+                        PassiveNodeType.Small, PassiveNodeType.Notable)
+                },
+                {
+                    "notable passive skills in radius grant nothing",
+                    TotalOverride, 0, PassiveTree.ModifyNodeEffectivenessInModifierSourceJewelRadius(false,
+                        PassiveNodeType.Notable)
+                },
+                {
                     // Soul's Wick
                     "spectres have a base duration of # seconds spectres do not travel between areas",
                     BaseSet, Value, Stat.Duration, With(Skills.RaiseSpectre)
@@ -142,6 +154,17 @@ namespace PoESkillTree.Computation.Data
                     TotalOverride, 1, Buff.Fortify.On(Self).Concat(Buff.Fortify.On(Ally)),
                     And(PassiveTree.TotalInModifierSourceJewelRadius(Attribute.Strength) >= Values[0],
                         Reference.AsSkill.Cast.InPastXSeconds(Values[1]))
+                },
+                {
+                    // Unnatural Instinct
+                    "grants all bonuses of unallocated small passive skills in radius",
+                    BaseAdd, 1, PassiveTree.ModifyNodeEffectivenessInModifierSourceJewelRadius(false,
+                        PassiveNodeType.Small)
+                },
+                {
+                    "allocated small passive skills in radius grant nothing",
+                    TotalOverride, 0, PassiveTree.ModifyNodeEffectivenessInModifierSourceJewelRadius(true,
+                        PassiveNodeType.Small)
                 },
                 // skills
                 {

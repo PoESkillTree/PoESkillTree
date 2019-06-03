@@ -1,4 +1,5 @@
 ﻿using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.GameModel.PassiveTree;
 
 namespace PoESkillTree.Computation.Common.Builders.Stats
 {
@@ -20,5 +21,8 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// </summary>
         IStatBuilder MultipliedAttributeForNodesInModifierSourceJewelRadius(
             IStatBuilder sourceAttribute, IStatBuilder targetAttribute);
+
+        IStatBuilder ModifyNodeEffectivenessInModifierSourceJewelRadius(
+            bool onlyIfSkilled, params PassiveNodeType[] affectedNodeTypes);
     }
 }
