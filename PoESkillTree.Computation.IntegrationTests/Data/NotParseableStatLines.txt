@@ -295,10 +295,3 @@ Recover 0.5% of your maximum Life per Poison affecting Enemies you Kill
 20% chance when Placing Mines to Place an additional Mine
 cannot be blinded
 When your Traps Trigger, your nearby Traps also Trigger
-// - Ascendant (generic)
-can allocate passives from the marauder's starting point
-can allocate passives from the duelist's starting point
-can allocate passives from the ranger's starting point
-can allocate passives from the shadow's starting point
-can allocate passives from the witch's starting point
-can allocate passives from the templar's starting point

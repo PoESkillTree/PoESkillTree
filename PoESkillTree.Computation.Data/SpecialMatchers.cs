@@ -12,6 +12,7 @@ using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
+using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.PassiveTree;
 using PoESkillTree.Utils.Extensions;
@@ -110,8 +111,12 @@ namespace PoESkillTree.Computation.Data
                 {
                     // Brute Force Solution, Careful Planning, Efficient Training, Fertile Mind, Fluid Motion, Inertia
                     "({AttributeStatMatchers}) from passives in radius is transformed to ({AttributeStatMatchers})",
-                    (BaseSubtract, 1, PassiveTree.MultipliedAttributeForNodesInModifierSourceJewelRadius(References[0].AsStat, References[0].AsStat)),
-                    (BaseAdd, 1, PassiveTree.MultipliedAttributeForNodesInModifierSourceJewelRadius(References[0].AsStat, References[1].AsStat))
+                    (BaseSubtract, 1,
+                        PassiveTree.MultipliedAttributeForNodesInModifierSourceJewelRadius(References[0].AsStat,
+                            References[0].AsStat)),
+                    (BaseAdd, 1,
+                        PassiveTree.MultipliedAttributeForNodesInModifierSourceJewelRadius(References[0].AsStat,
+                            References[1].AsStat))
                 },
                 {
                     // Combat Focus
@@ -129,8 +134,10 @@ namespace PoESkillTree.Computation.Data
                 {
                     // Might in All Forms
                     "({AttributeStatMatchers}) and ({AttributeStatMatchers}) from passives in radius count towards strength melee damage bonus",
-                    (BaseAdd, PassiveTree.AllocatedInModifierSourceJewelRadius(References[0].AsStat), Attribute.StrengthDamageBonus),
-                    (BaseAdd, PassiveTree.AllocatedInModifierSourceJewelRadius(References[1].AsStat), Attribute.StrengthDamageBonus)
+                    (BaseAdd, PassiveTree.AllocatedInModifierSourceJewelRadius(References[0].AsStat),
+                        Attribute.StrengthDamageBonus),
+                    (BaseAdd, PassiveTree.AllocatedInModifierSourceJewelRadius(References[1].AsStat),
+                        Attribute.StrengthDamageBonus)
                 },
                 {
                     // Might of the Meek
@@ -548,6 +555,31 @@ namespace PoESkillTree.Computation.Data
                 },
                 // - Saboteur
                 { "nearby enemies are blinded", TotalOverride, 1, Buff.Blind.On(Enemy), Enemy.IsNearby },
+                // - Ascendant (generic)
+                {
+                    "can allocate passives from the marauder's starting point",
+                    TotalOverride, 1, PassiveTree.ConnectsToClass(CharacterClass.Marauder)
+                },
+                {
+                    "can allocate passives from the duelist's starting point",
+                    TotalOverride, 1, PassiveTree.ConnectsToClass(CharacterClass.Duelist)
+                },
+                {
+                    "can allocate passives from the ranger's starting point",
+                    TotalOverride, 1, PassiveTree.ConnectsToClass(CharacterClass.Ranger)
+                },
+                {
+                    "can allocate passives from the shadow's starting point",
+                    TotalOverride, 1, PassiveTree.ConnectsToClass(CharacterClass.Shadow)
+                },
+                {
+                    "can allocate passives from the witch's starting point",
+                    TotalOverride, 1, PassiveTree.ConnectsToClass(CharacterClass.Witch)
+                },
+                {
+                    "can allocate passives from the templar's starting point",
+                    TotalOverride, 1, PassiveTree.ConnectsToClass(CharacterClass.Templar)
+                },
             };
 
         private IConditionBuilder CombatFocusCondition(int skillPart)

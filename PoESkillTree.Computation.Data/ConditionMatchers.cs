@@ -7,6 +7,7 @@ using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
+using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Data
@@ -335,8 +336,7 @@ namespace PoESkillTree.Computation.Data
                 { "during any flask effect", Equipment.IsAnyFlaskActive() },
                 // - mods on flasks are only added when the flask item is enabled
                 { "during (flask )?effect", Condition.True },
-                // jewels
-                // - thresholds
+                // jewel thresholds
                 {
                     "with( at least)? # ({AttributeStatMatchers}) in radius",
                     PassiveTree.TotalInModifierSourceJewelRadius(Reference.AsStat) >= Value
@@ -347,6 +347,14 @@ namespace PoESkillTree.Computation.Data
                      + PassiveTree.TotalInModifierSourceJewelRadius(References[1].AsStat))
                     >= Value
                 },
+                // passive tree
+                { "marauder:", PassiveTree.ConnectsToClass(CharacterClass.Marauder).IsSet },
+                { "duelist:", PassiveTree.ConnectsToClass(CharacterClass.Duelist).IsSet },
+                { "ranger:", PassiveTree.ConnectsToClass(CharacterClass.Ranger).IsSet },
+                { "shadow:", PassiveTree.ConnectsToClass(CharacterClass.Shadow).IsSet },
+                { "witch:", PassiveTree.ConnectsToClass(CharacterClass.Witch).IsSet },
+                { "templar:", PassiveTree.ConnectsToClass(CharacterClass.Templar).IsSet },
+                { "scion:", PassiveTree.ConnectsToClass(CharacterClass.Scion).IsSet },
                 // other
                 { "enemies have", For(Enemy) },
                 { "against targets they pierce", Projectile.PierceCount.Value >= 1 },

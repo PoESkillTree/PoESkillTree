@@ -1,4 +1,5 @@
 ﻿using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.PassiveTree;
 
 namespace PoESkillTree.Computation.Common.Builders.Stats
@@ -10,6 +11,8 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
     {
         IStatBuilder NodeSkilled(ushort nodeId);
         IStatBuilder NodeEffectiveness(ushort nodeId);
+
+        IStatBuilder ConnectsToClass(CharacterClass characterClass);
 
         ValueBuilder TotalInModifierSourceJewelRadius(IStatBuilder stat);
         ValueBuilder AllocatedInModifierSourceJewelRadius(IStatBuilder stat);

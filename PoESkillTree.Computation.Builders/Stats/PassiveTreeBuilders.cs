@@ -9,6 +9,7 @@ using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Parsing;
+using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.PassiveTree;
 
 namespace PoESkillTree.Computation.Builders.Stats
@@ -27,6 +28,9 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStatBuilder NodeEffectiveness(ushort nodeId)
             => FromIdentity($"{nodeId}.Effectiveness", typeof(bool));
+
+        public IStatBuilder ConnectsToClass(CharacterClass characterClass)
+            => FromIdentity($"{characterClass}.TreeConnectedTo", typeof(bool));
 
         public ValueBuilder TotalInModifierSourceJewelRadius(IStatBuilder stat)
             => new ValueBuilder(new ValueBuilderImpl(
