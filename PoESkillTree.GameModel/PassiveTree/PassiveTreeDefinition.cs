@@ -20,7 +20,7 @@ namespace PoESkillTree.GameModel.PassiveTree
             {
                 new PassiveNodeDefinition(0, PassiveNodeType.JewelSocket, "jewel", false,
                     true, 0, default, new string[0]),
-                new PassiveNodeDefinition(1, PassiveNodeType.Normal, "attributes", false,
+                new PassiveNodeDefinition(1, PassiveNodeType.Small, "attributes", false,
                     true, 0, new NodePosition(10, 10), 
                     new[] { "+100 to Strength", "+100 to Dexterity", "+100 to Intelligence" }),
             };

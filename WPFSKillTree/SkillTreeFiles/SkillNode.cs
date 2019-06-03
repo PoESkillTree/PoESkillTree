@@ -54,7 +54,7 @@ namespace PoESkillTree.SkillTreeFiles
                 switch (Type)
                 {
                     case PassiveNodeType.JewelSocket:
-                    case PassiveNodeType.Normal:
+                    case PassiveNodeType.Small:
                         iconPrefix = "normal";
                         break;
                     case PassiveNodeType.Notable:

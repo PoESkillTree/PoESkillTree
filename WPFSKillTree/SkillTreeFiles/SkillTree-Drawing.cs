@@ -287,7 +287,7 @@ namespace PoESkillTree.SkillTreeFiles
                             surroundBrush[10 + activeOffset].Key.Width * 1.75 * factor,
                             surroundBrush[10 + activeOffset].Key.Height * 1.75 * factor));
             }
-            else if (node.ascendancyName != null && node.Type == PassiveNodeType.Normal)
+            else if (node.ascendancyName != null && node.Type == PassiveNodeType.Small)
             {
                 if (!DrawAscendancy) return;
 

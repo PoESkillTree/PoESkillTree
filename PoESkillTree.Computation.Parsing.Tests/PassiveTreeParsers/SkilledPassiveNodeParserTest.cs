@@ -12,7 +12,7 @@ namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
         [TestCase((ushort) 42)]
         public void ReturnsCorrectModifier(ushort nodeId)
         {
-            var definition = new PassiveNodeDefinition(nodeId, PassiveNodeType.Normal, "", false,
+            var definition = new PassiveNodeDefinition(nodeId, PassiveNodeType.Small, "", false,
                 true, 0, default, new string[0]);
             var expected = new[]
             {

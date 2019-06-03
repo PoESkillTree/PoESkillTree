@@ -350,7 +350,7 @@ namespace PoESkillTree.SkillTreeFiles
                         }
                         else if (!nd.ks && !nd.not && !nd.isJewelSocket && !nd.m)
                         {
-                            skillNode.Type = PassiveNodeType.Normal;
+                            skillNode.Type = PassiveNodeType.Small;
                         }
                         else
                         {
