@@ -161,15 +161,7 @@ namespace PoESkillTree.SkillTreeFiles
             var optsTask = DownloadOptsToFileAsync();
 
             var treeString = await skillTreeTask;
-            var inTree = JsonConvert.DeserializeObject<PoESkillTree>(treeString, new JsonSerializerSettings
-            {
-                Error = (sender, args) =>
-                {
-                    if (args.ErrorContext.Path != "groups.515.oo")
-                        Log.Error("Exception while deserializing Json tree", args.ErrorContext.Error);
-                    args.ErrorContext.Handled = true;
-                }
-            });
+            var inTree = JsonConvert.DeserializeObject<PoESkillTree>(treeString, new PoESkillTreeConverter());
             var spritesTask = DownloadSkillNodeSpritesAsync(inTree);
             var assetsTask = DownloadAssetsAsync(inTree);
 
