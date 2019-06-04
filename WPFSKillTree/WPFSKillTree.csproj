@@ -225,6 +225,7 @@
     <Compile Include="Model\Items\IItemBase.cs" />
     <Compile Include="Model\ModelConverter.cs" />
     <Compile Include="Model\ObservableItemCollectionConverter.cs" />
+    <Compile Include="SkillTreeFiles\PoESkillTreeConverter.cs" />
     <Compile Include="Utils\Extensions\SchedulerExtensions.cs" />
     <Compile Include="Utils\SemanticVersion.cs" />
     <Compile Include="Utils\WikiApi\CargoConstants.cs" />

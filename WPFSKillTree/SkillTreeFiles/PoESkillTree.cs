@@ -23,43 +23,7 @@ namespace PoESkillTree.SkillTreeFiles
         public List<ushort> n { get; set; }
     }
 
-
-    internal class Main
-    {
-        public ushort id { get; set; }
-
-        public string icon { get; set; }
-
-        public bool ks { get; set; }
-
-        public bool not { get; set; }
-
-        public string dn { get; set; }
-
-        public bool m { get; set; }
-
-        public int[] spc { get; set; }
-
-        public string[] sd { get; set; }
-
-        public int g { get; set; }
-
-        public int o { get; set; }
-
-        public int oidx { get; set; }
-
-        public int sa { get; set; }
-
-        public int da { get; set; }
-
-        public int ia { get; set; }
-
-
-        [JsonProperty("out")]
-        public List<ushort> ot { get; set; }
-    }
-
-    internal class Node
+    public class Node
     {
         public ushort id { get; set; }
         public string icon { get; set; }
@@ -111,11 +75,27 @@ namespace PoESkillTree.SkillTreeFiles
 
     internal class SkillSprite
     {
-        public string filename { get; set; }
+        [JsonProperty("filename")]
+        public string FileName { get; set; }
 
-        public Dictionary<string, Art2D> coords { get; set; }
+        [JsonProperty("coords")]
+        public Dictionary<string, Art2D> Coords { get; set; }
     }
 
+    internal class OldSkillSprite
+    {
+        [JsonProperty("filename")]
+        public string FileName { get; set; }
+
+        [JsonProperty("coords")]
+        public Dictionary<string, Art2D> Coords { get; set; }
+
+        [JsonProperty("notableCoords")]
+        public Dictionary<string, Art2D> NotableCoords { get; set; }
+
+        [JsonProperty("keystoneCoords")]
+        public Dictionary<string, Art2D> KeystoneCoords { get; set; }
+    }
 
     internal class PoESkillTree
     {
@@ -123,13 +103,9 @@ namespace PoESkillTree.SkillTreeFiles
 
         public Dictionary<int, NodeGroup> groups { get; set; }
 
-        public Main root { get; set; }
+        public Node root { get; set; }
 
-        public Main main { get; set; }
-
-        public Node[] nodes { get; set; }
-
-        public Dictionary<string, Node> nodesDict { get; set; }
+        public Dictionary<string, Node> nodes { get; set; }
 
         public int min_x { get; set; }
 
@@ -145,7 +121,7 @@ namespace PoESkillTree.SkillTreeFiles
 
         public string imageRoot { get; set; }
 
-        public Dictionary<string, SkillSprite[]> skillSprites { get; set; }
+        public Dictionary<string, List<SkillSprite>> skillSprites { get; set; }
 
         public double[] imageZoomLevels { get; set; }
     }

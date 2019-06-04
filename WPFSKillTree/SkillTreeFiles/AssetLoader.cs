@@ -107,8 +107,8 @@ namespace PoESkillTree.SkillTreeFiles
             foreach (var obj in inTree.skillSprites)
             {
                 var sprite = obj.Value[Constants.AssetZoomLevel];
-                var path = _tempAssetsPath + sprite.filename;
-                var url = SpriteUrl + sprite.filename;
+                var path = _tempAssetsPath + sprite.FileName;
+                var url = SpriteUrl + sprite.FileName;
                 if (path.Contains('?'))
                     path = path.Remove(path.IndexOf('?'));
                 await DownloadAsync(url, path);
