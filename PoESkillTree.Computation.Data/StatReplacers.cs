@@ -117,6 +117,11 @@ namespace PoESkillTree.Computation.Data
                 @"(your hits can't be evaded) (never deal critical strikes)",
                 "$1", "$2"
             },
+            {
+                // Wicked Ward
+                @"(energy shield recharge is not interrupted by damage if recharge began recently) (\d+% less .*) (\d+% less .*)",
+                "$2", "$3"
+            },
             // Skills
             {
                 // Arcane Surge Support

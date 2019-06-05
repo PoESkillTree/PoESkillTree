@@ -24,6 +24,11 @@ namespace PoESkillTree.Computation.Common.Builders.Effects
 
         IStatBuilder CriticalStrikesAlwaysInflict { get; }
 
+        /// <summary>
+        /// Modifies the tick rate of the ailment's damage
+        /// </summary>
+        IStatBuilder TickRateModifier { get; }
+
         new Ailment Build(BuildParameters parameters);
     }
 }

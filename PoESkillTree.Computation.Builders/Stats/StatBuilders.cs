@@ -81,6 +81,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder CharacterSize => FromIdentity(typeof(double));
         public IStatBuilder LightRadius => FromIdentity(typeof(double));
         public IStatBuilder AttachedBrands => FromIdentity(typeof(uint));
+        public IStatBuilder BannerStage => FromIdentity(typeof(uint));
 
         public IStatBuilder PassiveNodeSkilled(ushort nodeId) => FromIdentity($"{nodeId}.Skilled", typeof(bool));
 

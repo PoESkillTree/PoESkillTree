@@ -110,7 +110,7 @@ namespace PoESkillTree.Computation.Data
                 {
                     // Dread Banner, War Banner
                     @"\+# second to base placed banner duration per stage",
-                    BaseAdd, Value * Skills.ModifierSourceSkill.Buff.StackCount.Value, Stat.Duration
+                    BaseAdd, Value * Stat.BannerStage.Value, Stat.Duration
                 },
                 {
                     // Cleave
@@ -260,6 +260,12 @@ namespace PoESkillTree.Computation.Data
                     (TotalOverride, (int) Pool.Life, AllSkills.ReservationPool, Condition.True)
                 },
                 {
+                    // Mortal Conviction
+                    "you can only have one non-banner aura on you from your skills non-banner aura skills reserve no mana",
+                    TotalOverride, 0, Skills[Keyword.Aura].Reservation
+                    // TODO Exclude banners either by skill id or by a new keyword
+                },
+                {
                     // Eldritch Battery: Display both mana and energy shield costs
                     "spend energy shield before mana for skill costs",
                     BaseAdd, 100, Mana.Cost.GainAs(EnergyShield.Cost)
@@ -298,6 +304,10 @@ namespace PoESkillTree.Computation.Data
                 {
                     "effects granted for having rage are doubled",
                     PercentMore, 100, Charge.RageEffect
+                },
+                {
+                    "effects granted for having rage are tripled",
+                    PercentMore, 200, Charge.RageEffect
                 },
                 // - Chieftain
                 {
@@ -424,6 +434,15 @@ namespace PoESkillTree.Computation.Data
                     TotalOverride, 0,
                     Skills.FromId("PuresteelBanner").Reservation, Skills.FromId("BloodstainedBanner").Reservation
                 },
+                {
+                    "you and allies affected by your placed banners regenerate #% of maximum life per second for each stage",
+                    (BaseAdd, Value * Stat.BannerStage.Value, Life.Regen.Percent,
+                        Or(Skills.FromId("PuresteelBanner").Buff.IsOn(Self), Skills.FromId("BloodstainedBanner").Buff.IsOn(Self))),
+                    (BaseAdd, Value * Stat.BannerStage.Value, Life.Regen.Percent.For(Entity.Minion),
+                        Or(Skills.FromId("PuresteelBanner").Buff.IsOn(Entity.Minion), Skills.FromId("BloodstainedBanner").Buff.IsOn(Entity.Minion))),
+                    (BaseAdd, Value * Stat.BannerStage.Value, Life.Regen.Percent.For(Entity.Totem),
+                        Or(Skills.FromId("PuresteelBanner").Buff.IsOn(Entity.Totem), Skills.FromId("BloodstainedBanner").Buff.IsOn(Entity.Totem)))
+                },
                 // - Slayer
                 {
                     "your damaging hits always stun enemies that are on full life",
@@ -431,6 +450,19 @@ namespace PoESkillTree.Computation.Data
                     Action.Unique("On damaging Hit against a full life Enemy").On
                 },
                 { "cannot take reflected physical damage", PercentLess, 100, Physical.ReflectedDamageTaken },
+                {
+                    "base critical strike chance for attacks with weapons is #%",
+                    TotalOverride, Value, CriticalStrike.BaseChance.WithSkills(DamageSource.Attack), MainHand.HasItem
+                },
+                {
+                    "deal up to #% more melee damage to enemies, based on proximity",
+                    PercentMore, Stat.UniqueAmount("#% more Melee Damage from Slayer's Impact"),
+                    Damage.With(Keyword.Melee)
+                },
+                {
+                    "your maximum endurance charges is equal to your maximum frenzy charges",
+                    TotalOverride, Charge.Frenzy.Amount.Maximum.Value, Charge.Endurance.Amount.Maximum
+                },
                 // - Inquisitor
                 {
                     "critical strikes ignore enemy monster elemental resistances",

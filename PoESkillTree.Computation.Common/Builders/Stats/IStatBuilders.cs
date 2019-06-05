@@ -140,6 +140,8 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// </summary>
         IStatBuilder AttachedBrands { get; }
 
+        IStatBuilder BannerStage { get; }
+
         IStatBuilder PassiveNodeSkilled(ushort nodeId);
 
         /// <summary>

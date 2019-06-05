@@ -268,6 +268,10 @@ namespace PoESkillTree.Computation.Data
                     BaseAdd, Value, Reference.AsPoolStat.Regen.Percent
                 },
                 {
+                    "lose #%( of)?( their| your)? ({PoolStatMatchers}) per second",
+                    BaseSubtract, Value, Reference.AsPoolStat.Regen.Percent
+                },
+                {
                     "# ({PoolStatMatchers}) regenerated per second", BaseAdd, Value,
                     Reference.AsPoolStat.Regen
                 },
@@ -307,7 +311,7 @@ namespace PoESkillTree.Computation.Data
                     Charge.Power.ChanceToGain, Charge.Frenzy.ChanceToGain, Charge.Endurance.ChanceToGain
                 },
                 {
-                    "(?<!chance to |when you )gain an? ({ChargeTypeMatchers})",
+                    "(?<!chance to |when you )gain (an?|1) ({ChargeTypeMatchers})",
                     BaseAdd, 100, Reference.AsChargeType.ChanceToGain
                 },
                 {
@@ -402,6 +406,10 @@ namespace PoESkillTree.Computation.Data
                 {
                     "poison you inflict with critical strikes deals #% more damage",
                     PercentMore, Value, CriticalStrike.Multiplier.With(Ailment.Poison)
+                },
+                {
+                    "({AilmentMatchers}) you inflict deals? damage #% faster",
+                    PercentIncrease, Value, Reference.AsAilment.TickRateModifier
                 },
                 // stun
                 { "(you )?cannot be stunned", TotalOverride, 100, Effect.Stun.Avoidance },

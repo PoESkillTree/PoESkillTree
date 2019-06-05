@@ -169,7 +169,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 {
                     TotalOverride, MetaStats.AilmentDps,
                     ailment => MetaStats.AverageAilmentDamage(ailment).Value *
-                               MetaStats.AilmentEffectiveInstances(ailment).Value
+                               MetaStats.AilmentEffectiveInstances(ailment).Value *
+                               Ailment.From(ailment).TickRateModifier.Value
                 },
                 // - average damage
                 {
@@ -386,6 +387,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 },
                 { TotalOverride, MetaStats.ReducedActionSpeedFromChill.Maximum, 30 },
                 { TotalOverride, MetaStats.ReducedActionSpeedFromChill.Minimum, 1 },
+                { BaseSet, a => Ailment.From(a).TickRateModifier, a => ValueFactory.Create(1) },
+                { PercentMore, a => Ailment.From(a).Duration, a => 100 / Ailment.From(a).TickRateModifier.Value },
                 // - AilmentEffectiveInstances
                 {
                     TotalOverride, MetaStats.AilmentEffectiveInstances(Common.Builders.Effects.Ailment.Ignite),

@@ -64,6 +64,7 @@ namespace PoESkillTree.Computation.Data
                 { "damage taken from hits", Damage.Taken.WithHits },
                 { "({DamageTypeMatchers}) damage taken from hits", Reference.AsDamageType.Damage.Taken.WithHits },
                 { "take ({DamageTypeMatchers}) damage from hits", Reference.AsDamageType.Damage.Taken.WithHits },
+                { "area damage taken from hits", Damage.Taken.WithHits.With(Keyword.AreaOfEffect) },
                 { "damage taken from damage over time", Damage.Taken.With(DamageSource.OverTime) },
                 {
                     "({DamageTypeMatchers}) damage taken over time",
@@ -122,7 +123,7 @@ namespace PoESkillTree.Computation.Data
                 // defense
                 // - life, mana, defences; see also PoolStatMatchers
                 { "armour", Armour },
-                { "evasion( rating)?", Evasion },
+                { "(global )?evasion( rating)?", Evasion },
                 { "evasion rating and armour", ApplyOnce(Armour, Evasion) },
                 { "armour and evasion( rating)?", ApplyOnce(Armour, Evasion) },
                 { "armour and energy shield", ApplyOnce(Armour, EnergyShield) },
@@ -137,6 +138,7 @@ namespace PoESkillTree.Computation.Data
                 { "all elemental resistances", Elemental.Resistance },
                 { "maximum ({DamageTypeMatchers}) resistance", Reference.AsDamageType.Resistance.Maximum },
                 { "all maximum resistances", Elemental.And(Chaos).Resistance.Maximum },
+                { "all maximum elemental resistances", Elemental.Resistance.Maximum },
                 { "physical damage reduction", Physical.Resistance },
                 // - leech
                 {
@@ -224,6 +226,7 @@ namespace PoESkillTree.Computation.Data
                 { "cast speed for curses", Stat.CastRate.With(DamageSource.Attack).With(Keyword.Curse) },
                 { "movement speed", Stat.MovementSpeed },
                 { "attack and cast speed", Stat.CastRate },
+                { "attack and movement speed", Stat.CastRate.With(DamageSource.Attack), Stat.MovementSpeed },
                 { "attack, cast( speed)? and movement speed", Stat.CastRate, Stat.MovementSpeed },
                 { "action speed", Stat.ActionSpeed },
                 { "hit rate", Stat.HitRate },
@@ -243,6 +246,7 @@ namespace PoESkillTree.Computation.Data
                     "maximum ({ChargeTypeMatchers}) and maximum ({ChargeTypeMatchers})",
                     ApplyOnce(References[0].AsChargeType.Amount.Maximum, References[1].AsChargeType.Amount.Maximum)
                 },
+                { "(?<!while at )minimum ({ChargeTypeMatchers})", Reference.AsChargeType.Amount.Minimum },
                 { "chance to (gain|grant) (an?|1) ({ChargeTypeMatchers})", Reference.AsChargeType.ChanceToGain },
                 {
                     "chance to (gain|grant) an? ({ChargeTypeMatchers}) and an? ({ChargeTypeMatchers})",
@@ -297,7 +301,7 @@ namespace PoESkillTree.Computation.Data
                     Skills.SummonSkeleton.Instances.Maximum, Skills.VaalSummonSkeletons.Instances.Maximum
                 },
                 { "maximum number of spectres", Skills.RaiseSpectre.Instances.Maximum },
-                { "maximum number of zombies", Skills.RaiseZombie.Instances.Maximum },
+                { "maximum number of( raised)? zombies", Skills.RaiseZombie.Instances.Maximum },
                 { "minion duration", Stat.Duration, With(Keyword.Minion) },
                 { "skeleton duration", Stat.Duration, WithSkeletonSkills },
                 { "skeleton movement speed", Stat.MovementSpeed.For(Entity.Minion), WithSkeletonSkills },
@@ -331,7 +335,7 @@ namespace PoESkillTree.Computation.Data
                 // - chance
                 { "chance to (gain|grant) ({BuffMatchers})", Reference.AsBuff.Chance },
                 { "chance to fortify", Buff.Fortify.Chance },
-                { "chance to maim", Buff.Maim.Chance },
+                { "chance to maim( enemies)?", Buff.Maim.Chance },
                 { "chance for attacks to maim", Buff.Maim.Chance.With(DamageSource.Attack) },
                 { "chance to taunt", Buff.Taunt.Chance },
                 { "chance to blind( enemies)?", Buff.Blind.Chance },

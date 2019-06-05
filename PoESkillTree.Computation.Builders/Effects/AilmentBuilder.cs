@@ -39,7 +39,10 @@ namespace PoESkillTree.Computation.Builders.Effects
             return new StatBuilder(StatFactory, coreStat);
         }
 
-        public IStatBuilder CriticalStrikesAlwaysInflict => FromIdentity("CriticalStrikesAlwaysInflict", typeof(bool));
+        public IStatBuilder CriticalStrikesAlwaysInflict
+            => FromIdentity("CriticalStrikesAlwaysInflict", typeof(bool));
+
+        public IStatBuilder TickRateModifier => FromIdentity("TickRateModifier", typeof(double));
 
         private IEnumerable<IStat> ConcretizeSourceStat(IReadOnlyList<DamageType> types, IStat stat) =>
             types.Select(t => StatFactory.CopyWithSuffix(stat, t.ToString(), typeof(bool)));

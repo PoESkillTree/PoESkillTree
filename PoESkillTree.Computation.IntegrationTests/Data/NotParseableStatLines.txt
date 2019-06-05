@@ -181,6 +181,13 @@ Enemies Cannot Leech Life From You
 Hits that Stun Enemies have Culling Strike
 10% increased Brand Attachment range
 14% increased Brand Attachment range
+10% chance when Hit for double Armour effect
+40% chance to Avoid Blind
+60% chance to Avoid Blind
+5% chance to Avoid Cold Damage when Hit
+5% chance to Avoid Fire Damage when Hit
+5% chance to Avoid Lightning Damage when Hit
++8% Chance to Block Projectile Attack Damage
 // Side effect from how jewels are currently handled, the stat doesn't actually exist
 +1 Jewel Socket
 // Ascendancies: =======================================================================================================
@@ -188,6 +195,8 @@ Hits that Stun Enemies have Culling Strike
 Totems Reflect 15% of their maximum Life as Fire Damage to nearby Enemies when Hit
 unaffected by ignite
 When you or your Totems Kill a Burning Enemy, 20% chance for you and your Totems to each gain an Endurance Charge
+50% increased Life Recovery Rate if you've taken Fire Damage from an Enemy Hit Recently
+Ancestor Totems have 100% increased Activation range
 // - Juggernaut
 1.5% of Total Physical Damage prevented from Hits in the past 10 seconds is Regenerated as Life per second
 25% chance that if you would gain Endurance Charges, you instead gain up to your maximum number of Endurance Charges
@@ -211,6 +220,7 @@ Every 4 seconds, Freeze nearby Chilled Non-Unique Enemies for 0.6 seconds
 Elemental Ailments caused by your Skills spread to other nearby Enemies Radius: 18
 Chills from your Hits always reduce Action Speed by at least 10%
 Shocks from your Hits always increase Damage taken by at least 20%
+Shocks from your Hits always increase Damage taken by at least 15%
 Shocks from your Hits always increase Damage taken by at least 10%
 // - Gladiator
 1% additional Block Chance for each Hit you've Blocked in the past 10 seconds
@@ -220,8 +230,8 @@ Cannot be Stunned by Hits you Block
 // - Champion
 Remove all Ailments and Burning when you gain Adrenaline
 Enemies Taunted by you deal 10% less Damage with Hits and Ailments against other targets
+When you create a Banner, it gains 40% of the Stages of your placed Banner
 When you create a Banner, it gains 20% of the Stages of your placed Banner
-When you place a Banner, you and nearby Allies recover 0.5% of Life for each Stage the Banner has
 // - Slayer
 20% of Overkill Damage is Leeched as Life
 Culling Strike

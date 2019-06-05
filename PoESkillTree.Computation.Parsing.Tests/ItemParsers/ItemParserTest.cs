@@ -297,7 +297,6 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
             Assert.That(result.Modifiers, Is.SupersetOf(expected));
         }
 
-        [TestCase("critical_strike_chance", "CriticalStrike.Chance", 1D / 100, ItemSlot.MainHand)]
         [TestCase("range", "Range", 1, ItemSlot.MainHand)]
         [TestCase("range", "Range", 1, ItemSlot.OffHand)]
         public void ParseReturnsCorrectModifiersForDamageRelatedProperties(

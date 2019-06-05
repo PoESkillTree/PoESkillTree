@@ -31,7 +31,7 @@ namespace PoESkillTree.Computation.Data
                 { "hits?", Action.Hit },
                 { "(dealt a )?critical strike", Action.CriticalStrike },
                 { "non-critical strike", Action.NonCriticalStrike },
-                { "stun", Effect.Stun.InflictionAction },
+                { "stun(ned)?", Effect.Stun.InflictionAction },
                 { "shocked", Effect.Ailment.Shock.InflictionAction },
             }; // Add
     }

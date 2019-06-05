@@ -13,6 +13,11 @@ namespace PoESkillTree.Computation.Common.Builders.Actions
         /// Gets a stat representing the critical strike chance.
         /// </summary>
         IDamageRelatedStatBuilder Chance { get; }
+
+        /// <summary>
+        /// Gets a stat representing the unmodified base critical strike chance
+        /// </summary>
+        IDamageRelatedStatBuilder BaseChance { get; }
         
         /// <summary>
         /// Gets a stat representing the critical strike multiplier.
