@@ -418,8 +418,6 @@
     <Compile Include="SkillTreeFiles\Constants.cs" />
     <Compile Include="SkillTreeFiles\NodeHighlighter.cs" />
     <Compile Include="SkillTreeFiles\SkillIcons.cs" />
-    <Compile Include="SkillTreeFiles\SkillNode.cs" />
-    <Compile Include="SkillTreeFiles\SkillNodeGroup.cs" />
     <Compile Include="SkillTreeFiles\Updater.cs" />
     <Compile Include="TreeGenerator\Algorithm\DisjointSet.cs" />
     <Compile Include="TreeGenerator\Algorithm\DistanceLookup.cs" />

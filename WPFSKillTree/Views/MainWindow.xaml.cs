@@ -1435,13 +1435,13 @@ namespace PoESkillTree.Views
             var node = Tree.FindNodeInRange(v, 50);
             if (node != null && !node.IsRootNode)
             {
-                if (node.ascendancyName != null && !Tree.DrawAscendancy)
+                if (node.IsAscendancyNode && !Tree.DrawAscendancy)
                     return;
                 var ascendancyClassName = Tree.AscendancyClassName;
-                if (!PersistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != ascendancyClassName)
+                if (!PersistentData.Options.ShowAllAscendancyClasses && node.IsAscendancyNode && node.AscendancyName != ascendancyClassName)
                     return;
                 // Ignore clicks on character portraits and masteries
-                if (node.Spc == null && node.Type != PassiveNodeType.Mastery)
+                if (node.Character == null && node.Type != PassiveNodeType.Mastery)
                 {
                     if (_lastMouseButton == MouseButton.Right)
                     {
@@ -1540,10 +1540,10 @@ namespace PoESkillTree.Views
 
         private void GenerateTooltipForNode(SkillNode node, bool forcerefresh = false)
         {
-            if (!Tree.DrawAscendancy && node.ascendancyName != null && !forcerefresh)
+            if (!Tree.DrawAscendancy && node.IsAscendancyNode && !forcerefresh)
                 return;
-            if (!PersistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null &&
-                node.ascendancyName != Tree.AscendancyClassName)
+            if (!PersistentData.Options.ShowAllAscendancyClasses && node.IsAscendancyNode &&
+                node.AscendancyName != Tree.AscendancyClassName)
                 return;
 
             if (node.Type == PassiveNodeType.JewelSocket)
@@ -1565,7 +1565,7 @@ namespace PoESkillTree.Views
             }
             var tooltip = node.Name;
             if (node.Attributes.Count != 0)
-                tooltip += "\n" + node.attributes.Aggregate((s1, s2) => s1 + "\n" + s2);
+                tooltip += "\n" + node.StatDefinitions.Aggregate((s1, s2) => s1 + "\n" + s2);
             if (!(_sToolTip.IsOpen && _lasttooltip == tooltip) | forcerefresh)
             {
                 var sp = new StackPanel();
@@ -1573,10 +1573,10 @@ namespace PoESkillTree.Views
                 {
                     Text = tooltip
                 });
-                if (node.reminderText != null)
+                if (node.ReminderText != null)
                 {
                     sp.Children.Add(new Separator());
-                    sp.Children.Add(new TextBlock { Text = node.reminderText.Aggregate((s1, s2) => s1 + '\n' + s2) });
+                    sp.Children.Add(new TextBlock { Text = node.ReminderText.Aggregate((s1, s2) => s1 + '\n' + s2) });
                 }
                 if (_prePath != null && node.Type != PassiveNodeType.Mastery)
                 {

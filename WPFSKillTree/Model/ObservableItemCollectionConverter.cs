@@ -5,7 +5,6 @@ using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
 using PoESkillTree.Utils;
 using PoESkillTree.Model.Items;
-using PoESkillTree.Utils;
 using Item = PoESkillTree.GameModel.Items.Item;
 using OldItem = PoESkillTree.Model.Items.Item;
 

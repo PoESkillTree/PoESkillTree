@@ -102,9 +102,9 @@ namespace PoESkillTree.SkillTreeFiles
             Action<double> reportProgress = null)
         {
             Directory.CreateDirectory(_tempAssetsPath);
-            var perSpriteProgress = 1.0 / inTree.skillSprites.Count;
+            var perSpriteProgress = 1.0 / inTree.SkillSprites.Count;
             var progress = 0.0;
-            foreach (var obj in inTree.skillSprites)
+            foreach (var obj in inTree.SkillSprites)
             {
                 var sprite = obj.Value[Constants.AssetZoomLevel];
                 var path = _tempAssetsPath + sprite.FileName;
@@ -128,10 +128,10 @@ namespace PoESkillTree.SkillTreeFiles
         internal async Task DownloadAssetsAsync(PoESkillTree inTree, Action<double> reportProgress = null)
         {
             Directory.CreateDirectory(_tempAssetsPath);
-            var zoomLevel = inTree.imageZoomLevels[Constants.AssetZoomLevel].ToString(CultureInfo.InvariantCulture);
-            var perAssetProgress = 1.0 / inTree.assets.Count;
+            var zoomLevel = inTree.ImageZoomLevels[Constants.AssetZoomLevel].ToString(CultureInfo.InvariantCulture);
+            var perAssetProgress = 1.0 / inTree.Assets.Count;
             var progress = 0.0;
-            foreach (var asset in inTree.assets)
+            foreach (var asset in inTree.Assets)
             {
                 var path = _tempAssetsPath + asset.Key + ".png";
                 var url = asset.Value.GetValueOrDefault(zoomLevel, () => asset.Value.Values.First());

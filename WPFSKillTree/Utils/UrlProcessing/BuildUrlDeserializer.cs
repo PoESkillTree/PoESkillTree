@@ -54,7 +54,7 @@ namespace PoESkillTree.Utils.UrlProcessing
         public int GetPointsCount()
             => GetBuildData().SkilledNodesIds.Count(
                 id => SkillTree.Skillnodes.TryGetValue(id, out var skillNode)
-                      && (!skillNode.IsRootNode && skillNode.ascendancyName == null));
+                      && (!skillNode.IsRootNode && !skillNode.IsAscendancyNode));
 
         /// <summary>
         /// Returns the character class of the given build url.

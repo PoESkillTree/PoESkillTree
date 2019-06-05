@@ -10,7 +10,6 @@ using PoESkillTree.Controls.Dialogs;
 using PoESkillTree.Localization;
 using PoESkillTree.Model.Builds;
 using PoESkillTree.Model.Items;
-using PoESkillTree.Utils;
 
 namespace PoESkillTree.Model.Serialization
 {

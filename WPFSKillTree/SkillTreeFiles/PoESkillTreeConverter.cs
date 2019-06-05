@@ -22,7 +22,7 @@ namespace PoESkillTree.SkillTreeFiles
 
             if (jObject.GetValue("nodes") is JToken nodes && nodes.Type == JTokenType.Array)
             {
-                skillTree.nodes = nodes.ToObject<List<Node>>().ToDictionary(i => i.id.ToString(), i => i);
+                skillTree.Nodes = nodes.ToObject<List<SkillNode>>().ToDictionary(i => i.Id, i => i);
                 jObject.Remove("nodes");
             }
 
@@ -31,30 +31,30 @@ namespace PoESkillTree.SkillTreeFiles
                 var sprites = spritesToken.ToObject<Dictionary<string, List<OldSkillSprite>>>();
                 if (sprites.Count == 2)
                 {
-                    skillTree.skillSprites = new Dictionary<string, List<SkillSprite>>();
+                    skillTree.SkillSprites = new Dictionary<string, List<SkillSprite>>();
                     foreach (var i in sprites)
                     {
                         //i.Key == "active", "inactive"
                         var key = $"{i.Key.First().ToString().ToUpper()}{i.Key.Substring(1)}";
                         foreach (var j in i.Value)
                         {
-                            if (!skillTree.skillSprites.ContainsKey($"normal{key}"))
+                            if (!skillTree.SkillSprites.ContainsKey($"normal{key}"))
                             {
-                                skillTree.skillSprites.Add($"normal{key}", new List<SkillSprite>());
+                                skillTree.SkillSprites.Add($"normal{key}", new List<SkillSprite>());
                             }
-                            skillTree.skillSprites[$"normal{key}"].Add(new SkillSprite() { FileName = j.FileName, Coords = j.Coords ?? new Dictionary<string, Art2D>() });
+                            skillTree.SkillSprites[$"normal{key}"].Add(new SkillSprite() { FileName = j.FileName, Coords = j.Coords ?? new Dictionary<string, Art2D>() });
 
-                            if (!skillTree.skillSprites.ContainsKey($"notable{key}"))
+                            if (!skillTree.SkillSprites.ContainsKey($"notable{key}"))
                             {
-                                skillTree.skillSprites.Add($"notable{key}", new List<SkillSprite>());
+                                skillTree.SkillSprites.Add($"notable{key}", new List<SkillSprite>());
                             }
-                            skillTree.skillSprites[$"notable{key}"].Add(new SkillSprite() { FileName = j.FileName, Coords = j.NotableCoords ?? new Dictionary<string, Art2D>() });
+                            skillTree.SkillSprites[$"notable{key}"].Add(new SkillSprite() { FileName = j.FileName, Coords = j.NotableCoords ?? new Dictionary<string, Art2D>() });
 
-                            if (!skillTree.skillSprites.ContainsKey($"keystone{key}"))
+                            if (!skillTree.SkillSprites.ContainsKey($"keystone{key}"))
                             {
-                                skillTree.skillSprites.Add($"keystone{key}", new List<SkillSprite>());
+                                skillTree.SkillSprites.Add($"keystone{key}", new List<SkillSprite>());
                             }
-                            skillTree.skillSprites[$"keystone{key}"].Add(new SkillSprite() { FileName = j.FileName, Coords = j.KeystoneCoords ?? new Dictionary<string, Art2D>() });
+                            skillTree.SkillSprites[$"keystone{key}"].Add(new SkillSprite() { FileName = j.FileName, Coords = j.KeystoneCoords ?? new Dictionary<string, Art2D>() });
                         }
                     }
                     jObject.Remove("skillSprites");
@@ -76,17 +76,17 @@ namespace PoESkillTree.SkillTreeFiles
     {
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(NodeGroup);
+            return objectType == typeof(SkillNodeGroup);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var jObject = JObject.Load(reader);
-            var group = new NodeGroup();
+            var group = new SkillNodeGroup();
 
             if (jObject.GetValue("oo") is JToken oo && oo.Type == JTokenType.Array)
             {
-                group.oo = oo.ToObject<List<bool>>().Select((value, index) => new { Index = index, Value = value }).ToDictionary(i => i.Index, i => i.Value);
+                group.OccupiedOrbits = oo.ToObject<List<bool>>().Select((value, index) => new { Index = index, Value = value }).ToDictionary(i => i.Index, i => i.Value);
                 jObject.Remove("oo");
             }
 

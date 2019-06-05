@@ -7,7 +7,6 @@ using log4net;
 using PoESkillTree.Utils;
 using PoESkillTree.Localization;
 using PoESkillTree.Model.Builds;
-using PoESkillTree.Utils;
 
 namespace PoESkillTree.Model.Serialization
 {

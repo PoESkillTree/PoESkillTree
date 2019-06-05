@@ -26,7 +26,7 @@ namespace PoESkillTree.SkillTreeFiles
         /// </summary>
         private static HighlightState CleanFlags(SkillNode node, HighlightState flags)
         {
-            if (node.ascendancyName == null) return flags;
+            if (!node.IsAscendancyNode) return flags;
             return flags & ~HighlightState.Tags;
         }
 

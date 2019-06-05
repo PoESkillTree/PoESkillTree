@@ -639,7 +639,7 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         private static IEnumerable<string> CreatePossibleAttributes()
         {
             return from node in SkillTree.Skillnodes.Values
-                   where node.ascendancyName == null
+                   where !node.IsAscendancyNode
                    from attr in SkillTree.ExpandHybridAttributes(node.Attributes)
                    where !AttributeBlackList.Contains(attr.Key) && attr.Key.Contains("#")
                    group attr by attr.Key into attrGroup
