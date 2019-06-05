@@ -132,7 +132,7 @@ namespace PoESkillTree.SkillTreeFiles
 
         private static SkillIcons IconActiveSkills { get; set; }
         private static SkillIcons IconInActiveSkills { get; set; }
-        public static Dictionary<ushort, SkillNode> Skillnodes { get; private set; }
+        public static Dictionary<ushort, SkillNode> Skillnodes => PoESkillTree.Nodes;
 
         private static IEnumerable<string> _allAttributes;
         /// <summary>
@@ -151,7 +151,6 @@ namespace PoESkillTree.SkillTreeFiles
 
         public static List<ushort> RootNodeList { get; private set; }
         private static HashSet<SkillNode> AscRootNodeList { get; set; }
-        public static List<SkillNodeGroup> NodeGroups { get; private set; }
         public static Rect2D SkillTreeRect { get; private set; }
         private static Dictionary<CharacterClass, ushort> RootNodeClassDictionary { get; set; }
         private static Dictionary<ushort, ushort> StartNodeDictionary { get; set; }
@@ -170,6 +169,9 @@ namespace PoESkillTree.SkillTreeFiles
         public static int MaximumLevel => 100;
         private int _level = UndefinedLevel;
 
+        public static PoESkillTree PoESkillTree { get; set; } = null;
+        public static PoESkillTreeOptions PoESkillTreeOptions { get; set; } = null;
+
         private static bool _initialized;
 
         private SkillTree(IPersistentData persistentData)
@@ -184,16 +186,16 @@ namespace PoESkillTree.SkillTreeFiles
         {
             if (!_initialized)
             {
-                var inTree = JsonConvert.DeserializeObject<PoESkillTree>(treestring, new PoESkillTreeConverter());
-                var inOpts = JsonConvert.DeserializeObject<Opts>(opsstring);
+                PoESkillTree = JsonConvert.DeserializeObject<PoESkillTree>(treestring, new PoESkillTreeConverter());
+                PoESkillTreeOptions = JsonConvert.DeserializeObject<PoESkillTreeOptions>(opsstring);
 
                 controller?.SetProgress(0.25);
-                await assetLoader.DownloadSkillNodeSpritesAsync(inTree, d => controller?.SetProgress(0.25 + d * 0.30));
+                await assetLoader.DownloadSkillNodeSpritesAsync(PoESkillTree, d => controller?.SetProgress(0.25 + d * 0.30));
                 IconInActiveSkills = new SkillIcons();
                 IconActiveSkills = new SkillIcons();
                 var assetActions =
-                    new List<(Task<BitmapImage>, Action<BitmapImage>)>(inTree.SkillSprites.Count + inTree.Assets.Count);
-                foreach (var obj in inTree.SkillSprites)
+                    new List<(Task<BitmapImage>, Action<BitmapImage>)>(PoESkillTree.SkillSprites.Count + PoESkillTree.Assets.Count);
+                foreach (var obj in PoESkillTree.SkillSprites)
                 {
                     SkillIcons icons;
                     string prefix;
@@ -234,8 +236,8 @@ namespace PoESkillTree.SkillTreeFiles
 
                 controller?.SetProgress(0.55);
                 // The last percent progress is reserved for rounding errors as progress must not get > 1.
-                await assetLoader.DownloadAssetsAsync(inTree, d => controller?.SetProgress(0.55 + d * 0.44));
-                foreach (var ass in inTree.Assets)
+                await assetLoader.DownloadAssetsAsync(PoESkillTree, d => controller?.SetProgress(0.55 + d * 0.44));
+                foreach (var ass in PoESkillTree.Assets)
                 {
                     var key = ass.Key;
                     var path = _assetsFolderPath + key + ".png";
@@ -247,7 +249,7 @@ namespace PoESkillTree.SkillTreeFiles
                     action(await task);
                 }
 
-                AscendancyClasses = new AscendancyClasses(inOpts.ascClasses);
+                AscendancyClasses = new AscendancyClasses(PoESkillTreeOptions.CharacterToAscendancy);
 
                 BuildConverter = new BuildConverter(AscendancyClasses);
                 BuildConverter.RegisterDefaultDeserializer(url => new NaivePoEUrlDeserializer(url, AscendancyClasses));
@@ -257,7 +259,7 @@ namespace PoESkillTree.SkillTreeFiles
                 );
 
                 CharBaseAttributes = new Dictionary<CharacterClass, IReadOnlyList<(string stat, float value)>>();
-                foreach (var (key, value) in inTree.CharacterData)
+                foreach (var (key, value) in PoESkillTree.CharacterData)
                 {
                     CharBaseAttributes[(CharacterClass)key] = new (string stat, float value)[]
                     {
@@ -267,17 +269,16 @@ namespace PoESkillTree.SkillTreeFiles
                     };
                 }
 
-                SkillNode.OrbitRadii = inTree.Constants.OrbitRadii ?? SkillNode.OrbitRadii;
-                SkillNode.SkillsPerOrbit = inTree.Constants.SkillsPerOrbit ?? SkillNode.SkillsPerOrbit;
-                Skillnodes = inTree.Nodes;
+                SkillNode.OrbitRadii = PoESkillTree.Constants.OrbitRadii ?? SkillNode.OrbitRadii;
+                SkillNode.SkillsPerOrbit = PoESkillTree.Constants.SkillsPerOrbit ?? SkillNode.SkillsPerOrbit;
                 RootNodeClassDictionary = new Dictionary<CharacterClass, ushort>();
                 StartNodeDictionary = new Dictionary<ushort, ushort>();
                 AscRootNodeList = new HashSet<SkillNode>();
                 RootNodeList = new List<ushort>();
 
-                if (inTree.Root != null)
+                if (PoESkillTree.Root != null)
                 {
-                    foreach (var i in inTree.Root.NodeIdsOut)
+                    foreach (var i in PoESkillTree.Root.NodeIdsOut)
                     {
                         RootNodeList.Add(i);
                         if (Skillnodes.ContainsKey(i))
@@ -390,20 +391,18 @@ namespace PoESkillTree.SkillTreeFiles
                     }
                 }
 
-                NodeGroups = new List<SkillNodeGroup>();
-                foreach (var gp in inTree.Groups)
+                foreach (var gp in PoESkillTree.Groups)
                 {
                     foreach (var node in gp.Value.NodeIds)
                     {
                         gp.Value.Nodes.Add(Skillnodes[node]);
                         Skillnodes[node].Group = gp.Value;
                     }
-                    NodeGroups.Add(gp.Value);
                 }
 
                 const int padding = 500; //This is to account for jewel range circles. Might need to find a better way to do it.
-                SkillTreeRect = new Rect2D(new Vector2D(inTree.min_x * 1.1 - padding, inTree.min_y * 1.1 - padding),
-                    new Vector2D(inTree.max_x * 1.1 + padding, inTree.max_y * 1.1 + padding));
+                SkillTreeRect = new Rect2D(new Vector2D(PoESkillTree.min_x * 1.1 - padding, PoESkillTree.min_y * 1.1 - padding),
+                    new Vector2D(PoESkillTree.max_x * 1.1 + padding, PoESkillTree.max_y * 1.1 + padding));
             }
 
             if (_persistentData.Options.ShowAllAscendancyClasses)

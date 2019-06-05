@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PoESkillTree.SkillTreeFiles
 {
-    internal class BaseCharacterData
+    public class BaseCharacterData
     {
         [JsonProperty("base_str")]
         public int BaseStrength { get; set; }
@@ -261,7 +261,7 @@ namespace PoESkillTree.SkillTreeFiles
         public float[] OrbitRadii { get; set; }
     }
 
-    internal class Art2D
+    public class Art2D
     {
         [JsonProperty("x")]
         public int X { get; set; }
@@ -276,7 +276,7 @@ namespace PoESkillTree.SkillTreeFiles
         public int Height { get; set; }
     }
 
-    internal class SkillSprite
+    public class SkillSprite
     {
         [JsonProperty("filename")]
         public string FileName { get; set; }
@@ -285,7 +285,7 @@ namespace PoESkillTree.SkillTreeFiles
         public Dictionary<string, Art2D> Coords { get; set; }
     }
 
-    internal class OldSkillSprite
+    public class OldSkillSprite
     {
         [JsonProperty("filename")]
         public string FileName { get; set; }
@@ -300,7 +300,7 @@ namespace PoESkillTree.SkillTreeFiles
         public Dictionary<string, Art2D> KeystoneCoords { get; set; }
     }
 
-    internal class ExtraImage
+    public class ExtraImage
     {
         [JsonProperty("x")]
         public int X { get; set; }
@@ -312,7 +312,7 @@ namespace PoESkillTree.SkillTreeFiles
         public string Image { get; set; }
     }
 
-    internal class PoESkillTree
+    public class PoESkillTree
     {
         [JsonProperty("characterData")]
         public Dictionary<int, BaseCharacterData> CharacterData { get; set; }
@@ -372,28 +372,70 @@ namespace PoESkillTree.SkillTreeFiles
         public double[] ImageZoomLevels { get; set; }
     }
 
-    internal class Opts
+    public class PoESkillTreeOptions
     {
-        public Dictionary<int, baseToAscClass> ascClasses { get; set; }
+        [JsonProperty("ascClasses")]
+        public Dictionary<int, CharacterToAscendancyOption> CharacterToAscendancy { get; set; }
+
+        [JsonProperty("zoomLevels")]
+        public double[] ZoomLevels { get; set; }
+
+        [JsonProperty("height")]
+        public int Height { get; set; }
+
+        [JsonProperty("startClass")]
+        public int StartClass { get; set; }
+
+        [JsonProperty("fullScreen")]
+        public bool FullScreen { get; set; }
+
+        [JsonProperty("version")]
+        public string Version { get; set; }
+
+        [JsonProperty("realm")]
+        public string Realm { get; set; }
+
+        [JsonProperty("build")]
+        public object Build { get; set; } //Model.Builds.GGGBuild?
+
+        [JsonProperty("circles")]
+        public Dictionary<string, List<CircleOption>> Circles { get; set; }
+
     }
 
-    internal class baseToAscClass
+    public class CircleOption
     {
-        public string name { get; set; }
-        public Dictionary<int, classes> classes { get; set; }
+        [JsonProperty("level")]
+        public double ZoomLevel { get; set; }
+
+        [JsonProperty("width")]
+        public double Width { get; set; }
     }
 
-    internal class classes
+    public class CharacterToAscendancyOption
     {
         [JsonProperty("name")]
-        public string name { get; set; }
+        public string CharacterName { get; set; }
+
+        [JsonProperty("classes")]
+        public Dictionary<int, AscendancyClassOption> AscendancyClasses { get; set; }
+    }
+
+    public class AscendancyClassOption
+    {
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
         [JsonProperty("displayName")]
-        public string displayName { get; set; }
+        public string DisplayName { get; set; }
+
         [JsonProperty("flavourText")]
-        public string flavourText { get; set; }
+        public string FlavourText { get; set; }
+
         [JsonProperty("flavourTextRect")]
-        public string flavourTextRect { get; set; }
+        public string FlavourTextRect { get; set; }
+
         [JsonProperty("flavourTextColour")]
-        public string flavourTextColour { get; set; }
+        public string FlavourTextColour { get; set; }
     }
 }

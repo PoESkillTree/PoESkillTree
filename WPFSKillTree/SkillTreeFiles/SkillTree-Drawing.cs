@@ -550,8 +550,9 @@ namespace PoESkillTree.SkillTreeFiles
                 #endregion
                 #region SkillNodeGroup Background Drawing
 
-                foreach (var skillNodeGroup in NodeGroups)
+                foreach (var i in PoESkillTree.Groups)
                 {
+                    var skillNodeGroup = i.Value;
                     if (skillNodeGroup.Nodes.Where(n => n.IsAscendancyNode).ToArray().Length > 0)
                         continue;
                     if (skillNodeGroup.OccupiedOrbits == null)
@@ -1068,10 +1069,32 @@ namespace PoESkillTree.SkillTreeFiles
             const int thickness = 10;
             var radiusPen = new Pen(Brushes.Cyan, thickness);
 
-            const int smallRadius = 800 - thickness / 2;
-            const int mediumRadius = 1200 - thickness / 2;
-            const int largeRadius = 1500 - thickness / 2;
+            double smallRadius = 800;
+            double mediumRadius = 1200;
+            double largeRadius = 1500;
+            if (PoESkillTreeOptions?.Circles != null)
+            {
+                if (PoESkillTreeOptions.Circles.ContainsKey("Small") && Constants.AssetZoomLevel < PoESkillTreeOptions.Circles["Small"].Count)
+                {
+                    var circle = PoESkillTreeOptions.Circles["Small"][Constants.AssetZoomLevel];
+                    smallRadius = Math.Round((circle.Width / circle.ZoomLevel) / 2);
+                }
 
+                if (PoESkillTreeOptions.Circles.ContainsKey("Medium") && Constants.AssetZoomLevel < PoESkillTreeOptions.Circles["Medium"].Count)
+                {
+                    var circle = PoESkillTreeOptions.Circles["Medium"][Constants.AssetZoomLevel];
+                    mediumRadius = Math.Round((circle.Width / circle.ZoomLevel) / 2);
+                }
+
+                if (PoESkillTreeOptions.Circles.ContainsKey("Large") && Constants.AssetZoomLevel < PoESkillTreeOptions.Circles["Large"].Count)
+                {
+                    var circle = PoESkillTreeOptions.Circles["Large"][Constants.AssetZoomLevel];
+                    largeRadius = Math.Round((circle.Width / circle.ZoomLevel) / 2);
+                }
+            }
+            smallRadius -= thickness / 2;
+            mediumRadius -= thickness / 2;
+            largeRadius -= thickness / 2;
             using (var dc = _jewelHighlight.RenderOpen())
             {
                 dc.DrawEllipse(null, radiusPen, node.Position, smallRadius, smallRadius);

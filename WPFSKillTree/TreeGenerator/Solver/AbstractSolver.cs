@@ -223,8 +223,9 @@ namespace PoESkillTree.TreeGenerator.Solver
         /// </summary>
         private void CreateSearchGraph(SearchGraph searchGraph)
         {
-            foreach (var ng in SkillTree.NodeGroups)
+            foreach (var i in SkillTree.PoESkillTree.Groups)
             {
+                var ng = i.Value;
                 var mustInclude = false;
 
                 SkillNode firstNeighbor = null;

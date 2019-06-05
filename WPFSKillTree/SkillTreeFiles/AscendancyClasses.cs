@@ -13,32 +13,32 @@ namespace PoESkillTree.SkillTreeFiles
         private readonly Dictionary<CharacterClass, List<Class>> _classes =
             new Dictionary<CharacterClass, List<Class>>();
 
-        internal AscendancyClasses(Dictionary<int, baseToAscClass> ascClasses)
+        internal AscendancyClasses(Dictionary<int, CharacterToAscendancyOption> ascClasses)
         {
             if (ascClasses == null) return;
 
             _classes.Clear();
 
-            foreach (KeyValuePair<int, baseToAscClass> ascClass in ascClasses)
+            foreach (KeyValuePair<int, CharacterToAscendancyOption> ascClass in ascClasses)
             {
                 var classes = new List<Class>();
-                foreach (KeyValuePair<int, classes> asc in ascClass.Value.classes)
+                foreach (KeyValuePair<int, AscendancyClassOption> asc in ascClass.Value.AscendancyClasses)
                 {
                     var newClass = new Class
                     {
                         Order = asc.Key,
-                        DisplayName = asc.Value.displayName,
-                        Name = asc.Value.name,
-                        FlavourText = asc.Value.flavourText,
-                        FlavourTextColour = asc.Value.flavourTextColour.Split(',').Select(int.Parse).ToArray()
+                        DisplayName = asc.Value.DisplayName,
+                        Name = asc.Value.Name,
+                        FlavourText = asc.Value.FlavourText,
+                        FlavourTextColour = asc.Value.FlavourTextColour.Split(',').Select(int.Parse).ToArray()
                     };
-                    int[] tempPointList = asc.Value.flavourTextRect.Split(',').Select(int.Parse).ToArray();
+                    int[] tempPointList = asc.Value.FlavourTextRect.Split(',').Select(int.Parse).ToArray();
                     newClass.FlavourTextRect = new Vector2D(tempPointList[0], tempPointList[1]);
                     classes.Add(newClass);
 
                 }
 
-                var characterClass = Enums.Parse<CharacterClass>(ascClass.Value.name);
+                var characterClass = Enums.Parse<CharacterClass>(ascClass.Value.CharacterName);
                 _classes.Add(characterClass, classes);
             }
         }
