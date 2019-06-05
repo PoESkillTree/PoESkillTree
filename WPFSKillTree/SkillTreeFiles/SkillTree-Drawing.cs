@@ -219,6 +219,7 @@ namespace PoESkillTree.SkillTreeFiles
                 }
             }
         }
+
         private void DrawSkillNodeIcon(DrawingContext dc, SkillNode skillNode, bool onlyAscendancy = false, bool isActive = false)
         {
             if (onlyAscendancy && !skillNode.IsAscendancyNode) return;
@@ -254,9 +255,8 @@ namespace PoESkillTree.SkillTreeFiles
             if (onlyAscendancy && !node.IsAscendancyNode) return;
             var surroundBrush = _nodeSurroundBrushes;
             var factor = 1f;
-            var activeOffset = 0;
-            if (isActive)
-                activeOffset = 1;
+            var offset = isActive ? 1 : 0;
+
             if (isHighlight)
             {
                 surroundBrush = _nodeSurroundComparisonBrushes;
@@ -276,64 +276,48 @@ namespace PoESkillTree.SkillTreeFiles
                         new Rect(node.Position - new Vector2D(bitmap.PixelWidth, bitmap.PixelHeight),
                                 new Size(bitmap.PixelWidth * 2, bitmap.PixelHeight * 2)));
             }
-            else if (node.IsAscendancyNode && node.Type == PassiveNodeType.Notable)
+            else if (node.IsAscendancyNode)
             {
                 if (!DrawAscendancy) return;
-
-                if (_persistentData.Options.ShowAllAscendancyClasses || node.AscendancyName == ascendancyClassName)
-                    dc.DrawRectangle(surroundBrush[10 + activeOffset].Value, null,
-                        new Rect((int)node.Position.X - surroundBrush[10 + activeOffset].Key.Width * .875 * factor,
-                            (int)node.Position.Y - surroundBrush[10 + activeOffset].Key.Height * .875 * factor,
-                            surroundBrush[10 + activeOffset].Key.Width * 1.75 * factor,
-                            surroundBrush[10 + activeOffset].Key.Height * 1.75 * factor));
-            }
-            else if (node.IsAscendancyNode && node.Type == PassiveNodeType.Normal)
-            {
-                if (!DrawAscendancy) return;
-
-                if (_persistentData.Options.ShowAllAscendancyClasses || node.AscendancyName == ascendancyClassName)
-                    dc.DrawRectangle(surroundBrush[8 + activeOffset].Value, null,
-                        new Rect((int)node.Position.X - surroundBrush[8 + activeOffset].Key.Width * factor,
-                            (int)node.Position.Y - surroundBrush[8 + activeOffset].Key.Height * factor,
-                            surroundBrush[8 + activeOffset].Key.Width * 2 * factor,
-                            surroundBrush[8 + activeOffset].Key.Height * 2 * factor));
-            }
-            else if (node.Type == PassiveNodeType.Notable)
-            {
-                dc.DrawRectangle(surroundBrush[2 + activeOffset].Value, null,
-                    new Rect((int)node.Position.X - surroundBrush[2 + activeOffset].Key.Width * factor,
-                        (int)node.Position.Y - surroundBrush[2 + activeOffset].Key.Height * factor,
-                        surroundBrush[2 + activeOffset].Key.Width * 2 * factor,
-                        surroundBrush[2 + activeOffset].Key.Height * 2 * factor));
-            }
-            else if (node.Type == PassiveNodeType.Keystone)
-            {
-                dc.DrawRectangle(surroundBrush[4 + activeOffset].Value, null,
-                    new Rect((int)node.Position.X - surroundBrush[4 + activeOffset].Key.Width * factor,
-                        (int)node.Position.Y - surroundBrush[4 + activeOffset].Key.Height * factor,
-                        surroundBrush[4 + activeOffset].Key.Width * 2 * factor,
-                        surroundBrush[4 + activeOffset].Key.Height * 2 * factor));
-            }
-            else if (node.Type == PassiveNodeType.Mastery)
-            {
-                //Needs to be here so that "Masteries" (Middle images of nodes) don't get anything drawn around them.
-            }
-            else if (node.Type == PassiveNodeType.JewelSocket)
-            {
-                dc.DrawRectangle(surroundBrush[6 + activeOffset].Value, null,
-                    new Rect((int)node.Position.X - surroundBrush[6 + activeOffset].Key.Width * factor,
-                        (int)node.Position.Y - surroundBrush[6 + activeOffset].Key.Height * factor,
-                        surroundBrush[6 + activeOffset].Key.Width * 2 * factor,
-                        surroundBrush[6 + activeOffset].Key.Height * 2 * factor));
+                if (!(_persistentData.Options.ShowAllAscendancyClasses || node.AscendancyName == ascendancyClassName)) return;
+                switch (node.Type)
+                {
+                    case PassiveNodeType.Normal:
+                        offset += 8;
+                        break;
+                    case PassiveNodeType.Notable:
+                        offset += 10;
+                        break;
+                    default:
+                        return;
+                }
             }
             else
             {
-                dc.DrawRectangle(surroundBrush[0 + activeOffset].Value, null,
-                    new Rect((int)node.Position.X - surroundBrush[0 + activeOffset].Key.Width * factor,
-                        (int)node.Position.Y - surroundBrush[0 + activeOffset].Key.Height * factor,
-                        surroundBrush[0 + activeOffset].Key.Width * 2 * factor,
-                        surroundBrush[0 + activeOffset].Key.Height * 2 * factor));
+                switch (node.Type)
+                {
+                    case PassiveNodeType.Normal:
+                        offset += 0;
+                        break;
+                    case PassiveNodeType.Notable:
+                        offset += 2;
+                        break;
+                    case PassiveNodeType.Keystone:
+                        offset += 4;
+                        break;
+                    case PassiveNodeType.JewelSocket:
+                        offset += 6;
+                        break;
+                    default:
+                        return;
+                }
             }
+
+            dc.DrawRectangle(surroundBrush[offset].Value, null,
+                new Rect(node.Position.X - surroundBrush[offset].Key.Width * factor,
+                    node.Position.Y - surroundBrush[offset].Key.Height * factor,
+                    surroundBrush[offset].Key.Width * 2 * factor,
+                    surroundBrush[offset].Key.Height * 2 * factor));
         }
 
         private void DrawSkillIconsAndSurrounds(bool onlyAscendancy = false)

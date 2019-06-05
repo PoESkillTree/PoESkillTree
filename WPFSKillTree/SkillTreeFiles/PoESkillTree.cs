@@ -149,20 +149,7 @@ namespace PoESkillTree.SkillTreeFiles
         public List<SkillNode> Neighbor { get; set; } = new List<SkillNode>();
 
         [JsonIgnore]
-        private Vector2D? _position = null;
-        [JsonIgnore]
-        public Vector2D Position
-        {
-            get
-            {
-                if (!_position.HasValue)
-                {
-                    _position = Group == null ? new Vector2D(0, 0) : Group.Position - new Vector2D(OrbitRadii[OrbitRadiiIndex] * Math.Sin(-Arc), OrbitRadii[OrbitRadiiIndex] * Math.Cos(-Arc));
-                }
-
-                return _position.Value;
-            }
-        }
+        public Vector2D Position => Group == null ? new Vector2D(0, 0) : Group.Position - new Vector2D(OrbitRadii[OrbitRadiiIndex] * Math.Sin(-Arc), OrbitRadii[OrbitRadiiIndex] * Math.Cos(-Arc));
 
         [JsonIgnore]
         public double Arc => 2 * Math.PI * SkillsPreOrbitIndex / SkillsPerOrbit[OrbitRadiiIndex];
