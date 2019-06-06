@@ -80,15 +80,13 @@ namespace PoESkillTree.Computation.Data
                 { "when you block", Block.On },
                 // buffs
                 { "when you ({BuffMatchers}) an enemy", Reference.AsBuff.InflictionAction.On },
-                // other
+                // stun
                 {
                     "when you stun an enemy with a melee hit",
                     And(Condition.WithPart(Keyword.Melee), Effect.Stun.InflictionAction.On)
                 },
-                {
-                    "when you stun with melee damage",
-                    And(Condition.WithPart(Keyword.Melee), Effect.Stun.InflictionAction.On)
-                },
+                { "when you stun", Effect.Stun.InflictionAction.On },
+                // other
                 { "after spending( a total of)? # mana", Action.SpendMana(Value).On },
                 { "when you focus", Action.Focus.On },
                 { "when you gain a ({ChargeTypeMatchers})", Reference.AsChargeType.GainAction.On },

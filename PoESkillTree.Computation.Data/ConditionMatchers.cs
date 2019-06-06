@@ -149,11 +149,6 @@ namespace PoESkillTree.Computation.Data
                     "with two handed melee weapons",
                     And(MainHandAttackWith(Tags.TwoHandWeapon), Not(MainHand.Has(Tags.Ranged)))
                 },
-                {
-                    "with melee damage",
-                    (And(MainHandAttack, Not(MainHand.Has(Tags.Ranged))),
-                        And(OffHandAttackWith(Tags.Weapon), Not(OffHand.Has(Tags.Ranged))))
-                },
                 { "with unarmed attacks", And(MainHandAttack, Not(MainHand.HasItem)) },
                 // - by item slot
                 { "with the main-hand weapon", MainHandAttack },
@@ -281,6 +276,7 @@ namespace PoESkillTree.Computation.Data
                     And(With(References[0].AsKeyword), With(References[1].AsKeyword))
                 },
                 { "caused by melee hits", Condition.WithPart(Keyword.Melee) },
+                { "with melee damage", Condition.WithPart(Keyword.Melee) },
                 // - by damage type
                 { "with elemental skills", ElementalDamageTypes.Select(With).Aggregate((l, r) => l.Or(r)) },
                 { "with ({DamageTypeMatchers}) skills", With(Reference.AsDamageType) },
