@@ -33,6 +33,7 @@ namespace PoESkillTree.Computation.Data
             {
                 // action
                 { "for each enemy you've killed recently", Kill.CountRecently },
+                { "per enemy killed recently, up to #%", CappedMultiplier(Kill.CountRecently, Value) },
                 {
                     "per enemy killed by you or your totems recently",
                     Kill.CountRecently + Kill.By(Entity.Totem).CountRecently
@@ -73,9 +74,11 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "when placed, (?<inner>.*) per stage",
-                    Skills.ModifierSourceSkill.Buff.StackCount.Value, Flag.IsBannerPlanted, "${inner}"
+                    Stat.BannerStage.Value, Flag.IsBannerPlanted, "${inner}"
                 },
                 { "per nearby enemy", Enemy.CountNearby },
+                { "per one hundred nearby enemies", Enemy.CountNearby / 100 },
+                { @"per nearby enemy, up to \+#%", CappedMultiplier(Enemy.CountNearby, Value) },
                 // buffs
                 { "per buff on you", Buffs(targets: Self).Count() },
                 { "per curse on you", Buffs(targets: Self).With(Keyword.Curse).Count() },
@@ -97,6 +100,7 @@ namespace PoESkillTree.Computation.Data
                 { "per elemental ailment on the enemy", Ailment.Elemental.Count(b => b.IsOn(Enemy)) },
                 // skills
                 { "for each zombie you own", Skills.RaiseZombie.Instances.Value },
+                { "for each raised zombie", Skills.RaiseZombie.Instances.Value },
                 { "for each summoned golem", Golems.CombinedInstances.Value },
                 { "for each golem you have summoned", Golems.CombinedInstances.Value },
                 { "for each type of golem you have summoned", Golems.CombinedInstances.Value },
@@ -143,8 +147,8 @@ namespace PoESkillTree.Computation.Data
                     Stat.UniqueAmount("# of times blocked in the past 10 seconds")
                 },
                 {
-                    "per one hundred nearby enemies",
-                    Stat.UniqueAmount("# of nearby enemies") / 100
+                    "for each endurance charge lost recently, up to #%",
+                    CappedMultiplier(Stat.UniqueAmount("# of Endurance Charges lost recently"), Value)
                 },
             }; // add
 

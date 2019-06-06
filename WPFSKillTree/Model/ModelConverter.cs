@@ -19,11 +19,11 @@ namespace PoESkillTree.Model
                 skillNode.Id,
                 skillNode.Type,
                 skillNode.Name,
-                skillNode.ascendancyName != null,
+                skillNode.IsAscendancyNode,
                 !skillNode.IsRootNode && !skillNode.IsAscendancyStart && !skillNode.IsMultipleChoiceOption,
-                skillNode.passivePointsGranted,
+                skillNode.PassivePointsGranted,
                 new NodePosition(skillNode.Position.X, skillNode.Position.Y), 
-                skillNode.attributes);
+                skillNode.StatDefinitions);
 
         public static Item Convert(OldItem oldItem)
         {

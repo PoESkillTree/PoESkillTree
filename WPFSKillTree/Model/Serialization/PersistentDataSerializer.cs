@@ -8,7 +8,6 @@ using Newtonsoft.Json.Linq;
 using PoESkillTree.Utils;
 using PoESkillTree.Controls;
 using PoESkillTree.Model.Builds;
-using PoESkillTree.Utils;
 
 using static PoESkillTree.Model.Serialization.SerializationConstants;
 

@@ -136,6 +136,8 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// </summary>
         IStatBuilder AttachedBrands { get; }
 
+        IStatBuilder BannerStage { get; }
+
         /// <summary>
         /// Returns the value of a stat with type uint that can only be specified by the user.
         /// </summary>

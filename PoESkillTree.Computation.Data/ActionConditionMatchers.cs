@@ -63,6 +63,7 @@ namespace PoESkillTree.Computation.Data
                     (And(ModifierSourceIs(ItemSlot.MainHand), MainHandAttack, Hit.On, Buff.Blind.IsOn(Enemy)),
                         And(ModifierSourceIs(ItemSlot.OffHand), OffHandAttack, Hit.On, Buff.Blind.IsOn(Enemy)))
                 },
+                { "on hit no more than once every # seconds", Hit.On },
                 // critical strike
                 { "critical strikes have a", CriticalStrike.On },
                 { "when you deal a critical strike", CriticalStrike.On },
@@ -73,6 +74,7 @@ namespace PoESkillTree.Computation.Data
                 { "when you summon a totem", Totems.Cast.On },
                 { "when you use a warcry", Skills[Keyword.Warcry].Cast.On },
                 { "when you use a skill", Skills.AllSkills.Cast.On },
+                { "when you use a fire skill", Skills[Fire].Cast.On },
                 // block
                 { "when they block", Block.On },
                 { "when you block", Block.On },
@@ -81,6 +83,10 @@ namespace PoESkillTree.Computation.Data
                 // other
                 {
                     "when you stun an enemy with a melee hit",
+                    And(Condition.WithPart(Keyword.Melee), Effect.Stun.InflictionAction.On)
+                },
+                {
+                    "when you stun with melee damage",
                     And(Condition.WithPart(Keyword.Melee), Effect.Stun.InflictionAction.On)
                 },
                 { "after spending( a total of)? # mana", Action.SpendMana(Value).On },
@@ -102,8 +108,11 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "on use", Action.Unique("When your use the Flask").On },
                 { "when you use a flask", Action.Unique("When your use any Flask").On },
+                { "when you gain Adrenaline", Action.Unique("When you gain Adrenaline").On },
                 { "when you block attack damage", Action.Unique("Block.Attack").On },
                 { "when you block spell damage", Action.Unique("Block.Spell").On },
+                { "(every|each) second(, up to a maximum of #)?", Action.Unique("Interval.OneSecond").On },
+                { "every 2 seconds(, up to a maximum of #)?", Action.Unique("Interval.TwoSeconds").On },
                 { "after channelling for # seconds?", Action.Unique("PeriodOfChannelling").On },
             }; // add
     }

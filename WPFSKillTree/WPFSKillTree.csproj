@@ -224,6 +224,7 @@
     <Compile Include="Model\Items\IItemBase.cs" />
     <Compile Include="Model\ModelConverter.cs" />
     <Compile Include="Model\ObservableItemCollectionConverter.cs" />
+    <Compile Include="SkillTreeFiles\PoESkillTreeConverter.cs" />
     <Compile Include="Utils\Extensions\SchedulerExtensions.cs" />
     <Compile Include="Utils\SemanticVersion.cs" />
     <Compile Include="Utils\WikiApi\CargoConstants.cs" />
@@ -415,8 +416,6 @@
     <Compile Include="SkillTreeFiles\Constants.cs" />
     <Compile Include="SkillTreeFiles\NodeHighlighter.cs" />
     <Compile Include="SkillTreeFiles\SkillIcons.cs" />
-    <Compile Include="SkillTreeFiles\SkillNode.cs" />
-    <Compile Include="SkillTreeFiles\SkillNodeGroup.cs" />
     <Compile Include="SkillTreeFiles\Updater.cs" />
     <Compile Include="TreeGenerator\Algorithm\DisjointSet.cs" />
     <Compile Include="TreeGenerator\Algorithm\DistanceLookup.cs" />

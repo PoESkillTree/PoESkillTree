@@ -80,6 +80,7 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStatBuilder RampageStacks => FromIdentity(typeof(uint));
         public IStatBuilder AttachedBrands => FromIdentity(typeof(uint));
+        public IStatBuilder BannerStage => FromIdentity(typeof(uint));
 
         public IStatBuilder DamageTakenGainedAsMana => FromIdentity(typeof(uint));
 

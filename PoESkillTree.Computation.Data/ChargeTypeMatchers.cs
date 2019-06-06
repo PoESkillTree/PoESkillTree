@@ -27,6 +27,8 @@ namespace PoESkillTree.Computation.Data
                 { "rage", Charge.Rage },
                 { "ghost shrouds?", Charge.From(ChargeType.GhostShroud) },
                 { "intensity", Charge.From(ChargeType.Intensity) },
+                { "challenger charges?", Charge.From(ChargeType.Challenger) },
+                { "blitz charges?", Charge.From(ChargeType.Blitz) },
             };
     }
 }

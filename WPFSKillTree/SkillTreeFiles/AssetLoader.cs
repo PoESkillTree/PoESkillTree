@@ -102,13 +102,13 @@ namespace PoESkillTree.SkillTreeFiles
             Action<double> reportProgress = null)
         {
             Directory.CreateDirectory(_tempAssetsPath);
-            var perSpriteProgress = 1.0 / inTree.skillSprites.Count;
+            var perSpriteProgress = 1.0 / inTree.SkillSprites.Count;
             var progress = 0.0;
-            foreach (var obj in inTree.skillSprites)
+            foreach (var obj in inTree.SkillSprites)
             {
                 var sprite = obj.Value[Constants.AssetZoomLevel];
-                var path = _tempAssetsPath + sprite.filename;
-                var url = SpriteUrl + sprite.filename;
+                var path = _tempAssetsPath + sprite.FileName;
+                var url = SpriteUrl + sprite.FileName;
                 if (path.Contains('?'))
                     path = path.Remove(path.IndexOf('?'));
                 await DownloadAsync(url, path);
@@ -128,10 +128,10 @@ namespace PoESkillTree.SkillTreeFiles
         internal async Task DownloadAssetsAsync(PoESkillTree inTree, Action<double> reportProgress = null)
         {
             Directory.CreateDirectory(_tempAssetsPath);
-            var zoomLevel = inTree.imageZoomLevels[Constants.AssetZoomLevel].ToString(CultureInfo.InvariantCulture);
-            var perAssetProgress = 1.0 / inTree.assets.Count;
+            var zoomLevel = inTree.ImageZoomLevels[Constants.AssetZoomLevel].ToString(CultureInfo.InvariantCulture);
+            var perAssetProgress = 1.0 / inTree.Assets.Count;
             var progress = 0.0;
-            foreach (var asset in inTree.assets)
+            foreach (var asset in inTree.Assets)
             {
                 var path = _tempAssetsPath + asset.Key + ".png";
                 var url = asset.Value.GetValueOrDefault(zoomLevel, () => asset.Value.Values.First());
@@ -161,15 +161,7 @@ namespace PoESkillTree.SkillTreeFiles
             var optsTask = DownloadOptsToFileAsync();
 
             var treeString = await skillTreeTask;
-            var inTree = JsonConvert.DeserializeObject<PoESkillTree>(treeString, new JsonSerializerSettings
-            {
-                Error = (sender, args) =>
-                {
-                    if (args.ErrorContext.Path != "groups.515.oo")
-                        Log.Error("Exception while deserializing Json tree", args.ErrorContext.Error);
-                    args.ErrorContext.Handled = true;
-                }
-            });
+            var inTree = JsonConvert.DeserializeObject<PoESkillTree>(treeString, new PoESkillTreeConverter());
             var spritesTask = DownloadSkillNodeSpritesAsync(inTree);
             var assetsTask = DownloadAssetsAsync(inTree);
 

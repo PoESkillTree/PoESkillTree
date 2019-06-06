@@ -18,7 +18,7 @@ namespace PoESkillTree.Computation.Console
             // From PoESkillTree.Computation.Console/bin/Debug/ to the same folder under WPFSKillTree
             var treePath = "../../../WPFSKillTree/bin/Debug/Data/SkillTree.txt";
             var json = JObject.Parse(File.ReadAllText(treePath));
-            var nodes = json.Value<JObject>("nodesDict");
+            var nodes = json.Value<JObject>("nodes");
             var statLines = nodes.PropertyValues()
                 .OrderBy(t => t.Value<int>("id")) // Order for more useful diffs
                 .SelectMany(t => t["sd"].Values<string>())

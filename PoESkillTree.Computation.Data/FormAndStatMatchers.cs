@@ -274,6 +274,10 @@ namespace PoESkillTree.Computation.Data
                     BaseAdd, Value, Reference.AsPoolStat.Regen.Percent
                 },
                 {
+                    "lose #%( of)?( their| your)? ({PoolStatMatchers}) per second",
+                    BaseSubtract, Value, Reference.AsPoolStat.Regen.Percent
+                },
+                {
                     "# ({PoolStatMatchers}) regenerated per second",
                     BaseAdd, Value, Reference.AsPoolStat.Regen
                 },
@@ -326,7 +330,7 @@ namespace PoESkillTree.Computation.Data
                     Charge.Power.ChanceToGain, Charge.Frenzy.ChanceToGain, Charge.Endurance.ChanceToGain
                 },
                 {
-                    "(?<!chance to |when you )gain an? ({ChargeTypeMatchers})",
+                    "(?<!chance to |when you )gain (an?|1) ({ChargeTypeMatchers})",
                     BaseAdd, 100, Reference.AsChargeType.ChanceToGain
                 },
                 {
@@ -448,6 +452,10 @@ namespace PoESkillTree.Computation.Data
                     TotalOverride, 100, References[0].AsAilment.ChanceToRemove, References[1].AsAilment.ChanceToRemove
                 },
                 { "removes? (ignite and )?burning", TotalOverride, 100, Ailment.Ignite.ChanceToRemove },
+                {
+                    "({AilmentMatchers}) you inflict deals? damage #% faster",
+                    PercentIncrease, Value, Reference.AsAilment.TickRateModifier
+                },
                 // stun
                 { "(you )?cannot be stunned", TotalOverride, 100, Effect.Stun.Avoidance },
                 { "additional #% chance to be stunned", BaseAdd, Value, Effect.Stun.Chance.For(Entity.OpponentOfSelf) },

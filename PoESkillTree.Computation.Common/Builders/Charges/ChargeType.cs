@@ -8,5 +8,7 @@
         Rage,
         GhostShroud,
         Intensity,
+        Challenger,
+        Blitz,
     }
 }

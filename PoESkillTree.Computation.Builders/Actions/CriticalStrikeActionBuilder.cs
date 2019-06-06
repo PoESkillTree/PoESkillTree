@@ -16,6 +16,10 @@ namespace PoESkillTree.Computation.Builders.Actions
             StatBuilderUtils.DamageRelatedFromIdentity(StatFactory, "CriticalStrike.Chance", typeof(double))
                 .WithHits;
 
+        public IDamageRelatedStatBuilder BaseChance =>
+            StatBuilderUtils.DamageRelatedFromIdentity(StatFactory, "CriticalStrike.BaseChance", typeof(double))
+                .WithHits;
+
         public IDamageRelatedStatBuilder Multiplier =>
             StatBuilderUtils.DamageRelatedFromIdentity(StatFactory, "CriticalStrike.Multiplier", typeof(double),
                     canApplyToAilmentDamage: true);

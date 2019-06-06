@@ -41,13 +41,14 @@ namespace PoESkillTree.Computation.Data
                     And(Condition.WithPart(References[0].AsKeyword), References[1].AsAction.InPastXSeconds(Value))
                 },
                 {
-                    "for # seconds when you ({ActionMatchers}) a rare or unique enemy",
+                    "(gain )?for # seconds when you ({ActionMatchers}) a rare or unique enemy",
                     And(Enemy.IsRareOrUnique, Reference.AsAction.InPastXSeconds(Value))
                 },
                 {
-                    "for # seconds when you ({ActionMatchers}) a unique enemy",
+                    "(gain )?for # seconds when you ({ActionMatchers}) a unique enemy",
                     And(Enemy.IsUnique, Reference.AsAction.InPastXSeconds(Value))
                 },
+                { "(gain )?for # seconds when you ({ActionMatchers}) an enemy", Reference.AsAction.InPastXSeconds(Value) },
                 { "when you ({ActionMatchers}) an enemy, for # seconds", Reference.AsAction.InPastXSeconds(Value) },
                 { "for # seconds when ({ActionMatchers})", Reference.AsAction.By(Enemy).InPastXSeconds(Value) },
                 // - kill
@@ -101,6 +102,7 @@ namespace PoESkillTree.Computation.Data
                 // damage
                 { "attacks have", Condition.With(DamageSource.Attack) },
                 { "with attacks", Condition.With(DamageSource.Attack) },
+                { "for attacks", Condition.With(DamageSource.Attack) },
                 { "for spells", Condition.With(DamageSource.Spell) },
                 { "(your )?spells have", Condition.With(DamageSource.Spell) },
                 // - by item tag
@@ -190,7 +192,7 @@ namespace PoESkillTree.Computation.Data
                 // - pool
                 { "(when|while) on low ({PoolStatMatchers})", Reference.AsPoolStat.IsLow },
                 { "when not on low ({PoolStatMatchers})", Not(Reference.AsPoolStat.IsLow) },
-                { "while on full ({PoolStatMatchers})", Reference.AsPoolStat.IsFull },
+                { "(when|while) on full ({PoolStatMatchers})", Reference.AsPoolStat.IsFull },
                 { "while ({PoolStatMatchers}) is full", Reference.AsPoolStat.IsFull },
                 { "while not on full ({PoolStatMatchers})", Not(Reference.AsPoolStat.IsFull) },
                 { "if you have ({PoolStatMatchers})", Not(Reference.AsPoolStat.IsEmpty) },
@@ -218,7 +220,9 @@ namespace PoESkillTree.Computation.Data
                 { "(against enemies )?that are on low life", Life.For(Enemy).IsLow },
                 { "against enemies on low life", Life.For(Enemy).IsLow },
                 { "(against enemies )?that are on full life", Life.For(Enemy).IsFull },
+                { "against enemies on full life", Life.For(Enemy).IsFull },
                 { "against rare and unique enemies", Enemy.IsRareOrUnique },
+                { "against unique enemies", Enemy.IsUnique },
                 { "if rare or unique", Enemy.IsRareOrUnique },
                 { "if normal or magic", Not(Enemy.IsRareOrUnique) },
                 { "while there is only one nearby enemy", Enemy.CountNearby.Eq(1) },
@@ -376,6 +380,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "while you have at least one nearby ally", Condition.Unique("Is any ally nearby?") },
                 { "while channelling", Condition.Unique("Are you currently channeling?") },
+                { "while you are not losing rage", Condition.Unique("Are you currently losing rage?") },
                 { "during soul gain prevention", Condition.Unique("SoulGainPrevention") },
                 // support gem mod clarifications. Irrelevant for parsing.
                 { "supported (skills|spells|attacks) (have|deal)", Condition.True },

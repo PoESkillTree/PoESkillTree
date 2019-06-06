@@ -1,4 +1,12 @@
 ﻿// TODO not handled yet
+// Require 3.7.0 gem data
++250 to Armour while affected by a Guard Skill Buff
+0.5% of Maximum Life Regenerated per second while affected by a Guard Skill Buff
+4% additional Physical Damage Reduction while affected by a Guard Skill Buff
+Guard Skills have 15% increased Cooldown Recovery Speed
+25% chance to gain a Challenger Charge when you Hit a Rare or Unique Enemy while in Blood Stance
+Gain a Challenger Charge when you Kill an Enemy while in Sand Stance
+50% increased Effect of Buffs granted by your Active Ancestor Totems
 // Requires not yet implemented stats
 // - Stat that modifies Mana.Cost(Total). Could be done via behavior.
 Channelling Skills have -3 to Total Mana Cost

@@ -11,7 +11,6 @@ using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
 using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
-using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.ViewModels
 {

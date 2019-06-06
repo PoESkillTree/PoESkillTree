@@ -28,7 +28,7 @@ namespace PoESkillTree.Computation.Data
                 { "freezes?", Ailment.Freeze },
                 { "bleed", Ailment.Bleed },
                 { "cause bleeding", Ailment.Bleed },
-                { "poison", Ailment.Poison },
+                { "poisons?", Ailment.Poison },
                 // being/while/against x
                 { "ignited", Ailment.Ignite },
                 { "shocked", Ailment.Shock },

@@ -59,16 +59,17 @@ namespace PoESkillTree.Computation.Builders.Stats
                     if (firstStat is null)
                         firstStat = stat;
                     else
-                        throw CreateException();
+                        throw CreateException($"This builder built to at least {firstStat} and {stat}.");
                 }
             }
             if (firstStat is null)
-                throw CreateException();
+                throw CreateException("This builder built to zero stats.");
 
             return new StatValue(firstStat, nodeType, modifierSource);
 
-            ParseException CreateException()
-                => new ParseException("Can only access the value of stat builders that represent a single stat");
+            ParseException CreateException(string messageSuffix)
+                => new ParseException("Can only access the value of stat builders that represent a single stat. "
+                                      + messageSuffix);
         }
 
         public IConditionBuilder IsSet =>

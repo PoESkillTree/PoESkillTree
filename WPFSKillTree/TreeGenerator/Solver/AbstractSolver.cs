@@ -141,7 +141,7 @@ namespace PoESkillTree.TreeGenerator.Solver
             NodeExpansionDictionary = expansionDict;
             
             // The hidden root node and ascendancy nodes do not count for the total node count.
-            UncountedNodes = 1 + StartNode.Nodes.Count(n => SkillTree.Skillnodes[n].ascendancyName != null);
+            UncountedNodes = 1 + StartNode.Nodes.Count(n => SkillTree.Skillnodes[n].IsAscendancyNode);
 
             Debug.WriteLine("Search space dimension: " + SearchSpace.Count);
             Debug.WriteLine("Target node count: " + TargetNodes.Count);
@@ -223,8 +223,9 @@ namespace PoESkillTree.TreeGenerator.Solver
         /// </summary>
         private void CreateSearchGraph(SearchGraph searchGraph)
         {
-            foreach (var ng in SkillTree.NodeGroups)
+            foreach (var i in SkillTree.PoESkillTree.Groups)
             {
+                var ng = i.Value;
                 var mustInclude = false;
 
                 SkillNode firstNeighbor = null;
@@ -245,7 +246,7 @@ namespace PoESkillTree.TreeGenerator.Solver
                     // also be fully included (since it's not isolated and could
                     // be part of a path to other nodes).
                     var ng1 = ng;
-                    foreach (var neighbor in node.Neighbor.Where(neighbor => neighbor.SkillNodeGroup != ng1))
+                    foreach (var neighbor in node.Neighbor.Where(neighbor => neighbor.Group != ng1))
                     {
                         if (firstNeighbor == null)
                             firstNeighbor = neighbor;
@@ -275,7 +276,7 @@ namespace PoESkillTree.TreeGenerator.Solver
                             // Mastery nodes are obviously not useful.
                             || node.Type == PassiveNodeType.Mastery
                             // Ignore ascendancies for now
-                            || node.ascendancyName != null)
+                            || node.IsAscendancyNode)
                             continue;
 
                         if (IncludeNodeInSearchGraph(node))
