@@ -8,12 +8,11 @@ namespace PoESkillTree.GameModel.PassiveTree
     [TestFixture]
     public class PassiveTreeDefinitionExtensionsTest
     {
-        [TestCase(0, 0, 0)]
         [TestCase(0, 1, 1)]
         [TestCase(0, 1, 3)]
         [TestCase(0, 2, 2)]
         [TestCase(0, 2, 4)]
-        [TestCase(2, 1, 2)]
+        [TestCase(2, 1, 1)]
         public void GetMNodesInRadiusReturnsNodeInsideRadius(int nodeId, int radius, int expectedNodeId)
         {
             var tree = CreateTree();
@@ -32,6 +31,17 @@ namespace PoESkillTree.GameModel.PassiveTree
             var notExpected = tree.GetNodeById((ushort) notExpectedNodeId);
 
             var actual = tree.GetNodesInRadius((ushort) nodeId, (uint) radius);
+
+            actual.Should().NotContain(notExpected);
+        }
+
+        [Test]
+        public void GetNodesInRadiusDoesNotReturnNodeItself()
+        {
+            var tree = CreateTree();
+            var notExpected = tree.GetNodeById(0);
+
+            var actual = tree.GetNodesInRadius(0, (uint) 0);
 
             actual.Should().NotContain(notExpected);
         }
