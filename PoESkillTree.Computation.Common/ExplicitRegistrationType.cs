@@ -61,6 +61,22 @@ namespace PoESkillTree.Computation.Common
 
             protected override object ToTuple() => (GetType().Name, ResultType);
         }
+
+        /// <summary>
+        /// The stat adds a one-way connection between <see cref="SourceNode"/> and <see cref="TargetNode"/> to the
+        /// passive tree if its value is true. This connection does not allow using the target node's connections.
+        /// Used to implement the Intuitive Leap jewel.
+        /// </summary>
+        public sealed class PassiveTreeConnection : ExplicitRegistrationType
+        {
+            public PassiveTreeConnection(ushort sourceNode, ushort targetNode)
+                => (SourceNode, TargetNode) = (sourceNode, targetNode);
+
+            public ushort SourceNode { get; }
+            public ushort TargetNode { get; }
+
+            protected override object ToTuple() => (GetType().Name, SourceNode, TargetNode);
+        }
     }
 
     public static class ExplicitRegistrationTypes
@@ -80,5 +96,9 @@ namespace PoESkillTree.Computation.Common
 
         public static ExplicitRegistrationType.IndependentResult IndependentResult(NodeType resultType)
             => new ExplicitRegistrationType.IndependentResult(resultType);
+
+        public static ExplicitRegistrationType.PassiveTreeConnection PassiveTreeConnection(
+            ushort sourceNode, ushort targetNode)
+            => new ExplicitRegistrationType.PassiveTreeConnection(sourceNode, targetNode);
     }
 }

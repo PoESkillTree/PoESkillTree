@@ -84,6 +84,20 @@ namespace PoESkillTree.Computation.Builders.Stats
                     : NodeEffectiveness(node.Id);
         }
 
+        public IStatBuilder ConnectJewelToNodesInModifierSourceJewelRadius
+            => new StatBuilder(StatFactory,
+                new FunctionalCompositeCoreStatBuilder(GetConnectionsToNodesInModifierSourceJewelRadius));
+
+        private IEnumerable<ICoreStatBuilder> GetConnectionsToNodesInModifierSourceJewelRadius(
+            BuildParameters parameters)
+        {
+            var jewelNodeId = GetJewelSource(parameters).PassiveNodeId;
+            return GetNodesInRadius(parameters)
+                .Select(d => FromIdentity($"{jewelNodeId}.ConnectsTo({d.Id})", typeof(bool), 
+                    ExplicitRegistrationTypes.PassiveTreeConnection(jewelNodeId, d.Id)))
+                .Select(b => new StatBuilderAdapter(b));
+        }
+
         private IEnumerable<PassiveNodeDefinition> GetNodesInRadius(BuildParameters parameters)
         {
             var modifierSource = GetJewelSource(parameters);

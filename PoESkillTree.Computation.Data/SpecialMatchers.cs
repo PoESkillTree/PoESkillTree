@@ -132,6 +132,11 @@ namespace PoESkillTree.Computation.Data
                     TotalOverride, 0, Lightning.Damage, CombatFocusCondition(2)
                 },
                 {
+                    // Intuitive Leap
+                    "passives in radius can be allocated without being connected to your tree",
+                    TotalOverride, 1, PassiveTree.ConnectJewelToNodesInModifierSourceJewelRadius
+                },
+                {
                     // Might in All Forms
                     "({AttributeStatMatchers}) and ({AttributeStatMatchers}) from passives in radius count towards strength melee damage bonus",
                     (BaseAdd, PassiveTree.AllocatedInModifierSourceJewelRadius(References[0].AsStat),

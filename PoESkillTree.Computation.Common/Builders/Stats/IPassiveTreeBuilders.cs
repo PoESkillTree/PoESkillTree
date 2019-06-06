@@ -27,5 +27,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
 
         IStatBuilder ModifyNodeEffectivenessInModifierSourceJewelRadius(
             bool onlyIfSkilled, params PassiveNodeType[] affectedNodeTypes);
+
+        IStatBuilder ConnectJewelToNodesInModifierSourceJewelRadius { get; }
     }
 }
