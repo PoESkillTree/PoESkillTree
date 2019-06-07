@@ -95,5 +95,70 @@ namespace PoESkillTree.Computation.Data.Collections
                 .WithStat(stat);
             Add(regex, builder, substitution);
         }
+
+        public void Add(
+            [RegexPattern] string regex, params (IFormBuilder form, double value, IStatBuilder stat)[] stats)
+        {
+            var withIValueBuilders = stats.Select(t => (t.form, _valueFactory.Create(t.value), t.stat));
+            Add(regex, withIValueBuilders.ToArray());
+        }
+
+        public void Add(
+            [RegexPattern] string regex, params (IFormBuilder form, IValueBuilder value, IStatBuilder stat)[] stats)
+        {
+            var formList = new List<IFormBuilder>();
+            var valueList = new List<IValueBuilder>();
+            var statList = new List<IStatBuilder>();
+            foreach (var (form, value, stat) in stats)
+            {
+                formList.Add(form);
+                valueList.Add(value);
+                statList.Add(stat);
+            }
+
+            var builder = ModifierBuilder
+                .WithForms(formList)
+                .WithValues(valueList)
+                .WithStats(statList);
+            Add(regex, builder);
+        }
+
+        /// <summary>
+        /// Adds a matcher with multiple (form, value, stat, condition) tuples.
+        /// </summary>
+        public void Add(
+            [RegexPattern] string regex,
+            params (IFormBuilder form, IValueBuilder value, IStatBuilder stat, IConditionBuilder condition)[] stats)
+        {
+            var formList = new List<IFormBuilder>();
+            var valueList = new List<IValueBuilder>();
+            var statList = new List<IStatBuilder>();
+            var conditionList = new List<IConditionBuilder>();
+            foreach (var (form, value, stat, condition) in stats)
+            {
+                formList.Add(form);
+                valueList.Add(value);
+                statList.Add(stat);
+                conditionList.Add(condition);
+            }
+
+            var builder = ModifierBuilder
+                .WithForms(formList)
+                .WithValues(valueList)
+                .WithStats(statList)
+                .WithConditions(conditionList);
+            Add(regex, builder);
+        }
+
+        /// <summary>
+        /// Adds a matcher with multiple (form, value, stat, condition) tuples.
+        /// </summary>
+        public void Add(
+            [RegexPattern] string regex,
+            params (IFormBuilder form, double value, IStatBuilder stat, IConditionBuilder condition)[] stats)
+        {
+            var withIValueBuilders = stats.Select(t => (t.form, _valueFactory.Create(t.value), t.stat, t.condition));
+            Add(regex, withIValueBuilders.ToArray());
+        }
     }
 }

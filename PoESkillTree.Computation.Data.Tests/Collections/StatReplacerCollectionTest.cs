@@ -1,8 +1,7 @@
 ﻿using System.Linq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Data.Collections;
 
-namespace PoESkillTree.Computation.Data.Tests.Collections
+namespace PoESkillTree.Computation.Data.Collections
 {
     [TestFixture]
     public class StatReplacerCollectionTest

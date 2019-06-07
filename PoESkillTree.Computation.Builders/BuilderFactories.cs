@@ -27,13 +27,14 @@ using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.GameModel;
+using PoESkillTree.GameModel.PassiveTree;
 using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Builders
 {
     public class BuilderFactories : IBuilderFactories
     {
-        public BuilderFactories(SkillDefinitions skills)
+        public BuilderFactories(PassiveTreeDefinition tree, SkillDefinitions skills)
         {
             var statFactory = new StatFactory();
             ActionBuilders = new ActionBuilders(statFactory);
@@ -46,6 +47,7 @@ namespace PoESkillTree.Computation.Builders
             EquipmentBuilders = new EquipmentBuilders(statFactory);
             FormBuilders = new FormBuilders();
             KeywordBuilders = new KeywordBuilders();
+            PassiveTreeBuilders = new PassiveTreeBuilders(statFactory, tree);
             SkillBuilders = new SkillBuilders(statFactory, skills);
             StatBuilders = new StatBuilders(statFactory);
             ValueBuilders = new ValueBuilders();
@@ -54,7 +56,9 @@ namespace PoESkillTree.Computation.Builders
         }
 
         public static async Task<IBuilderFactories> CreateAsync(GameData gameData)
-            => new BuilderFactories(await gameData.Skills.ConfigureAwait(false));
+            => new BuilderFactories(
+                await gameData.PassiveTree.ConfigureAwait(false),
+                await gameData.Skills.ConfigureAwait(false));
 
         public IActionBuilders ActionBuilders { get; }
         public IBuffBuilders BuffBuilders { get; }
@@ -66,6 +70,7 @@ namespace PoESkillTree.Computation.Builders
         public IEquipmentBuilders EquipmentBuilders { get; }
         public IFormBuilders FormBuilders { get; }
         public IKeywordBuilders KeywordBuilders { get; }
+        public IPassiveTreeBuilders PassiveTreeBuilders { get; }
         public ISkillBuilders SkillBuilders { get; }
         public IStatBuilders StatBuilders { get; }
         public IValueBuilders ValueBuilders { get; }

@@ -7,9 +7,8 @@ using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
 using PoESkillTree.Computation.Model;
-using PoESkillTree.Computation.ViewModels;
 
-namespace PoESkillTree.Tests.Computation.ViewModels
+namespace PoESkillTree.Computation.ViewModels
 {
     [TestFixture]
     public class ConfigurationNodeViewModelTest

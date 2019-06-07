@@ -1,8 +1,7 @@
 ﻿using NUnit.Framework;
-using PoESkillTree.Computation.Builders.Behaviors;
 using PoESkillTree.Computation.Common;
 
-namespace PoESkillTree.Computation.Builders.Tests.Behaviors
+namespace PoESkillTree.Computation.Builders.Behaviors
 {
     [TestFixture]
     public class RoundedValueTest

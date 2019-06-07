@@ -1,10 +1,9 @@
 ﻿using NUnit.Framework;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Parsing.PassiveTreeParsers;
 using PoESkillTree.GameModel.PassiveTree;
-using static PoESkillTree.Computation.Parsing.Tests.ParserTestUtils;
+using static PoESkillTree.Computation.Parsing.ParserTestUtils;
 
-namespace PoESkillTree.Computation.Parsing.Tests.PassiveTreeParsers
+namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
 {
     [TestFixture]
     public class SkilledPassiveNodeParserTest
@@ -13,8 +12,8 @@ namespace PoESkillTree.Computation.Parsing.Tests.PassiveTreeParsers
         [TestCase((ushort) 42)]
         public void ReturnsCorrectModifier(ushort nodeId)
         {
-            var definition = new PassiveNodeDefinition(nodeId, PassiveNodeType.Normal, "", false,
-                true, 0, new string[0]);
+            var definition = new PassiveNodeDefinition(nodeId, PassiveNodeType.Small, "", false,
+                true, 0, default, new string[0]);
             var expected = new[]
             {
                 CreateModifier($"{nodeId}.Skilled", Form.TotalOverride, 1, CreateGlobalSource(definition))
@@ -28,6 +27,6 @@ namespace PoESkillTree.Computation.Parsing.Tests.PassiveTreeParsers
         }
 
         private static ModifierSource.Global CreateGlobalSource(PassiveNodeDefinition nodeDefinition)
-            => new ModifierSource.Global(new ModifierSource.Local.Tree(nodeDefinition.Name));
+            => new ModifierSource.Global(new ModifierSource.Local.PassiveNode(nodeDefinition.Id, nodeDefinition.Name));
     }
 }

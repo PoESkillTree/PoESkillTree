@@ -69,6 +69,12 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
 
         IStatBuilder AsItemPropertyForSlot(ItemSlot slot);
 
+        IStatBuilder AsPassiveNodeProperty { get; }
+
+        IStatBuilder AsPassiveNodeBaseProperty { get; }
+
+        IStatBuilder AsPassiveNodePropertyFor(ushort nodeId);
+
         /// <summary>
         /// Applies this stat to <paramref name="entity"/> instead of the currently modified entity.
         /// See <see cref="IConditionBuilders.For"/> for more information.

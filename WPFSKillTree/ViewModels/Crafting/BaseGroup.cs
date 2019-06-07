@@ -1,6 +1,5 @@
 using System;
 using PoESkillTree.GameModel.Items;
-using PoESkillTree.Model.Items.Enums;
 
 namespace PoESkillTree.ViewModels.Crafting
 {

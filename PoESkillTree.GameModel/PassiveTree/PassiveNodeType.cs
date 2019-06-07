@@ -2,7 +2,7 @@ namespace PoESkillTree.GameModel.PassiveTree
 {
     public enum PassiveNodeType
     {
-        Normal,
+        Small,
         Notable,
         Keystone,
         Mastery,

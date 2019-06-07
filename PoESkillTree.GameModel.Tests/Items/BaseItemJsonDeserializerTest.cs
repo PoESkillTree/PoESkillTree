@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
-using PoESkillTree.GameModel.Items;
+using PoESkillTree.GameModel.Modifiers;
 
-namespace PoESkillTree.GameModel.Tests.Items
+namespace PoESkillTree.GameModel.Items
 {
     [TestFixture]
     public class BaseItemJsonDeserializerTest
@@ -41,7 +41,7 @@ namespace PoESkillTree.GameModel.Tests.Items
             Assert.AreEqual(
                 new[]
                 {
-                    new CraftableStat("from_armour_movement_speed_+%", -3, -3),
+                    new CraftableStat("dummy_stat_display_nothing", -3, -3),
                     new CraftableStat("base_resist_all_elements_%", 12, 12),
                 },
                 definition.ImplicitModifiers);
@@ -70,7 +70,8 @@ namespace PoESkillTree.GameModel.Tests.Items
              */
             var itemJson = JObject.Parse(TestUtils.ReadDataFile("base_items.json"));
             var modJson =  JObject.Parse(TestUtils.ReadDataFile("mods.json"));
-            return BaseItemJsonDeserializer.Deserialize(itemJson, modJson);
+            var modifiers = ModifierJsonDeserializer.Deserialize(modJson);
+            return BaseItemJsonDeserializer.Deserialize(itemJson, modifiers);
         }
     }
 }

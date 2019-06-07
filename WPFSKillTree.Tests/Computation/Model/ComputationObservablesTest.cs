@@ -219,7 +219,7 @@ namespace PoESkillTree.Computation.Model
 
         private static PassiveNodeDefinition CreatePassiveNode(ushort id)
             => new PassiveNodeDefinition(id, default, "", false, false,
-                0, new string[0]);
+                0, default, new string[0]);
 
         private static IReadOnlyList<SkillNode> CreateSkillNodes(int nodeCount)
             => Enumerable.Range(0, nodeCount).Select(id => new SkillNode { Id = (ushort) id }).ToList();

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using EnumsNET;
 using PoESkillTree.Computation.Common;
@@ -13,7 +12,9 @@ using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
+using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
+using PoESkillTree.GameModel.PassiveTree;
 using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Data
@@ -36,29 +37,17 @@ namespace PoESkillTree.Computation.Data
         public override bool MatchesWholeLineOnly => true;
 
         protected override IReadOnlyList<MatcherData> CreateCollection() =>
-            new SpecialMatcherCollection(_modifierBuilder, ValueFactory)
+            new FormAndStatMatcherCollection(_modifierBuilder, ValueFactory)
             {
                 {
                     @"\+# to level of socketed support gems",
                     BaseAdd, Value, Gem.IncreaseSupportLevel
                 },
                 {
-                    "primordial",
-                    BaseAdd, 1, Stat.PrimordialJewelsSocketed
-                },
-                {
-                    "grand spectrum",
-                    BaseAdd, 1, Stat.GrandSpectrumJewelsSocketed
-                },
-                {
                     "ignore all movement penalties from armour",
                     TotalOverride, 0,
                     Stat.MovementSpeed.AsItemPropertyForSlot(ItemSlot.BodyArmour),
                     Stat.MovementSpeed.AsItemPropertyForSlot(ItemSlot.OffHand)
-                },
-                {
-                    "your critical strike chance is lucky",
-                    TotalOverride, 1, Flag.CriticalStrikeChanceIsLucky
                 },
                 {
                     "life leech recovers based on your chaos damage instead",
@@ -105,6 +94,89 @@ namespace PoESkillTree.Computation.Data
                 {
                     "({StatMatchers}) is doubled",
                     PercentMore, 100, Reference.AsStat
+                },
+                {
+                    "gain #% of maximum ({PoolStatMatchers}) as extra maximum energy shield",
+                    BaseAdd, Value, Reference.AsPoolStat.ConvertTo(EnergyShield)
+                },
+                // Jewels
+                {
+                    "primordial",
+                    BaseAdd, 1, Stat.PrimordialJewelsSocketed
+                },
+                {
+                    "grand spectrum",
+                    BaseAdd, 1, Stat.GrandSpectrumJewelsSocketed
+                },
+                {
+                    // Brute Force Solution, Careful Planning, Efficient Training, Fertile Mind, Fluid Motion, Inertia
+                    "({AttributeStatMatchers}) from passives in radius is transformed to ({AttributeStatMatchers})",
+                    (BaseSubtract, 1,
+                        PassiveTree.MultipliedAttributeForNodesInModifierSourceJewelRadius(References[0].AsStat,
+                            References[0].AsStat)),
+                    (BaseAdd, 1,
+                        PassiveTree.MultipliedAttributeForNodesInModifierSourceJewelRadius(References[0].AsStat,
+                            References[1].AsStat))
+                },
+                {
+                    // Combat Focus
+                    "with # total ({AttributeStatMatchers}) and ({AttributeStatMatchers}) in radius, elemental hit cannot choose fire",
+                    TotalOverride, 0, Fire.Damage, CombatFocusCondition(0)
+                },
+                {
+                    "with # total ({AttributeStatMatchers}) and ({AttributeStatMatchers}) in radius, elemental hit cannot choose cold",
+                    TotalOverride, 0, Cold.Damage, CombatFocusCondition(1)
+                },
+                {
+                    "with # total ({AttributeStatMatchers}) and ({AttributeStatMatchers}) in radius, elemental hit cannot choose lightning",
+                    TotalOverride, 0, Lightning.Damage, CombatFocusCondition(2)
+                },
+                {
+                    // Intuitive Leap
+                    "passives in radius can be allocated without being connected to your tree",
+                    TotalOverride, 1, PassiveTree.ConnectJewelToNodesInModifierSourceJewelRadius
+                },
+                {
+                    // Might in All Forms
+                    "({AttributeStatMatchers}) and ({AttributeStatMatchers}) from passives in radius count towards strength melee damage bonus",
+                    (BaseAdd, PassiveTree.AllocatedInModifierSourceJewelRadius(References[0].AsStat),
+                        Attribute.StrengthDamageBonus),
+                    (BaseAdd, PassiveTree.AllocatedInModifierSourceJewelRadius(References[1].AsStat),
+                        Attribute.StrengthDamageBonus)
+                },
+                {
+                    // Might of the Meek
+                    "#% increased effect of non-keystone passive skills in radius",
+                    PercentIncrease, Value, PassiveTree.ModifyNodeEffectivenessInModifierSourceJewelRadius(false,
+                        PassiveNodeType.Small, PassiveNodeType.Notable)
+                },
+                {
+                    "notable passive skills in radius grant nothing",
+                    TotalOverride, 0, PassiveTree.ModifyNodeEffectivenessInModifierSourceJewelRadius(false,
+                        PassiveNodeType.Notable)
+                },
+                {
+                    // Soul's Wick
+                    "spectres have a base duration of # seconds spectres do not travel between areas",
+                    BaseSet, Value, Stat.Duration, With(Skills.RaiseSpectre)
+                },
+                {
+                    // The Vigil
+                    "with at least # strength in radius, ({SkillMatchers}) fortifies you and nearby allies for # seconds",
+                    TotalOverride, 1, Buff.Fortify.On(Self).Concat(Buff.Fortify.On(Ally)),
+                    And(PassiveTree.TotalInModifierSourceJewelRadius(Attribute.Strength) >= Values[0],
+                        Reference.AsSkill.Cast.InPastXSeconds(Values[1]))
+                },
+                {
+                    // Unnatural Instinct
+                    "grants all bonuses of unallocated small passive skills in radius",
+                    BaseAdd, 1, PassiveTree.ModifyNodeEffectivenessInModifierSourceJewelRadius(false,
+                        PassiveNodeType.Small)
+                },
+                {
+                    "allocated small passive skills in radius grant nothing",
+                    TotalOverride, 0, PassiveTree.ModifyNodeEffectivenessInModifierSourceJewelRadius(true,
+                        PassiveNodeType.Small)
                 },
                 // skills
                 {
@@ -474,10 +546,6 @@ namespace PoESkillTree.Computation.Data
                 },
                 // - Hierophant
                 {
-                    "gain #% of maximum mana as extra maximum energy shield",
-                    BaseAdd, Value, Mana.ConvertTo(EnergyShield)
-                },
-                {
                     "enemies take #% increased damage for each of your brands attached to them",
                     PercentIncrease, Value * Stat.AttachedBrands.For(Enemy).Maximum.Value, Damage.Taken.For(Enemy)
                 },
@@ -524,9 +592,40 @@ namespace PoESkillTree.Computation.Data
                 },
                 // - Saboteur
                 { "nearby enemies are blinded", TotalOverride, 1, Buff.Blind.On(Enemy), Enemy.IsNearby },
+                // - Ascendant (generic)
+                {
+                    "can allocate passives from the marauder's starting point",
+                    TotalOverride, 1, PassiveTree.ConnectsToClass(CharacterClass.Marauder)
+                },
+                {
+                    "can allocate passives from the duelist's starting point",
+                    TotalOverride, 1, PassiveTree.ConnectsToClass(CharacterClass.Duelist)
+                },
+                {
+                    "can allocate passives from the ranger's starting point",
+                    TotalOverride, 1, PassiveTree.ConnectsToClass(CharacterClass.Ranger)
+                },
+                {
+                    "can allocate passives from the shadow's starting point",
+                    TotalOverride, 1, PassiveTree.ConnectsToClass(CharacterClass.Shadow)
+                },
+                {
+                    "can allocate passives from the witch's starting point",
+                    TotalOverride, 1, PassiveTree.ConnectsToClass(CharacterClass.Witch)
+                },
+                {
+                    "can allocate passives from the templar's starting point",
+                    TotalOverride, 1, PassiveTree.ConnectsToClass(CharacterClass.Templar)
+                },
             };
 
-        private IEnumerable<(IFormBuilder form, IValueBuilder value, IStatBuilder stat, IConditionBuilder condition)>
+        private IConditionBuilder CombatFocusCondition(int skillPart)
+            => And(With(Skills.FromId("ElementalHit")), Stat.MainSkillPart.Value.Eq(skillPart),
+                (PassiveTree.TotalInModifierSourceJewelRadius(References[0].AsStat)
+                 + PassiveTree.TotalInModifierSourceJewelRadius(References[1].AsStat))
+                >= Value);
+
+        private IEnumerable<(IFormBuilder form, IValueBuilder value, IStatBuilder stat)>
             UndeniableAttackSpeed()
         {
             var attackSpeed = Stat.CastRate.With(DamageSource.Attack);
@@ -535,7 +634,7 @@ namespace PoESkillTree.Computation.Data
                 IValueBuilder PerAccuracy(ValueBuilder value) =>
                     ValueBuilderUtils.PerStat(Stat.Accuracy.With(hand), Values[1])(value);
 
-                yield return (PercentIncrease, PerAccuracy(Values[0]), attackSpeed.With(hand), Condition.True);
+                yield return (PercentIncrease, PerAccuracy(Values[0]), attackSpeed.With(hand));
             }
         }
 

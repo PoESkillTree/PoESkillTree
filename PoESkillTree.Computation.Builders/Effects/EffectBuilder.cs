@@ -68,7 +68,7 @@ namespace PoESkillTree.Computation.Builders.Effects
         public string Build(BuildParameters parameters) => Identity.Build(parameters);
     }
 
-    internal class KnockbackEffectBuilder : EffectBuilder, IKnockbackEffectBuilder
+    internal class KnockbackEffectBuilder : AvoidableEffectBuilder, IKnockbackEffectBuilder
     {
         public KnockbackEffectBuilder(IStatFactory statFactory)
             : base(statFactory, CoreBuilder.Create("Knockback"))

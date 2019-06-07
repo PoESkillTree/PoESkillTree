@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common.Data;
-using PoESkillTree.Computation.Data.Steps;
 
-namespace PoESkillTree.Computation.Data.Tests.Steps
+namespace PoESkillTree.Computation.Data.Steps
 {
     [TestFixture]
     public class StatMatchersSelectorTest

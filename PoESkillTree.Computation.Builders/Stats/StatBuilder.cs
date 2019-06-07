@@ -97,7 +97,32 @@ namespace PoESkillTree.Computation.Builders.Stats
         }
 
         public IStatBuilder AsItemPropertyForSlot(ItemSlot slot)
-            => WithStatConverter((m, s) => StatFactory.ItemProperty(s, slot));
+            => WithStatConverter((_, s) => StatFactory.ItemProperty(s, slot));
+
+        public IStatBuilder AsPassiveNodeProperty
+            => WithStatConverter((m, s) => PassiveNodeProperty(s, GetPassiveNodeId(m)));
+
+        public IStatBuilder AsPassiveNodeBaseProperty
+            => WithStatConverter((m, s) => PassiveNodeBaseProperty(s, GetPassiveNodeId(m)));
+
+        private static ushort GetPassiveNodeId(ModifierSource modifierSource)
+        {
+            if (modifierSource is ModifierSource.Global globalSource)
+                modifierSource = globalSource.LocalSource;
+            if (modifierSource is ModifierSource.Local.PassiveNode nodeSource)
+                return nodeSource.NodeId;
+            throw new ParseException(
+                "IStatBuilder.AsPassiveNodeProperty can only be used with a source of type ModifierSource.Local.PassiveNode");
+        }
+
+        public IStatBuilder AsPassiveNodePropertyFor(ushort nodeId)
+            => WithStatConverter((_, s) => PassiveNodeProperty(s, nodeId));
+
+        private IStat PassiveNodeProperty(IStat source, ushort nodeId)
+            => StatFactory.FromIdentity(nodeId + "." + source.Identity, source.Entity, source.DataType);
+
+        private IStat PassiveNodeBaseProperty(IStat source, ushort nodeId)
+            => StatFactory.FromIdentity(nodeId + "." + source.Identity + ".Base", source.Entity, source.DataType);
 
         public IStatBuilder For(IEntityBuilder entity) => With(CoreStatBuilder.WithEntity(entity));
 

@@ -182,7 +182,7 @@ namespace PoESkillTree.SkillTreeFiles
                     }
                     else if (!IsKeystone && !IsNotable && !IsJewelSocket && !IsMastery)
                     {
-                        Type = PassiveNodeType.Normal;
+                        Type = PassiveNodeType.Small;
                     }
                     else
                     {
@@ -204,7 +204,7 @@ namespace PoESkillTree.SkillTreeFiles
                 switch (Type)
                 {
                     case PassiveNodeType.JewelSocket:
-                    case PassiveNodeType.Normal:
+                    case PassiveNodeType.Small:
                         iconPrefix = "normal";
                         break;
                     case PassiveNodeType.Notable:

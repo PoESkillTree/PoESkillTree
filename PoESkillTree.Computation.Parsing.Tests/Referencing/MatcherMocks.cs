@@ -3,7 +3,7 @@ using System.Linq;
 using Moq;
 using PoESkillTree.Computation.Common.Data;
 
-namespace PoESkillTree.Computation.Parsing.Tests.Referencing
+namespace PoESkillTree.Computation.Parsing.Referencing
 {
     internal static class MatcherMocks
     {

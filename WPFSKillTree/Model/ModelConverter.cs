@@ -22,6 +22,7 @@ namespace PoESkillTree.Model
                 skillNode.IsAscendancyNode,
                 !skillNode.IsRootNode && !skillNode.IsAscendancyStart && !skillNode.IsMultipleChoiceOption,
                 skillNode.PassivePointsGranted,
+                new NodePosition(skillNode.Position.X, skillNode.Position.Y), 
                 skillNode.StatDefinitions);
 
         public static Item Convert(OldItem oldItem)

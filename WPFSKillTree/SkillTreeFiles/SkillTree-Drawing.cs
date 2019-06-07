@@ -282,7 +282,7 @@ namespace PoESkillTree.SkillTreeFiles
                 if (!(_persistentData.Options.ShowAllAscendancyClasses || node.AscendancyName == ascendancyClassName)) return;
                 switch (node.Type)
                 {
-                    case PassiveNodeType.Normal:
+                    case PassiveNodeType.Small:
                         offset += 8;
                         break;
                     case PassiveNodeType.Notable:
@@ -296,7 +296,7 @@ namespace PoESkillTree.SkillTreeFiles
             {
                 switch (node.Type)
                 {
-                    case PassiveNodeType.Normal:
+                    case PassiveNodeType.Small:
                         offset += 0;
                         break;
                     case PassiveNodeType.Notable:
@@ -429,7 +429,7 @@ namespace PoESkillTree.SkillTreeFiles
                 var ascStartNode = AscRootNodeList.First(x => x.AscendancyName == ascName);
                 var ascNodeOriginalPos = ascStartNode.Group.Position;
                 if (_originalPositions.All(x => x.Item1 != ascStartNode.GroupId))
-                    _originalPositions.Add(new Tuple<int, Vector2D>(ascStartNode.GroupId, new Vector2D(ascNodeOriginalPos.ToContainingPoint())));
+                    _originalPositions.Add(new Tuple<int, Vector2D>(ascStartNode.GroupId, ascNodeOriginalPos));
 
                 var imageName = "Classes" + ascStartNode.AscendancyName;
                 var bitmap = Assets[imageName];
@@ -456,12 +456,10 @@ namespace PoESkillTree.SkillTreeFiles
                     if (done.Contains(n.Value.Group))
                         continue;
                     if (_originalPositions.All(x => x.Item1 != n.Value.GroupId))
-                        _originalPositions.Add(new Tuple<int, Vector2D>(n.Value.GroupId, new Vector2D(n.Value.Group.Position.ToContainingPoint())));
+                        _originalPositions.Add(new Tuple<int, Vector2D>(n.Value.GroupId, n.Value.Group.Position));
                     var diffDist = ascNodeOriginalPos - n.Value.Group.Position;
-                    imageCx = ascStartNode.Group.Position.X - diffDist.X;
-                    imageCy = ascStartNode.Group.Position.Y - diffDist.Y;
 
-                    n.Value.Group.Position = new Vector2D(imageCx, imageCy);
+                    n.Value.Group.Position = ascStartNode.Group.Position - diffDist;
                     done.Add(n.Value.Group);
                 }
             }

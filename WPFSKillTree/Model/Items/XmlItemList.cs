@@ -1,6 +1,5 @@
 ﻿using System.Xml.Serialization;
 using PoESkillTree.GameModel.Items;
-using PoESkillTree.Model.Items.Enums;
 
 namespace PoESkillTree.Model.Items
 {

@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
-using PoESkillTree.Utils.UrlProcessing;
 
-namespace PoESkillTree.Tests.Utils.UrlProcessing
+namespace PoESkillTree.Utils.UrlProcessing
 {
     internal static class BuildUrlNormalizerExtensions
     {

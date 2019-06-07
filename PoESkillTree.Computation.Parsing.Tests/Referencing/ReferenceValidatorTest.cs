@@ -1,9 +1,8 @@
 ﻿using NUnit.Framework;
 using PoESkillTree.Computation.Common.Parsing;
-using PoESkillTree.Computation.Parsing.Referencing;
-using static PoESkillTree.Computation.Parsing.Tests.Referencing.MatcherMocks;
+using static PoESkillTree.Computation.Parsing.Referencing.MatcherMocks;
 
-namespace PoESkillTree.Computation.Parsing.Tests.Referencing
+namespace PoESkillTree.Computation.Parsing.Referencing
 {
     [TestFixture]
     public class ReferenceValidatorTest

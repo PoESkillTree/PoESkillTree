@@ -4,10 +4,9 @@ using Moq;
 using MoreLinq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common.Data;
-using PoESkillTree.Computation.Parsing.StringParsers;
 using PoESkillTree.Utils.Extensions;
 
-namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
+namespace PoESkillTree.Computation.Parsing.StringParsers
 {
     [TestFixture]
     public class CompositeParserTest

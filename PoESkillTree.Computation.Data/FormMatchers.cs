@@ -30,15 +30,16 @@ namespace PoESkillTree.Computation.Data
                 { "#% less", PercentLess, Value },
                 { @"\+#%? to", BaseAdd, Value },
                 { @"\+#(?!%)", BaseAdd, Value },
-                { @"\+?#%(?= chance)", BaseAdd, Value },
+                { @"\+?#%( global)?(?= chance)", BaseAdd, Value },
                 { @"\+?#% of", BaseAdd, Value },
                 { "(?<!chance to )gain #", BaseAdd, Value },
                 { "#% additional", BaseAdd, Value },
                 { "an additional", BaseAdd, 1 },
                 { "adds # to", BaseAdd, Value },
                 { "can (have|summon) up to # additional", BaseAdd, Value },
-                { @"-#% of", BaseSubtract, Value },
                 { "-#%? to", BaseSubtract, Value },
+                { "-#(?!%)", BaseSubtract, Value },
+                { "-#% of", BaseSubtract, Value },
             };
 
         // Add (that word appearing is required for ReSharper to highlight these regex patterns ...)

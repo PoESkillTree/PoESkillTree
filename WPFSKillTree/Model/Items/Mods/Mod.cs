@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using PoESkillTree.GameModel.Items;
-using PoESkillTree.Model.Items.Enums;
+using PoESkillTree.GameModel.Modifiers;
 
 namespace PoESkillTree.Model.Items.Mods
 {

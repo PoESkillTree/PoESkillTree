@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using PoESkillTree.GameModel.Items;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Common
 {
@@ -15,7 +16,9 @@ namespace PoESkillTree.Computation.Common
     /// It is guaranteed that <see cref="ModifierSource"/> only has the subclasses that are inner classes of it:
     /// All abstract classes have private constructors and all non-abstract classes are sealed.
     /// </remarks>
-    public abstract class ModifierSource : IEquatable<ModifierSource>
+#pragma warning disable 660,661 // Equals and GetHashCode are overridden in ValueObject
+    public abstract class ModifierSource : ValueObject, IEquatable<ModifierSource>
+#pragma warning restore 660,661
     {
         private ModifierSource(
             ModifierSource canonicalSource, string sourceName, params ModifierSource[] influencingSources)
@@ -53,23 +56,20 @@ namespace PoESkillTree.Computation.Common
         /// </remarks>
         public ModifierSource CanonicalSource { get; }
 
-        public static bool operator ==(ModifierSource left, ModifierSource right) =>
-            left?.Equals(right) ?? right is null;
+        public static bool operator ==(ModifierSource left, ModifierSource right)
+            => left?.Equals(right) ?? right is null;
 
-        public static bool operator !=(ModifierSource left, ModifierSource right) =>
-            !(left == right);
+        public static bool operator !=(ModifierSource left, ModifierSource right)
+            => !(left == right);
 
-        public sealed override bool Equals(object obj) =>
-            ReferenceEquals(obj, this) || (obj is ModifierSource other && Equals(other));
+        public bool Equals(ModifierSource other)
+            => Equals((object) other);
 
-        public virtual bool Equals(ModifierSource other) =>
-            GetType() == other?.GetType() && SourceName == other.SourceName;
-
-        public override int GetHashCode() =>
-            (GetType(), SourceName).GetHashCode();
+        protected override object ToTuple()
+            => (GetType(), SourceName);
 
         /// <summary>
-        /// Canonical string representation of this source for UI display purposes. E.g. Given, Helmet or Skill.
+        /// String representation of this source for UI display purposes. E.g. Given, Helmet or Skill.
         /// </summary>
         public override string ToString() => GetType().Name;
 
@@ -97,10 +97,7 @@ namespace PoESkillTree.Computation.Common
 
             public Local LocalSource { get; }
 
-            public override bool Equals(ModifierSource other)
-                => base.Equals(other) && other is Global global && LocalSource == global.LocalSource;
-
-            public override int GetHashCode() => (base.GetHashCode(), LocalSource).GetHashCode();
+            protected override object ToTuple() => (base.ToTuple(), LocalSource);
 
             public override string ToString() => LocalSource?.ToString() ?? base.ToString();
         }
@@ -131,15 +128,21 @@ namespace PoESkillTree.Computation.Common
                 }
             }
 
-            public sealed class Tree : Local
+            public sealed class PassiveNode : Local
             {
-                public Tree(string treeNodeName) : base(new Tree(), treeNodeName)
+                public PassiveNode(ushort nodeId, string nodeName) : base(new PassiveNode(nodeId), nodeName)
                 {
+                    NodeId = nodeId;
                 }
 
-                public Tree()
+                public PassiveNode(ushort nodeId)
                 {
+                    NodeId = nodeId;
                 }
+
+                public ushort NodeId { get; }
+
+                protected override object ToTuple() => (base.ToTuple(), NodeId);
             }
 
             public sealed class Item : Local
@@ -156,12 +159,34 @@ namespace PoESkillTree.Computation.Common
 
                 public ItemSlot Slot { get; }
 
-                public override bool Equals(ModifierSource other)
-                    => base.Equals(other) && other is Item item && Slot == item.Slot;
-
-                public override int GetHashCode() => (base.GetHashCode(), Slot).GetHashCode();
+                protected override object ToTuple() => (base.ToTuple(), Slot);
 
                 public override string ToString() => Slot.ToString();
+            }
+
+            /// <summary>
+            /// ModifierSource for jewels that are socketed into the skill tree.
+            /// Other jewels use ModifierSource.Local.Item.
+            /// </summary>
+            public sealed class Jewel : Local
+            {
+                public Jewel(JewelRadius radius, ushort passiveNodeId, string itemName)
+                    : base(new Jewel(radius, passiveNodeId), itemName)
+                {
+                    Radius = radius;
+                    PassiveNodeId = passiveNodeId;
+                }
+
+                public Jewel(JewelRadius radius, ushort passiveNodeId)
+                {
+                    Radius = radius;
+                    PassiveNodeId = passiveNodeId;
+                }
+
+                public JewelRadius Radius { get; }
+                public ushort PassiveNodeId { get; }
+
+                protected override object ToTuple() => (base.ToTuple(), Radius, PassiveNodeId);
             }
 
             public sealed class Skill : Local
@@ -177,10 +202,7 @@ namespace PoESkillTree.Computation.Common
 
                 public string SkillId { get; }
 
-                public override bool Equals(ModifierSource other)
-                    => base.Equals(other) && other is Skill skill && SkillId == skill.SkillId;
-
-                public override int GetHashCode() => (base.GetHashCode(), SkillId).GetHashCode();
+                protected override object ToTuple() => (base.ToTuple(), SkillId);
             }
 
             /// <summary>
@@ -201,11 +223,7 @@ namespace PoESkillTree.Computation.Common
                 public int SocketIndex { get; }
                 public string SkillId { get; }
 
-                public override bool Equals(ModifierSource other)
-                    => base.Equals(other) && other is Gem gem && Slot == gem.Slot && SocketIndex == gem.SocketIndex
-                       && SkillId == gem.SkillId;
-
-                public override int GetHashCode() => (base.GetHashCode(), Slot, SocketIndex).GetHashCode();
+                protected override object ToTuple() => (base.ToTuple(), Slot, SocketIndex);
             }
 
             public sealed class UserSpecified : Local

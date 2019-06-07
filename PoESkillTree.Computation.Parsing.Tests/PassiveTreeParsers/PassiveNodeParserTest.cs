@@ -1,12 +1,15 @@
-﻿using Moq;
+﻿using System.Linq;
+using FluentAssertions;
+using Moq;
+using MoreLinq;
 using NUnit.Framework;
+using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Parsing.PassiveTreeParsers;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.PassiveTree;
-using static PoESkillTree.Computation.Parsing.Tests.ParserTestUtils;
+using static PoESkillTree.Computation.Parsing.ParserTestUtils;
 
-namespace PoESkillTree.Computation.Parsing.Tests.PassiveTreeParsers
+namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
 {
     [TestFixture]
     public class PassiveNodeParserTest
@@ -80,6 +83,62 @@ namespace PoESkillTree.Computation.Parsing.Tests.PassiveTreeParsers
             Assert.That(result.Modifiers, Has.Member(expected));
         }
 
+        [TestCase("Strength")]
+        [TestCase("Dexterity")]
+        [TestCase("Intelligence")]
+        public void SetsUpAttributeProperties(string attribute)
+        {
+            var definition = CreateNode();
+            var expected = new[]
+            {
+                CreateConditionalModifier(definition, $"{attribute}", Form.BaseSet,
+                    $"Character.{definition.Id}.{attribute}.Value(Total, Global)"),
+                CreateModifier($"{definition.Id}.{attribute}", Form.BaseSet,
+                    new StatValue(new Stat($"{definition.Id}.{attribute}.Base")),
+                    CreateGlobalSource(definition)),
+            };
+            var sut = CreateSut(definition);
+
+            var result = sut.Parse(definition.Id);
+
+            result.Modifiers.Should().Contain(expected);
+        }
+
+        [TestCase("Strength")]
+        [TestCase("Intelligence")]
+        [TestCase("Strength", "Dexterity")]
+        public void ParsesPropertyModifiersCorrectly(params string[] attributes)
+        {
+            var modifier = "+1 to " + attributes.ToDelimitedString(" and ");
+            var definition = CreateNode(modifier);
+            var source = CreateGlobalSource(definition);
+            var expected = attributes
+                .Select(a => CreateModifier(a, Form.BaseAdd, 1, source))
+                .ToList();
+            var coreParser = Mock.Of<ICoreParser>(p =>
+                p.Parse(new CoreParserParameter(modifier + " (AsPassiveNodeBaseProperty)", source, Entity.Character))
+                == ParseResult.Success(expected));
+            var sut = CreateSut(definition, coreParser);
+
+            var result = sut.Parse(definition.Id);
+
+            result.Modifiers.Should().Contain(expected);
+        }
+
+        [Test]
+        public void SetsEffectivenessToSkilled()
+        {
+            var definition = CreateNode();
+            var expected = CreateModifier($"{definition.Id}.Effectiveness", Form.BaseSet,
+                new StatValue(new Stat($"{definition.Id}.Skilled")),
+                CreateGlobalSource(definition));
+            var sut = CreateSut(definition);
+
+            var result = sut.Parse(definition.Id);
+
+            Assert.That(result.Modifiers, Has.Member(expected));
+        }
+
         private static PassiveNodeParser CreateSut(PassiveNodeDefinition nodeDefinition, ICoreParser coreParser = null)
         {
             coreParser = coreParser ?? Mock.Of<ICoreParser>();
@@ -92,16 +151,23 @@ namespace PoESkillTree.Computation.Parsing.Tests.PassiveTreeParsers
 
         private static PassiveNodeDefinition CreateNode(
             bool isAscendancyNode, int passivePointsGranted, bool costsPassivePoint, params string[] modifiers)
-            => new PassiveNodeDefinition(42, PassiveNodeType.Normal, "node", isAscendancyNode, costsPassivePoint,
-                passivePointsGranted, modifiers);
+            => new PassiveNodeDefinition(42, PassiveNodeType.Small, "node", isAscendancyNode, costsPassivePoint,
+                passivePointsGranted, default, modifiers);
 
         private static Modifier CreateConditionalModifier(
             PassiveNodeDefinition nodeDefinition, string stat, Form form, double value)
+            => CreateConditionalModifier(nodeDefinition, stat, form, $"{value}");
+
+        private static Modifier CreateConditionalModifier(
+            PassiveNodeDefinition nodeDefinition, string stat, Form form, string value)
             => CreateModifier(stat, form, new FunctionalValue(null,
-                $"Character.{nodeDefinition.Id}.Skilled.Value(Total, Global).IsSet ? {value} : null"),
+                    $"{value} * Character.{nodeDefinition.Id}.Effectiveness.Value(Total, Global)"),
                 CreateGlobalSource(nodeDefinition));
 
         private static ModifierSource.Global CreateGlobalSource(PassiveNodeDefinition nodeDefinition)
-            => new ModifierSource.Global(new ModifierSource.Local.Tree(nodeDefinition.Name));
+            => new ModifierSource.Global(CreateLocalSource(nodeDefinition));
+
+        private static ModifierSource.Local.PassiveNode CreateLocalSource(PassiveNodeDefinition nodeDefinition)
+            => new ModifierSource.Local.PassiveNode(nodeDefinition.Id, nodeDefinition.Name);
     }
 }

@@ -3,9 +3,10 @@ using System.Linq;
 using PoESkillTree.Computation.Builders;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.GameModel.PassiveTree;
 using PoESkillTree.GameModel.Skills;
 
-namespace PoESkillTree.Computation.Parsing.Tests
+namespace PoESkillTree.Computation.Parsing
 {
     public static class ParserTestUtils
     {
@@ -40,6 +41,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
             => new Modifier(new[] { new Stat(stat), }, form, value, source ?? new ModifierSource.Global());
 
         public static BuilderFactories CreateBuilderFactories(params SkillDefinition[] skillDefinitions)
-            => new BuilderFactories(new SkillDefinitions(skillDefinitions));
+            => new BuilderFactories(new PassiveTreeDefinition(new PassiveNodeDefinition[0]),
+                new SkillDefinitions(skillDefinitions));
     }
 }

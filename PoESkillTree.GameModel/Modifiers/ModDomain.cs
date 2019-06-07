@@ -1,4 +1,6 @@
-﻿namespace PoESkillTree.Model.Items.Enums
+﻿using System.Runtime.Serialization;
+
+namespace PoESkillTree.GameModel.Modifiers
 {
     /// <summary>
     /// The domain of a mod as it appears in the GGPK.
@@ -13,7 +15,8 @@
         Crafted,
         Area,
         Misc,
-        Abyss_Jewel,
+        [EnumMember(Value = "abyss_jewel")]
+        AbyssJewel,
         Atlas,
         Delve,
     }

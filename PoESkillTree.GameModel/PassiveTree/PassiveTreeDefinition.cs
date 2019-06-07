@@ -1,28 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace PoESkillTree.GameModel.PassiveTree
 {
-    public class PassiveTreeDefinition
+    public class PassiveTreeDefinition : DefinitionsBase<ushort, PassiveNodeDefinition>
     {
-        private readonly Lazy<IReadOnlyDictionary<ushort, PassiveNodeDefinition>> _nodeDict;
-
-        public PassiveTreeDefinition(IReadOnlyList<PassiveNodeDefinition> nodes)
+        public PassiveTreeDefinition(IReadOnlyList<PassiveNodeDefinition> nodes) : base(nodes)
         {
-            Nodes = nodes;
-            _nodeDict = new Lazy<IReadOnlyDictionary<ushort, PassiveNodeDefinition>>(
-                () => Nodes.ToDictionary(s => s.Id));
         }
 
-        public IReadOnlyList<PassiveNodeDefinition> Nodes { get; }
+        public IReadOnlyList<PassiveNodeDefinition> Nodes => Definitions;
 
-        public PassiveNodeDefinition GetNodeById(ushort id) => _nodeDict.Value[id];
+        public PassiveNodeDefinition GetNodeById(ushort id) => GetDefinitionById(id);
 
         // TODO Replace by real skill tree data
         public static IReadOnlyList<PassiveNodeDefinition> CreateKeystoneDefinitions()
         {
-            ushort id = 0;
+            var nodes = new List<PassiveNodeDefinition>
+            {
+                new PassiveNodeDefinition(0, PassiveNodeType.JewelSocket, "jewel", false,
+                    true, 0, default, new string[0]),
+                new PassiveNodeDefinition(1, PassiveNodeType.Small, "attributes", false,
+                    true, 0, new NodePosition(10, 10), 
+                    new[] { "+100 to Strength", "+100 to Dexterity", "+100 to Intelligence" }),
+            };
+
+            ushort id = 2;
             var keystones = new[]
             {
                 "Acrobatics", "Ancestral Bond", "Arrow Dancing", "Avatar of Fire", "Blood Magic", "Chaos Inoculation",
@@ -31,11 +34,12 @@ namespace PoESkillTree.GameModel.PassiveTree
                 "Necromantic Aegis", "Pain Attunement", "Perfect Agony", "Phase Acrobatics", "Point Blank",
                 "Resolute Technique", "Runebinder", "Unwavering Stance", "Vaal Pact", "Zealot's Oath",
             };
-            return keystones.Select(Create).ToList();
+            nodes.AddRange(keystones.Select(Create));
+            return nodes;
 
             PassiveNodeDefinition Create(string name)
                 => new PassiveNodeDefinition(id++, PassiveNodeType.Keystone, name, false,
-                    true, 0, new string[0]);
+                    true, 0, new NodePosition(id, 1000), new string[0]);
         }
     }
 }

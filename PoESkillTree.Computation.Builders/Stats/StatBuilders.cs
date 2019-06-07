@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using MoreLinq;
@@ -78,17 +79,19 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder GrandSpectrumJewelsSocketed => FromIdentity(typeof(uint));
 
         public IStatBuilder RampageStacks => FromIdentity(typeof(uint));
-        public IStatBuilder CharacterSize => FromIdentity(typeof(double));
-        public IStatBuilder LightRadius => FromIdentity(typeof(double));
         public IStatBuilder AttachedBrands => FromIdentity(typeof(uint));
         public IStatBuilder BannerStage => FromIdentity(typeof(uint));
-
-        public IStatBuilder PassiveNodeSkilled(ushort nodeId) => FromIdentity($"{nodeId}.Skilled", typeof(bool));
 
         public IStatBuilder DamageTakenGainedAsMana => FromIdentity(typeof(uint));
 
         public ValueBuilder UniqueAmount(string name)
             => FromIdentity(name, typeof(uint), UserSpecifiedValue(0)).Value;
+
+        public IStatBuilder IndependentMultiplier(string identity)
+            => FromIdentity(identity, typeof(uint), IndependentResult(NodeType.Increase));
+
+        public IStatBuilder IndependentTotal(string identity)
+            => FromIdentity(identity, typeof(uint), IndependentResult(NodeType.Total));
 
         public IAttributeStatBuilders Attribute => new AttributeStatBuilders(StatFactory);
         public IRequirementStatBuilders Requirements => new RequirementStatBuilders(StatFactory);
@@ -180,9 +183,13 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder Duration => FromIdentity(typeof(double));
         public IStatBuilder LifeRecovery => FromIdentity(typeof(int));
         public IStatBuilder ManaRecovery => FromIdentity(typeof(int));
-        public IStatBuilder RecoverySpeed => FromIdentity(typeof(double));
+        public IStatBuilder LifeRecoverySpeed => FromIdentity(typeof(double));
+        public IStatBuilder ManaRecoverySpeed => FromIdentity(typeof(double));
+        public IStatBuilder InstantRecovery => FromIdentity(typeof(uint));
         public IStatBuilder ChargesUsed => FromIdentity(typeof(int));
         public IStatBuilder ChargesGained => FromIdentity(typeof(double));
+        public IStatBuilder MaximumCharges => FromIdentity(typeof(uint));
+        public IStatBuilder ChanceToGainCharge => FromIdentity(typeof(double));
     }
 
     internal class ProjectileStatBuilders : PrefixedStatBuildersBase, IProjectileStatBuilders

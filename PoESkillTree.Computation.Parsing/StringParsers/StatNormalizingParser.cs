@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace PoESkillTree.Computation.Parsing.StringParsers
+﻿namespace PoESkillTree.Computation.Parsing.StringParsers
 {
     /// <inheritdoc />
     /// <summary>
@@ -17,34 +15,10 @@ namespace PoESkillTree.Computation.Parsing.StringParsers
             _inner = inner;
         }
 
-        public StringParseResult<TResult> Parse(CoreParserParameter parameter)
+        public StringParseResult<TResult> Parse(string modifierLine)
         {
-            var modifierLine = MergeWhiteSpace(parameter.ModifierLine.Trim());
-            return _inner.Parse(modifierLine, parameter);
-        }
-
-        // This is infinitely faster than Regex.Replace
-        private static string MergeWhiteSpace(string s)
-        {
-            var result = new List<char>(s.Length);
-            var lastWasWhiteSpace = true;
-            foreach (var c in s)
-            {
-                if (char.IsWhiteSpace(c))
-                {
-                    if (!lastWasWhiteSpace)
-                    {
-                        result.Add(' ');
-                    }
-                    lastWasWhiteSpace = true;
-                }
-                else
-                {
-                    result.Add(c);
-                    lastWasWhiteSpace = false;
-                }
-            }
-            return new string(result.ToArray());
+            var normalized = StringNormalizer.MergeWhiteSpace(modifierLine.Trim());
+            return _inner.Parse(normalized);
         }
     }
 }

@@ -4,10 +4,9 @@ using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core.Events;
-using PoESkillTree.Computation.Core.Graphs;
-using static PoESkillTree.Computation.Core.Tests.Graphs.NodeSelectorHelper;
+using static PoESkillTree.Computation.Core.Graphs.NodeSelectorHelper;
 
-namespace PoESkillTree.Computation.Core.Tests.Graphs
+namespace PoESkillTree.Computation.Core.Graphs
 {
     [TestFixture]
     public class StatGraphWithEventsTest

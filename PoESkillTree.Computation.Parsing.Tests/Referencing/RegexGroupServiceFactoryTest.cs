@@ -1,9 +1,8 @@
 ﻿using System;
 using NUnit.Framework;
-using PoESkillTree.Computation.Parsing.Referencing;
-using static PoESkillTree.Computation.Common.Parsing.ReferenceConstants;
+using PoESkillTree.Computation.Common.Parsing;
 
-namespace PoESkillTree.Computation.Parsing.Tests.Referencing
+namespace PoESkillTree.Computation.Parsing.Referencing
 {
     [TestFixture]
     public class RegexGroupServiceFactoryTest
@@ -34,8 +33,8 @@ namespace PoESkillTree.Computation.Parsing.Tests.Referencing
             Assert.Throws<ArgumentException>(() => sut.CombineGroupPrefixes("left", ""));
         }
 
-        [TestCase("", "innerRegex", ExpectedResult = "(?<" + ValueGroupPrefix + ">innerRegex)")]
-        [TestCase("prefix", "inner", ExpectedResult = "(?<" + ValueGroupPrefix + "prefix>inner)")]
+        [TestCase("", "innerRegex", ExpectedResult = "(?<" + ReferenceConstants.ValueGroupPrefix + ">innerRegex)")]
+        [TestCase("prefix", "inner", ExpectedResult = "(?<" + ReferenceConstants.ValueGroupPrefix + "prefix>inner)")]
         public string CreateValueGroupReturnsCorrectResult(string groupNameIdentifier, string innerRegex)
         {
             var sut = CreateSut();
@@ -57,7 +56,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.Referencing
             string groupPrefix, string innerRegex, string referenceName, int matcherIndex)
         {
             var expected =
-                $"(?<{ReferenceGroupPrefix}{groupPrefix}_{referenceName}_{matcherIndex}>{innerRegex})";
+                $"(?<{ReferenceConstants.ReferenceGroupPrefix}{groupPrefix}_{referenceName}_{matcherIndex}>{innerRegex})";
             var sut = CreateSut();
 
             var actual = sut.CreateReferenceGroup(groupPrefix, referenceName, matcherIndex, innerRegex);

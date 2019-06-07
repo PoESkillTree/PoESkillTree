@@ -1,8 +1,7 @@
 ﻿using NUnit.Framework;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Common.Tests;
 
-namespace PoESkillTree.Computation.Core.Tests
+namespace PoESkillTree.Computation.Core
 {
     [TestFixture]
     public class CalculatorUpdateTest

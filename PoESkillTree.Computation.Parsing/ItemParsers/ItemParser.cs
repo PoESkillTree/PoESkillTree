@@ -13,14 +13,18 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
     public class ItemParser : IParser<ItemParserParameter>
     {
         private readonly BaseItemDefinitions _baseItemDefinitions;
-        private readonly IParser<PartialItemParserParameter>[] _partialParsers;
+        private readonly IBuilderFactories _builderFactories;
+        private readonly ICoreParser _coreParser;
+        private readonly IStatTranslator _statTranslator;
 
         public ItemParser(
             BaseItemDefinitions baseItemDefinitions, IBuilderFactories builderFactories, ICoreParser coreParser,
             IStatTranslator statTranslator)
         {
             _baseItemDefinitions = baseItemDefinitions;
-            _partialParsers = CreatePartialParsers(builderFactories, coreParser, statTranslator);
+            _builderFactories = builderFactories;
+            _coreParser = coreParser;
+            _statTranslator = statTranslator;
         }
 
         public ParseResult Parse(ItemParserParameter parameter)
@@ -36,21 +40,21 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
             var partialParserParameter =
                 new PartialItemParserParameter(item, slot, baseItemDefinition, localSource, globalSource);
 
-            var parseResults = new List<ParseResult>(_partialParsers.Length);
-            foreach (var partialParser in _partialParsers)
+            var partialParsers = CreatePartialParsers();
+            var parseResults = new List<ParseResult>(partialParsers.Length);
+            foreach (var partialParser in partialParsers)
             {
                 parseResults.Add(partialParser.Parse(partialParserParameter));
             }
             return ParseResult.Aggregate(parseResults);
         }
 
-        private IParser<PartialItemParserParameter>[] CreatePartialParsers(
-            IBuilderFactories builderFactories, ICoreParser coreParser, IStatTranslator statTranslator)
+        private IParser<PartialItemParserParameter>[] CreatePartialParsers()
             => new IParser<PartialItemParserParameter>[]
             {
-                new ItemEquipmentParser(builderFactories),
-                new ItemPropertyParser(builderFactories),
-                new ItemModifierParser(builderFactories, coreParser, statTranslator),
+                new ItemEquipmentParser(_builderFactories),
+                new ItemPropertyParser(_builderFactories),
+                new ItemModifierParser(_builderFactories, _coreParser, _statTranslator),
             };
     }
 

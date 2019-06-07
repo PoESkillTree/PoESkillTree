@@ -1,7 +1,6 @@
 ﻿using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Core.Graphs;
 
-namespace PoESkillTree.Computation.Core.Tests.Graphs
+namespace PoESkillTree.Computation.Core.Graphs
 {
     internal static class NodeSelectorHelper
     {

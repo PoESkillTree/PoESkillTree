@@ -1,11 +1,10 @@
 ﻿using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Builders.Behaviors;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
 
-namespace PoESkillTree.Computation.Builders.Tests.Behaviors
+namespace PoESkillTree.Computation.Builders.Behaviors
 {
     [TestFixture]
     public class AilmentDamageBaseValueTest
@@ -50,7 +49,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Behaviors
         public void CalculateUsesCurrentPathOfContext()
         {
             var skillDamage = new Stat("");
-            var path = new PathDefinition(new ModifierSource.Local.Tree());
+            var path = new PathDefinition(new ModifierSource.Local.PassiveNode(0));
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.CurrentPath == path &&
                 c.GetValue(skillDamage, NodeType.Base, path) == new NodeValue(3));

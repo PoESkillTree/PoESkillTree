@@ -2,9 +2,8 @@
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using PoESkillTree.GameModel.Items;
-using PoESkillTree.GameModel.Skills;
 
-namespace PoESkillTree.GameModel.Tests.Skills
+namespace PoESkillTree.GameModel.Skills
 {
     [TestFixture]
     public class SkillJsonDeserializerTest

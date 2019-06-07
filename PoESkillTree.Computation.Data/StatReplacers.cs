@@ -28,6 +28,16 @@ namespace PoESkillTree.Computation.Data
                 @"(with \d corrupted items equipped): (\d+% of chaos damage does not bypass energy shield), and (\d+% of physical damage bypasses energy shield)",
                 "$1 $2", "$1 $3"
             },
+            {
+                // Pure Talent Jewel
+                @"while your passive skill tree connects to a class' starting location, you gain: (marauder: .*) (duelist: .*) (ranger: .*) (shadow: .*) (witch: .*) (templar: .*) (scion: .*)",
+                "$1", "$2", "$3", "$4", "$5", "$6", "$7"
+            },
+            {
+                // Flask suffixes
+                @"(?<stat1>(immune|immunity) to (?<effect>.+) during flask effect) (?<stat2>removes? (\k<effect>|burning) on use)",
+                "${stat1}", "${stat2}"
+            },
             // keystones
             {
                 // Acrobatics

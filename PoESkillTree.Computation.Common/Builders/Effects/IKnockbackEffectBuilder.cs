@@ -6,7 +6,7 @@ namespace PoESkillTree.Computation.Common.Builders.Effects
     /// <summary>
     /// Represents the knockback effect.
     /// </summary>
-    public interface IKnockbackEffectBuilder : IEffectBuilder
+    public interface IKnockbackEffectBuilder : IAvoidableEffectBuilder
     {
         /// <summary>
         /// Gets a stat representing the distance of knockbacks inflicted by Self.

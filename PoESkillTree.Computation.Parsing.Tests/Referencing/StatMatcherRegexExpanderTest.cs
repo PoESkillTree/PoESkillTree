@@ -1,8 +1,7 @@
 ﻿using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Parsing.Referencing;
 
-namespace PoESkillTree.Computation.Parsing.Tests.Referencing
+namespace PoESkillTree.Computation.Parsing.Referencing
 {
     [TestFixture]
     public class StatMatcherRegexExpanderTest

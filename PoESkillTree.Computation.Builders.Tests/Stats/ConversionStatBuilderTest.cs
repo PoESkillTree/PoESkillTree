@@ -2,19 +2,17 @@
 using Moq;
 using MoreLinq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Parsing;
-using PoESkillTree.Computation.Common.Tests;
 using PoESkillTree.GameModel;
 using PoESkillTree.Utils;
-using static PoESkillTree.Computation.Builders.Tests.Stats.StatBuilderHelper;
+using static PoESkillTree.Computation.Builders.Stats.StatBuilderHelper;
 
-namespace PoESkillTree.Computation.Builders.Tests.Stats
+namespace PoESkillTree.Computation.Builders.Stats
 {
     // ConversionStatBuilder is also tested from StatBuilderTest.
     [TestFixture]

@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Builders.Entities;
-using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
 
-namespace PoESkillTree.Computation.Builders.Tests.Stats
+namespace PoESkillTree.Computation.Builders.Stats
 {
     internal static class StatBuilderHelper
     {

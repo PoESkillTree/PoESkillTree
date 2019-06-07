@@ -5,9 +5,8 @@ using MoreLinq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core.Events;
-using PoESkillTree.Computation.Core.Nodes;
 
-namespace PoESkillTree.Computation.Core.Tests.Nodes
+namespace PoESkillTree.Computation.Core.Nodes
 {
     [TestFixture]
     public class CachingNodeAdapterTest

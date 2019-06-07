@@ -7,7 +7,7 @@ using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
 
-namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
+namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
     public static class SkillParserTestUtils
     {

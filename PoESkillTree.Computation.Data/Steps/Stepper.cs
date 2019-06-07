@@ -31,6 +31,7 @@ namespace PoESkillTree.Computation.Data.Steps
                 { ParsingStep.GeneralStat, ParsingStep.Condition },
                 { ParsingStep.DamageStat, ParsingStep.Condition },
                 { ParsingStep.PoolStat, ParsingStep.Condition },
+                { ParsingStep.AttributeStat, ParsingStep.Condition },
                 { ParsingStep.Condition, ParsingStep.Condition },
                 { ParsingStep.ActionCondition, ParsingStep.Success },
             };
@@ -46,7 +47,8 @@ namespace PoESkillTree.Computation.Data.Steps
                 { ParsingStep.Form, ParsingStep.Failure },
                 { ParsingStep.GeneralStat, ParsingStep.DamageStat},
                 { ParsingStep.DamageStat, ParsingStep.PoolStat },
-                { ParsingStep.PoolStat, ParsingStep.Failure },
+                { ParsingStep.PoolStat, ParsingStep.AttributeStat },
+                { ParsingStep.AttributeStat, ParsingStep.Failure },
                 { ParsingStep.Condition, ParsingStep.ActionCondition },
                 { ParsingStep.ActionCondition, ParsingStep.Success },
             };

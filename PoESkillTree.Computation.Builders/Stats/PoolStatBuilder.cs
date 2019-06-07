@@ -43,7 +43,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder Cost => FromIdentity(typeof(uint));
         public IStatBuilder Reservation => FromIdentity(typeof(uint));
         public ILeechStatBuilder Leech => new LeechStatBuilder(StatFactory, Pool);
-        public IStatBuilder Gain => FromIdentity(typeof(int));
+        public IDamageRelatedStatBuilder Gain => DamageRelatedFromIdentity(typeof(int)).WithHits;
 
         public IConditionBuilder IsFull =>
             (Reservation.Value <= 0).And(FromIdentity(typeof(bool), UserSpecifiedValue(false)).IsSet);
@@ -162,10 +162,18 @@ namespace PoESkillTree.Computation.Builders.Stats
         protected IStatBuilder FromIdentity(
             Type dataType, ExplicitRegistrationType explicitRegistrationType = null,
             [CallerMemberName] string identitySuffix = null)
-        {
-            return new StatBuilder(StatFactory, new CoreStatBuilderFromCoreBuilder<Pool>(Pool,
+            => new StatBuilder(StatFactory, CreateCoreStatBuilder(identitySuffix, dataType, explicitRegistrationType));
+
+        protected IDamageRelatedStatBuilder DamageRelatedFromIdentity(
+            Type dataType, ExplicitRegistrationType explicitRegistrationType = null,
+            [CallerMemberName] string identitySuffix = null)
+            => DamageRelatedStatBuilder.Create(StatFactory,
+                CreateCoreStatBuilder(identitySuffix, dataType, explicitRegistrationType));
+
+        private ICoreStatBuilder CreateCoreStatBuilder(
+            string identitySuffix, Type dataType, ExplicitRegistrationType explicitRegistrationType)
+            => new CoreStatBuilderFromCoreBuilder<Pool>(Pool,
                 (e, p) => StatFactory.FromIdentity($"{p}{_identitySuffix}.{identitySuffix}", e, dataType,
-                    explicitRegistrationType)));
-        }
+                    explicitRegistrationType));
     }
 }

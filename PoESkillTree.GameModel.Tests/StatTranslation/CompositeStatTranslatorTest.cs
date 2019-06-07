@@ -2,9 +2,8 @@
 using System.Linq;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.GameModel.StatTranslation;
 
-namespace PoESkillTree.GameModel.Tests.StatTranslation
+namespace PoESkillTree.GameModel.StatTranslation
 {
     [TestFixture]
     public class CompositeStatTranslatorTest

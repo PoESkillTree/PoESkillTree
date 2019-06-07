@@ -1,14 +1,13 @@
 ﻿using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Conditions;
-using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Parsing;
 
-namespace PoESkillTree.Computation.Builders.Tests.Values
+namespace PoESkillTree.Computation.Builders.Values
 {
     [TestFixture]
     public class ValueBuildersTest

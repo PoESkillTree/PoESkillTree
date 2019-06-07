@@ -338,9 +338,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 // flasks
                 { PercentMore, Flask.LifeRecovery, Flask.Effect.Value * 100 },
                 { PercentMore, Flask.ManaRecovery, Flask.Effect.Value * 100 },
-                { PercentMore, Flask.LifeRecovery, Flask.RecoverySpeed.Value * 100 },
-                { PercentMore, Flask.ManaRecovery, Flask.RecoverySpeed.Value * 100 },
-                { PercentMore, Flask.Duration, (100 / Flask.RecoverySpeed.Value) - 100 },
+                { PercentMore, Flask.LifeRecovery, Flask.LifeRecoverySpeed.Value * 100 },
+                { PercentMore, Flask.ManaRecovery, Flask.ManaRecoverySpeed.Value * 100 },
                 // ailments
                 {
                     TotalOverride, MetaStats.AilmentDealtDamageType(Common.Builders.Effects.Ailment.Ignite),

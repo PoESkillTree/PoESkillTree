@@ -12,7 +12,7 @@ using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.Utils;
 
-namespace PoESkillTree.Computation.Parsing.Tests
+namespace PoESkillTree.Computation.Parsing
 {
     [TestFixture]
     public class CoreParserTest

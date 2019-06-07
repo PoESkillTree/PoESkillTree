@@ -29,7 +29,7 @@ namespace PoESkillTree.Computation.Data
             foreach (var keystone in _passives.Where(d => d.Type == PassiveNodeType.Keystone))
             {
                 collection.Add($"(you have )?{keystone.Name.ToLowerInvariant()}",
-                    TotalOverride, 1, Stat.PassiveNodeSkilled(keystone.Id));
+                    TotalOverride, 1, PassiveTree.NodeSkilled(keystone.Id));
             }
             return collection;
         }

@@ -43,6 +43,8 @@ namespace PoESkillTree.Computation.Common.Builders
 
         IKeywordBuilders KeywordBuilders { get; }
 
+        IPassiveTreeBuilders PassiveTreeBuilders { get; }
+
         ISkillBuilders SkillBuilders { get; }
 
         IStatBuilders StatBuilders { get; }

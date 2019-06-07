@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace PoESkillTree.GameModel.Skills
 {
-    public class SkillDefinitions
+    public class SkillDefinitions : DefinitionsBase<string, SkillDefinition>
     {
-        private readonly Lazy<IReadOnlyDictionary<string, SkillDefinition>> _skillDict;
-
-        public SkillDefinitions(IReadOnlyList<SkillDefinition> skills)
+        public SkillDefinitions(IReadOnlyList<SkillDefinition> skills) : base(skills)
         {
-            Skills = skills;
-            _skillDict = new Lazy<IReadOnlyDictionary<string, SkillDefinition>>(
-                () => Skills.ToDictionary(s => s.Id));
         }
 
-        public IReadOnlyList<SkillDefinition> Skills { get; }
+        public IReadOnlyList<SkillDefinition> Skills => Definitions;
 
-        public SkillDefinition GetSkillById(string skillId) => _skillDict.Value[skillId];
+        public SkillDefinition GetSkillById(string skillId) => GetDefinitionById(skillId);
     }
 }

@@ -2,9 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using PoESkillTree.GameModel.StatTranslation;
 
-namespace PoESkillTree.GameModel.Tests.StatTranslation
+namespace PoESkillTree.GameModel.StatTranslation
 {
     [TestFixture]
     public class StatTranslatorTest
@@ -85,6 +84,21 @@ namespace PoESkillTree.GameModel.Tests.StatTranslation
                 "5% increased Global Physical Damage",
                 "2.1 Life Regenerated per second",
                 "10% chance to Cause Monsters to Flee",
+            };
+            var actual = _translator.GetTranslations(statDict);
+            CollectionAssert.AreEqual(expected, actual.ToArray());
+        }
+
+        [Test]
+        public void GetTranslations_DummyStatDisplayNothing()
+        {
+            IReadOnlyDictionary<string, int> statDict = new Dictionary<string, int>
+            {
+                { "dummy_stat_display_nothing", 1 },
+            };
+            string[] expected =
+            {
+                null,
             };
             var actual = _translator.GetTranslations(statDict);
             CollectionAssert.AreEqual(expected, actual.ToArray());

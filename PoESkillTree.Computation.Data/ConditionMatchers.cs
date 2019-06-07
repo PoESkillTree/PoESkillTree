@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Equipment;
@@ -6,6 +7,7 @@ using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
+using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Data
@@ -29,11 +31,15 @@ namespace PoESkillTree.Computation.Data
             {
                 // actions
                 // - generic
-                { "if you('ve| have) ({ActionMatchers})( an enemy)? recently,?", Reference.AsAction.Recently },
+                { "if you('ve| have) ({ActionMatchers})( an enemy)? recently", Reference.AsAction.Recently },
                 { "if you haven't ({ActionMatchers}) recently", Not(Reference.AsAction.Recently) },
-                { "if you've ({ActionMatchers}) in the past # seconds,?", Reference.AsAction.InPastXSeconds(Value) },
+                { "if you've ({ActionMatchers}) in the past # seconds", Reference.AsAction.InPastXSeconds(Value) },
                 { "for # seconds on ({ActionMatchers})", Reference.AsAction.InPastXSeconds(Value) },
                 { "on ({ActionMatchers}) for # seconds", Reference.AsAction.InPastXSeconds(Value) },
+                {
+                    "for # seconds on ({KeywordMatchers}) ({ActionMatchers})",
+                    And(Condition.WithPart(References[0].AsKeyword), References[1].AsAction.InPastXSeconds(Value))
+                },
                 {
                     "(gain )?for # seconds when you ({ActionMatchers}) a rare or unique enemy",
                     And(Enemy.IsRareOrUnique, Reference.AsAction.InPastXSeconds(Value))
@@ -44,6 +50,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "(gain )?for # seconds when you ({ActionMatchers}) an enemy", Reference.AsAction.InPastXSeconds(Value) },
                 { "when you ({ActionMatchers}) an enemy, for # seconds", Reference.AsAction.InPastXSeconds(Value) },
+                { "for # seconds when ({ActionMatchers})", Reference.AsAction.By(Enemy).InPastXSeconds(Value) },
                 // - kill
                 {
                     "if you've killed a maimed enemy recently",
@@ -66,10 +73,12 @@ namespace PoESkillTree.Computation.Data
                     Or(Kill.Recently, Kill.By(Entity.Minion).Recently)
                 },
                 // - hit
+                { "if you('ve| have) hit them recently", Hit.Recently },
                 { "if you('ve| have) been hit recently", Hit.By(Enemy).Recently },
                 { "if you haven't been hit recently", Not(Hit.By(Enemy).Recently) },
                 { "if you were damaged by a hit recently", Hit.By(Enemy).Recently },
                 { "if you've taken no damage from hits recently", Not(Hit.By(Enemy).Recently) },
+                { "if you weren't damaged by a hit recently", Not(Hit.By(Enemy).Recently) },
                 // - critical strike
                 { "if you've crit in the past # seconds", CriticalStrike.InPastXSeconds(Value) },
                 // - block
@@ -86,31 +95,46 @@ namespace PoESkillTree.Computation.Data
                     Action.SpendMana(Values[1]).InPastXSeconds(Values[0])
                 },
                 { "if you have consumed a corpse recently", Action.ConsumeCorpse.Recently },
+                { "if you haven't taken damage recently", Not(Action.TakeDamage.Recently) },
+                { "if a minion has been killed recently", Action.Die.By(Entity.Minion).Recently },
+                { "while focussed", Action.Focus.Recently },
+                { "for # seconds when you focus", Action.Focus.InPastXSeconds(Value) },
                 // damage
                 { "attacks have", Condition.With(DamageSource.Attack) },
                 { "with attacks", Condition.With(DamageSource.Attack) },
                 { "for attacks", Condition.With(DamageSource.Attack) },
                 { "for spells", Condition.With(DamageSource.Spell) },
-                { "your spells have", Condition.With(DamageSource.Spell) },
+                { "(your )?spells have", Condition.With(DamageSource.Spell) },
                 // - by item tag
                 { "with weapons", AttackWith(Tags.Weapon) },
-                { "weapon", AttackWith(Tags.Weapon) },
+                { "(?<!this )weapon", AttackWith(Tags.Weapon) },
                 { "with bows", AttackWith(Tags.Bow) },
                 { "with a bow", AttackWith(Tags.Bow) },
                 { "with arrow hits", AttackWith(Tags.Bow) },
                 { "bow", AttackWith(Tags.Bow) },
                 { "with swords", AttackWith(Tags.Sword) },
+                { "to sword attacks", AttackWith(Tags.Sword) },
                 { "with claws", AttackWith(Tags.Claw) },
                 { "claw", AttackWith(Tags.Claw) },
+                { "to claw attacks", AttackWith(Tags.Claw) },
                 { "with daggers", AttackWith(Tags.Dagger) },
+                { "to dagger attacks", AttackWith(Tags.Dagger) },
                 { "with wands", AttackWith(Tags.Wand) },
                 { "wand", AttackWith(Tags.Wand) },
+                { "to wand attacks", AttackWith(Tags.Wand) },
                 { "with axes", AttackWith(Tags.Axe) },
+                { "to axe attacks", AttackWith(Tags.Axe) },
                 { "with staves", AttackWith(Tags.Staff) },
                 { "with a staff", AttackWith(Tags.Staff) },
+                { "to staff attacks", AttackWith(Tags.Staff) },
                 { "with ranged weapons", AttackWith(Tags.Ranged) },
                 {
                     "with maces",
+                    (Or(MainHandAttackWith(Tags.Mace), MainHandAttackWith(Tags.Sceptre)),
+                        Or(OffHandAttackWith(Tags.Mace), OffHandAttackWith(Tags.Sceptre)))
+                },
+                {
+                    "to mace attacks",
                     (Or(MainHandAttackWith(Tags.Mace), MainHandAttackWith(Tags.Sceptre)),
                         Or(OffHandAttackWith(Tags.Mace), OffHandAttackWith(Tags.Sceptre)))
                 },
@@ -125,12 +149,13 @@ namespace PoESkillTree.Computation.Data
                     "with two handed melee weapons",
                     And(MainHandAttackWith(Tags.TwoHandWeapon), Not(MainHand.Has(Tags.Ranged)))
                 },
+                { "with unarmed attacks", And(MainHandAttack, Not(MainHand.HasItem)) },
                 // - by item slot
                 { "with the main-hand weapon", MainHandAttack },
                 { "with main hand", MainHandAttack },
                 { "with off hand", OffHandAttack },
                 {
-                    "(attacks|hits) with this weapon( deal| have)?",
+                    "(attacks |hits )?with this weapon( deal| have)?",
                     (ModifierSourceIs(ItemSlot.MainHand).And(MainHandAttack),
                         ModifierSourceIs(ItemSlot.OffHand).And(OffHandAttack))
                 },
@@ -182,7 +207,10 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "lose a ({ChargeTypeMatchers}) and", Reference.AsChargeType.Amount.Value > 0 },
                 // - other
-                { "if you have # primordial jewels,", Stat.PrimordialJewelsSocketed.Value >= Value },
+                {
+                    "if you have # primordial (jewels|items socketed or equipped)",
+                    Stat.PrimordialJewelsSocketed.Value >= Value
+                },
                 // - on enemy
                 { "(against enemies )?that are on low life", Life.For(Enemy).IsLow },
                 { "against enemies on low life", Life.For(Enemy).IsLow },
@@ -193,7 +221,9 @@ namespace PoESkillTree.Computation.Data
                 { "if rare or unique", Enemy.IsRareOrUnique },
                 { "if normal or magic", Not(Enemy.IsRareOrUnique) },
                 { "while there is only one nearby enemy", Enemy.CountNearby.Eq(1) },
+                { "if there are at least # nearby enemies", Enemy.CountNearby >= Value },
                 { "at close range", Enemy.IsNearby },
+                { "while a rare or unique enemy is nearby", And(Enemy.IsRareOrUnique, Enemy.IsNearby) },
                 // buffs
                 { "while you have ({BuffMatchers})", Reference.AsBuff.IsOn(Self) },
                 { "while affected by ({SkillMatchers})", Reference.AsSkill.Buff.IsOn(Self) },
@@ -213,6 +243,10 @@ namespace PoESkillTree.Computation.Data
                 { "while( you are)? ({AilmentMatchers})", Reference.AsAilment.IsOn(Self) },
                 { "(against|from) ({AilmentMatchers}) enemies", Reference.AsAilment.IsOn(Enemy) },
                 {
+                    "(against|from) ({AilmentMatchers}) or ({AilmentMatchers}) enemies",
+                    Or(References[0].AsAilment.IsOn(Enemy), References[1].AsAilment.IsOn(Enemy))
+                },
+                {
                     "against frozen, shocked or ignited enemies",
                     Or(Ailment.Freeze.IsOn(Enemy), Ailment.Shock.IsOn(Enemy), Ailment.Ignite.IsOn(Enemy))
                 },
@@ -231,17 +265,24 @@ namespace PoESkillTree.Computation.Data
                 // skills
                 // - by keyword
                 { "vaal( skill)?", With(Keyword.Vaal) },
+                { "non-vaal skills deal", Not(With(Keyword.Vaal)) },
                 { "with bow skills", And(MainHand.Has(Tags.Bow), With(Keyword.Bow)) },
                 { "chaos skills have", With(Chaos) },
                 { "spell skills have", With(Keyword.Spell) },
                 { "(with|of|for) ({KeywordMatchers}) skills", With(Reference.AsKeyword) },
                 { "({KeywordMatchers}) skills (have|deal)", With(Reference.AsKeyword) },
+                {
+                    "({KeywordMatchers}) ({KeywordMatchers}) skills (have|deal)",
+                    And(With(References[0].AsKeyword), With(References[1].AsKeyword))
+                },
                 { "caused by melee hits", Condition.WithPart(Keyword.Melee) },
+                { "with melee damage", Condition.WithPart(Keyword.Melee) },
                 // - by damage type
+                { "with elemental skills", ElementalDamageTypes.Select(With).Aggregate((l, r) => l.Or(r)) },
                 { "with ({DamageTypeMatchers}) skills", With(Reference.AsDamageType) },
                 // - by single skill
-                { "({SkillMatchers})", With(Reference.AsSkill) },
-                { "({SkillMatchers})('|s)? (fires|has a|have a|has|deals|gain)", With(Reference.AsSkill) },
+                { "({SkillMatchers})('s)?", With(Reference.AsSkill) },
+                { "({SkillMatchers}) (fires|has a|have a|has|deals|gain)", With(Reference.AsSkill) },
                 { "dealt by ({SkillMatchers})", With(Reference.AsSkill) },
                 {
                     "({SkillMatchers}) and ({SkillMatchers})",
@@ -261,7 +302,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "if you summoned a golem in the past # seconds", Golems.Cast.InPastXSeconds(Value) },
                 // - by skill part
-                { "(beams?|final wave|shockwaves?) deals?", Stat.MainSkillPart.Value.Eq(1) },
+                { "(beams?|final wave|shockwaves?|cone) (has a|deals?)", Stat.MainSkillPart.Value.Eq(1) },
                 // - other
                 { "to enemies they're attached to", Flag.IsBrandAttachedToEnemy },
                 { "to branded enemy", Flag.IsBrandAttachedToEnemy },
@@ -274,9 +315,9 @@ namespace PoESkillTree.Computation.Data
                 { "if you detonated mines recently", Skills.DetonateMines.Cast.Recently },
                 { "if you've placed a mine or thrown a trap recently", Or(Traps.Cast.Recently, Mines.Cast.Recently) },
                 // totems
+                { "^totems", For(Entity.Totem) },
                 { "totems (gain|have)", For(Entity.Totem) },
                 { "you and your totems", Or(For(Self), For(Entity.Totem)) },
-                { "totems fire", With(Keyword.Totem) },
                 { "(spells cast|attacks used|skills used) by totems (have a|have)", With(Keyword.Totem) },
                 { "of totem skills that cast an aura", And(With(Keyword.Totem), With(Keyword.Aura)) },
                 { "while you have a totem", Totems.CombinedInstances.Value > 0 },
@@ -286,6 +327,7 @@ namespace PoESkillTree.Computation.Data
                 { "minions (deal|have|gain)", For(Entity.Minion) },
                 { "supported skills have minion", For(Entity.Minion) },
                 { "you and your minions have", For(Entity.Minion).Or(For(Self)) },
+                { "golems", And(For(Entity.Minion), With(Keyword.Golem)) },
                 { "golems have", And(For(Entity.Minion), With(Keyword.Golem)) },
                 { "spectres have", And(For(Entity.Minion), With(Skills.RaiseSpectre)) },
                 { "skeletons deal", And(For(Entity.Minion), WithSkeletonSkills) },
@@ -294,7 +336,27 @@ namespace PoESkillTree.Computation.Data
                 { "during any flask effect", Equipment.IsAnyFlaskActive() },
                 // - mods on flasks are only added when the flask item is enabled
                 { "during (flask )?effect", Condition.True },
+                // jewel thresholds
+                {
+                    "with( at least)? # ({AttributeStatMatchers}) in radius",
+                    PassiveTree.TotalInModifierSourceJewelRadius(Reference.AsStat) >= Value
+                },
+                {
+                    "with # total ({AttributeStatMatchers}) and ({AttributeStatMatchers}) in radius",
+                    (PassiveTree.TotalInModifierSourceJewelRadius(References[0].AsStat)
+                     + PassiveTree.TotalInModifierSourceJewelRadius(References[1].AsStat))
+                    >= Value
+                },
+                // passive tree
+                { "marauder:", PassiveTree.ConnectsToClass(CharacterClass.Marauder).IsSet },
+                { "duelist:", PassiveTree.ConnectsToClass(CharacterClass.Duelist).IsSet },
+                { "ranger:", PassiveTree.ConnectsToClass(CharacterClass.Ranger).IsSet },
+                { "shadow:", PassiveTree.ConnectsToClass(CharacterClass.Shadow).IsSet },
+                { "witch:", PassiveTree.ConnectsToClass(CharacterClass.Witch).IsSet },
+                { "templar:", PassiveTree.ConnectsToClass(CharacterClass.Templar).IsSet },
+                { "scion:", PassiveTree.ConnectsToClass(CharacterClass.Scion).IsSet },
                 // other
+                { "enemies have", For(Enemy) },
                 { "against targets they pierce", Projectile.PierceCount.Value >= 1 },
                 { "while stationary", Flag.AlwaysStationary },
                 { "while moving", Flag.AlwaysMoving },
@@ -315,6 +377,7 @@ namespace PoESkillTree.Computation.Data
                 { "while you have at least one nearby ally", Condition.Unique("Is any ally nearby?") },
                 { "while channelling", Condition.Unique("Are you currently channeling?") },
                 { "while you are not losing rage", Condition.Unique("Are you currently losing rage?") },
+                { "during soul gain prevention", Condition.Unique("SoulGainPrevention") },
                 // support gem mod clarifications. Irrelevant for parsing.
                 { "supported (skills|spells|attacks) (have|deal)", Condition.True },
                 { "(from |with )?supported skills'?", Condition.True },

@@ -43,8 +43,8 @@
     <Reference Include="Enums.NET, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7ea1c1650d506225, processorArchitecture=MSIL">
       <HintPath>..\packages\Enums.NET.2.3.2\lib\net45\Enums.NET.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.Annotations, Version=2018.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\packages\JetBrains.Annotations.2018.2.1\lib\net20\JetBrains.Annotations.dll</HintPath>
+    <Reference Include="JetBrains.Annotations, Version=2018.3.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.2018.3.0\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
@@ -89,8 +89,11 @@
     <Compile Include="Bandit.cs" />
     <Compile Include="CharacterBaseStats.cs" />
     <Compile Include="CharacterClass.cs" />
+    <Compile Include="CraftableStat.cs" />
+    <Compile Include="DefinitionsBase.cs" />
     <Compile Include="GameData.cs" />
     <Compile Include="Entity.cs" />
+    <Compile Include="IDefinition.cs" />
     <Compile Include="Items\BaseItemDefinitions.cs" />
     <Compile Include="Items\BaseItemJsonDeserializer.cs" />
     <Compile Include="Items\FrameType.cs" />
@@ -98,16 +101,24 @@
     <Compile Include="Items\ItemClass.cs" />
     <Compile Include="Items\BaseItemDefinition.cs" />
     <Compile Include="Items\ItemSlot.cs" />
+    <Compile Include="Items\JewelRadius.cs" />
     <Compile Include="Items\ReleaseState.cs" />
     <Compile Include="Items\Tags.cs" />
     <Compile Include="Items\ValueColoring.cs" />
     <Compile Include="Items\ItemConstants.cs" />
     <Compile Include="Items\XmlUniqueList.cs" />
+    <Compile Include="Modifiers\ModDomain.cs" />
+    <Compile Include="Modifiers\ModGenerationType.cs" />
+    <Compile Include="Modifiers\ModifierDefinition.cs" />
+    <Compile Include="Modifiers\ModifierDefinitions.cs" />
+    <Compile Include="Modifiers\ModifierJsonDeserializer.cs" />
     <Compile Include="Modifiers\ModifierLocalityTester.cs" />
     <Compile Include="MonsterBaseStats.cs" />
+    <Compile Include="PassiveTree\NodePosition.cs" />
     <Compile Include="PassiveTree\PassiveNodeType.cs" />
     <Compile Include="PassiveTree\PassiveNodeDefinition.cs" />
     <Compile Include="PassiveTree\PassiveTreeDefinition.cs" />
+    <Compile Include="PassiveTree\PassiveTreeDefinitionExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataUtils.cs" />
     <Compile Include="Items\Requirements.cs" />
@@ -170,6 +181,9 @@
     <EmbeddedResource Include="Data\Equipment\Uniques.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Data\ItemAffixes.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\SkillTreeStatLines.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

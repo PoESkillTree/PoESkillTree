@@ -23,6 +23,7 @@
         GeneralStat,
         DamageStat,
         PoolStat,
+        AttributeStat,
         Condition,
         ActionCondition,
     }

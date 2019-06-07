@@ -54,7 +54,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// Gets a stat representing the flat gains applied to this stat. Requires an action condition to make sense,
         /// e.g. on kill or on hit.
         /// </summary>
-        IStatBuilder Gain { get; }
+        IDamageRelatedStatBuilder Gain { get; }
 
         /// <summary>
         /// Gets a condition that is satisfied if this pool's current value is equal to 

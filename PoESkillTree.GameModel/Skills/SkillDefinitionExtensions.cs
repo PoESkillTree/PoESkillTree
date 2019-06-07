@@ -486,7 +486,7 @@ namespace PoESkillTree.GameModel.Skills
             { "RainOfSpores", SkillDotIsAreaDamageExtension }, // Toxic Rain
             {
                 "RallyingCry",
-                SelfBuff("inspiring_cry_damage_+%_per_one_hundred_nearby_enemies", "damage_+%",
+                Aura("inspiring_cry_damage_+%_per_one_hundred_nearby_enemies", "damage_+%",
                     "base_mana_regeneration_rate_per_minute")
             },
             { "RejuvenationTotem", Aura("base_mana_regeneration_rate_per_minute") },

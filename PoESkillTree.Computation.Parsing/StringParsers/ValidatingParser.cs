@@ -20,9 +20,9 @@ namespace PoESkillTree.Computation.Parsing.StringParsers
             _inner = inner;
         }
 
-        public StringParseResult<TResult> Parse(CoreParserParameter parameter)
+        public StringParseResult<TResult> Parse(string modifierLine)
         {
-            var (successfullyParsed, remaining, result) = _inner.Parse(parameter);
+            var (successfullyParsed, remaining, result) = _inner.Parse(modifierLine);
 
             if (remaining.EndsWith(ItemConstants.HiddenStatSuffix, StringComparison.OrdinalIgnoreCase))
             {

@@ -1,11 +1,10 @@
 ﻿using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Stats;
 
-namespace PoESkillTree.Computation.Builders.Tests.Conditions
+namespace PoESkillTree.Computation.Builders.Conditions
 {
     [TestFixture]
     public class ValueConditionBuilderTest

@@ -78,20 +78,28 @@ namespace PoESkillTree.GameModel.Modifiers
             "grants #% of life recovery to minions",
         }.ToList();
 
+        private const string Attribute = "(strength|dexterity|intelligence)";
+
+        private static readonly IReadOnlyList<Regex> PassiveNodeProperty = new RegexCollection
+        {
+            $@"\+# to {Attribute}",
+            $@"\+# to {Attribute} and {Attribute}",
+        }.ToList();
+
         private static readonly Regex NumberRegex = new Regex(@"\d+(\.\d+)?");
 
         public static bool AffectsProperties(string modifier, Tags itemTags)
         {
-            var canonicalModifier = NumberRegex.Replace(modifier, "#").ToLowerInvariant();
-            if (UnconditionalProperty.Any(r => r.IsMatch(canonicalModifier)))
+            var canonicalModifier = ToCanonicalModifier(modifier);
+            if (AnyMatch(UnconditionalProperty, canonicalModifier))
                 return true;
-            if (itemTags.HasFlag(Tags.Weapon) && WeaponProperty.Any(r => r.IsMatch(canonicalModifier)))
+            if (itemTags.HasFlag(Tags.Weapon) && AnyMatch(WeaponProperty, canonicalModifier))
                 return true;
-            if (itemTags.HasFlag(Tags.Armour) && ArmourProperty.Any(r => r.IsMatch(canonicalModifier)))
+            if (itemTags.HasFlag(Tags.Armour) && AnyMatch(ArmourProperty, canonicalModifier))
                 return true;
-            if (itemTags.HasFlag(Tags.Shield) && ShieldProperty.Any(r => r.IsMatch(canonicalModifier)))
+            if (itemTags.HasFlag(Tags.Shield) && AnyMatch(ShieldProperty, canonicalModifier))
                 return true;
-            if (itemTags.HasFlag(Tags.Flask) && FlaskProperty.Any(r => r.IsMatch(canonicalModifier)))
+            if (itemTags.HasFlag(Tags.Flask) && AnyMatch(FlaskProperty, canonicalModifier))
                 return true;
             return false;
         }
@@ -101,20 +109,29 @@ namespace PoESkillTree.GameModel.Modifiers
             if (AffectsProperties(modifier, itemTags))
                 return true;
 
-            var canonicalModifier = NumberRegex.Replace(modifier, "#").ToLowerInvariant();
-            if (itemTags.HasFlag(Tags.Weapon) && WeaponLocal.Any(r => r.IsMatch(canonicalModifier)))
+            var canonicalModifier = ToCanonicalModifier(modifier);
+            if (itemTags.HasFlag(Tags.Weapon) && AnyMatch(WeaponLocal, canonicalModifier))
                 return true;
-            if (itemTags.HasFlag(Tags.Flask) && FlaskLocal.Any(r => r.IsMatch(canonicalModifier)))
+            if (itemTags.HasFlag(Tags.Flask) && AnyMatch(FlaskLocal, canonicalModifier))
                 return true;
             return false;
         }
+
+        public static bool AffectsPassiveNodeProperty(string modifier)
+            => AnyMatch(PassiveNodeProperty, ToCanonicalModifier(modifier));
+
+        private static string ToCanonicalModifier(string modifier)
+            => NumberRegex.Replace(modifier, "#").ToLowerInvariant();
+
+        private static bool AnyMatch(IEnumerable<Regex> regexes, string modifier)
+            => regexes.Any(r => r.IsMatch(modifier));
 
         private class RegexCollection : IEnumerable<Regex>
         {
             private readonly List<Regex> _regexes = new List<Regex>();
 
             public void Add([RegexPattern] string pattern)
-                => _regexes.Add(new Regex($"^{pattern}$", RegexOptions.Multiline | RegexOptions.IgnoreCase));
+                => _regexes.Add(new Regex($"^{pattern}$", RegexOptions.Singleline | RegexOptions.IgnoreCase));
 
             public IEnumerator<Regex> GetEnumerator() => _regexes.GetEnumerator();
 

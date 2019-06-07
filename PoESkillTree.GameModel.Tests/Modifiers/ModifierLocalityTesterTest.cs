@@ -1,8 +1,7 @@
 ﻿using NUnit.Framework;
 using PoESkillTree.GameModel.Items;
-using PoESkillTree.GameModel.Modifiers;
 
-namespace PoESkillTree.GameModel.Tests.Modifiers
+namespace PoESkillTree.GameModel.Modifiers
 {
     [TestFixture]
     public class ModifierLocalityTesterTest

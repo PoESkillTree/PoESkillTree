@@ -53,6 +53,7 @@ namespace PoESkillTree.Computation.Data
                 { "projectiles deal damage", Damage.With(Keyword.Projectile) },
                 // by skill vs. ailment
                 { "damage with hits and ailments", Damage.WithHitsAndAilments },
+                { "damage with hits and ({AilmentMatchers})", Damage.WithHits, Damage.With(Reference.AsAilment) },
                 { "(?<!no )damage (with|from) hits", Damage.WithHits },
                 { "damage with ailments", Damage.WithAilments },
                 { "damage with ailments from attack skills", Damage.WithAilments.With(DamageSource.Attack) },

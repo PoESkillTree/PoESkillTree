@@ -41,6 +41,7 @@ namespace PoESkillTree.Computation.Builders.Effects
 
         public IStatBuilder CriticalStrikesAlwaysInflict
             => FromIdentity("CriticalStrikesAlwaysInflict", typeof(bool));
+        public IStatBuilder ChanceToRemove => FromIdentity("ChanceToRemove", typeof(uint));
 
         public IStatBuilder TickRateModifier => FromIdentity("TickRateModifier", typeof(double));
 

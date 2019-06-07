@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -8,11 +7,10 @@ using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.ViewModels;
 using PoESkillTree.Model;
 using PoESkillTree.Model.Builds;
 
-namespace PoESkillTree.Tests.Computation.ViewModels
+namespace PoESkillTree.Computation.ViewModels
 {
     [TestFixture]
     public class ConfigurationStatsConnectorTest

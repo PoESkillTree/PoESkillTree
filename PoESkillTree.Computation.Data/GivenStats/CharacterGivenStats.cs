@@ -139,6 +139,35 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { TotalOverride, Buff.Blind.On(Enemy), 1, Condition.Unique("Blind.ExplicitlyActiveOnEnemy") },
             { TotalOverride, Buff.Intimidate.On(Enemy), 1, Condition.Unique("Intimidate.ExplicitlyActiveOnEnemy") },
             { TotalOverride, Buff.CoveredInAsh.On(Enemy), 1, Condition.Unique("CoveredInAsh.ExplicitlyActiveOnEnemy") },
+            // character class connections
+            {
+                TotalOverride, PassiveTree.ConnectsToClass(CharacterClass.Scion), 1,
+                Stat.CharacterClass.Value.Eq((int) CharacterClass.Scion)
+            },
+            {
+                TotalOverride, PassiveTree.ConnectsToClass(CharacterClass.Marauder), 1,
+                Stat.CharacterClass.Value.Eq((int) CharacterClass.Marauder)
+            },
+            {
+                TotalOverride, PassiveTree.ConnectsToClass(CharacterClass.Ranger), 1,
+                Stat.CharacterClass.Value.Eq((int) CharacterClass.Ranger)
+            },
+            {
+                TotalOverride, PassiveTree.ConnectsToClass(CharacterClass.Witch), 1,
+                Stat.CharacterClass.Value.Eq((int) CharacterClass.Witch)
+            },
+            {
+                TotalOverride, PassiveTree.ConnectsToClass(CharacterClass.Duelist), 1,
+                Stat.CharacterClass.Value.Eq((int) CharacterClass.Duelist)
+            },
+            {
+                TotalOverride, PassiveTree.ConnectsToClass(CharacterClass.Templar), 1,
+                Stat.CharacterClass.Value.Eq((int) CharacterClass.Templar)
+            },
+            {
+                TotalOverride, PassiveTree.ConnectsToClass(CharacterClass.Shadow), 1,
+                Stat.CharacterClass.Value.Eq((int) CharacterClass.Shadow)
+            },
         });
 
         private GivenStatCollection Expand(GivenStatCollection coll)

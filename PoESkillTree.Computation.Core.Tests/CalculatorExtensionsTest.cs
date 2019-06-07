@@ -1,9 +1,9 @@
 ﻿using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
-using static PoESkillTree.Computation.Common.Tests.Helper;
+using static PoESkillTree.Computation.Common.Helper;
 
-namespace PoESkillTree.Computation.Core.Tests
+namespace PoESkillTree.Computation.Core
 {
     [TestFixture]
     public class CalculatorExtensionsTest

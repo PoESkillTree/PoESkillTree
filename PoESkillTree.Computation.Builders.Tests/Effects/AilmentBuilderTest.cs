@@ -1,12 +1,11 @@
 ﻿using System.Linq;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Builders.Effects;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
 
-namespace PoESkillTree.Computation.Builders.Tests.Effects
+namespace PoESkillTree.Computation.Builders.Effects
 {
     [TestFixture]
     public class AilmentBuilderTest

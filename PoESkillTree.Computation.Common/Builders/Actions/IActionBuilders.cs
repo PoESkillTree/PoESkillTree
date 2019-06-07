@@ -54,9 +54,29 @@ namespace PoESkillTree.Computation.Common.Builders.Actions
         IActionBuilder ConsumeCorpse { get; }
 
         /// <summary>
+        /// Gets an action that occurs when Self takes damage.
+        /// </summary>
+        IActionBuilder TakeDamage { get; }
+
+        /// <summary>
+        /// Gets an action that occurs when Self dies.
+        /// </summary>
+        IActionBuilder Die { get; }
+
+        /// <summary>
+        /// Gets an action that occurs when Self focuses.
+        /// </summary>
+        IActionBuilder Focus { get; }
+
+        /// <summary>
         /// Gets an action that occurs when Self spends <paramref name="amount"/> mana.
         /// </summary>
         IActionBuilder SpendMana(IValueBuilder amount);
+
+        /// <summary>
+        /// Gets an action that occurs every <paramref name="interval"/> seconds.
+        /// </summary>
+        IActionBuilder EveryXSeconds(IValueBuilder interval);
 
         IActionBuilder Unique(string description);
     }

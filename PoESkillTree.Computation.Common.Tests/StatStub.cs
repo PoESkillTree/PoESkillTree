@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using PoESkillTree.GameModel;
 
-namespace PoESkillTree.Computation.Common.Tests
+namespace PoESkillTree.Computation.Common
 {
     [DebuggerDisplay("{" + nameof(_instance) + "}")]
     public class StatStub : IStat

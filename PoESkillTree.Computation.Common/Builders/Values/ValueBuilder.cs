@@ -125,6 +125,7 @@ namespace PoESkillTree.Computation.Common.Builders.Values
 
         IValueBuilder IValueBuilder.DivideBy(IValueBuilder divisor) => _value.DivideBy(divisor);
 
+        public ValueBuilder If(IValue condition) => Wrap(_value.If(condition));
         IValueBuilder IValueBuilder.If(IValue condition) => _value.If(condition);
 
 

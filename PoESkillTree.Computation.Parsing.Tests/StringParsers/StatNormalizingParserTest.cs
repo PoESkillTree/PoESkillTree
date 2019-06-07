@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
-using PoESkillTree.Computation.Parsing.StringParsers;
 
-namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
+namespace PoESkillTree.Computation.Parsing.StringParsers
 {
     [TestFixture]
     public class StatNormalizingParserTest

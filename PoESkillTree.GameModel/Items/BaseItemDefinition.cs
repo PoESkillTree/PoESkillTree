@@ -3,7 +3,7 @@ using PoESkillTree.Utils;
 
 namespace PoESkillTree.GameModel.Items
 {
-    public class BaseItemDefinition
+    public class BaseItemDefinition : IDefinition<string>
     {
         public BaseItemDefinition(
             string metadataId, string name, ItemClass itemClass, IEnumerable<string> rawTags, Tags tags,
@@ -28,6 +28,7 @@ namespace PoESkillTree.GameModel.Items
         }
 
         public string MetadataId { get; }
+        string IDefinition<string>.Id => MetadataId;
 
         public string Name { get; }
         public ItemClass ItemClass { get; }
@@ -65,17 +66,5 @@ namespace PoESkillTree.GameModel.Items
         public int Value { get; }
 
         protected override object ToTuple() => (Id, Value);
-    }
-
-    public class CraftableStat : ValueObject
-    {
-        public CraftableStat(string statId, int minValue, int maxValue)
-            => (StatId, MinValue, MaxValue) = (statId, minValue, maxValue);
-
-        public string StatId { get; }
-        public int MinValue { get; }
-        public int MaxValue { get; }
-
-        protected override object ToTuple() => (StatId, MinValue, MaxValue);
     }
 }
