@@ -47,8 +47,11 @@ namespace PoESkillTree.Computation.Parsing
                 var multiplier = buildMultiplier(buildParameters);
                 var value = modifier.Value;
                 return new Modifier(modifier.Stats, modifier.Form,
-                    new FunctionalValue(c => value.Calculate(c) * multiplier.Calculate(c), value + " * " + multiplier),
+                    new FunctionalValue(Calculate, multiplier + " * " + value),
                     modifier.Source);
+
+                NodeValue? Calculate(IValueCalculationContext context)
+                    => multiplier.Calculate(context) is NodeValue left ? left * value.Calculate(context) : null;
             }
         }
     }
