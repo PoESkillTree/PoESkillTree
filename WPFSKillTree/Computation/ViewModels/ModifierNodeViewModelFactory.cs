@@ -119,7 +119,7 @@ namespace PoESkillTree.Computation.ViewModels
             if (form == Form.BaseAdd || form == Form.Increase)
             {
                 return nodes
-                    .GroupBy(n => (n.Form, n.ModifierSource, n.ModifierSource.SourceName))
+                    .GroupBy(n => (n.Form, n.IsLocal, n.ModifierSource.ToString(), n.ModifierSource.SourceName))
                     .Select(g => g.Aggregate(Accumulate))
                     .ToList();
             }
