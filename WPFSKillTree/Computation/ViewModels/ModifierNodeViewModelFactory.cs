@@ -69,9 +69,12 @@ namespace PoESkillTree.Computation.ViewModels
             var consideredPaths = new HashSet<PathDefinition>();
             foreach (var path in allPaths)
             {
-                var baseValue = await _calculator.GetNodeValueAsync(stat, NodeType.Base, path);
-                if (baseValue is null)
-                    continue;
+                if (nodeType != NodeType.Increase && nodeType != NodeType.More)
+                {
+                    var baseValue = await _calculator.GetNodeValueAsync(stat, NodeType.Base, path);
+                    if (baseValue is null)
+                        continue;
+                }
 
                 foreach (var influencingSource in path.ModifierSource.InfluencingSources)
                 {
