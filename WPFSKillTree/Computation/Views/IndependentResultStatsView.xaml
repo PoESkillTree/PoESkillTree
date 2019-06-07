@@ -17,23 +17,23 @@
         <DataGrid.RowStyle>
             <Style TargetType="DataGridRow">
                 <d:Style.DataContext>
-                    <x:Type Type="viewModels:ResultStatViewModel" />
+                    <x:Type Type="viewModels:ResultNodeViewModel" />
                 </d:Style.DataContext>
                 <Setter Property="Visibility"
-                        Value="{Binding Node.HasValue, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        Value="{Binding HasValue, Converter={StaticResource BooleanToVisibilityConverter}}" />
             </Style>
         </DataGrid.RowStyle>
         <DataGrid.Columns>
             <DataGridTextColumn IsReadOnly="True"
                                 Width="250"
-                                Binding="{Binding Node}">
+                                Binding="{Binding}">
                 <DataGridTextColumn.Header>
                     <l:Catalog>Stat</l:Catalog>
                 </DataGridTextColumn.Header>
             </DataGridTextColumn>
             <DataGridTextColumn IsReadOnly="True"
                                 Width="60"
-                                Binding="{Binding Node.StringValue}">
+                                Binding="{Binding StringValue}">
                 <DataGridTextColumn.Header>
                     <l:Catalog>Value</l:Catalog>
                 </DataGridTextColumn.Header>

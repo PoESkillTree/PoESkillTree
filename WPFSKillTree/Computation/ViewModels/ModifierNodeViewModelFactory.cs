@@ -9,13 +9,10 @@ namespace PoESkillTree.Computation.ViewModels
     public class ModifierNodeViewModelFactory
     {
         private readonly ObservableCalculator _calculator;
-        private readonly CalculationNodeViewModelFactory _nodeFactory;
 
-        public ModifierNodeViewModelFactory(ObservableCalculator calculator,
-            CalculationNodeViewModelFactory nodeFactory)
+        public ModifierNodeViewModelFactory(ObservableCalculator calculator)
         {
             _calculator = calculator;
-            _nodeFactory = nodeFactory;
         }
 
         public async Task<IReadOnlyList<ModifierNodeViewModel>> CreateAsync(IStat stat, NodeType nodeType)
@@ -112,7 +109,8 @@ namespace PoESkillTree.Computation.ViewModels
             var formNodes = await _calculator.GetFormNodeCollectionAsync(stat, form, path);
             foreach (var (node, modifier) in formNodes)
             {
-                var resultNode = await _nodeFactory.CreateConstantResultAsync(stat, node);
+                var resultNode = new CalculationNodeViewModel(stat)
+                    { Value = await _calculator.GetNodeValueAsync(node) };
                 if (resultNode.Value is null && stat.DataType != typeof(bool))
                     continue;
                 nodes.Add(new ModifierNodeViewModel(form, modifier.Source, resultNode));

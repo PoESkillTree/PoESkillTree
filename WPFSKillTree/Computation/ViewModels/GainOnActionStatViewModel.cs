@@ -35,7 +35,7 @@ namespace PoESkillTree.Computation.ViewModels
 
         private void NodeOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(CalculationNodeViewModel.Value))
+            if (e.PropertyName == nameof(ResultNodeViewModel.HasValue))
                 OnPropertyChanged(nameof(IsVisible));
         }
     }

@@ -1,15 +1,17 @@
 ﻿using System;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.GameModel;
+using PoESkillTree.Localization;
 using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.ViewModels
 {
-    public abstract class CalculationNodeViewModel : Notifier
+    public  class CalculationNodeViewModel : Notifier
     {
         private NodeValue? _value;
+        private string _stringValue;
 
-        protected CalculationNodeViewModel(IStat stat, NodeType nodeType = NodeType.Total)
+        public CalculationNodeViewModel(IStat stat, NodeType nodeType = NodeType.Total)
             => (Stat, NodeType) = (stat, nodeType);
 
         public IStat Stat { get; }
@@ -42,6 +44,7 @@ namespace PoESkillTree.Computation.ViewModels
             OnPropertyChanged(nameof(NumericValue));
             OnPropertyChanged(nameof(BoolValue));
             OnPropertyChanged(nameof(HasValue));
+            StringValue = CalculateStringValue();
         }
 
         public double? NumericValue
@@ -57,5 +60,23 @@ namespace PoESkillTree.Computation.ViewModels
         }
 
         public bool HasValue => Value.HasValue;
+
+        public string StringValue
+        {
+            get => _stringValue ?? (_stringValue = CalculateStringValue());
+            private set => SetProperty(ref _stringValue, value);
+        }
+
+        private string CalculateStringValue()
+        {
+            if (DataType == typeof(bool))
+                return Value.IsTrue().ToString();
+            if (Value is null)
+                return L10n.Message("None");
+            if (DataType.IsEnum)
+                return EnumValues.GetValue((int) Value.Single()).ToString();
+            return Value.Select(d => Math.Round(d, 2, MidpointRounding.AwayFromZero))
+                .ToString().Replace(" to ", " \nto ");
+        }
     }
 }

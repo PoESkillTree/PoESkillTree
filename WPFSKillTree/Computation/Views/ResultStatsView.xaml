@@ -39,7 +39,7 @@
                             <Setter Property="ToolTip">
                                 <Setter.Value>
                                     <ToolTip DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
-                                        <local:ResultStatToolTip DataContext="{Binding}" />
+                                        <local:ResultStatToolTip DataContext="{Binding Node}" />
                                     </ToolTip>
                                 </Setter.Value>
                             </Setter>

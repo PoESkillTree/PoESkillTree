@@ -21,7 +21,6 @@ namespace PoESkillTree.Computation.ViewModels
     {
         private readonly ObservableCalculator _observableCalculator;
         private readonly CalculationNodeViewModelFactory _nodeFactory;
-        private readonly ModifierNodeViewModelFactory _modifierNodeFactory;
 
         public MainSkillSelectionViewModel MainSkillSelection { get; private set; }
         public ResultStatsViewModel OffensiveStats { get; }
@@ -34,10 +33,11 @@ namespace PoESkillTree.Computation.ViewModels
         private ComputationViewModel(ObservableCalculator observableCalculator, ComputationSchedulerProvider schedulers)
         {
             _observableCalculator = observableCalculator;
-            _nodeFactory = new CalculationNodeViewModelFactory(observableCalculator, schedulers.Dispatcher);
-            _modifierNodeFactory = new ModifierNodeViewModelFactory(observableCalculator, _nodeFactory);
-            OffensiveStats = new ResultStatsViewModel(_nodeFactory, _modifierNodeFactory);
-            DefensiveStats = new ResultStatsViewModel(_nodeFactory, _modifierNodeFactory);
+            var modifierNodeFactory = new ModifierNodeViewModelFactory(observableCalculator);
+            _nodeFactory =
+                new CalculationNodeViewModelFactory(modifierNodeFactory, observableCalculator, schedulers.Dispatcher);
+            OffensiveStats = new ResultStatsViewModel(_nodeFactory);
+            DefensiveStats = new ResultStatsViewModel(_nodeFactory);
         }
 
         private async Task InitializeAsync(
@@ -53,8 +53,8 @@ namespace PoESkillTree.Computation.ViewModels
 
             GainOnActionStats = await GainOnActionStatsViewModel.CreateAsync(_observableCalculator, _nodeFactory);
             SharedConfiguration = SharedConfigurationViewModel.Create(_nodeFactory, f);
-            IndependentResultStats = await IndependentResultStatsViewModel.CreateAsync(
-                _observableCalculator, _nodeFactory, _modifierNodeFactory);
+            IndependentResultStats =
+                await IndependentResultStatsViewModel.CreateAsync(_observableCalculator, _nodeFactory);
         }
 
         private void InitializeOffensiveStats(IBuilderFactories f)

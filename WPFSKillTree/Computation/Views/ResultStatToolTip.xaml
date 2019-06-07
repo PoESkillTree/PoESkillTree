@@ -6,7 +6,7 @@
              xmlns:viewModels="clr-namespace:PoESkillTree.Computation.ViewModels"
              xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance viewModels:ResultStatViewModel}">
+             d:DataContext="{d:DesignInstance viewModels:ResultNodeViewModel}">
     <DataGrid AutoGenerateColumns="False"
               CanUserAddRows="False"
               CanUserDeleteRows="False"

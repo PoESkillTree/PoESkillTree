@@ -72,11 +72,11 @@ namespace PoESkillTree.Computation.ViewModels
         private static ResultNodeViewModel CreateSut<T>(NodeValue? value)
         {
             var stat = new Stat("", dataType: typeof(T));
-            return new ResultNodeViewModel(stat) { Value = value };
+            return new ResultNodeViewModel(null, stat) { Value = value };
         }
 
         private static ResultNodeViewModel CreateSut(IStat stat, NodeType nodeType)
-            => new ResultNodeViewModel(stat, nodeType);
+            => new ResultNodeViewModel(null, stat, nodeType);
 
         public enum TestEnum
         {

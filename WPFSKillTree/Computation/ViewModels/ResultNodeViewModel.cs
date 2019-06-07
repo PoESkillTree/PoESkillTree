@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using log4net;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Localization;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.ViewModels
 {
@@ -11,37 +12,26 @@ namespace PoESkillTree.Computation.ViewModels
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ResultNodeViewModel));
 
-        private string _stringValue;
+        private readonly ModifierNodeViewModelFactory _modifierNodeFactory;
+        private Lazy<NotifyingTask<IReadOnlyList<ModifierNodeViewModel>>> _modifierNodes;
 
         private IDisposable _subscription;
 
-        public ResultNodeViewModel(IStat stat, NodeType nodeType = NodeType.Total) : base(stat, nodeType)
+        public ResultNodeViewModel(
+            ModifierNodeViewModelFactory modifierNodeFactory, IStat stat, NodeType nodeType = NodeType.Total)
+            : base(stat, nodeType)
         {
+            _modifierNodeFactory = modifierNodeFactory;
+            ResetModifierNodes();
         }
 
-        public string StringValue
-        {
-            get => _stringValue ?? (_stringValue = CalculateStringValue());
-            private set => SetProperty(ref _stringValue, value);
-        }
-
-        private string CalculateStringValue()
-        {
-            if (DataType == typeof(bool))
-                return Value.IsTrue().ToString();
-            if (Value is null)
-                return L10n.Message("None");
-            if (DataType.IsEnum)
-                return EnumValues.GetValue((int) Value.Single()).ToString();
-            return Value.Select(d => Math.Round(d, 2, MidpointRounding.AwayFromZero))
-                .ToString().Replace(" to ", " \nto ");
-        }
+        public NotifyingTask<IReadOnlyList<ModifierNodeViewModel>> ModifierNodes => _modifierNodes.Value;
 
         protected override void OnPropertyChanged(string propertyName)
         {
             if (propertyName == nameof(Value))
             {
-                StringValue = CalculateStringValue();
+                ResetModifierNodes();
             }
             base.OnPropertyChanged(propertyName);
         }
@@ -55,5 +45,15 @@ namespace PoESkillTree.Computation.ViewModels
 
         public void Dispose()
             => _subscription?.Dispose();
+
+        private void ResetModifierNodes()
+        {
+            _modifierNodes = new Lazy<NotifyingTask<IReadOnlyList<ModifierNodeViewModel>>>(
+                () => new NotifyingTask<IReadOnlyList<ModifierNodeViewModel>>(
+                        _modifierNodeFactory.CreateAsync(Stat, NodeType),
+                        ex => Log.Error($"Failed to create modifier nodes for {Stat} {NodeType}", ex))
+                    { Default = new ModifierNodeViewModel[0] });
+            OnPropertyChanged(nameof(ModifierNodes));
+        }
     }
 }

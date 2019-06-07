@@ -4,7 +4,7 @@ namespace PoESkillTree.Computation.ViewModels
 {
     public class ModifierNodeViewModel
     {
-        public ModifierNodeViewModel(Form form, ModifierSource modifierSource, ResultNodeViewModel node)
+        public ModifierNodeViewModel(Form form, ModifierSource modifierSource, CalculationNodeViewModel node)
         {
             Form = form;
             ModifierSource = modifierSource;
@@ -14,6 +14,6 @@ namespace PoESkillTree.Computation.ViewModels
         public Form Form { get; }
         public ModifierSource ModifierSource { get; }
         public bool IsLocal => ModifierSource is ModifierSource.Local;
-        public ResultNodeViewModel Node { get; }
+        public CalculationNodeViewModel Node { get; }
     }
 }
