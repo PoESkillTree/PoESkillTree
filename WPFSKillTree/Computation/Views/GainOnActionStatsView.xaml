@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:PoESkillTree.Computation.ViewModels"
+             xmlns:local="clr-namespace:PoESkillTree.Computation.Views"
              xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:GainOnActionStatsViewModel}">
@@ -41,6 +42,20 @@
                 <DataGridTextColumn.Header>
                     <l:Catalog>Value</l:Catalog>
                 </DataGridTextColumn.Header>
+                <DataGridTextColumn.CellStyle>
+                    <Style TargetType="DataGridCell"
+                           BasedOn="{StaticResource MetroDataGridCell}">
+                        <Setter Property="ToolTip">
+                            <Setter.Value>
+                                <ToolTip
+                                    DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                                    <local:ResultStatToolTip DataContext="{Binding Node}" />
+                                </ToolTip>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="ToolTipService.ShowDuration" Value="60000" />
+                    </Style>
+                </DataGridTextColumn.CellStyle>
             </DataGridTextColumn>
         </DataGrid.Columns>
     </DataGrid>
