@@ -123,7 +123,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                     ("Strength.Required", Form.BaseSet, null, local),
                     ("BaseCastTime.Attack.MainHand.Skill", Form.BaseSet,
                         definition.Properties[0].Value / 1000D, local),
-                    ("MainHand.CriticalStrike.BaseChance.Attack.MainHand.Skill", Form.BaseSet,
+                    ("CriticalStrike.BaseChance.Attack.MainHand.Skill", Form.BaseSet,
                         definition.Properties[1].Value / 100D, local),
                     ("MainHand.Range.Attack.MainHand.Skill", Form.BaseSet, definition.Properties[4].Value, local),
                     ("base phys", default, null, null),

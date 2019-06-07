@@ -107,8 +107,9 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
                         SetProperty(_builderFactories.ActionBuilders.Block.AttackChance, value);
                         break;
                     case "critical_strike_chance":
-                        SetDamageRelatedProperty(slot, _builderFactories.ActionBuilders.CriticalStrike.BaseChance,
-                            value / 100D);
+                        _modifiers.AddLocal(
+                            _builderFactories.ActionBuilders.CriticalStrike.BaseChance.WithSkills.With(SlotToHand(slot)),
+                            Form.BaseSet, value / 100D);
                         break;
                     case "attack_time":
                         _modifiers.AddLocal(
