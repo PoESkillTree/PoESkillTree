@@ -186,6 +186,7 @@
     <Compile Include="Computation\ViewModels\ConfigurationStatsConnector.cs" />
     <Compile Include="Computation\ViewModels\ConfigurationStatsViewModel.cs" />
     <Compile Include="Computation\ViewModels\ExplicitlyRegisteredStatsViewModel.cs" />
+    <Compile Include="Computation\ViewModels\IndependentResultStatsViewModel.cs" />
     <Compile Include="Computation\ViewModels\ModifierNodeViewModelFactory.cs" />
     <Compile Include="Computation\ViewModels\GainOnActionStatsViewModel.cs" />
     <Compile Include="Computation\ViewModels\GainOnActionStatViewModel.cs" />
@@ -195,6 +196,9 @@
     <Compile Include="Computation\ViewModels\ModifierNodeViewModel.cs" />
     <Compile Include="Computation\Views\GainOnActionStatsView.xaml.cs">
       <DependentUpon>GainOnActionStatsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Computation\Views\IndependentResultStatsView.xaml.cs">
+      <DependentUpon>IndependentResultStatsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Computation\Views\ResultStatToolTip.xaml.cs">
       <DependentUpon>ResultStatToolTip.xaml</DependentUpon>
@@ -574,6 +578,10 @@
       <DependentUpon>DownloadItemsWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Computation\Views\GainOnActionStatsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Computation\Views\IndependentResultStatsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

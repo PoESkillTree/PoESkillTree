@@ -53,6 +53,15 @@
                 </TextBlock.Text>
             </TextBlock>
             <local:ResultStatsView DataContext="{Binding DefensiveStats}" />
+
+            <TextBlock FontSize="{DynamicResource SubHeaderFontSize}"
+                       Foreground="{DynamicResource AccentColorBrush}"
+                       Margin="0 5 0 0">
+                <TextBlock.Text>
+                    <l:Catalog Message="Independent Stats" />
+                </TextBlock.Text>
+            </TextBlock>
+            <local:IndependentResultStatsView DataContext="{Binding IndependentResultStats}" />
         </StackPanel>
 
         <StackPanel Grid.Column="2" Grid.Row="1">

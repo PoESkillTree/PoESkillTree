@@ -41,6 +41,7 @@ namespace PoESkillTree.Computation.ViewModels
         {
             OnPropertyChanged(nameof(NumericValue));
             OnPropertyChanged(nameof(BoolValue));
+            OnPropertyChanged(nameof(HasValue));
         }
 
         public double? NumericValue
@@ -54,5 +55,7 @@ namespace PoESkillTree.Computation.ViewModels
             get => Value.IsTrue();
             set => Value = (NodeValue?) value;
         }
+
+        public bool HasValue => Value.HasValue;
     }
 }
