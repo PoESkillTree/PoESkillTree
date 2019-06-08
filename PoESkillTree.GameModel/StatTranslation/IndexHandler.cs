@@ -29,8 +29,12 @@ namespace PoESkillTree.GameModel.StatTranslation
         DivideBy100AndNegate,
         [EnumMember(Value = "divide_by_one_hundred_2dp")]
         DivideBy100Precision2,
+        [EnumMember(Value = "divide_by_six")]
+        DivideBy6,
         [EnumMember(Value = "divide_by_ten_0dp")]
         DivideBy10Precision0,
+        [EnumMember(Value = "divide_by_twelve")]
+        DivideBy12,
         [EnumMember(Value = "divide_by_two_0dp")]
         DivideBy2Precision0,
         [EnumMember(Value = "divide_by_fifteen_0dp")]
@@ -41,6 +45,8 @@ namespace PoESkillTree.GameModel.StatTranslation
         MillisecondsToSeconds,
         [EnumMember(Value = "milliseconds_to_seconds_0dp")]
         MillisecondsToSecondsPrecision0,
+        [EnumMember(Value = "milliseconds_to_seconds_1dp")]
+        MillisecondsToSecondsPrecision1,
         [EnumMember(Value = "milliseconds_to_seconds_2dp")]
         MillisecondsToSecondsPrecision2,
         [EnumMember(Value = "milliseconds_to_seconds_2dp_if_required")]
@@ -84,12 +90,15 @@ namespace PoESkillTree.GameModel.StatTranslation
                 { IndexHandler.DivideBy100, d => d / 100 },
                 { IndexHandler.DivideBy100AndNegate, d => -d / 100 },
                 { IndexHandler.DivideBy100Precision2, d => Math.Round(d / 100, 2) },
+                { IndexHandler.DivideBy6, d => d / 6 },
                 { IndexHandler.DivideBy10Precision0, d => Math.Round(d / 10, 0) },
+                { IndexHandler.DivideBy12, d => d / 12 },
                 { IndexHandler.DivideBy2Precision0, d => Math.Round(d / 2, 0) },
                 { IndexHandler.DivideBy15Precision0, d => Math.Round(d / 15, 0) },
                 { IndexHandler.DivideBy20ThenDoublePrecision0, d => Math.Round(d / 20, 0) * 2 },
                 { IndexHandler.MillisecondsToSeconds, d => d / 1000 },
                 { IndexHandler.MillisecondsToSecondsPrecision0, d => Math.Round(d / 1000, 0) },
+                { IndexHandler.MillisecondsToSecondsPrecision1, d => Math.Round(d / 1000, 1) },
                 { IndexHandler.MillisecondsToSecondsPrecision2, d => Math.Round(d / 1000, 2) },
                 { IndexHandler.MillisecondsToSecondsPrecision2IfRequired, d => Math.Round(d / 1000, 2) },
                 { IndexHandler.MultiplicativeDamageModifier, d => d + 100 },

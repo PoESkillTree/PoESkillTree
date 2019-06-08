@@ -45,7 +45,6 @@ Metadata/Items/Amulets/Talismans/Talisman3_6_1
 Metadata/Items/Amulets/Talismans/Talisman3_6_2
 Metadata/Items/Amulets/Talismans/Talisman3_6_3
 Metadata/Items/Amulets/Talismans/Talisman3_7
-Metadata/Items/Armours/BodyArmours/BodyDex1
 Metadata/Items/Armours/BodyArmours/BodyDex17
 Metadata/Items/Armours/BodyArmours/BodyDexInt17
 Metadata/Items/Armours/Boots/BootsAtlas1

@@ -1861,6 +1861,12 @@
       <string>Energy Shield: 38</string>
     </Properties>
   </ItemBase>
+  <ItemBase ItemClass="Helmet" Tags="Armour Helmet NotForSale" Name="Golden Visage" Level="12" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Helmets/HelmetDemigods1">
+    <Implicit>
+      <string>AllResistancesImplictHelmetDemigods1</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
   <ItemBase ItemClass="Helmet" Tags="Armour Helmet DexArmour" Name="Leather Cap" Level="3" Strength="0" Dexterity="13" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Helmets/HelmetDex1">
     <Implicit />
     <Properties>
@@ -3684,6 +3690,10 @@
     <Implicit />
     <Properties />
   </ItemBase>
+  <ItemBase ItemClass="Jewel" Tags="Jewel StrJewel DexJewel IntJewel NotForSale" Name="Timeless Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Jewels/JewelTimeless">
+    <Implicit />
+    <Properties />
+  </ItemBase>
   <ItemBase ItemClass="Quiver" Tags="Quiver" Name="Cured Quiver" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Quivers/Quiver1">
     <Implicit>
       <string>AddedFireDamageImplicitQuiver1</string>
@@ -3896,7 +3906,7 @@
       <string>Physical Damage: 4-11</string>
       <string>Critical Strike Chance: 6.2%</string>
       <string>Attacks per Second: 1.6</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw" Name="Gouger" Level="40" Strength="0" Dexterity="70" Intelligence="70" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw10">
@@ -3907,7 +3917,7 @@
       <string>Physical Damage: 15-51</string>
       <string>Critical Strike Chance: 6.3%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw" Name="Tiger's Paw" Level="43" Strength="0" Dexterity="88" Intelligence="61" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw11">
@@ -3918,7 +3928,7 @@
       <string>Physical Damage: 23-43</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.6</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw" Name="Gut Ripper" Level="46" Strength="0" Dexterity="80" Intelligence="80" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw12">
@@ -3929,7 +3939,7 @@
       <string>Physical Damage: 20-53</string>
       <string>Critical Strike Chance: 6.3%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw" Name="Prehistoric Claw" Level="49" Strength="0" Dexterity="69" Intelligence="100" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw13">
@@ -3940,7 +3950,7 @@
       <string>Physical Damage: 26-68</string>
       <string>Critical Strike Chance: 6.5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw" Name="Noble Claw" Level="52" Strength="0" Dexterity="105" Intelligence="73" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw14">
@@ -3951,7 +3961,7 @@
       <string>Physical Damage: 21-56</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.6</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw" Name="Eagle Claw" Level="55" Strength="0" Dexterity="94" Intelligence="94" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw15">
@@ -3962,7 +3972,7 @@
       <string>Physical Damage: 17-69</string>
       <string>Critical Strike Chance: 6.3%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw" Name="Great White Claw" Level="58" Strength="0" Dexterity="81" Intelligence="117" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw16">
@@ -3973,7 +3983,7 @@
       <string>Physical Damage: 30-78</string>
       <string>Critical Strike Chance: 6.5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw" Name="Throat Stabber" Level="60" Strength="0" Dexterity="113" Intelligence="113" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw17">
@@ -3984,7 +3994,7 @@
       <string>Physical Damage: 21-73</string>
       <string>Critical Strike Chance: 6.3%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw" Name="Hellion's Paw" Level="62" Strength="0" Dexterity="131" Intelligence="95" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw18">
@@ -3995,7 +4005,7 @@
       <string>Physical Damage: 29-55</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.6</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw" Name="Eye Gouger" Level="64" Strength="0" Dexterity="113" Intelligence="113" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw19">
@@ -4006,7 +4016,7 @@
       <string>Physical Damage: 26-68</string>
       <string>Critical Strike Chance: 6.3%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw" Name="Sharktooth Claw" Level="7" Strength="0" Dexterity="14" Intelligence="20" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw2">
@@ -4014,10 +4024,10 @@
       <string>LifeGainPerTargetImplicit2Claw2</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 7-18</string>
+      <string>Physical Damage: 6-17</string>
       <string>Critical Strike Chance: 6.5%</string>
-      <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 9</string>
+      <string>Attacks per Second: 1.5</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw" Name="Vaal Claw" Level="66" Strength="0" Dexterity="95" Intelligence="131" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw20">
@@ -4028,7 +4038,7 @@
       <string>Physical Damage: 29-76</string>
       <string>Critical Strike Chance: 6.5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw" Name="Imperial Claw" Level="68" Strength="0" Dexterity="131" Intelligence="95" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw21">
@@ -4039,7 +4049,7 @@
       <string>Physical Damage: 25-65</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.6</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw" Name="Terror Claw" Level="70" Strength="0" Dexterity="113" Intelligence="113" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw22">
@@ -4050,7 +4060,7 @@
       <string>Physical Damage: 18-71</string>
       <string>Critical Strike Chance: 6.3%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw" Name="Awl" Level="12" Strength="0" Dexterity="25" Intelligence="25" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw3">
@@ -4058,10 +4068,10 @@
       <string>LifeGainPerTargetImplicit2Claw3</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 7-24</string>
+      <string>Physical Damage: 7-23</string>
       <string>Critical Strike Chance: 6.3%</string>
-      <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 9</string>
+      <string>Attacks per Second: 1.55</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw" Name="Cat's Paw" Level="17" Strength="0" Dexterity="39" Intelligence="27" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw4">
@@ -4072,7 +4082,7 @@
       <string>Physical Damage: 12-22</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.6</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw" Name="Blinder" Level="22" Strength="0" Dexterity="41" Intelligence="41" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw5">
@@ -4080,10 +4090,10 @@
       <string>LifeGainPerTargetImplicit2Claw4</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 12-32</string>
+      <string>Physical Damage: 12-31</string>
       <string>Critical Strike Chance: 6.3%</string>
-      <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 9</string>
+      <string>Attacks per Second: 1.55</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw" Name="Timeworn Claw" Level="26" Strength="0" Dexterity="39" Intelligence="56" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw6">
@@ -4094,7 +4104,7 @@
       <string>Physical Damage: 16-43</string>
       <string>Critical Strike Chance: 6.5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw" Name="Sparkling Claw" Level="30" Strength="0" Dexterity="64" Intelligence="44" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw7">
@@ -4105,7 +4115,7 @@
       <string>Physical Damage: 14-38</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.6</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw" Name="Fright Claw" Level="34" Strength="0" Dexterity="61" Intelligence="61" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw8">
@@ -4116,7 +4126,7 @@
       <string>Physical Damage: 12-46</string>
       <string>Critical Strike Chance: 6.3%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw" Name="Thresher Claw" Level="37" Strength="0" Dexterity="53" Intelligence="77" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw9">
@@ -4127,7 +4137,7 @@
       <string>Physical Damage: 20-53</string>
       <string>Critical Strike Chance: 6.5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw NotForSale" Name="Double Claw" Level="36" Strength="0" Dexterity="67" Intelligence="67" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/ClawM1">
@@ -4138,7 +4148,7 @@
       <string>Physical Damage: 15-44</string>
       <string>Critical Strike Chance: 6.3%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw NotForSale" Name="Twin Claw" Level="57" Strength="0" Dexterity="103" Intelligence="103" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/ClawM2">
@@ -4149,7 +4159,7 @@
       <string>Physical Damage: 21-64</string>
       <string>Critical Strike Chance: 6.3%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw NotForSale" Name="Gemini Claw" Level="72" Strength="0" Dexterity="121" Intelligence="121" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/ClawM3">
@@ -4160,7 +4170,7 @@
       <string>Physical Damage: 23-68</string>
       <string>Critical Strike Chance: 6.3%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger" Name="Glass Shank" Level="1" Strength="0" Dexterity="9" Intelligence="6" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger1">
@@ -4171,7 +4181,7 @@
       <string>Physical Damage: 6-10</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 8</string>
+      <string>Weapon Range: 10</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger" Name="Butcher Knife" Level="38" Strength="0" Dexterity="55" Intelligence="79" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger10">
@@ -4179,10 +4189,10 @@
       <string>CriticalStrikeChanceImplicitDaggerNew1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 7-59</string>
+      <string>Physical Damage: 7-62</string>
       <string>Critical Strike Chance: 6.3%</string>
       <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 8</string>
+      <string>Weapon Range: 10</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger" Name="Poignard" Level="41" Strength="0" Dexterity="72" Intelligence="72" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger11">
@@ -4193,7 +4203,7 @@
       <string>Physical Damage: 13-52</string>
       <string>Critical Strike Chance: 6.1%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 8</string>
+      <string>Weapon Range: 10</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger" Name="Boot Blade" Level="44" Strength="0" Dexterity="63" Intelligence="90" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger12">
@@ -4204,7 +4214,7 @@
       <string>Physical Damage: 15-59</string>
       <string>Critical Strike Chance: 6.3%</string>
       <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 8</string>
+      <string>Weapon Range: 10</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger" Name="Golden Kris" Level="47" Strength="0" Dexterity="51" Intelligence="110" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger13">
@@ -4215,7 +4225,7 @@
       <string>Physical Damage: 19-75</string>
       <string>Critical Strike Chance: 6.5%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 8</string>
+      <string>Weapon Range: 10</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger" Name="Royal Skean" Level="50" Strength="0" Dexterity="71" Intelligence="102" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger14">
@@ -4226,7 +4236,7 @@
       <string>Physical Damage: 16-64</string>
       <string>Critical Strike Chance: 6.3%</string>
       <string>Attacks per Second: 1.45</string>
-      <string>Weapon Range: 8</string>
+      <string>Weapon Range: 10</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger" Name="Fiend Dagger" Level="53" Strength="0" Dexterity="58" Intelligence="123" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger15">
@@ -4237,7 +4247,7 @@
       <string>Physical Damage: 22-87</string>
       <string>Critical Strike Chance: 6.5%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 8</string>
+      <string>Weapon Range: 10</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger" Name="Gutting Knife" Level="56" Strength="0" Dexterity="113" Intelligence="78" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger16">
@@ -4245,10 +4255,10 @@
       <string>CriticalStrikeChanceImplicitDaggerNew1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 24-97</string>
-      <string>Critical Strike Chance: 6%</string>
-      <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 8</string>
+      <string>Physical Damage: 19-76</string>
+      <string>Critical Strike Chance: 6.5%</string>
+      <string>Attacks per Second: 1.4</string>
+      <string>Weapon Range: 10</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger" Name="Slaughter Knife" Level="58" Strength="0" Dexterity="81" Intelligence="117" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger17">
@@ -4259,7 +4269,7 @@
       <string>Physical Damage: 10-86</string>
       <string>Critical Strike Chance: 6.3%</string>
       <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 8</string>
+      <string>Weapon Range: 10</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger" Name="Ambusher" Level="60" Strength="0" Dexterity="113" Intelligence="113" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger18">
@@ -4270,7 +4280,7 @@
       <string>Physical Damage: 19-74</string>
       <string>Critical Strike Chance: 6.1%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 8</string>
+      <string>Weapon Range: 10</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger" Name="Ezomyte Dagger" Level="62" Strength="0" Dexterity="95" Intelligence="131" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger19">
@@ -4281,7 +4291,7 @@
       <string>Physical Damage: 20-79</string>
       <string>Critical Strike Chance: 6.3%</string>
       <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 8</string>
+      <string>Weapon Range: 10</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger" Name="Skinning Knife" Level="5" Strength="0" Dexterity="16" Intelligence="11" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger2">
@@ -4289,10 +4299,10 @@
       <string>CriticalStrikeChanceImplicitDaggerNew1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 5-19</string>
+      <string>Physical Damage: 4-17</string>
       <string>Critical Strike Chance: 6%</string>
-      <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 8</string>
+      <string>Attacks per Second: 1.45</string>
+      <string>Weapon Range: 10</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger" Name="Platinum Kris" Level="64" Strength="0" Dexterity="76" Intelligence="149" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger20">
@@ -4303,7 +4313,7 @@
       <string>Physical Damage: 24-95</string>
       <string>Critical Strike Chance: 6.5%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 8</string>
+      <string>Weapon Range: 10</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger" Name="Imperial Skean" Level="66" Strength="0" Dexterity="95" Intelligence="131" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger21">
@@ -4311,10 +4321,10 @@
       <string>CriticalStrikeChanceImplicitDaggerNew1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 19-76</string>
+      <string>Physical Damage: 18-73</string>
       <string>Critical Strike Chance: 6.3%</string>
-      <string>Attacks per Second: 1.45</string>
-      <string>Weapon Range: 8</string>
+      <string>Attacks per Second: 1.5</string>
+      <string>Weapon Range: 10</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger" Name="Demon Dagger" Level="68" Strength="0" Dexterity="76" Intelligence="149" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger22">
@@ -4325,7 +4335,7 @@
       <string>Physical Damage: 24-97</string>
       <string>Critical Strike Chance: 6.5%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 8</string>
+      <string>Weapon Range: 10</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger" Name="Carving Knife" Level="10" Strength="0" Dexterity="18" Intelligence="26" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger3">
@@ -4333,10 +4343,10 @@
       <string>CriticalStrikeChanceImplicitDaggerNew1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 3-27</string>
+      <string>Physical Damage: 3-26</string>
       <string>Critical Strike Chance: 6.3%</string>
-      <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 8</string>
+      <string>Attacks per Second: 1.45</string>
+      <string>Weapon Range: 10</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger" Name="Stiletto" Level="15" Strength="0" Dexterity="30" Intelligence="30" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger4">
@@ -4347,7 +4357,7 @@
       <string>Physical Damage: 7-27</string>
       <string>Critical Strike Chance: 6.1%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 8</string>
+      <string>Weapon Range: 10</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger" Name="Boot Knife" Level="20" Strength="0" Dexterity="31" Intelligence="45" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger5">
@@ -4355,10 +4365,10 @@
       <string>CriticalStrikeChanceImplicitDaggerNew1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 9-35</string>
+      <string>Physical Damage: 8-34</string>
       <string>Critical Strike Chance: 6.3%</string>
-      <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 8</string>
+      <string>Attacks per Second: 1.45</string>
+      <string>Weapon Range: 10</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger" Name="Copper Kris" Level="24" Strength="0" Dexterity="28" Intelligence="60" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger6">
@@ -4366,10 +4376,10 @@
       <string>CriticalStrikeChanceImplicitDaggerNew3</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 12-46</string>
+      <string>Physical Damage: 10-41</string>
       <string>Critical Strike Chance: 6.5%</string>
-      <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 8</string>
+      <string>Attacks per Second: 1.3</string>
+      <string>Weapon Range: 10</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger" Name="Skean" Level="28" Strength="0" Dexterity="42" Intelligence="60" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger7">
@@ -4380,7 +4390,7 @@
       <string>Physical Damage: 11-43</string>
       <string>Critical Strike Chance: 6.3%</string>
       <string>Attacks per Second: 1.45</string>
-      <string>Weapon Range: 8</string>
+      <string>Weapon Range: 10</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger" Name="Imp Dagger" Level="32" Strength="0" Dexterity="36" Intelligence="78" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger8">
@@ -4391,18 +4401,18 @@
       <string>Physical Damage: 15-59</string>
       <string>Critical Strike Chance: 6.5%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 8</string>
+      <string>Weapon Range: 10</string>
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger" Name="Flaying Knife" Level="35" Strength="0" Dexterity="73" Intelligence="51" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger9">
+  <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger" Name="Flaying Knife" Level="30" Strength="0" Dexterity="64" Intelligence="44" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger9">
     <Implicit>
       <string>CriticalStrikeChanceImplicitDaggerNew1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 16-64</string>
+      <string>Physical Damage: 11-45</string>
       <string>Critical Strike Chance: 6%</string>
-      <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 8</string>
+      <string>Attacks per Second: 1.4</string>
+      <string>Weapon Range: 10</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger NotForSale" Name="Prong Dagger" Level="36" Strength="0" Dexterity="55" Intelligence="77" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/DaggerM1">
@@ -4410,21 +4420,21 @@
       <string>BlockPercentMarakethDaggerImplicit1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 14-57</string>
+      <string>Physical Damage: 14-54</string>
       <string>Critical Strike Chance: 6.2%</string>
-      <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 8</string>
+      <string>Attacks per Second: 1.35</string>
+      <string>Weapon Range: 10</string>
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger NotForSale" Name="Trisula" Level="55" Strength="0" Dexterity="89" Intelligence="106" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/DaggerM2">
+  <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger NotForSale" Name="Trisula" Level="51" Strength="0" Dexterity="83" Intelligence="99" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/DaggerM2">
     <Implicit>
       <string>BlockPercentMarakethDaggerImplicit1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 21-83</string>
-      <string>Critical Strike Chance: 6.2%</string>
-      <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 8</string>
+      <string>Physical Damage: 19-74</string>
+      <string>Critical Strike Chance: 6.5%</string>
+      <string>Attacks per Second: 1.35</string>
+      <string>Weapon Range: 10</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger NotForSale" Name="Sai" Level="70" Strength="0" Dexterity="121" Intelligence="121" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/DaggerM3">
@@ -4432,10 +4442,10 @@
       <string>BlockPercentMarakethDaggerImplicit2_</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 23-90</string>
+      <string>Physical Damage: 22-88</string>
       <string>Critical Strike Chance: 6.2%</string>
-      <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 8</string>
+      <string>Attacks per Second: 1.35</string>
+      <string>Weapon Range: 10</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe" Name="Rusted Hatchet" Level="2" Strength="12" Dexterity="6" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe1">
@@ -4444,7 +4454,7 @@
       <string>Physical Damage: 6-11</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe" Name="Tomahawk" Level="39" Strength="81" Dexterity="56" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe10">
@@ -4453,7 +4463,7 @@
       <string>Physical Damage: 25-46</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe" Name="Wrist Chopper" Level="42" Strength="112" Dexterity="32" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe11">
@@ -4462,7 +4472,7 @@
       <string>Physical Damage: 26-79</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe" Name="War Axe" Level="45" Strength="106" Dexterity="49" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe12">
@@ -4471,7 +4481,7 @@
       <string>Physical Damage: 35-65</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe" Name="Chest Splitter" Level="48" Strength="105" Dexterity="60" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe13">
@@ -4480,7 +4490,7 @@
       <string>Physical Damage: 24-71</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe" Name="Ceremonial Axe" Level="51" Strength="134" Dexterity="39" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe14">
@@ -4489,7 +4499,7 @@
       <string>Physical Damage: 45-83</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe" Name="Wraith Axe" Level="54" Strength="134" Dexterity="59" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe15">
@@ -4498,7 +4508,7 @@
       <string>Physical Damage: 45-75</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe" Name="Karui Axe" Level="57" Strength="132" Dexterity="62" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe16">
@@ -4507,7 +4517,7 @@
       <string>Physical Damage: 49-77</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe" Name="Siege Axe" Level="59" Strength="119" Dexterity="82" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe17">
@@ -4516,7 +4526,7 @@
       <string>Physical Damage: 38-70</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe" Name="Reaver Axe" Level="61" Strength="167" Dexterity="57" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe18">
@@ -4525,7 +4535,7 @@
       <string>Physical Damage: 38-114</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe" Name="Butcher Axe" Level="63" Strength="149" Dexterity="76" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe19">
@@ -4534,16 +4544,16 @@
       <string>Physical Damage: 47-87</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe" Name="Jade Hatchet" Level="6" Strength="21" Dexterity="10" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe2">
     <Implicit />
     <Properties>
-      <string>Physical Damage: 10-16</string>
+      <string>Physical Damage: 10-15</string>
       <string>Critical Strike Chance: 5%</string>
-      <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 9</string>
+      <string>Attacks per Second: 1.45</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe" Name="Vaal Hatchet" Level="65" Strength="140" Dexterity="86" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe20">
@@ -4552,7 +4562,7 @@
       <string>Physical Damage: 30-90</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe" Name="Royal Axe" Level="67" Strength="167" Dexterity="57" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe21">
@@ -4561,7 +4571,7 @@
       <string>Physical Damage: 54-100</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe" Name="Infernal Axe" Level="69" Strength="158" Dexterity="76" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe22">
@@ -4570,7 +4580,7 @@
       <string>Physical Damage: 51-85</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe" Name="Boarding Axe" Level="11" Strength="28" Dexterity="19" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe3">
@@ -4579,25 +4589,25 @@
       <string>Physical Damage: 11-21</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe" Name="Cleaver" Level="16" Strength="48" Dexterity="14" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe4">
     <Implicit />
     <Properties>
-      <string>Physical Damage: 13-39</string>
+      <string>Physical Damage: 12-35</string>
       <string>Critical Strike Chance: 5%</string>
-      <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 9</string>
+      <string>Attacks per Second: 1.3</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe" Name="Broad Axe" Level="21" Strength="54" Dexterity="25" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe5">
     <Implicit />
     <Properties>
-      <string>Physical Damage: 20-36</string>
+      <string>Physical Damage: 19-34</string>
       <string>Critical Strike Chance: 5%</string>
-      <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Attacks per Second: 1.35</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe" Name="Arming Axe" Level="25" Strength="58" Dexterity="33" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe6">
@@ -4606,7 +4616,7 @@
       <string>Physical Damage: 14-42</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe" Name="Decorative Axe" Level="29" Strength="80" Dexterity="23" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe7">
@@ -4615,7 +4625,7 @@
       <string>Physical Damage: 27-50</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe" Name="Spectral Axe" Level="33" Strength="85" Dexterity="37" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe8">
@@ -4624,7 +4634,7 @@
       <string>Physical Damage: 29-48</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe" Name="Jasper Axe" Level="36" Strength="86" Dexterity="40" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe9">
@@ -4633,7 +4643,7 @@
       <string>Physical Damage: 32-50</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe NotForSale" Name="Etched Hatchet" Level="35" Strength="93" Dexterity="43" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxeM1">
@@ -4644,7 +4654,7 @@
       <string>Physical Damage: 26-46</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.35</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe NotForSale" Name="Engraved Hatchet" Level="56" Strength="143" Dexterity="66" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxeM2">
@@ -4655,7 +4665,7 @@
       <string>Physical Damage: 40-71</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.35</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe NotForSale" Name="Runic Hatchet" Level="71" Strength="163" Dexterity="82" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxeM3">
@@ -4666,7 +4676,7 @@
       <string>Physical Damage: 44-79</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.35</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace" Name="Driftwood Club" Level="1" Strength="14" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace1">
@@ -4677,7 +4687,7 @@
       <string>Physical Damage: 6-8</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.45</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace" Name="Barbed Club" Level="38" Strength="125" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace10">
@@ -4688,7 +4698,7 @@
       <string>Physical Damage: 33-42</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace" Name="Rock Breaker" Level="41" Strength="134" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace11">
@@ -4699,7 +4709,7 @@
       <string>Physical Damage: 37-69</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.15</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace" Name="Battle Hammer" Level="44" Strength="143" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace12">
@@ -4710,7 +4720,7 @@
       <string>Physical Damage: 25-59</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace" Name="Flanged Mace" Level="47" Strength="152" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace13">
@@ -4721,7 +4731,7 @@
       <string>Physical Damage: 38-63</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace" Name="Ornate Mace" Level="50" Strength="161" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace14">
@@ -4732,7 +4742,7 @@
       <string>Physical Damage: 53-67</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace" Name="Phantom Mace" Level="53" Strength="170" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace15">
@@ -4743,7 +4753,7 @@
       <string>Physical Damage: 33-69</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace" Name="Ancestral Club" Level="56" Strength="179" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace16">
@@ -4754,7 +4764,7 @@
       <string>Physical Damage: 48-80</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace" Name="Tenderizer" Level="58" Strength="185" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace17">
@@ -4765,7 +4775,7 @@
       <string>Physical Damage: 49-62</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace" Name="Gavel" Level="60" Strength="212" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace18">
@@ -4776,7 +4786,7 @@
       <string>Physical Damage: 54-101</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.15</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace" Name="Legion Hammer" Level="62" Strength="212" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace19">
@@ -4787,7 +4797,7 @@
       <string>Physical Damage: 35-81</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace" Name="Tribal Club" Level="5" Strength="26" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace2">
@@ -4795,10 +4805,10 @@
       <string>StunThresholdReductionImplicitMace1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 9-14</string>
+      <string>Physical Damage: 8-13</string>
       <string>Critical Strike Chance: 5%</string>
-      <string>Attacks per Second: 1.35</string>
-      <string>Weapon Range: 9</string>
+      <string>Attacks per Second: 1.4</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace" Name="Pernarch" Level="64" Strength="212" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace20">
@@ -4809,7 +4819,7 @@
       <string>Physical Damage: 49-82</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace" Name="Auric Mace" Level="66" Strength="212" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace21">
@@ -4820,7 +4830,7 @@
       <string>Physical Damage: 65-82</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace" Name="Nightmare Mace" Level="68" Strength="212" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace22">
@@ -4831,7 +4841,7 @@
       <string>Physical Damage: 38-80</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace" Name="Spiked Club" Level="10" Strength="41" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace3">
@@ -4839,10 +4849,10 @@
       <string>StunThresholdReductionImplicitMace1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 13-17</string>
+      <string>Physical Damage: 13-16</string>
       <string>Critical Strike Chance: 5%</string>
-      <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 9</string>
+      <string>Attacks per Second: 1.45</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace" Name="Stone Hammer" Level="15" Strength="56" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace4">
@@ -4850,10 +4860,10 @@
       <string>StunThresholdReductionImplicitMace2</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 17-32</string>
+      <string>Physical Damage: 15-27</string>
       <string>Critical Strike Chance: 5%</string>
-      <string>Attacks per Second: 1.15</string>
-      <string>Weapon Range: 9</string>
+      <string>Attacks per Second: 1.3</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace" Name="War Hammer" Level="20" Strength="71" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace5">
@@ -4861,10 +4871,10 @@
       <string>StunThresholdReductionImplicitMace1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 14-32</string>
+      <string>Physical Damage: 13-31</string>
       <string>Critical Strike Chance: 5%</string>
-      <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 9</string>
+      <string>Attacks per Second: 1.45</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace" Name="Bladed Mace" Level="24" Strength="83" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace6">
@@ -4872,10 +4882,10 @@
       <string>StunThresholdReductionImplicitMace1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 22-36</string>
+      <string>Physical Damage: 19-32</string>
       <string>Critical Strike Chance: 5%</string>
-      <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Attacks per Second: 1.4</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace" Name="Ceremonial Mace" Level="28" Strength="95" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace7">
@@ -4886,7 +4896,7 @@
       <string>Physical Damage: 32-40</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace" Name="Dream Mace" Level="32" Strength="107" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace8">
@@ -4897,7 +4907,7 @@
       <string>Physical Damage: 21-43</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace" Name="Petrified Club" Level="35" Strength="116" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace9">
@@ -4908,7 +4918,7 @@
       <string>Physical Damage: 31-51</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace NotForSale" Name="Wyrm Mace" Level="34" Strength="118" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMaceM1">
@@ -4919,7 +4929,7 @@
       <string>Physical Damage: 28-42</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.35</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace NotForSale" Name="Dragon Mace" Level="55" Strength="184" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMaceM2">
@@ -4930,7 +4940,7 @@
       <string>Physical Damage: 44-66</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.35</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace NotForSale" Name="Behemoth Mace" Level="70" Strength="220" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMaceM3">
@@ -4941,7 +4951,7 @@
       <string>Physical Damage: 49-74</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.35</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre" Name="Driftwood Sceptre" Level="1" Strength="8" Dexterity="0" Intelligence="8" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/Sceptre1">
@@ -4949,10 +4959,10 @@
       <string>ElementalDamagePercentImplicitSceptreNew1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 6-9</string>
+      <string>Physical Damage: 5-8</string>
       <string>Critical Strike Chance: 6%</string>
-      <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 9</string>
+      <string>Attacks per Second: 1.55</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre" Name="Sekhem" Level="38" Strength="67" Dexterity="0" Intelligence="67" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/Sceptre10">
@@ -4963,7 +4973,7 @@
       <string>Physical Damage: 30-55</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre" Name="Crystal Sceptre" Level="41" Strength="59" Dexterity="0" Intelligence="85" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/Sceptre11">
@@ -4974,7 +4984,7 @@
       <string>Physical Damage: 35-52</string>
       <string>Critical Strike Chance: 6.5%</string>
       <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre" Name="Lead Sceptre" Level="44" Strength="77" Dexterity="0" Intelligence="77" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/Sceptre12">
@@ -4985,7 +4995,7 @@
       <string>Physical Damage: 38-57</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre" Name="Blood Sceptre" Level="47" Strength="81" Dexterity="0" Intelligence="81" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/Sceptre13">
@@ -4996,7 +5006,7 @@
       <string>Physical Damage: 30-55</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre" Name="Royal Sceptre" Level="50" Strength="86" Dexterity="0" Intelligence="86" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/Sceptre14">
@@ -5007,7 +5017,7 @@
       <string>Physical Damage: 34-80</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre" Name="Abyssal Sceptre" Level="53" Strength="83" Dexterity="0" Intelligence="99" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/Sceptre15">
@@ -5018,7 +5028,7 @@
       <string>Physical Damage: 45-67</string>
       <string>Critical Strike Chance: 6.2%</string>
       <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre" Name="Karui Sceptre" Level="56" Strength="96" Dexterity="0" Intelligence="96" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/Sceptre16">
@@ -5029,7 +5039,7 @@
       <string>Physical Damage: 37-55</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre" Name="Tyrant's Sekhem" Level="58" Strength="99" Dexterity="0" Intelligence="99" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/Sceptre17">
@@ -5040,7 +5050,7 @@
       <string>Physical Damage: 43-80</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre" Name="Opal Sceptre" Level="60" Strength="95" Dexterity="0" Intelligence="131" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/Sceptre18">
@@ -5051,7 +5061,7 @@
       <string>Physical Damage: 49-73</string>
       <string>Critical Strike Chance: 6.5%</string>
       <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre" Name="Platinum Sceptre" Level="62" Strength="113" Dexterity="0" Intelligence="113" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/Sceptre19">
@@ -5062,7 +5072,7 @@
       <string>Physical Damage: 51-76</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre" Name="Darkwood Sceptre" Level="5" Strength="14" Dexterity="0" Intelligence="14" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/Sceptre2">
@@ -5073,7 +5083,7 @@
       <string>Physical Damage: 8-12</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre" Name="Vaal Sceptre" Level="64" Strength="113" Dexterity="0" Intelligence="113" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/Sceptre20">
@@ -5084,7 +5094,7 @@
       <string>Physical Damage: 37-70</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre" Name="Carnal Sceptre" Level="66" Strength="113" Dexterity="0" Intelligence="113" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/Sceptre21">
@@ -5095,7 +5105,7 @@
       <string>Physical Damage: 41-95</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre" Name="Void Sceptre" Level="68" Strength="104" Dexterity="0" Intelligence="122" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/Sceptre22">
@@ -5106,7 +5116,7 @@
       <string>Physical Damage: 50-76</string>
       <string>Critical Strike Chance: 6.2%</string>
       <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre" Name="Bronze Sceptre" Level="10" Strength="22" Dexterity="0" Intelligence="22" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/Sceptre3">
@@ -5114,10 +5124,10 @@
       <string>ElementalDamagePercentImplicitSceptreNew3</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 12-23</string>
+      <string>Physical Damage: 10-19</string>
       <string>Critical Strike Chance: 6%</string>
-      <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 9</string>
+      <string>Attacks per Second: 1.4</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre" Name="Quartz Sceptre" Level="15" Strength="25" Dexterity="0" Intelligence="35" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/Sceptre4">
@@ -5125,10 +5135,10 @@
       <string>ElementalDamagePercentImplicitSceptreNew4</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 17-26</string>
+      <string>Physical Damage: 14-22</string>
       <string>Critical Strike Chance: 6.5%</string>
-      <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 9</string>
+      <string>Attacks per Second: 1.4</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre" Name="Iron Sceptre" Level="20" Strength="38" Dexterity="0" Intelligence="38" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/Sceptre5">
@@ -5136,10 +5146,10 @@
       <string>ElementalDamagePercentImplicitSceptreNew5</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 21-32</string>
+      <string>Physical Damage: 18-27</string>
       <string>Critical Strike Chance: 6%</string>
-      <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 9</string>
+      <string>Attacks per Second: 1.4</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre" Name="Ochre Sceptre" Level="24" Strength="44" Dexterity="0" Intelligence="44" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/Sceptre6">
@@ -5147,10 +5157,10 @@
       <string>ElementalDamagePercentImplicitSceptreNew6</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 17-32</string>
+      <string>Physical Damage: 17-31</string>
       <string>Critical Strike Chance: 6%</string>
-      <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 9</string>
+      <string>Attacks per Second: 1.45</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre" Name="Ritual Sceptre" Level="28" Strength="51" Dexterity="0" Intelligence="51" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/Sceptre7">
@@ -5161,7 +5171,7 @@
       <string>Physical Damage: 21-50</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre" Name="Shadow Sceptre" Level="32" Strength="52" Dexterity="0" Intelligence="62" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/Sceptre8">
@@ -5172,7 +5182,7 @@
       <string>Physical Damage: 29-44</string>
       <string>Critical Strike Chance: 6.2%</string>
       <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre" Name="Grinning Fetish" Level="35" Strength="62" Dexterity="0" Intelligence="62" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/Sceptre9">
@@ -5183,7 +5193,7 @@
       <string>Physical Damage: 24-36</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre NotForSale" Name="Horned Sceptre" Level="36" Strength="66" Dexterity="0" Intelligence="66" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/SceptreM1">
@@ -5194,7 +5204,7 @@
       <string>Physical Damage: 27-50</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre NotForSale" Name="Stag Sceptre" Level="55" Strength="98" Dexterity="0" Intelligence="98" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/SceptreM2">
@@ -5205,7 +5215,7 @@
       <string>Physical Damage: 39-72</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre NotForSale" Name="Sambar Sceptre" Level="70" Strength="121" Dexterity="0" Intelligence="113" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/SceptreM3">
@@ -5216,7 +5226,7 @@
       <string>Physical Damage: 42-78</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword" Name="Rusted Sword" Level="1" Strength="8" Dexterity="8" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword1">
@@ -5224,10 +5234,10 @@
       <string>AccuracyPercentImplicitSword1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 4-10</string>
+      <string>Physical Damage: 4-9</string>
       <string>Critical Strike Chance: 5%</string>
-      <string>Attacks per Second: 1.45</string>
-      <string>Weapon Range: 9</string>
+      <string>Attacks per Second: 1.55</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword" Name="Cutlass" Level="38" Strength="55" Dexterity="79" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword10">
@@ -5238,7 +5248,7 @@
       <string>Physical Damage: 13-53</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.55</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword" Name="Baselard" Level="41" Strength="72" Dexterity="72" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword11">
@@ -5249,7 +5259,7 @@
       <string>Physical Damage: 37-53</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword" Name="Battle Sword" Level="44" Strength="83" Dexterity="70" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword12">
@@ -5260,7 +5270,7 @@
       <string>Physical Damage: 38-70</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword" Name="Elder Sword" Level="47" Strength="81" Dexterity="81" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword13">
@@ -5271,7 +5281,7 @@
       <string>Physical Damage: 36-66</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword" Name="Graceful Sword" Level="50" Strength="78" Dexterity="94" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword14">
@@ -5282,7 +5292,7 @@
       <string>Physical Damage: 34-55</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword" Name="Twilight Blade" Level="53" Strength="91" Dexterity="91" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword15">
@@ -5293,7 +5303,7 @@
       <string>Physical Damage: 30-86</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword" Name="Gemstone Sword" Level="56" Strength="96" Dexterity="96" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword16">
@@ -5304,7 +5314,7 @@
       <string>Physical Damage: 39-83</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword" Name="Corsair Sword" Level="58" Strength="81" Dexterity="117" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword17">
@@ -5315,7 +5325,7 @@
       <string>Physical Damage: 20-80</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.55</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword" Name="Gladius" Level="60" Strength="113" Dexterity="113" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword18">
@@ -5326,7 +5336,7 @@
       <string>Physical Damage: 54-78</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword" Name="Legion Sword" Level="62" Strength="122" Dexterity="104" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword19">
@@ -5337,7 +5347,7 @@
       <string>Physical Damage: 53-98</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword" Name="Copper Sword" Level="5" Strength="14" Dexterity="14" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword2">
@@ -5345,10 +5355,10 @@
       <string>IncreasedAccuracySwordImplicit1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 7-15</string>
+      <string>Physical Damage: 6-14</string>
       <string>Critical Strike Chance: 5%</string>
-      <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 9</string>
+      <string>Attacks per Second: 1.5</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword" Name="Vaal Blade" Level="64" Strength="113" Dexterity="113" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword20">
@@ -5359,7 +5369,7 @@
       <string>Physical Damage: 46-86</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword" Name="Eternal Sword" Level="66" Strength="104" Dexterity="122" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword21">
@@ -5370,7 +5380,7 @@
       <string>Physical Damage: 41-68</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword" Name="Midnight Blade" Level="68" Strength="113" Dexterity="113" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword22">
@@ -5381,7 +5391,7 @@
       <string>Physical Damage: 35-99</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword" Name="Sabre" Level="10" Strength="18" Dexterity="26" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword3">
@@ -5392,7 +5402,7 @@
       <string>Physical Damage: 5-22</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.55</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword" Name="Broad Sword" Level="15" Strength="30" Dexterity="30" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword4">
@@ -5400,10 +5410,10 @@
       <string>AccuracyPercentImplicitSword1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 17-25</string>
+      <string>Physical Damage: 15-21</string>
       <string>Critical Strike Chance: 5%</string>
-      <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Attacks per Second: 1.45</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword" Name="War Sword" Level="20" Strength="41" Dexterity="35" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword5">
@@ -5411,10 +5421,10 @@
       <string>AccuracyPercentImplicitSword1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 20-37</string>
+      <string>Physical Damage: 16-30</string>
       <string>Critical Strike Chance: 5%</string>
-      <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 9</string>
+      <string>Attacks per Second: 1.4</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword" Name="Ancient Sword" Level="24" Strength="44" Dexterity="44" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword6">
@@ -5422,10 +5432,10 @@
       <string>IncreasedAccuracySwordImplicit2</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 20-38</string>
+      <string>Physical Damage: 18-33</string>
       <string>Critical Strike Chance: 5%</string>
-      <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Attacks per Second: 1.45</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword" Name="Elegant Sword" Level="28" Strength="46" Dexterity="55" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword7">
@@ -5436,7 +5446,7 @@
       <string>Physical Damage: 20-33</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword" Name="Dusk Blade" Level="32" Strength="57" Dexterity="57" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword8">
@@ -5447,7 +5457,7 @@
       <string>Physical Damage: 19-54</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword" Name="Variscite Blade" Level="35" Strength="62" Dexterity="62" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword9">
@@ -5458,7 +5468,7 @@
       <string>Physical Damage: 25-53</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword NotForSale" Name="Charan's Sword" Level="2" Strength="9" Dexterity="9" Intelligence="0" DropDisabled="true" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/items/Weapons/OneHandWeapons/OneHandSwords/OneHandSwordC">
@@ -5469,7 +5479,7 @@
       <string>Physical Damage: 5-11</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.45</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword NotForSale" Name="Hook Sword" Level="34" Strength="64" Dexterity="64" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSwordM1">
@@ -5480,7 +5490,7 @@
       <string>Physical Damage: 28-60</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.15</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword NotForSale" Name="Grappler" Level="55" Strength="99" Dexterity="99" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSwordM2">
@@ -5491,7 +5501,7 @@
       <string>Physical Damage: 44-94</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.15</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword NotForSale" Name="Tiger Hook" Level="70" Strength="119" Dexterity="119" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSwordM3">
@@ -5502,7 +5512,7 @@
       <string>Physical Damage: 49-105</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.15</string>
-      <string>Weapon Range: 9</string>
+      <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier" Name="Rusted Spike" Level="3" Strength="0" Dexterity="20" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier1">
@@ -5510,10 +5520,10 @@
       <string>CriticalMultiplierImplicitSword1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 5-13</string>
+      <string>Physical Damage: 5-11</string>
       <string>Critical Strike Chance: 5.5%</string>
-      <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 12</string>
+      <string>Attacks per Second: 1.55</string>
+      <string>Weapon Range: 14</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier" Name="Burnished Foil" Level="40" Strength="0" Dexterity="131" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier10">
@@ -5524,7 +5534,7 @@
       <string>Physical Damage: 25-46</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 12</string>
+      <string>Weapon Range: 14</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier" Name="Estoc" Level="43" Strength="0" Dexterity="140" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier11">
@@ -5535,7 +5545,7 @@
       <string>Physical Damage: 21-50</string>
       <string>Critical Strike Chance: 5.5%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 12</string>
+      <string>Weapon Range: 14</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier" Name="Serrated Foil" Level="46" Strength="0" Dexterity="149" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier12">
@@ -5546,7 +5556,7 @@
       <string>Physical Damage: 21-49</string>
       <string>Critical Strike Chance: 5.5%</string>
       <string>Attacks per Second: 1.6</string>
-      <string>Weapon Range: 12</string>
+      <string>Weapon Range: 14</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier" Name="Primeval Rapier" Level="49" Strength="0" Dexterity="158" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier13">
@@ -5557,7 +5567,7 @@
       <string>Physical Damage: 18-73</string>
       <string>Critical Strike Chance: 6.5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 12</string>
+      <string>Weapon Range: 14</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier" Name="Fancy Foil" Level="52" Strength="0" Dexterity="167" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier14">
@@ -5568,7 +5578,7 @@
       <string>Physical Damage: 28-51</string>
       <string>Critical Strike Chance: 5.5%</string>
       <string>Attacks per Second: 1.6</string>
-      <string>Weapon Range: 12</string>
+      <string>Weapon Range: 14</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier" Name="Apex Rapier" Level="55" Strength="0" Dexterity="176" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier15">
@@ -5579,7 +5589,7 @@
       <string>Physical Damage: 29-67</string>
       <string>Critical Strike Chance: 5.7%</string>
       <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 12</string>
+      <string>Weapon Range: 14</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier" Name="Dragonbone Rapier" Level="58" Strength="0" Dexterity="185" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier16">
@@ -5590,7 +5600,7 @@
       <string>Physical Damage: 19-75</string>
       <string>Critical Strike Chance: 5.5%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 12</string>
+      <string>Weapon Range: 14</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier" Name="Tempered Foil" Level="60" Strength="0" Dexterity="212" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier17">
@@ -5601,7 +5611,7 @@
       <string>Physical Damage: 35-65</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 12</string>
+      <string>Weapon Range: 14</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier" Name="Pecoraro" Level="62" Strength="0" Dexterity="212" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier18">
@@ -5612,7 +5622,7 @@
       <string>Physical Damage: 29-69</string>
       <string>Critical Strike Chance: 5.5%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 12</string>
+      <string>Weapon Range: 14</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier" Name="Spiraled Foil" Level="64" Strength="0" Dexterity="212" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier19">
@@ -5623,7 +5633,7 @@
       <string>Physical Damage: 27-64</string>
       <string>Critical Strike Chance: 5.5%</string>
       <string>Attacks per Second: 1.6</string>
-      <string>Weapon Range: 12</string>
+      <string>Weapon Range: 14</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier" Name="Whalebone Rapier" Level="7" Strength="0" Dexterity="32" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier2">
@@ -5631,10 +5641,10 @@
       <string>CriticalMultiplierImplicitSword1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 4-18</string>
+      <string>Physical Damage: 4-17</string>
       <string>Critical Strike Chance: 5.5%</string>
-      <string>Attacks per Second: 1.55</string>
-      <string>Weapon Range: 12</string>
+      <string>Attacks per Second: 1.6</string>
+      <string>Weapon Range: 14</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier" Name="Vaal Rapier" Level="66" Strength="0" Dexterity="212" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier20">
@@ -5645,7 +5655,7 @@
       <string>Physical Damage: 22-87</string>
       <string>Critical Strike Chance: 6.5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 12</string>
+      <string>Weapon Range: 14</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier" Name="Jewelled Foil" Level="68" Strength="0" Dexterity="212" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier21">
@@ -5656,7 +5666,7 @@
       <string>Physical Damage: 32-60</string>
       <string>Critical Strike Chance: 5.5%</string>
       <string>Attacks per Second: 1.6</string>
-      <string>Weapon Range: 12</string>
+      <string>Weapon Range: 14</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier" Name="Harpy Rapier" Level="70" Strength="0" Dexterity="212" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier22">
@@ -5667,7 +5677,7 @@
       <string>Physical Damage: 31-72</string>
       <string>Critical Strike Chance: 5.7%</string>
       <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 12</string>
+      <string>Weapon Range: 14</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier" Name="Battered Foil" Level="12" Strength="0" Dexterity="47" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier3">
@@ -5675,10 +5685,10 @@
       <string>CriticalMultiplierImplicitSword1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 12-22</string>
+      <string>Physical Damage: 11-20</string>
       <string>Critical Strike Chance: 6%</string>
-      <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 12</string>
+      <string>Attacks per Second: 1.5</string>
+      <string>Weapon Range: 14</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier" Name="Basket Rapier" Level="17" Strength="0" Dexterity="62" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier4">
@@ -5686,10 +5696,10 @@
       <string>CriticalMultiplierImplicitSword1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 11-26</string>
+      <string>Physical Damage: 11-25</string>
       <string>Critical Strike Chance: 5.5%</string>
-      <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 12</string>
+      <string>Attacks per Second: 1.55</string>
+      <string>Weapon Range: 14</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier" Name="Jagged Foil" Level="22" Strength="0" Dexterity="77" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier5">
@@ -5700,7 +5710,7 @@
       <string>Physical Damage: 12-29</string>
       <string>Critical Strike Chance: 5.5%</string>
       <string>Attacks per Second: 1.6</string>
-      <string>Weapon Range: 12</string>
+      <string>Weapon Range: 14</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier" Name="Antique Rapier" Level="26" Strength="0" Dexterity="89" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier6">
@@ -5711,7 +5721,7 @@
       <string>Physical Damage: 12-46</string>
       <string>Critical Strike Chance: 6.5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 12</string>
+      <string>Weapon Range: 14</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier" Name="Elegant Foil" Level="30" Strength="0" Dexterity="101" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier7">
@@ -5722,7 +5732,7 @@
       <string>Physical Damage: 18-33</string>
       <string>Critical Strike Chance: 5.5%</string>
       <string>Attacks per Second: 1.6</string>
-      <string>Weapon Range: 12</string>
+      <string>Weapon Range: 14</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier" Name="Thorn Rapier" Level="34" Strength="0" Dexterity="113" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier8">
@@ -5733,7 +5743,7 @@
       <string>Physical Damage: 19-44</string>
       <string>Critical Strike Chance: 5.7%</string>
       <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 12</string>
+      <string>Weapon Range: 14</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier" Name="Wyrmbone Rapier" Level="37" Strength="0" Dexterity="122" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier9">
@@ -5744,7 +5754,7 @@
       <string>Physical Damage: 13-51</string>
       <string>Critical Strike Chance: 5.5%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 12</string>
+      <string>Weapon Range: 14</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier NotForSale" Name="Smallsword" Level="36" Strength="0" Dexterity="124" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/RapierM1">
@@ -5755,7 +5765,7 @@
       <string>Physical Damage: 19-40</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.55</string>
-      <string>Weapon Range: 12</string>
+      <string>Weapon Range: 14</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier NotForSale" Name="Courtesan Sword" Level="57" Strength="0" Dexterity="190" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/RapierM2">
@@ -5766,7 +5776,7 @@
       <string>Physical Damage: 29-60</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.55</string>
-      <string>Weapon Range: 12</string>
+      <string>Weapon Range: 14</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier NotForSale" Name="Dragoon Sword" Level="72" Strength="0" Dexterity="220" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/RapierM3">
@@ -5777,7 +5787,7 @@
       <string>Physical Damage: 32-66</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.5</string>
-      <string>Weapon Range: 12</string>
+      <string>Weapon Range: 14</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Wand" Tags="Weapon OneHand Ranged OneHandWeapon Wand" Name="Driftwood Wand" Level="1" Strength="0" Dexterity="0" Intelligence="14" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Wands/Wand1">
@@ -5995,7 +6005,7 @@
       <string>Physical Damage: 7-13</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Bow" Tags="Weapon TwoHand Ranged TwoHandWeapon Bow" Name="Crude Bow" Level="1" Strength="0" Dexterity="14" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Bows/Bow1">
@@ -6249,18 +6259,18 @@
       <string>Physical Damage: 8-17</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Military Staff" Level="45" Strength="78" Dexterity="0" Intelligence="78" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff10">
+  <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Military Staff" Level="41" Strength="72" Dexterity="0" Intelligence="72" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff10">
     <Implicit>
       <string>StaffBlockPercentImplicitStaff1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 34-101</string>
-      <string>Critical Strike Chance: 6.4%</string>
-      <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 11</string>
+      <string>Physical Damage: 33-98</string>
+      <string>Critical Strike Chance: 6.6%</string>
+      <string>Attacks per Second: 1.25</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Serpentine Staff" Level="49" Strength="85" Dexterity="0" Intelligence="85" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff11">
@@ -6268,10 +6278,10 @@
       <string>StaffBlockPercentImplicitStaff2</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 46-95</string>
-      <string>Critical Strike Chance: 6%</string>
-      <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 11</string>
+      <string>Physical Damage: 48-100</string>
+      <string>Critical Strike Chance: 6.3%</string>
+      <string>Attacks per Second: 1.25</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Highborn Staff" Level="52" Strength="89" Dexterity="0" Intelligence="89" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff12">
@@ -6282,7 +6292,7 @@
       <string>Physical Damage: 42-125</string>
       <string>Critical Strike Chance: 6.5%</string>
       <string>Attacks per Second: 1.15</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Foul Staff" Level="55" Strength="94" Dexterity="0" Intelligence="94" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff13">
@@ -6290,10 +6300,10 @@
       <string>StaffBlockPercentImplicitStaff1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 55-103</string>
+      <string>Physical Damage: 56-104</string>
       <string>Critical Strike Chance: 6.1%</string>
-      <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 11</string>
+      <string>Attacks per Second: 1.3</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Primordial Staff" Level="58" Strength="99" Dexterity="0" Intelligence="99" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff14">
@@ -6304,10 +6314,10 @@
       <string>Physical Damage: 47-141</string>
       <string>Critical Strike Chance: 6.2%</string>
       <string>Attacks per Second: 1.15</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Lathi" Level="60" Strength="113" Dexterity="0" Intelligence="113" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff15">
+  <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Lathi" Level="62" Strength="113" Dexterity="0" Intelligence="113" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff15">
     <Implicit>
       <string>StaffBlockPercentImplicitStaff1</string>
     </Implicit>
@@ -6315,18 +6325,18 @@
       <string>Physical Damage: 62-103</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Ezomyte Staff" Level="62" Strength="113" Dexterity="0" Intelligence="113" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff16">
+  <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Ezomyte Staff" Level="60" Strength="113" Dexterity="0" Intelligence="113" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff16">
     <Implicit>
       <string>StaffBlockPercentImplicitStaff1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 46-138</string>
-      <string>Critical Strike Chance: 6.4%</string>
-      <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 11</string>
+      <string>Physical Damage: 46-137</string>
+      <string>Critical Strike Chance: 7%</string>
+      <string>Attacks per Second: 1.25</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Maelström Staff" Level="64" Strength="113" Dexterity="0" Intelligence="113" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff17">
@@ -6334,10 +6344,10 @@
       <string>StaffBlockPercentImplicitStaff2</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 57-119</string>
-      <string>Critical Strike Chance: 6%</string>
-      <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 11</string>
+      <string>Physical Damage: 61-126</string>
+      <string>Critical Strike Chance: 6.5%</string>
+      <string>Attacks per Second: 1.25</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Imperial Staff" Level="66" Strength="113" Dexterity="0" Intelligence="113" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff18">
@@ -6346,9 +6356,9 @@
     </Implicit>
     <Properties>
       <string>Physical Damage: 49-147</string>
-      <string>Critical Strike Chance: 6.5%</string>
+      <string>Critical Strike Chance: 7%</string>
       <string>Attacks per Second: 1.15</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Judgement Staff" Level="68" Strength="113" Dexterity="0" Intelligence="113" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff19">
@@ -6356,10 +6366,10 @@
       <string>StaffBlockPercentImplicitStaff1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 61-113</string>
-      <string>Critical Strike Chance: 6.1%</string>
-      <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 11</string>
+      <string>Physical Damage: 63-117</string>
+      <string>Critical Strike Chance: 6.3%</string>
+      <string>Attacks per Second: 1.3</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Primitive Staff" Level="9" Strength="20" Dexterity="0" Intelligence="20" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff2">
@@ -6367,32 +6377,32 @@
       <string>StaffBlockPercentImplicitStaff1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 9-28</string>
+      <string>Physical Damage: 9-27</string>
       <string>Critical Strike Chance: 6.2%</string>
-      <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 11</string>
+      <string>Attacks per Second: 1.3</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Long Staff" Level="13" Strength="27" Dexterity="0" Intelligence="27" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff3">
+  <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Long Staff" Level="18" Strength="35" Dexterity="0" Intelligence="35" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff3">
     <Implicit>
       <string>StaffBlockPercentImplicitStaff1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 17-28</string>
+      <string>Physical Damage: 21-35</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Iron Staff" Level="18" Strength="35" Dexterity="0" Intelligence="35" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff4">
+  <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Iron Staff" Level="13" Strength="27" Dexterity="0" Intelligence="27" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff4">
     <Implicit>
       <string>StaffBlockPercentImplicitStaff1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 16-47</string>
+      <string>Physical Damage: 12-36</string>
       <string>Critical Strike Chance: 6.4%</string>
-      <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 11</string>
+      <string>Attacks per Second: 1.3</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Coiled Staff" Level="23" Strength="43" Dexterity="0" Intelligence="43" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff5">
@@ -6400,10 +6410,10 @@
       <string>StaffBlockPercentImplicitStaff2</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 23-48</string>
-      <string>Critical Strike Chance: 6%</string>
-      <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 11</string>
+      <string>Physical Damage: 24-49</string>
+      <string>Critical Strike Chance: 6.2%</string>
+      <string>Attacks per Second: 1.3</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Royal Staff" Level="28" Strength="51" Dexterity="0" Intelligence="51" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff6">
@@ -6414,7 +6424,7 @@
       <string>Physical Damage: 23-70</string>
       <string>Critical Strike Chance: 6.5%</string>
       <string>Attacks per Second: 1.15</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Vile Staff" Level="33" Strength="59" Dexterity="0" Intelligence="59" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff7">
@@ -6422,10 +6432,10 @@
       <string>StaffBlockPercentImplicitStaff1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 33-62</string>
+      <string>Physical Damage: 35-65</string>
       <string>Critical Strike Chance: 6.1%</string>
-      <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 11</string>
+      <string>Attacks per Second: 1.3</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Woodful Staff" Level="37" Strength="65" Dexterity="0" Intelligence="65" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff8">
@@ -6436,18 +6446,18 @@
       <string>Physical Damage: 29-88</string>
       <string>Critical Strike Chance: 6.2%</string>
       <string>Attacks per Second: 1.15</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Quarterstaff" Level="41" Strength="72" Dexterity="0" Intelligence="72" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff9">
+  <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Quarterstaff" Level="45" Strength="78" Dexterity="0" Intelligence="78" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff9">
     <Implicit>
       <string>StaffBlockPercentImplicitStaff1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 41-68</string>
+      <string>Physical Damage: 44-73</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff NotForSale" Name="Crescent Staff" Level="36" Strength="66" Dexterity="0" Intelligence="66" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/StaffM1">
@@ -6458,7 +6468,7 @@
       <string>Physical Damage: 35-73</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff NotForSale" Name="Moon Staff" Level="57" Strength="101" Dexterity="0" Intelligence="101" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/StaffM2">
@@ -6469,7 +6479,7 @@
       <string>Physical Damage: 57-118</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff NotForSale" Name="Eclipse Staff" Level="70" Strength="117" Dexterity="0" Intelligence="117" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/StaffM3">
@@ -6480,7 +6490,7 @@
       <string>Physical Damage: 60-125</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe" Name="Stone Axe" Level="4" Strength="17" Dexterity="8" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxe1">
@@ -6489,7 +6499,7 @@
       <string>Physical Damage: 10-17</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe" Name="Headsman Axe" Level="45" Strength="99" Dexterity="57" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxe10">
@@ -6498,7 +6508,7 @@
       <string>Physical Damage: 53-79</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe" Name="Labrys" Level="49" Strength="122" Dexterity="53" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxe11">
@@ -6507,7 +6517,7 @@
       <string>Physical Damage: 63-105</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe" Name="Noble Axe" Level="52" Strength="113" Dexterity="65" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxe12">
@@ -6516,7 +6526,7 @@
       <string>Physical Damage: 65-88</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe" Name="Abyssal Axe" Level="55" Strength="128" Dexterity="60" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxe13">
@@ -6525,7 +6535,7 @@
       <string>Physical Damage: 69-104</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe" Name="Karui Chopper" Level="58" Strength="151" Dexterity="43" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxe14">
@@ -6534,7 +6544,7 @@
       <string>Physical Damage: 80-125</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.15</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe" Name="Sundering Axe" Level="60" Strength="149" Dexterity="76" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxe15">
@@ -6543,7 +6553,7 @@
       <string>Physical Damage: 62-128</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe" Name="Ezomyte Axe" Level="62" Strength="140" Dexterity="86" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxe16">
@@ -6552,7 +6562,7 @@
       <string>Physical Damage: 72-108</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe" Name="Vaal Axe" Level="64" Strength="158" Dexterity="76" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxe17">
@@ -6561,7 +6571,7 @@
       <string>Physical Damage: 79-131</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe" Name="Despot Axe" Level="66" Strength="140" Dexterity="86" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxe18">
@@ -6570,7 +6580,7 @@
       <string>Physical Damage: 76-103</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe" Name="Void Axe" Level="68" Strength="149" Dexterity="76" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxe19">
@@ -6579,25 +6589,25 @@
       <string>Physical Damage: 76-114</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe" Name="Jade Chopper" Level="9" Strength="31" Dexterity="9" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxe2">
     <Implicit />
     <Properties>
-      <string>Physical Damage: 17-27</string>
+      <string>Physical Damage: 16-25</string>
       <string>Critical Strike Chance: 5%</string>
-      <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 11</string>
+      <string>Attacks per Second: 1.25</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe" Name="Woodsplitter" Level="13" Strength="36" Dexterity="17" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxe3">
     <Implicit />
     <Properties>
-      <string>Physical Damage: 17-35</string>
+      <string>Physical Damage: 16-33</string>
       <string>Critical Strike Chance: 5%</string>
-      <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 11</string>
+      <string>Attacks per Second: 1.3</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe" Name="Poleaxe" Level="18" Strength="44" Dexterity="25" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxe4">
@@ -6606,16 +6616,16 @@
       <string>Physical Damage: 25-37</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe" Name="Double Axe" Level="23" Strength="62" Dexterity="27" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxe5">
     <Implicit />
     <Properties>
-      <string>Physical Damage: 32-54</string>
+      <string>Physical Damage: 31-51</string>
       <string>Critical Strike Chance: 5%</string>
-      <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 11</string>
+      <string>Attacks per Second: 1.25</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe" Name="Gilded Axe" Level="28" Strength="64" Dexterity="37" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxe6">
@@ -6624,7 +6634,7 @@
       <string>Physical Damage: 37-50</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe" Name="Shadow Axe" Level="33" Strength="80" Dexterity="37" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxe7">
@@ -6633,7 +6643,7 @@
       <string>Physical Damage: 42-62</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe" Name="Jasper Chopper" Level="37" Strength="100" Dexterity="29" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxe8">
@@ -6642,7 +6652,7 @@
       <string>Physical Damage: 50-78</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.15</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe" Name="Timber Axe" Level="41" Strength="97" Dexterity="45" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxe9">
@@ -6651,7 +6661,7 @@
       <string>Physical Damage: 41-85</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe NotForSale" Name="Dagger Axe" Level="36" Strength="89" Dexterity="43" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxeM1">
@@ -6662,7 +6672,7 @@
       <string>Physical Damage: 45-71</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe NotForSale" Name="Talon Axe" Level="59" Strength="140" Dexterity="67" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxeM2">
@@ -6673,7 +6683,7 @@
       <string>Physical Damage: 75-118</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe NotForSale" Name="Fleshripper" Level="70" Strength="156" Dexterity="84" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxeM3">
@@ -6684,7 +6694,7 @@
       <string>Physical Damage: 80-125</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace" Name="Driftwood Maul" Level="3" Strength="20" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace1">
@@ -6695,7 +6705,7 @@
       <string>Physical Damage: 9-13</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace" Name="Steelhead" Level="44" Strength="143" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace10">
@@ -6706,7 +6716,7 @@
       <string>Physical Damage: 47-70</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace" Name="Spiny Maul" Level="48" Strength="155" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace11">
@@ -6717,7 +6727,7 @@
       <string>Physical Damage: 47-88</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace" Name="Plated Maul" Level="51" Strength="164" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace12">
@@ -6728,7 +6738,7 @@
       <string>Physical Damage: 62-92</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace" Name="Dread Maul" Level="54" Strength="173" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace13">
@@ -6739,7 +6749,7 @@
       <string>Physical Damage: 66-89</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace" Name="Karui Maul" Level="57" Strength="182" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace14">
@@ -6750,7 +6760,7 @@
       <string>Physical Damage: 79-118</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.1</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace" Name="Colossus Mallet" Level="59" Strength="188" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace15">
@@ -6761,7 +6771,7 @@
       <string>Physical Damage: 57-118</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace" Name="Piledriver" Level="61" Strength="212" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace16">
@@ -6772,7 +6782,7 @@
       <string>Physical Damage: 67-100</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace" Name="Meatgrinder" Level="63" Strength="212" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace17">
@@ -6783,7 +6793,7 @@
       <string>Physical Damage: 63-117</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace" Name="Imperial Maul" Level="65" Strength="212" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace18">
@@ -6794,7 +6804,7 @@
       <string>Physical Damage: 74-111</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace" Name="Terror Maul" Level="67" Strength="212" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace19">
@@ -6805,7 +6815,7 @@
       <string>Physical Damage: 75-102</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace" Name="Tribal Maul" Level="8" Strength="35" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace2">
@@ -6813,10 +6823,10 @@
       <string>StunDurationImplicitMace1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 15-23</string>
+      <string>Physical Damage: 14-21</string>
       <string>Critical Strike Chance: 5%</string>
-      <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 11</string>
+      <string>Attacks per Second: 1.25</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace" Name="Mallet" Level="12" Strength="47" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace3">
@@ -6824,10 +6834,10 @@
       <string>StunDurationImplicitMace1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 15-30</string>
+      <string>Physical Damage: 14-29</string>
       <string>Critical Strike Chance: 5%</string>
-      <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 11</string>
+      <string>Attacks per Second: 1.3</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace" Name="Sledgehammer" Level="17" Strength="62" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace4">
@@ -6838,7 +6848,7 @@
       <string>Physical Damage: 21-32</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace" Name="Jagged Maul" Level="22" Strength="77" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace5">
@@ -6846,10 +6856,10 @@
       <string>StunDurationImplicitMace1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 24-45</string>
+      <string>Physical Damage: 23-42</string>
       <string>Critical Strike Chance: 5%</string>
-      <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 11</string>
+      <string>Attacks per Second: 1.3</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace" Name="Brass Maul" Level="27" Strength="92" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace6">
@@ -6860,7 +6870,7 @@
       <string>Physical Damage: 34-51</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace" Name="Fright Maul" Level="32" Strength="107" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace7">
@@ -6871,7 +6881,7 @@
       <string>Physical Damage: 39-53</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace" Name="Totemic Maul" Level="36" Strength="119" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace8">
@@ -6882,7 +6892,7 @@
       <string>Physical Damage: 49-73</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.1</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace" Name="Great Mallet" Level="40" Strength="131" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace9">
@@ -6893,7 +6903,7 @@
       <string>Physical Damage: 37-76</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace NotForSale" Name="Morning Star" Level="34" Strength="118" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMaceM1">
@@ -6904,7 +6914,7 @@
       <string>Physical Damage: 39-58</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace NotForSale" Name="Solar Maul" Level="56" Strength="187" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMaceM2">
@@ -6915,7 +6925,7 @@
       <string>Physical Damage: 64-97</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace NotForSale" Name="Coronal Maul" Level="69" Strength="220" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMaceM3">
@@ -6926,7 +6936,7 @@
       <string>Physical Damage: 74-110</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.25</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword" Name="Corroded Blade" Level="3" Strength="11" Dexterity="11" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword1">
@@ -6937,7 +6947,7 @@
       <string>Physical Damage: 7-13</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.45</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword" Name="Highland Blade" Level="44" Strength="77" Dexterity="77" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword10">
@@ -6948,7 +6958,7 @@
       <string>Physical Damage: 39-72</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.35</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword" Name="Engraved Greatsword" Level="48" Strength="91" Dexterity="76" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword11">
@@ -6959,7 +6969,7 @@
       <string>Physical Damage: 42-87</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword" Name="Tiger Sword" Level="51" Strength="80" Dexterity="96" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword12">
@@ -6970,7 +6980,7 @@
       <string>Physical Damage: 46-76</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword" Name="Wraith Sword" Level="54" Strength="93" Dexterity="93" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword13">
@@ -6981,7 +6991,7 @@
       <string>Physical Damage: 45-93</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.35</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword" Name="Headman's Sword" Level="57" Strength="106" Dexterity="89" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword14">
@@ -6992,7 +7002,7 @@
       <string>Physical Damage: 47-109</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword" Name="Reaver Sword" Level="59" Strength="82" Dexterity="119" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword15">
@@ -7003,7 +7013,7 @@
       <string>Physical Damage: 52-86</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.45</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword" Name="Ezomyte Blade" Level="61" Strength="113" Dexterity="113" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword16">
@@ -7014,7 +7024,7 @@
       <string>Physical Damage: 55-102</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.35</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword" Name="Vaal Greatsword" Level="63" Strength="122" Dexterity="104" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword17">
@@ -7025,7 +7035,7 @@
       <string>Physical Damage: 55-113</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword" Name="Lion Sword" Level="65" Strength="104" Dexterity="122" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword18">
@@ -7036,7 +7046,7 @@
       <string>Physical Damage: 57-94</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword" Name="Infernal Sword" Level="67" Strength="113" Dexterity="113" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword19">
@@ -7047,7 +7057,7 @@
       <string>Physical Damage: 52-108</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.35</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword" Name="Longsword" Level="8" Strength="20" Dexterity="17" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword2">
@@ -7055,10 +7065,10 @@
       <string>IncreasedAccuracy2hSwordImplicit1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 10-24</string>
+      <string>Physical Damage: 10-23</string>
       <string>Critical Strike Chance: 5%</string>
-      <string>Attacks per Second: 1.35</string>
-      <string>Weapon Range: 11</string>
+      <string>Attacks per Second: 1.4</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword" Name="Bastard Sword" Level="12" Strength="21" Dexterity="30" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword3">
@@ -7069,7 +7079,7 @@
       <string>Physical Damage: 15-25</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.45</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword" Name="Two-Handed Sword" Level="17" Strength="33" Dexterity="33" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword4">
@@ -7077,10 +7087,10 @@
       <string>IncreasedAccuracy2hSwordImplicit2</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 19-34</string>
+      <string>Physical Damage: 18-33</string>
       <string>Critical Strike Chance: 5%</string>
-      <string>Attacks per Second: 1.35</string>
-      <string>Weapon Range: 11</string>
+      <string>Attacks per Second: 1.4</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword" Name="Etched Greatsword" Level="22" Strength="45" Dexterity="38" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword5">
@@ -7088,10 +7098,10 @@
       <string>AccuracyPercentImplicitSword1</string>
     </Implicit>
     <Properties>
-      <string>Physical Damage: 22-46</string>
+      <string>Physical Damage: 20-41</string>
       <string>Critical Strike Chance: 5%</string>
-      <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 11</string>
+      <string>Attacks per Second: 1.4</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword" Name="Ornate Sword" Level="27" Strength="45" Dexterity="54" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword6">
@@ -7102,7 +7112,7 @@
       <string>Physical Damage: 26-43</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.4</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword" Name="Spectral Sword" Level="32" Strength="57" Dexterity="57" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword7">
@@ -7113,7 +7123,7 @@
       <string>Physical Damage: 27-56</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.35</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword" Name="Butcher Sword" Level="36" Strength="69" Dexterity="58" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword8">
@@ -7124,7 +7134,7 @@
       <string>Physical Damage: 29-68</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.3</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword" Name="Footman Sword" Level="40" Strength="57" Dexterity="83" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword9">
@@ -7135,7 +7145,7 @@
       <string>Physical Damage: 34-56</string>
       <string>Critical Strike Chance: 5%</string>
       <string>Attacks per Second: 1.45</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword NotForSale" Name="Curved Blade" Level="35" Strength="62" Dexterity="73" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSwordM1">
@@ -7146,7 +7156,7 @@
       <string>Physical Damage: 35-58</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.35</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword NotForSale" Name="Lithe Blade" Level="56" Strength="96" Dexterity="113" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSwordM2">
@@ -7157,7 +7167,7 @@
       <string>Physical Damage: 54-89</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.35</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword NotForSale" Name="Exquisite Blade" Level="70" Strength="119" Dexterity="131" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSwordM3">
@@ -7168,7 +7178,7 @@
       <string>Physical Damage: 56-94</string>
       <string>Critical Strike Chance: 6%</string>
       <string>Attacks per Second: 1.35</string>
-      <string>Weapon Range: 11</string>
+      <string>Weapon Range: 13</string>
     </Properties>
   </ItemBase>
 </ItemList>

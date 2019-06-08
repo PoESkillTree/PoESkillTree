@@ -100,6 +100,9 @@ namespace PoESkillTree.GameModel.Items
         AbyssJewelRanged = 1L << 54,
         AbyssJewelCaster = 1L << 55,
         AbyssJewelSummoner = 1L << 56,
+
+        AttackStaff = 1L << 57,
+        AttackDagger = 1L << 58,
     }
 
 

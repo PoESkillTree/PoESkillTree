@@ -168,6 +168,7 @@
     <EmbeddedResource Include="Data\RePoE\stat_translations\banner_aura_skill.min.json" />
     <EmbeddedResource Include="Data\RePoE\stat_translations\brand_skill.min.json" />
     <EmbeddedResource Include="Data\RePoE\base_items.min.json" />
+    <EmbeddedResource Include="Data\RePoE\stat_translations\buff_skill.min.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

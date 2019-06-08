@@ -98,6 +98,7 @@
 10% increased Attack and Cast Speed during any Flask Effect
 23% increased Attack and Cast Speed while Focussed
 6% increased Attack Damage
+13% increased Attack Damage while holding a Shield
 4% increased Attack Speed
 11% increased Attack Speed during any Flask Effect
 7% increased Attack Speed if you've dealt a Critical Strike Recently
@@ -182,10 +183,20 @@
 3% increased Damage per Frenzy Charge
 7% increased Damage per Power Charge
 27% increased Damage while Leeching
+15% increased Damage with Axes
 23% increased Damage with Bleeding
+15% increased Damage with Bows
+15% increased Damage with Claws
+15% increased Damage with Daggers
 40% increased Damage with Hits against Chilled Enemies
 9% increased Damage with Hits and Ailments per Curse on Enemy
+15% increased Damage with Maces
+13% increased Damage with One Handed Weapons
 23% increased Damage with Poison
+15% increased Damage with Staves
+15% increased Damage with Swords
+13% increased Damage with Two Handed Weapons
+15% increased Damage with Wands
 6% increased Dexterity
 35% increased Duration
 90% increased Duration of Ailments you inflict while Focussed
@@ -239,7 +250,6 @@
 12% increased Melee Critical Strike Chance
 9% increased Melee Damage
 22% increased Melee Damage during any Flask Effect
-13% increased Melee Physical Damage while holding a Shield
 15% increased Melee Physical Damage with Unarmed Attacks
 15% increased Mine Damage
 9% increased Mine Laying Speed
@@ -253,17 +263,7 @@
 3% increased Movement Speed if you've Killed Recently
 12% increased Movement speed while on Burning, Chilled or Shocked ground
 39% increased Physical Damage
-15% increased Physical Damage with Axes
-15% increased Physical Damage with Bows
-15% increased Physical Damage with Claws
-15% increased Physical Damage with Daggers
-15% increased Physical Damage with Maces
-13% increased Physical Damage with One Handed Melee Weapons
-15% increased Physical Damage with Staves
-15% increased Physical Damage with Swords
-13% increased Physical Damage with Two Handed Melee Weapons
-15% increased Physical Damage with Wands
-13% increased Physical Weapon Damage while Dual Wielding
+25% increased Physical Weapon Damage while Dual Wielding
 7% increased Poison Duration
 12% increased Power Charge Duration
 22% increased Projectile Attack Damage
@@ -302,6 +302,7 @@
 18% increased Trap Duration
 9% increased Trap Throwing Speed
 16% increased Weapon Critical Strike Chance while Dual Wielding
+13% increased Weapon Damage while Dual Wielding
 525% more Physical Damage with Unarmed Attacks
 0.4% of Chaos Damage Leeched as Life
 0.4% of Cold Damage Leeched as Life
@@ -398,14 +399,14 @@
 +2 to Level of Socketed Trap Gems
 +15 to Maximum Charges
 +1 to Maximum Endurance Charges
-+27 to maximum Energy Shield
++23 to maximum Energy Shield
 +1 to Maximum Frenzy Charges
-+27 to maximum Life
-+27 to maximum Mana
++23 to maximum Life
++23 to maximum Mana
++1 to maximum number of Raised Zombies
 +1 to maximum number of Skeletons
 +1 to maximum number of Spectres
 +1 to maximum number of Summoned Totems
-+1 to maximum number of Zombies
 +1 to Maximum Power Charges
 +1 to Melee Weapon and Unarmed Attack range
 +1 to Melee Weapon Range if you have Killed Recently
@@ -491,70 +492,70 @@ Adds 1 to 4 Chaos Damage to Spells while holding a Shield
 Adds 1 to 4 Chaos Damage to Spells while wielding a Two Handed Weapon
 Adds 9 to 17 Cold Damage
 Adds 10 to 28 Cold Damage against Chilled or Frozen Enemies
-Adds 7 to 13 Cold Damage to Attacks
+Adds 4 to 9 Cold Damage to Attacks
 Adds 2 to 4 Cold Damage to Attacks with this Weapon per 10 Dexterity
-Adds 7 to 14 Cold Damage to Axe Attacks
-Adds 7 to 14 Cold Damage to Bow Attacks
-Adds 7 to 14 Cold Damage to Claw Attacks
-Adds 7 to 14 Cold Damage to Dagger Attacks
-Adds 7 to 14 Cold Damage to Mace Attacks
+Adds 4 to 9 Cold Damage to Axe Attacks
+Adds 4 to 9 Cold Damage to Bow Attacks
+Adds 4 to 9 Cold Damage to Claw Attacks
+Adds 4 to 9 Cold Damage to Dagger Attacks
+Adds 4 to 9 Cold Damage to Mace Attacks
 Adds 7 to 10 Cold Damage to Spells
 Adds 18 to 40 Cold Damage to Spells and Attacks
 Adds 3 to 6 Cold Damage to Spells while Dual Wielding
 Adds 3 to 6 Cold Damage to Spells while holding a Shield
 Adds 3 to 6 Cold Damage to Spells while wielding a Two Handed Weapon
-Adds 7 to 14 Cold Damage to Staff Attacks
-Adds 7 to 14 Cold Damage to Sword Attacks
-Adds 7 to 14 Cold Damage to Wand Attacks
+Adds 4 to 9 Cold Damage to Staff Attacks
+Adds 4 to 9 Cold Damage to Sword Attacks
+Adds 4 to 9 Cold Damage to Wand Attacks
 Adds 11 to 21 Fire Damage
 Adds 10 to 28 Fire Damage against Ignited Enemies
 Adds 40 to 80 Fire Damage if you've Blocked Recently
-Adds 8 to 16 Fire Damage to Attacks
+Adds 4 to 11 Fire Damage to Attacks
 Adds 2 to 4 Fire Damage to Attacks with this Weapon per 10 Strength
-Adds 8 to 16 Fire Damage to Axe Attacks
-Adds 8 to 16 Fire Damage to Bow Attacks
-Adds 8 to 16 Fire Damage to Claw Attacks
-Adds 8 to 16 Fire Damage to Dagger Attacks
-Adds 8 to 16 Fire Damage to Mace Attacks
+Adds 5 to 11 Fire Damage to Axe Attacks
+Adds 5 to 11 Fire Damage to Bow Attacks
+Adds 5 to 11 Fire Damage to Claw Attacks
+Adds 5 to 11 Fire Damage to Dagger Attacks
+Adds 5 to 11 Fire Damage to Mace Attacks
 Adds 7 to 10 Fire Damage to Spells
 Adds 18 to 40 Fire Damage to Spells and Attacks
 Adds 3 to 6 Fire Damage to Spells while Dual Wielding
 Adds 3 to 6 Fire Damage to Spells while holding a Shield
 Adds 3 to 6 Fire Damage to Spells while wielding a Two Handed Weapon
-Adds 8 to 16 Fire Damage to Staff Attacks
-Adds 8 to 16 Fire Damage to Sword Attacks
-Adds 8 to 16 Fire Damage to Wand Attacks
+Adds 5 to 11 Fire Damage to Staff Attacks
+Adds 5 to 11 Fire Damage to Sword Attacks
+Adds 5 to 11 Fire Damage to Wand Attacks
 Adds 2 to 35 Lightning Damage
 Adds 5 to 36 Lightning Damage against Shocked Enemies
-Adds 1 to 28 Lightning Damage to Attacks
+Adds 1 to 19 Lightning Damage to Attacks
 Adds 1 to 7 Lightning Damage to Attacks with this Weapon per 10 Intelligence
-Adds 1 to 27 Lightning Damage to Axe Attacks
-Adds 1 to 27 Lightning Damage to Bow Attacks
-Adds 1 to 27 Lightning Damage to Claw Attacks
-Adds 1 to 27 Lightning Damage to Dagger Attacks
-Adds 1 to 27 Lightning Damage to Mace Attacks
+Adds 1 to 19 Lightning Damage to Axe Attacks
+Adds 1 to 19 Lightning Damage to Bow Attacks
+Adds 1 to 19 Lightning Damage to Claw Attacks
+Adds 1 to 19 Lightning Damage to Dagger Attacks
+Adds 1 to 19 Lightning Damage to Mace Attacks
 Adds 1 to 17 Lightning Damage to Spells
 Adds 10 to 50 Lightning Damage to Spells and Attacks
 Adds 1 to 8 Lightning Damage to Spells while Dual Wielding
 Adds 1 to 8 Lightning Damage to Spells while holding a Shield
 Adds 1 to 8 Lightning Damage to Spells while wielding a Two Handed Weapon
-Adds 1 to 27 Lightning Damage to Staff Attacks
-Adds 1 to 27 Lightning Damage to Sword Attacks
-Adds 1 to 27 Lightning Damage to Wand Attacks
+Adds 1 to 19 Lightning Damage to Staff Attacks
+Adds 1 to 19 Lightning Damage to Sword Attacks
+Adds 1 to 19 Lightning Damage to Wand Attacks
 Adds 11 to 22 Physical Damage
 Adds 1 to 3 Physical Damage to Attacks
-Adds 1 to 3 Physical Damage to Axe Attacks
-Adds 1 to 3 Physical Damage to Bow Attacks
-Adds 1 to 3 Physical Damage to Claw Attacks
-Adds 1 to 3 Physical Damage to Dagger Attacks
-Adds 1 to 3 Physical Damage to Mace Attacks
+Adds 2 to 3 Physical Damage to Axe Attacks
+Adds 2 to 3 Physical Damage to Bow Attacks
+Adds 2 to 3 Physical Damage to Claw Attacks
+Adds 2 to 3 Physical Damage to Dagger Attacks
+Adds 2 to 3 Physical Damage to Mace Attacks
 Adds 3 to 6 Physical Damage to Spells
 Adds 1 to 4 Physical Damage to Spells while Dual Wielding
 Adds 1 to 4 Physical Damage to Spells while holding a Shield
 Adds 1 to 4 Physical Damage to Spells while wielding a Two Handed Weapon
-Adds 1 to 3 Physical Damage to Staff Attacks
-Adds 1 to 3 Physical Damage to Sword Attacks
-Adds 1 to 3 Physical Damage to Wand Attacks
+Adds 2 to 3 Physical Damage to Staff Attacks
+Adds 2 to 3 Physical Damage to Sword Attacks
+Adds 2 to 3 Physical Damage to Wand Attacks
 Adds Knockback to Melee Attacks during Flask effect
 Area is inhabited by an additional Invasion Boss
 Attack Projectiles Return to you after hitting targets

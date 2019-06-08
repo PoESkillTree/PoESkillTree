@@ -16,6 +16,7 @@ namespace PoESkillTree.GameModel.StatTranslation
             "stat_translations/banner_aura_skill",
             "stat_translations/beam_skill",
             "stat_translations/brand_skill",
+            "stat_translations/buff_skill",
             "stat_translations/curse_skill",
             "stat_translations/debuff_skill",
             "stat_translations/minion_attack_skill",
