@@ -1,6 +1,7 @@
 ﻿using EnumsNET;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Skills;
@@ -43,6 +44,11 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             {
                 _modifiers.AddGlobalForMainSkill(_builderFactories.ActionBuilders.CriticalStrike.Chance.WithHits,
                     Form.BaseSet, crit);
+            }
+            if (level.AttackSpeedMultiplier is int attackSpeedMultiplier)
+            {
+                _modifiers.AddGlobalForMainSkill(_builderFactories.StatBuilders.CastRate.With(DamageSource.Attack),
+                    Form.More, attackSpeedMultiplier);
             }
             if (level.ManaCost is int cost)
             {

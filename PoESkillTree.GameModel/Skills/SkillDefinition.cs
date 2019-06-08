@@ -103,6 +103,7 @@ namespace PoESkillTree.GameModel.Skills
     {
         public SkillLevelDefinition(
             double? damageEffectiveness, double? damageMultiplier, double? criticalStrikeChance,
+            int? attackSpeedMultiplier,
             int? manaCost, double? manaMultiplier, int? manaCostOverride, int? cooldown,
             int requiredLevel, int requiredDexterity, int requiredIntelligence, int requiredStrength,
             IReadOnlyList<UntranslatedStat> qualityStats, IReadOnlyList<UntranslatedStat> stats,
@@ -114,6 +115,7 @@ namespace PoESkillTree.GameModel.Skills
             DamageEffectiveness = damageEffectiveness;
             DamageMultiplier = damageMultiplier;
             CriticalStrikeChance = criticalStrikeChance;
+            AttackSpeedMultiplier = attackSpeedMultiplier;
             ManaCost = manaCost;
             ManaMultiplier = manaMultiplier;
             ManaCostOverride = manaCostOverride;
@@ -132,6 +134,7 @@ namespace PoESkillTree.GameModel.Skills
         public double? DamageEffectiveness { get; }
         public double? DamageMultiplier { get; }
         public double? CriticalStrikeChance { get; }
+        public int? AttackSpeedMultiplier { get; }
 
         public int? ManaCost { get; }
         public double? ManaMultiplier { get; }

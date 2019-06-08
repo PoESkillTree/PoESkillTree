@@ -955,6 +955,20 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             Assert.AreEqual(new NodeValue(definition.PartNames.Count - 1), actual);
         }
 
+        [Test]
+        public void BladeFlurryHasAttackSpeedStat()
+        {
+            var (definition, skill) = CreateBladeFlurryDefinition();
+            var sut = CreateSut(definition);
+            var context = MockValueCalculationContextForMainSkill(skill);
+
+            var result = sut.Parse(skill);
+
+            var modifiers = result.Modifiers;
+            var actual = GetValueForIdentity(modifiers, "CastRate.Attack.MainHand.Skill").Calculate(context);
+            Assert.AreEqual(new NodeValue(60), actual);
+        }
+
         private static (SkillDefinition, Skill) CreateBladeFlurryDefinition()
         {
             var activeSkill = CreateActiveSkillDefinition("Blade Flurry",
@@ -969,7 +983,8 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                     new UntranslatedStat("hit_ailment_damage_+%_final", 80),
                 },
             };
-            var level = CreateLevelDefinition(stats: stats, additionalStatsPerPart: additionalStatsPerPart);
+            var level = CreateLevelDefinition(attackSpeedMultiplier: 60, stats: stats,
+                additionalStatsPerPart: additionalStatsPerPart);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
             return (CreateActive("ChargedAttack", activeSkill, levels),
                 new Skill("ChargedAttack", 1, 0, ItemSlot.Belt, 0, null));

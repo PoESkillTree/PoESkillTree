@@ -151,6 +151,7 @@ namespace PoESkillTree.GameModel.Skills
                 Value<int?>("damage_effectiveness") / 100D + 1,
                 Value<int?>("damage_multiplier") / 10000D + 1,
                 Value<int?>("crit_chance") / 100D,
+                Value<int?>("attack_speed_multiplier"),
                 Value<int?>("mana_cost"),
                 Value<int?>("mana_multiplier") / 100D,
                 Value<int?>("mana_reservation_override"),

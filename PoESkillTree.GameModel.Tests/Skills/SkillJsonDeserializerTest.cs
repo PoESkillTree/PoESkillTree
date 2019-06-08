@@ -45,6 +45,7 @@ namespace PoESkillTree.GameModel.Skills
             Assert.AreEqual(1.1, level1.DamageEffectiveness);
             Assert.AreEqual(1.1, level1.DamageMultiplier);
             Assert.IsNull(level1.CriticalStrikeChance);
+            Assert.IsNull(level1.AttackSpeedMultiplier);
             Assert.AreEqual(10, level1.ManaCost);
             Assert.IsNull(level1.ManaMultiplier);
             Assert.IsNull(level1.ManaCostOverride);
@@ -125,6 +126,7 @@ namespace PoESkillTree.GameModel.Skills
                 new UntranslatedStat("base_skill_number_of_additional_hits", 1),
                 new UntranslatedStat("hit_ailment_damage_+%_final", 80),
             }, level20.AdditionalStatsPerPart[1]);
+            Assert.AreEqual(60, level20.AttackSpeedMultiplier);
         }
 
         [Test]
