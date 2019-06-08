@@ -87,6 +87,9 @@ namespace PoESkillTree.Computation.Builders.Stats
         public ValueBuilder UniqueAmount(string name)
             => FromIdentity(name, typeof(uint), UserSpecifiedValue(0)).Value;
 
+        public ValueBuilder Unique<T>(string name) where T : struct, Enum
+            => FromIdentity(name, typeof(T), UserSpecifiedValue(0)).Value;
+
         public IStatBuilder IndependentMultiplier(string identity)
             => FromIdentity(identity, typeof(uint), IndependentResult(NodeType.Increase));
 

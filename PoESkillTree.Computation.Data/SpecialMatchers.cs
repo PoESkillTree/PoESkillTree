@@ -104,6 +104,10 @@ namespace PoESkillTree.Computation.Data
                     TotalOverride, 100, Effect.Stun.Chance,
                     Action.Unique("On damaging Hit against a full life Enemy").On
                 },
+                {
+                    "maximum # stages",
+                    BaseSet, Value, Stat.SkillStage.Maximum
+                },
                 // Jewels
                 {
                     "primordial",
@@ -195,6 +199,12 @@ namespace PoESkillTree.Computation.Data
                     PercentLess, 100 - Value, Damage, OffHand.Has(Tags.Weapon)
                 },
                 {
+                    // Cyclone
+                    "modifiers to melee attack range also apply to this skill's area radius",
+                    BaseAdd, Stat.Range.With(Keyword.Melee).With(AttackDamageHand.MainHand).ValueFor(NodeType.BaseAdd),
+                    Stat.Radius
+                },
+                {
                     // Freeze Mine
                     "enemies lose #% cold resistance while frozen",
                     BaseSubtract, Value, Cold.Resistance.For(Enemy), Ailment.Freeze.IsOn(Enemy)
@@ -248,6 +258,11 @@ namespace PoESkillTree.Computation.Data
                     // Winter Orb
                     "#% increased projectile frequency per stage",
                     PercentIncrease, Value * Stat.SkillStage.Value, Stat.HitRate
+                },
+                {
+                    "increases and reductions to cast speed also apply to projectile frequency",
+                    TotalOverride, 1,
+                    Flag.IncreasesToSourceApplyToTarget(Stat.CastRate.With(DamageSource.Spell), Stat.HitRate)
                 },
                 {
                     // Blasphemy Support
@@ -345,7 +360,6 @@ namespace PoESkillTree.Computation.Data
                     // Mortal Conviction
                     "you can only have one non-banner aura on you from your skills non-banner aura skills reserve no mana",
                     TotalOverride, 0, Skills[Keyword.Aura].Reservation
-                    // TODO Exclude banners either by skill id or by a new keyword
                 },
                 {
                     // Eldritch Battery: Display both mana and energy shield costs
@@ -513,17 +527,12 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "banner skills reserve no mana",
-                    TotalOverride, 0,
-                    Skills.FromId("PuresteelBanner").Reservation, Skills.FromId("BloodstainedBanner").Reservation
+                    TotalOverride, 0, Skills[Keyword.Banner].Reservation
                 },
                 {
                     "you and allies affected by your placed banners regenerate #% of maximum life per second for each stage",
-                    (BaseAdd, Value * Stat.BannerStage.Value, Life.Regen.Percent,
-                        Or(Skills.FromId("PuresteelBanner").Buff.IsOn(Self), Skills.FromId("BloodstainedBanner").Buff.IsOn(Self))),
-                    (BaseAdd, Value * Stat.BannerStage.Value, Life.Regen.Percent.For(Entity.Minion),
-                        Or(Skills.FromId("PuresteelBanner").Buff.IsOn(Entity.Minion), Skills.FromId("BloodstainedBanner").Buff.IsOn(Entity.Minion))),
-                    (BaseAdd, Value * Stat.BannerStage.Value, Life.Regen.Percent.For(Entity.Totem),
-                        Or(Skills.FromId("PuresteelBanner").Buff.IsOn(Entity.Totem), Skills.FromId("BloodstainedBanner").Buff.IsOn(Entity.Totem)))
+                    BaseAdd, Value * Stat.BannerStage.Value, Life.Regen.Percent,
+                    Or(For(Self), And(For(Ally), Buffs(targets: Ally).With(Keyword.Banner).Any()))
                 },
                 // - Slayer
                 { "cannot take reflected physical damage", PercentLess, 100, Physical.ReflectedDamageTaken },

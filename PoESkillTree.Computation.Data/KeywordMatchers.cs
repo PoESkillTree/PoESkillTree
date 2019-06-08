@@ -34,7 +34,9 @@ namespace PoESkillTree.Computation.Data
                 { "herald", Keyword.Herald },
                 { "brand", Keyword.Brand },
                 { "movement", Keyword.Movement },
+                { "banner", Keyword.Banner },
                 { "channelling", Keyword.From(GameModel.Skills.Keyword.Channelling) },
+                { "guard", Keyword.From(GameModel.Skills.Keyword.Guard) },
             };
     }
 }

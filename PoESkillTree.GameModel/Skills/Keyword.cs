@@ -140,6 +140,16 @@ namespace PoESkillTree.GameModel.Skills
         /// Equivalent to the ActiveSkillType.
         /// </summary>
         Channelling,
+
+        /// <summary>
+        /// Equivalent to the ActiveSkillType.
+        /// </summary>
+        Guard,
+
+        /// <summary>
+        /// Has no equivalent gem tag or ActiveSkillType.
+        /// </summary>
+        Banner,
     }
 
     public static class KeywordExtensions
@@ -179,6 +189,8 @@ namespace PoESkillTree.GameModel.Skills
                 { Keyword.Chaos, (_, types, __) => types.Contains(ActiveSkillType.Chaos) },
                 { Keyword.Brand, (_, types, __) => types.Contains(ActiveSkillType.Brand) },
                 { Keyword.Channelling, (_, types, __) => types.Contains(ActiveSkillType.Channelling) },
+                { Keyword.Guard, (_, types, __) => types.Contains(ActiveSkillType.Guard) },
+                { Keyword.Banner, (name, _, __) => name.EndsWith("Banner") },
             };
 
         public static bool IsOnSkill(this Keyword @this,

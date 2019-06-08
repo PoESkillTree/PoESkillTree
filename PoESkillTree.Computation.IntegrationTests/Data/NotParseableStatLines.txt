@@ -225,6 +225,12 @@ Supported Skills gain Intensity when used, up to a maximum of 4 Supported Skills
 Buff grants 20% increased Movement Speed
 This Skill's Cooldown does not recover during its effect
 Orbs jump every 0.4 seconds
+Lose 1 Stage every 0.2 seconds while not Channelling
+Every third successive strike Freezes enemies as though dealing 390% more Damage
+75% of Damage from Hits is taken from the Buff before your Life or Energy Shield Buff can take Damage equal to 20% of your Armour, up to a maximum of 10000
+80% of Damage from Hits is taken from the Buff before your Life or Energy Shield Buff can take Damage equal to 60% of your Armour, up to a maximum of 30000
+Reflects 3000% of Damage taken from Buff as Fire Damage when Buff expires or is depleted
+Reflects 3000% of Damage taken from Buff as Fire Damage each second, or when Buff expires or is depleted
 // passive skills: =====================================================================================================
 10% Chance for Traps to Trigger an additional time
 Share Endurance, Frenzy and Power Charges with nearby party members

@@ -336,6 +336,10 @@ namespace PoESkillTree.Computation.Data
                     Buffs(Entity.Minion).With(Keyword.Golem, Cold).Effect,
                     Buffs(Entity.Minion).With(Keyword.Golem, Lightning).Effect
                 },
+                {
+                    "effect of buffs granted by your active ancestor totems",
+                    Buffs(Entity.Totem).With(Keyword.Melee).Effect
+                },
                 { "effect of heralds on you", Buffs(targets: Self).With(Keyword.Herald).Effect },
                 { "effect of your curses", Buffs(Self).With(Keyword.Curse).Effect },
                 { "effect of curses on you", Buffs(targets: Self).With(Keyword.Curse).Effect },

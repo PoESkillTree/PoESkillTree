@@ -44,7 +44,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 IsMainSkill("Barrage", 1)
             },
 
-            { TotalOverride, Skills.FromId("BloodstainedBanner").Reservation, 0, Flag.IsBannerPlanted },
+            { TotalOverride, Skills[Keyword.Banner].Reservation, 0, Flag.IsBannerPlanted },
 
             { TotalOverride, Fire.Invert.Damage, 0, IsMainSkill("ElementalHit", 0) },
             { TotalOverride, Cold.Invert.Damage, 0, IsMainSkill("ElementalHit", 1) },
@@ -81,8 +81,6 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 TotalOverride, MetaStats.SkillNumberOfHitsPerCast, Projectile.Count.Value,
                 IsMainSkill("IceSpear", 3)
             },
-
-            { TotalOverride, Skills.FromId("PuresteelBanner").Reservation, 0, Flag.IsBannerPlanted },
 
             {
                 BaseSet, Buff.Temporary(Lightning.Exposure, WaveOfConvictionExposureType.Lightning).For(Enemy), -25,
