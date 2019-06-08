@@ -133,7 +133,7 @@ namespace PoESkillTree.Computation.IntegrationTests
             actual = nodes
                 .GetNode(BuildMainHandSkillSingle(_builderFactories.StatBuilders.ChanceToHit))
                 .Value.Single();
-            Assert.AreEqual(chanceToHit * 100, actual);
+            Assert.AreEqual(chanceToHit * 100, actual, 1e-10);
             actual = nodes
                 .GetNode(BuildMainHandSkillSingle(_metaStats.AverageDamagePerHit))
                 .Value.Single();
@@ -145,12 +145,12 @@ namespace PoESkillTree.Computation.IntegrationTests
                 .GetNode(BuildMainHandSkillSingle(_metaStats.AverageDamage))
                 .Value.Single();
             var expectedAverageDamage = expectedAverageDamagePerHit * chanceToHit;
-            Assert.AreEqual(expectedAverageDamage, actual);
+            Assert.AreEqual(expectedAverageDamage, actual, 1e-10);
             actual = nodes
                 .GetNode(Build(_metaStats.SkillDpsWithHits).Single())
                 .Value.Single();
             var expectedSkillDpsWithHits = expectedAverageDamage * 2;
-            Assert.AreEqual(expectedSkillDpsWithHits, actual);
+            Assert.AreEqual(expectedSkillDpsWithHits, actual, 1e-10);
         }
 
         [Test]
@@ -256,7 +256,7 @@ namespace PoESkillTree.Computation.IntegrationTests
             var actual = nodes
                 .GetNode(Build(_builderFactories.EffectBuilders.Stun.Chance.With(AttackDamageHand.MainHand)).Single())
                 .Value.Single();
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, actual, 1e-10);
         }
 
         [Test]

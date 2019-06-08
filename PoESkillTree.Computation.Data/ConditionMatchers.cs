@@ -270,7 +270,7 @@ namespace PoESkillTree.Computation.Data
                 { "chaos skills have", With(Chaos) },
                 { "spell skills have", With(Keyword.Spell) },
                 { "(with|of|for) ({KeywordMatchers}) skills", With(Reference.AsKeyword) },
-                { "({KeywordMatchers}) skills (have|deal)", With(Reference.AsKeyword) },
+                { "(supported )?({KeywordMatchers}) skills (have|deal)", With(Reference.AsKeyword) },
                 {
                     "({KeywordMatchers}) ({KeywordMatchers}) skills (have|deal)",
                     And(With(References[0].AsKeyword), With(References[1].AsKeyword))
@@ -302,7 +302,10 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "if you summoned a golem in the past # seconds", Golems.Cast.InPastXSeconds(Value) },
                 // - by skill part
-                { "(beams?|final wave|shockwaves?|cone) (has a|deals?)", Stat.MainSkillPart.Value.Eq(1) },
+                {
+                    "(beams?|final wave|shockwaves?|cone|aftershock) (has a|deals?)",
+                    Stat.MainSkillPart.Value.Eq(1)
+                },
                 // - other
                 { "to enemies they're attached to", Flag.IsBrandAttachedToEnemy },
                 { "to branded enemy", Flag.IsBrandAttachedToEnemy },

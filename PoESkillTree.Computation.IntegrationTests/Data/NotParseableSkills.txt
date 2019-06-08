@@ -6,6 +6,7 @@ BloodRage
 CorpseWarp
 DarkPact
 DarkRitual
+NewShieldCharge
 RighteousFire
 SupportBlockReduction
 SupportChanceToIgnite

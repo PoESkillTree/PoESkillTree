@@ -78,7 +78,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "per nearby enemy", Enemy.CountNearby },
                 { "per one hundred nearby enemies", Enemy.CountNearby / 100 },
-                { @"per nearby enemy, up to \+#%", CappedMultiplier(Enemy.CountNearby, Value) },
+                { @"per nearby enemy, up to \+#%?", CappedMultiplier(Enemy.CountNearby, Value) },
                 // buffs
                 { "per buff on you", Buffs(targets: Self).Count() },
                 { "per curse on you", Buffs(targets: Self).With(Keyword.Curse).Count() },

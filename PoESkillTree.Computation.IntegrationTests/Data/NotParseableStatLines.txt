@@ -71,7 +71,7 @@ With at least 40 Intelligence in Radius, Fireball Projectiles gain Radius as the
 With at least 40 Intelligence in Radius, Raised Spectres have a 50% chance to gain Soul Eater for 30 seconds on Kill
 With at least 40 Strength in Radius, Ground Slam has a 50% increased angle
 With at least 40 Dexterity in Radius, Burning Arrow has a 10% chance to spread Tar if it does not Ignite an Enemy
-Hits have +160% additional Critical Stike Chance against you
+Hits have 160% increased Critical Strike Chance against you
 With at least 40 Strength in Radius, 20% increased Rarity of Items dropped by Enemies Shattered by Glacial Hammer
 With at least 40 Dexterity in Radius, each Spectral Throw Projectile gains 5% increased Damage each time it Hits
 With at least 40 Dexterity in Radius, Barrage fires an additional 2 projectiles simultaneously on the first and final attacks
@@ -221,6 +221,10 @@ Gains an additional Stage when Hitting a Rare or Unique Enemy
 +6 to radius of Consecrated Ground
 You and nearby allies have a 10% chance to create Consecrated Ground on Hitting a Rare or Unique Enemy, lasting 8 seconds
 Supported Skills gain Intensity when used, up to a maximum of 4 Supported Skills lose Intensity every 0.25 seconds while moving, or immediately if you teleport
+50% increased angle while in Sand Stance
+Buff grants 20% increased Movement Speed
+This Skill's Cooldown does not recover during its effect
+Orbs jump every 0.4 seconds
 // passive skills: =====================================================================================================
 10% Chance for Traps to Trigger an additional time
 Share Endurance, Frenzy and Power Charges with nearby party members

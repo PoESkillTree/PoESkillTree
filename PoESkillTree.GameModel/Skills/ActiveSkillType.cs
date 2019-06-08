@@ -20,6 +20,7 @@
         public const string Melee = "melee";
         public const string Totem = "totem";
         public const string Curse = "curse";
+        public const string Physical = "physical";
         public const string Fire = "fire";
         public const string Cold = "cold";
         public const string Lightning = "lightning";

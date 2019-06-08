@@ -82,33 +82,6 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 IsMainSkill("IceSpear", 3)
             },
 
-            {
-                TotalOverride, MetaStats.SkillNumberOfHitsPerCast, Projectile.Count.Value,
-                IsMainSkill("LancingSteel", 2)
-            },
-            // With the Primary and all Secondary Projectiles hitting, the Impale chance has to be adjusted
-            // to be averaged across all hits.
-            // The Primary Projectile has 100% Impale chance and is thus not affected by additional Impale chance
-            // Derivation of the BaseAdd and PercentLess modifiers: (chances are between 0 and 1)
-            //     Total chance = primary chance * 1/hits + secondary chance * (hits-1)/hits
-            // <=> Total = primary * 1/hits + secondary * (hits-1)/hits
-            // <=> Total = 1/hits + secondary * (hits-1)/hits                       (primary chance is 1)
-            // <=> Total = (1/hits * hits/(hits-1) + secondary) * (hits-1)/hits
-            // <=> Total = (1/(hits-1) + secondary) * (hits-1)/hits
-            // With x = 1/(hits-1) and y = (hits-1)/hits we get
-            //     Total = (x + secondary) * y
-            // With x = 1/(hits-1) as a BaseAdd modifier (after multiplying by 100 to get a 0 to 100 based value),
-            // 1 - y = 1/hits as a PercentLess modifier (after multiplying by 100) and
-            // secondary simply being the sum of all parsed Impale chance modifiers, Total is calculated correctly.
-            {
-                BaseAdd, Buff.Impale.Chance.WithCondition(Hit.On), 100 / (MetaStats.SkillNumberOfHitsPerCast.Value - 1),
-                IsMainSkill("LancingSteel", 2)
-            },
-            {
-                PercentLess, Buff.Impale.Chance.WithCondition(Hit.On), 100 / MetaStats.SkillNumberOfHitsPerCast.Value,
-                IsMainSkill("LancingSteel", 2)
-            },
-
             { TotalOverride, Skills.FromId("PuresteelBanner").Reservation, 0, Flag.IsBannerPlanted },
 
             {

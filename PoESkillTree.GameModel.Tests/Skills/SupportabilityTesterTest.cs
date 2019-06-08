@@ -136,7 +136,7 @@ namespace PoESkillTree.GameModel.Skills
         [TestCase("aura", "curse_skill", ExpectedResult = true)]
         [TestCase("aura", "unknown_78", ExpectedResult = true)]
         [TestCase("curse_skill", ExpectedResult = false)]
-        public bool BooleanActiveSkillTypesAreEvaluatedCorrectly(params string[] types)
+        public bool BooleanActiveSkillTypesAreEvaluatedCorrectlyInAllowedTypes(params string[] types)
         {
             var skills = new[]
             {
@@ -157,6 +157,40 @@ namespace PoESkillTree.GameModel.Skills
                     },
                     new[] { "totem", },
                     new[] { "duration", "unknown_78" }),
+            };
+            var activeSkill = new Skill("activeBoolean", 20, 20, default, 0, 0);
+            var supportSkill = new Skill("SupportAuraDuration", 20, 20, default, 1, 0);
+            var sut = new SupportabilityTester(new SkillDefinitions(skills));
+
+            var actual = sut.SelectSupportingSkills(activeSkill, new[] { supportSkill }).ToList();
+
+            return actual.Contains(supportSkill);
+        }
+
+        [TestCase("aura", ExpectedResult = true)]
+        [TestCase("aura", "totem", ExpectedResult = false)]
+        [TestCase("aura", "curse_skill", ExpectedResult = true)]
+        [TestCase("aura", "aura_debuff", "curse_skill", ExpectedResult = true)]
+        [TestCase("aura", "aura_debuff", ExpectedResult = false)]
+        public bool BooleanActiveSkillTypesAreEvaluatedCorrectlyInExcludedTypes(params string[] types)
+        {
+            var skills = new[]
+            {
+                SkillDefinition.CreateActive("activeBoolean", 100, "", null, null,
+                    new ActiveSkillDefinition("activeBoolean", 0, types, new string[0], null, null, false, null,
+                        null), null),
+                CreateSupportDefinition("SupportAuraDuration", 22, false,
+                    new[] { "aura", },
+                    new[]
+                    {
+                        "totem",
+                        "unknown_72",
+                        "aura_debuff",
+                        "curse_skill",
+                        "boolean_not",
+                        "boolean_and",
+                    },
+                    new string[0]),
             };
             var activeSkill = new Skill("activeBoolean", 20, 20, default, 0, 0);
             var supportSkill = new Skill("SupportAuraDuration", 20, 20, default, 1, 0);

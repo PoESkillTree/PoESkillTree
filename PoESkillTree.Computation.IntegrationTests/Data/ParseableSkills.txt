@@ -111,7 +111,6 @@ MirrorArrow
 MoltenShell
 MoltenStrike
 NewPhaseRun
-NewShieldCharge
 OrbOfStorms
 PhysCascadeTrap
 PlayerMelee

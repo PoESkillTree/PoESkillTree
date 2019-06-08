@@ -408,8 +408,6 @@ namespace PoESkillTree.GameModel.Skills
                 ("Primary Projectile", new SkillPartDefinitionExtension(
                     ReplaceStat("primary_projectile_impale_chance_%", "attacks_impale_on_hit_%_chance"))),
                 ("Secondary Projectile", new SkillPartDefinitionExtension(
-                    RemoveStat("primary_projectile_impale_chance_%"))),
-                ("All Projectiles", new SkillPartDefinitionExtension(
                     RemoveStat("primary_projectile_impale_chance_%")))
             },
             {
@@ -644,15 +642,16 @@ namespace PoESkillTree.GameModel.Skills
             {
                 "WarlordsMark",
                 new SkillPartDefinitionExtension(
-                    ReplaceStat("life_leech_on_any_damage_when_hit_permyriad", "life_leech_from_any_damage_permyriad")
-                        .AndThen(ReplaceStat("mana_leech_on_any_damage_when_hit_permyriad",
-                            "mana_leech_from_any_damage_permyriad"))
+                    ReplaceStat("life_leech_on_any_damage_when_hit_by_attack_permyriad",
+                            "base_life_leech_from_attack_damage_permyriad")
+                        .AndThen(ReplaceStat("mana_leech_on_any_damage_when_hit_by_attack_permyriad",
+                            "base_mana_leech_from_attack_damage_permyriad"))
                         .AndThen(ReplaceStat("chance_to_grant_endurance_charge_on_death_%",
                             "endurance_charge_on_kill_%"))),
                 Buff(("chance_to_be_stunned_%", new[] { Entity.Enemy }),
                     ("base_stun_recovery_+%", new[] { Entity.Enemy }),
-                    ("life_leech_from_any_damage_permyriad", AuraEntities),
-                    ("mana_leech_from_any_damage_permyriad", AuraEntities),
+                    ("base_life_leech_from_attack_damage_permyriad", AuraEntities),
+                    ("base_mana_leech_from_attack_damage_permyriad", AuraEntities),
                     ("endurance_charge_on_kill_%", AuraEntities))
             },
             {
@@ -787,11 +786,9 @@ namespace PoESkillTree.GameModel.Skills
         private static (string name, SkillPartDefinitionExtension extension)[] EarthquakeParts
             => new[]
             {
-                ("Initial Hit", new SkillPartDefinitionExtension(
-                    RemoveStat("quake_slam_fully_charged_explosion_damage_+%_final"))),
+                ("Initial Hit", new SkillPartDefinitionExtension()),
                 ("Aftershock", new SkillPartDefinitionExtension(
-                    AddStat("base_skill_show_average_damage_instead_of_dps", 1),
-                    ReplaceStat("quake_slam_fully_charged_explosion_damage_+%_final", "damage_+%_final")))
+                    AddStat("base_skill_show_average_damage_instead_of_dps", 1)))
             };
 
         private static SkillPartDefinitionExtension IceSpearFirstFormExtension

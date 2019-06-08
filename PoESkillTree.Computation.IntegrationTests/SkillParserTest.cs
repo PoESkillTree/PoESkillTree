@@ -97,13 +97,13 @@ namespace PoESkillTree.Computation.IntegrationTests
                     ("Boots.0.Type.mirage_archer_supportable", Form.TotalOverride, 1, global, false),
                     ("Boots.0.Type.projectile", Form.TotalOverride, 1, global, false),
                     ("Boots.0.Type.volley_supportable", Form.TotalOverride, 1, global, false),
-                    ("Boots.0.Type.ranged_attack_totem_supportable", Form.TotalOverride, 1, global, false),
+                    ("Boots.0.Type.totem_supportable", Form.TotalOverride, 1, global, false),
                     ("Boots.0.Type.trap_supportable", Form.TotalOverride, 1, global, false),
                     ("Boots.0.Type.remote_mine_supportable", Form.TotalOverride, 1, global, false),
                     ("Boots.0.Type.melee_single_target_initial_hit", Form.TotalOverride, 1, global, false),
                     ("Boots.0.Type.multistrike_supportable", Form.TotalOverride, 1, global, false),
                     ("Boots.0.Type.melee", Form.TotalOverride, 1, global, false),
-                    ("Boots.0.Type.castable_by_maloneys_mechanism", Form.TotalOverride, 1, global, false),
+                    ("Boots.0.Type.triggerable", Form.TotalOverride, 1, global, false),
                     ("DamageBaseAddEffectiveness", Form.TotalOverride, levelDefinition.DamageEffectiveness, global,
                         true),
                     ("DamageBaseSetEffectiveness", Form.TotalOverride, levelDefinition.DamageMultiplier, global, true),
@@ -119,43 +119,19 @@ namespace PoESkillTree.Computation.IntegrationTests
                         global, true),
                     ("CastRate.Attack.OffHand.Skill", Form.Increase, levelDefinition.QualityStats[0].Value * 20 / 1000,
                         global, true),
-                    ("Physical.Damage.Attack.MainHand.Skill", Form.Increase, levelDefinition.Stats[1].Value * 3, global,
+                    ("Physical.Damage.Attack.MainHand.Skill", Form.More, levelDefinition.Stats[1].Value * 3, global,
                         true),
-                    ("Physical.Damage.Attack.OffHand.Skill", Form.Increase, levelDefinition.Stats[1].Value * 3, global,
+                    ("Physical.Damage.Attack.OffHand.Skill", Form.More, levelDefinition.Stats[1].Value * 3, global,
                         true),
-                    ("Physical.Damage.Spell.Skill", Form.Increase, levelDefinition.Stats[1].Value * 3, global,
+                    ("Physical.Damage.Spell.Skill", Form.More, null, global,
                         true),
-                    ("Physical.Damage.Secondary.Skill", Form.Increase, levelDefinition.Stats[1].Value * 3, global,
+                    ("Physical.Damage.Secondary.Skill", Form.More, null, global,
                         true),
-                    ("Physical.Damage.OverTime.Skill", Form.Increase, levelDefinition.Stats[1].Value * 3, global,
+                    ("Physical.Damage.OverTime.Skill", Form.More, null, global,
                         true),
-                    ("Physical.Damage.Attack.MainHand.Ignite", Form.Increase, levelDefinition.Stats[1].Value * 3,
-                        global, true),
-                    ("Physical.Damage.Attack.MainHand.Bleed", Form.Increase, levelDefinition.Stats[1].Value * 3, global,
+                    ("CastRate.Attack.MainHand.Skill", Form.More, levelDefinition.Stats[1].Value * 3, global,
                         true),
-                    ("Physical.Damage.Attack.MainHand.Poison", Form.Increase, levelDefinition.Stats[1].Value * 3,
-                        global, true),
-                    ("Physical.Damage.Attack.OffHand.Ignite", Form.Increase, levelDefinition.Stats[1].Value * 3, global,
-                        true),
-                    ("Physical.Damage.Attack.OffHand.Bleed", Form.Increase, levelDefinition.Stats[1].Value * 3, global,
-                        true),
-                    ("Physical.Damage.Attack.OffHand.Poison", Form.Increase, levelDefinition.Stats[1].Value * 3, global,
-                        true),
-                    ("Physical.Damage.Spell.Ignite", Form.Increase, levelDefinition.Stats[1].Value * 3, global,
-                        true),
-                    ("Physical.Damage.Spell.Bleed", Form.Increase, levelDefinition.Stats[1].Value * 3, global,
-                        true),
-                    ("Physical.Damage.Spell.Poison", Form.Increase, levelDefinition.Stats[1].Value * 3, global,
-                        true),
-                    ("Physical.Damage.Secondary.Ignite", Form.Increase, levelDefinition.Stats[1].Value * 3, global,
-                        true),
-                    ("Physical.Damage.Secondary.Bleed", Form.Increase, levelDefinition.Stats[1].Value * 3, global,
-                        true),
-                    ("Physical.Damage.Secondary.Poison", Form.Increase, levelDefinition.Stats[1].Value * 3, global,
-                        true),
-                    ("CastRate.Attack.MainHand.Skill", Form.Increase, levelDefinition.Stats[1].Value * 3, global,
-                        true),
-                    ("CastRate.Attack.OffHand.Skill", Form.Increase, levelDefinition.Stats[1].Value * 3, global, true),
+                    ("CastRate.Attack.OffHand.Skill", Form.More, levelDefinition.Stats[1].Value * 3, global, true),
                     ("Range.Attack.MainHand.Skill", Form.BaseAdd, null, global, true),
                     ("Range.Attack.OffHand.Skill", Form.BaseAdd, null, global, true),
                 }.Select(t => (t.stat, t.form, (NodeValue?) t.value, t.source, t.mainSkillOnly)).ToArray();
@@ -278,25 +254,24 @@ namespace PoESkillTree.Computation.IntegrationTests
             {
                 var expected = expectedModifiers[i];
                 var actual = modifiers[i];
-                Assert.That(actual.Stats, Has.One.Items);
-                Assert.AreEqual(expected.stat, actual.Stats[0].Identity);
-                Assert.AreEqual(Entity.Character, actual.Stats[0].Entity);
-                Assert.AreEqual(expected.form, actual.Form);
-                Assert.AreEqual(expected.source, actual.Source);
+                Assert.AreEqual(expected.stat, actual.Stats[0].Identity, expected.ToString());
+                Assert.AreEqual(Entity.Character, actual.Stats[0].Entity, expected.ToString());
+                Assert.AreEqual(expected.form, actual.Form, expected.ToString());
+                Assert.AreEqual(expected.source, actual.Source, expected.ToString());
 
                 contextMock
                     .Setup(c => c.GetValue(isMainSkillStat, NodeType.Total, PathDefinition.MainPath))
                     .Returns((NodeValue?) true);
                 var expectedValue = expected.value;
                 var actualValue = actual.Value.Calculate(contextMock.Object);
-                Assert.AreEqual(expectedValue, actualValue);
+                Assert.AreEqual(expectedValue, actualValue, expected.ToString());
 
                 contextMock
                     .Setup(c => c.GetValue(isMainSkillStat, NodeType.Total, PathDefinition.MainPath))
                     .Returns((NodeValue?) false);
                 expectedValue = expected.mainSkillOnly ? null : expected.value;
                 actualValue = actual.Value.Calculate(contextMock.Object);
-                Assert.AreEqual(expectedValue, actualValue);
+                Assert.AreEqual(expectedValue, actualValue, expected.ToString());
             }
             Assert.AreEqual(expectedModifiers.Length, modifiers.Count);
         }

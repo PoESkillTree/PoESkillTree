@@ -107,7 +107,7 @@ namespace PoESkillTree.GameModel.Skills
         Bow,
 
         /// <summary>
-        /// Never set.
+        /// Equivalent to the ActiveSkillType.
         /// </summary>
         Physical,
 
@@ -172,7 +172,7 @@ namespace PoESkillTree.GameModel.Skills
                 { Keyword.Offering, (name, _, __) => name.EndsWith("Offering") },
                 { Keyword.CounterAttack, (_, types, __) => types.Contains(ActiveSkillType.TriggerAttack) },
                 { Keyword.Bow, (_, __, tags) => tags.Contains("bow") },
-                { Keyword.Physical, (_, ___, __) => false },
+                { Keyword.Physical, (_, types, __) => types.Contains(ActiveSkillType.Physical) },
                 { Keyword.Lightning, (_, types, __) => types.Contains(ActiveSkillType.Lightning) },
                 { Keyword.Cold, (_, types, __) => types.Contains(ActiveSkillType.Cold) },
                 { Keyword.Fire, (_, types, __) => types.Contains(ActiveSkillType.Fire) },

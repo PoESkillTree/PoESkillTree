@@ -1,11 +1,16 @@
 ﻿// TODO not handled yet
 // Require 3.7.0 gem data
+// - guard skills
 +250 to Armour while affected by a Guard Skill Buff
 0.5% of Maximum Life Regenerated per second while affected by a Guard Skill Buff
 4% additional Physical Damage Reduction while affected by a Guard Skill Buff
 Guard Skills have 15% increased Cooldown Recovery Speed
+// - Blood / Sand Stance
 25% chance to gain a Challenger Charge when you Hit a Rare or Unique Enemy while in Blood Stance
 Gain a Challenger Charge when you Kill an Enemy while in Sand Stance
+88% more Damage with Bleeding while in Blood Stance
+25% chance to cause Bleeding while in Blood Stance
+// - ancestor skills
 50% increased Effect of Buffs granted by your Active Ancestor Totems
 // Requires not yet implemented stats
 // - Stat that modifies Mana.Cost(Total). Could be done via behavior.
@@ -196,4 +201,5 @@ Single-target Melee attacks deal Splash Damage to surrounding targets
 50% less Damage to surrounding targets
 Supported Skills deal Splash Damage to surrounding targets
 Supported Skills deal 26% less Damage to surrounding targets
+Supported Skills deal 41% less Damage to surrounding targets
 Supported Skills have 57% more Melee Splash Area of Effect

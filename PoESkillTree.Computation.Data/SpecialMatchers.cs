@@ -99,6 +99,11 @@ namespace PoESkillTree.Computation.Data
                     "gain #% of maximum ({PoolStatMatchers}) as extra maximum energy shield",
                     BaseAdd, Value, Reference.AsPoolStat.ConvertTo(EnergyShield)
                 },
+                {
+                    "(your )?damaging hits always stun enemies that are on full life",
+                    TotalOverride, 100, Effect.Stun.Chance,
+                    Action.Unique("On damaging Hit against a full life Enemy").On
+                },
                 // Jewels
                 {
                     "primordial",
@@ -266,6 +271,11 @@ namespace PoESkillTree.Computation.Data
                     @"totems and minions summoned by supported skills have \+#% ({DamageTypeMatchers}) resistance",
                     BaseAdd, Value, Reference.AsDamageType.Resistance.For(Entity.Minion),
                     Reference.AsDamageType.Resistance.For(Entity.Totem)
+                },
+                {
+                    // Multistrike Support
+                    "(first|second) repeat of supported skills deals #% more damage",
+                    PercentMore, Value / 3, Damage
                 },
                 {
                     // Unleash Support
@@ -516,11 +526,6 @@ namespace PoESkillTree.Computation.Data
                         Or(Skills.FromId("PuresteelBanner").Buff.IsOn(Entity.Totem), Skills.FromId("BloodstainedBanner").Buff.IsOn(Entity.Totem)))
                 },
                 // - Slayer
-                {
-                    "your damaging hits always stun enemies that are on full life",
-                    TotalOverride, 100, Effect.Stun.Chance,
-                    Action.Unique("On damaging Hit against a full life Enemy").On
-                },
                 { "cannot take reflected physical damage", PercentLess, 100, Physical.ReflectedDamageTaken },
                 {
                     "base critical strike chance for attacks with weapons is #%",

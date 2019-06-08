@@ -117,6 +117,7 @@ namespace PoESkillTree.Computation.Data
                 // - crit
                 { "(global )?critical strike multiplier", CriticalStrike.Multiplier.WithSkills },
                 { "(global )?critical strike chance", CriticalStrike.Chance },
+                { "attack critical strike chance", CriticalStrike.Chance.With(DamageSource.Attack) },
                 {
                     "({KeywordMatchers}) critical strike multiplier",
                     CriticalStrike.Multiplier.WithSkills.With(Reference.AsKeyword)
