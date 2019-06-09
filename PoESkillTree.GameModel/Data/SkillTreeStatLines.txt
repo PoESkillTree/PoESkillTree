@@ -329,7 +329,7 @@ Gain 5% of Physical Damage as Extra Fire Damage
 24% increased Fire Damage with Attack Skills
 10% increased Attack Speed
 30% increased Projectile Damage
-50% more Accuracy Rating
+50% more Global Accuracy Rating
 100% increased Blink Arrow and Mirror Arrow Cooldown Recovery Speed
 +30 to Strength
 10% increased Area of Effect while wielding a Staff
@@ -1457,10 +1457,11 @@ Nearby Hindered Enemies deal 15% reduced Damage over Time
 Attack Skills deal 12% increased Damage with Ailments while holding a Shield
 Minions have 4% increased Attack Speed
 Minions have 4% increased Cast Speed
-25% increased Physical Damage with Swords
-10% increased Attack Speed with Swords
+20% increased Physical Damage with Swords
+8% increased Attack Speed with Swords
 +200 to Accuracy Rating with Swords
-25% increased Damage with Ailments from Attack Skills while wielding a Sword
+20% increased Damage with Ailments from Attack Skills while wielding a Sword
++1 to Melee range with Swords
 +1 to Maximum Power Charges
 +2% Chance to Block Attack Damage while Dual Wielding
 24% increased Weapon Damage while Dual Wielding
@@ -1671,7 +1672,7 @@ Minions have 4% increased Cast Speed
 3% increased Attack Speed
 +10 to Strength
 12% increased Physical Damage with One Handed Melee Weapons
-0.4% of Attack Damage Leeched as Life
+0.4% of Physical Attack Damage Leeched as Life
 12% increased Damage with Ailments from Attack Skills while wielding a One Handed Weapon
 10% increased Global Accuracy Rating
 +4% to all Elemental Resistances
@@ -2006,7 +2007,7 @@ Bow Attacks have 15% chance to cause Bleeding
 6% increased effect of Non-Curse Auras from your Skills
 10% increased Spell Damage while Dual Wielding
 3% increased Movement Speed
-100% increased Global Accuracy Rating
+50% increased Global Accuracy Rating
 Projectiles Pierce 2 additional Targets
 Moving while Bleeding doesn't cause you to take extra Damage
 Projectiles gain Damage as they travel farther, dealing up to 50% increased Damage with Hits to targets
@@ -2211,7 +2212,7 @@ Cannot Be Stunned while you have Energy Shield
 8% increased Weapon Damage while Dual Wielding
 Attack Skills deal 8% increased Damage with Ailments while Dual Wielding
 12% increased Physical Damage with One Handed Melee Weapons
-0.4% of Attack Damage Leeched as Life
+0.4% of Physical Attack Damage Leeched as Life
 10% increased total Recovery per second from Life Leech
 12% increased Damage with Ailments from Attack Skills while wielding a One Handed Weapon
 20% increased Warcry Buff Effect
@@ -3697,7 +3698,7 @@ Brand Skills have 20% increased Duration
 15% increased Critical Strike Chance
 +10 to Strength
 20% increased Physical Damage with One Handed Melee Weapons
-0.6% of Attack Damage Leeched as Life
+0.6% of Physical Attack Damage Leeched as Life
 10% increased Maximum total Recovery per second from Life Leech
 20% increased Damage with Ailments from Attack Skills while wielding a One Handed Weapon
 20% increased Attack Damage while Leeching
@@ -3776,9 +3777,10 @@ Auras from your Skills grant 0.2% of Maximum Life Regenerated per second to you 
 25% increased Maximum total Recovery per second from Mana Leech
 +2 Mana gained for each Enemy hit by your Attacks
 20% increased total Recovery per second from Mana Leech
-26% increased Damage with Swords
-26% increased Damage with Ailments from Attack Skills while wielding a Sword
-+2 to Melee range with Swords
+24% increased Damage with Swords
+6% increased Attack Speed with Swords
+24% increased Damage with Ailments from Attack Skills while wielding a Sword
++1 to Melee range with Swords
 50% increased Area of Effect of Aura Skills
 6% increased effect of Non-Curse Auras from your Skills
 8% increased maximum Life

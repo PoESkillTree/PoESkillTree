@@ -18,7 +18,7 @@ namespace PoESkillTree.Model.Items.Mods
             // only added by other mods, which is not supported anyway
             "no_attack_mods", "no_caster_mods", "has_physical_conversion_mod", "has_damage_taken_as_mod",
             "specific_weapon", "two_handed_mod", "shield_mod", "dual_wielding_mod", "one_handed_mod", "melee_mod",
-            "grants_crit_chance_support", "local_item_quality",
+            "grants_crit_chance_support", "local_item_quality", "spell_dodge_mod",
             // map crafting is not supported
             "map",
             // no idea where these come from
@@ -76,14 +76,14 @@ namespace PoESkillTree.Model.Items.Mods
         [Test]
         public void JsonMod_LocalIncreasedAccuracy6()
         {
-            var mod = _mods["LocalIncreasedAccuracy6"];
+            var mod = _mods["LocalIncreasedAccuracyNew3"];
 
             Assert.AreEqual(ModDomain.Item, mod.Domain);
             Assert.AreEqual(ModGenerationType.Suffix, mod.GenerationType);
             Assert.AreEqual("IncreasedAccuracy", mod.Group);
             Assert.AreEqual(false, mod.IsEssenceOnly);
-            Assert.AreEqual("of the Marksman", mod.Name);
-            Assert.AreEqual(41, mod.RequiredLevel);
+            Assert.AreEqual("of the Sniper", mod.Name);
+            Assert.AreEqual(40, mod.RequiredLevel);
             Assert.AreEqual(3, mod.SpawnWeights.Length);
             Assert.AreEqual(1, mod.Stats.Length);
 
@@ -99,8 +99,8 @@ namespace PoESkillTree.Model.Items.Mods
 
             var stat = mod.Stats[0];
             Assert.AreEqual("local_accuracy_rating", stat.Id);
-            Assert.AreEqual(200, stat.Max);
-            Assert.AreEqual(166, stat.Min);
+            Assert.AreEqual(325, stat.Max);
+            Assert.AreEqual(216, stat.Min);
         }
 
         // make sure essence mods can't spawn through tags so they need to be handled differently

@@ -30,7 +30,7 @@ namespace PoESkillTree.Computation.IntegrationTests
             var enemyEvasionStat =
                 Build(_builderFactories.StatBuilders.Evasion.For(_builderFactories.EntityBuilders.Enemy)).Single();
             var enemyEvasion = calculator.NodeRepository.GetNode(enemyEvasionStat).Value.Single();
-            return Accuracy / (Accuracy + Math.Pow(enemyEvasion / 4.0, 0.8));
+            return 1.15 * Accuracy / (Accuracy + Math.Pow(enemyEvasion / 4.0, 0.8));
         }
 
         [OneTimeSetUp]

@@ -484,7 +484,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             var accuracy = accuracyStat.Value;
             var evasion = evasionStat.Value;
             var blindMultiplier = ValueFactory.If(isBlinded).Then(0.5).Else(1);
-            return 100 * blindMultiplier * accuracy /
+            return 100 * blindMultiplier * 1.15 * accuracy /
                    (accuracy + (evasion / 4).Select(d => Math.Pow(d, 0.8), v => $"{v}^0.8"));
         }
 
