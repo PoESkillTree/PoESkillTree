@@ -339,6 +339,10 @@ namespace PoESkillTree.Computation.Data
                     BaseAdd, 100, Reference.AsChargeType.ChanceToGain
                 },
                 {
+                    "supported skills grant (an?|1) ({ChargeTypeMatchers})",
+                    BaseAdd, 100, Reference.AsChargeType.ChanceToGain
+                },
+                {
                     "(?<!chance to |when you )gain a power or frenzy charge",
                     BaseAdd, 50, Charge.Power.ChanceToGain, Charge.Frenzy.ChanceToGain
                 },

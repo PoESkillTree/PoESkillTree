@@ -231,6 +231,13 @@ Every third successive strike Freezes enemies as though dealing 390% more Damage
 80% of Damage from Hits is taken from the Buff before your Life or Energy Shield Buff can take Damage equal to 60% of your Armour, up to a maximum of 30000
 Reflects 3000% of Damage taken from Buff as Fire Damage when Buff expires or is depleted
 Reflects 3000% of Damage taken from Buff as Fire Damage each second, or when Buff expires or is depleted
+70% of Damage from Hits is taken from the Buff before your Life or Energy Shield Buff can take 2209 Damage
+Maximum of 3 Bladestorms at a time
+At least 5 Rage required to start Berserking
+Lose 5 Rage per second
+Each second, 20% increased Rage loss Rate
+19% increased Cooldown Recovery Speed for each Normal or Magic Enemy in Area 99% increased Cooldown Recovery Speed for each Rare or Unique Enemy in Area
+Nearby Enemies are Blinded while in Sand Stance You take 14% less Damage from Enemies that aren't nearby while in Sand Stance Nearby Enemies are Maimed while in Blood Stance
 // passive skills: =====================================================================================================
 10% Chance for Traps to Trigger an additional time
 Share Endurance, Frenzy and Power Charges with nearby party members

@@ -194,6 +194,11 @@ namespace PoESkillTree.Computation.Data
                     BaseAdd, Value * Stat.BannerStage.Value, Stat.Duration
                 },
                 {
+                    // Chain Hook
+                    @"shockwave has \+# radius per # rage",
+                    BaseAdd, Values[0] * (Charge.Rage.Amount.Value / Values[1]).Floor(), Stat.Radius
+                },
+                {
                     // Cleave
                     "when dual wielding, deals #% damage from each weapon combined",
                     PercentLess, 100 - Value, Damage, OffHand.Has(Tags.Weapon)
@@ -203,6 +208,12 @@ namespace PoESkillTree.Computation.Data
                     "modifiers to melee attack range also apply to this skill's area radius",
                     BaseAdd, Stat.Range.With(Keyword.Melee).With(AttackDamageHand.MainHand).ValueFor(NodeType.BaseAdd),
                     Stat.Radius
+                },
+                {
+                    // Dash
+                    "this skill's cast speed cannot be modified",
+                    TotalOverride, Stat.CastRate.With(DamageSource.Spell).ValueFor(NodeType.BaseSet),
+                    Stat.CastRate.With(DamageSource.Spell)
                 },
                 {
                     // Freeze Mine

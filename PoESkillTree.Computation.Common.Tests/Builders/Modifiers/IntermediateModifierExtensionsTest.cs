@@ -326,7 +326,7 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
         public void BuildThrowsForLocalTotalOverride()
         {
             var statBuilderResult =
-                new StatBuilderResult(new IStat[0], new ModifierSource.Local.Skill(), Funcs.Identity);
+                new StatBuilderResult(new IStat[0], new ModifierSource.Local.Skill(""), Funcs.Identity);
             var statBuilder = Mock.Of<IStatBuilder>(
                 b => b.Build(It.IsAny<BuildParameters>()) == new[] { statBuilderResult });
             var formBuilderMock = new Mock<IFormBuilder>();

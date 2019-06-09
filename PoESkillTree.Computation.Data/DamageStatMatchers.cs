@@ -110,6 +110,7 @@ namespace PoESkillTree.Computation.Data
                     "physical projectile attack damage",
                     Physical.Damage.WithSkills(DamageSource.Attack).With(Keyword.Projectile)
                 },
+                { "melee area damage", Physical.Damage.With(Keyword.Melee).With(Keyword.AreaOfEffect) },
                 // other entities
                 { "minion damage", Damage.For(Entity.Minion) },
                 { "golem damage", Damage.For(Entity.Minion).With(Keyword.Golem) },

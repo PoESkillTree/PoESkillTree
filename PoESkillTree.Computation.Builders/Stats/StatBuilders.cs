@@ -87,9 +87,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         public ValueBuilder UniqueAmount(string name)
             => FromIdentity(name, typeof(uint), UserSpecifiedValue(0)).Value;
 
-        public ValueBuilder Unique<T>(string name) where T : struct, Enum
-            => FromIdentity(name, typeof(T), UserSpecifiedValue(0)).Value;
-
         public IStatBuilder IndependentMultiplier(string identity)
             => FromIdentity(identity, typeof(uint), IndependentResult(NodeType.Increase));
 
@@ -234,6 +231,19 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IConditionBuilder IsBannerPlanted
             => FromIdentity("Is your Banner planted?", typeof(bool), UserSpecifiedValue(false)).IsSet;
+
+        public IConditionBuilder InBloodStance => StanceValue.Eq((int) Stance.BloodStance);
+        public IConditionBuilder InSandStance => StanceValue.Eq((int) Stance.SandStance);
+
+        private ValueBuilder StanceValue
+            => FromIdentity("Stance", typeof(Stance), UserSpecifiedValue(0)).Value;
+
+        private enum Stance
+        {
+            None,
+            BloodStance,
+            SandStance,
+        }
 
         public IStatBuilder IncreasesToSourceApplyToTarget(IStatBuilder source, IStatBuilder target)
             => new StatBuilder(StatFactory,

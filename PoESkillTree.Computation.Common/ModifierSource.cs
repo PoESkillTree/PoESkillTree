@@ -191,13 +191,14 @@ namespace PoESkillTree.Computation.Common
 
             public sealed class Skill : Local
             {
-                public Skill(string skillId, string displayName) : base(new Skill(), displayName)
+                public Skill(string skillId, string displayName) : base(new Skill(skillId), displayName)
                 {
                     SkillId = skillId;
                 }
 
-                public Skill()
+                public Skill(string skillId)
                 {
+                    SkillId = skillId;
                 }
 
                 public string SkillId { get; }

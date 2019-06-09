@@ -20,5 +20,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
 
         IConditionBuilder IsBrandAttachedToEnemy { get; }
         IConditionBuilder IsBannerPlanted { get; }
+        IConditionBuilder InBloodStance { get; }
+        IConditionBuilder InSandStance { get; }
     }
 }

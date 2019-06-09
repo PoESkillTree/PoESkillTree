@@ -1,4 +1,5 @@
 ﻿AbyssalCry
+AccuracyAndCritsAura
 AncestorTotemSlam
 Anger
 Arc
@@ -6,15 +7,21 @@ ArcticBreath
 BallLightning
 Barrage
 BearTrap
+Berserk
 BladeVortex
 Bladefall
+Bladestorm
 BlastRain
+BloodSandArmour
+BloodSandStance
+BloodSpears
 BloodstainedBanner
 Blight
 BlinkArrow
 BoneLance
 BurningArrow
 CataclysmSigil
+ChainStrike
 ChargedAttack
 ChargedDash
 Clarity
@@ -90,6 +97,7 @@ HeraldOfAsh
 HeraldOfIce
 HeraldOfThunder
 IceCrash
+IceDash
 IceNova
 IceShot
 IceSpear
@@ -113,6 +121,7 @@ MoltenStrike
 NewPhaseRun
 OrbOfStorms
 PhysCascadeTrap
+PhysicalDamageAura
 PlayerMelee
 PoachersMark
 PoisonArrow
@@ -124,6 +133,8 @@ Punishment
 PuresteelBanner
 Purge
 Purity
+QuickDodge
+QuickGuard
 RainOfArrows
 RainOfSpores
 RallyingCry
@@ -204,6 +215,7 @@ SupportHandcastAnticipation
 SupportHandcastSpellBoost
 SupportIgniteProliferation
 SupportImmolation
+SupportImpale
 SupportIncreasedAreaOfEffect
 SupportIncreasedBurningDamage
 SupportIncreasedCriticalDamage
@@ -240,6 +252,8 @@ SupportPierce
 SupportPointBlank
 SupportPoison
 SupportPowerChargeOnCrit
+SupportPulverise
+SupportRage
 SupportRangedAttackTotem
 SupportRapidDecay
 SupportReducedDuration

@@ -71,7 +71,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
         {
             var expected = new NodeValue(42);
             var unrelatedStat = new Stat("a");
-            var paths = new[] { new PathDefinition(new ModifierSource.Local.Skill()), };
+            var paths = new[] { new PathDefinition(new ModifierSource.Local.Skill("")), };
             var transformedValue = new FunctionalValue(c => c.GetValues(unrelatedStat, NodeType.PathTotal).Sum(), "");
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetPaths(unrelatedStat) == paths &&

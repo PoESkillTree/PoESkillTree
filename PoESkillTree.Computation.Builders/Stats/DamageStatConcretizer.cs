@@ -85,7 +85,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public DamageStatConcretizer NotDamageRelated() => With(_specificationBuilder);
 
         public DamageStatConcretizer With(Func<IDamageSpecification, IConditionBuilder> condition) =>
-            WithCanApply(_specificationBuilder, condition: condition);
+            WithCanApply(_specificationBuilder, condition: spec => _condition(spec).And(condition(spec)));
 
         public DamageStatConcretizer Resolve(ResolveContext context) =>
             WithCanApply(_specificationBuilder.Resolve(context),

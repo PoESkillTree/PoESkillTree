@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Equipment;
@@ -48,7 +49,10 @@ namespace PoESkillTree.Computation.Data
                     "(gain )?for # seconds when you ({ActionMatchers}) a unique enemy",
                     And(Enemy.IsUnique, Reference.AsAction.InPastXSeconds(Value))
                 },
-                { "(gain )?for # seconds when you ({ActionMatchers}) an enemy", Reference.AsAction.InPastXSeconds(Value) },
+                {
+                    "(gain )?for # seconds when you ({ActionMatchers}) an enemy",
+                    Reference.AsAction.InPastXSeconds(Value)
+                },
                 { "when you ({ActionMatchers}) an enemy, for # seconds", Reference.AsAction.InPastXSeconds(Value) },
                 { "for # seconds when ({ActionMatchers})", Reference.AsAction.By(Enemy).InPastXSeconds(Value) },
                 // - kill
@@ -310,6 +314,19 @@ namespace PoESkillTree.Computation.Data
                 // - other
                 { "to enemies they're attached to", Flag.IsBrandAttachedToEnemy },
                 { "to branded enemy", Flag.IsBrandAttachedToEnemy },
+                {
+                    "while you're in a blood bladestorm",
+                    And(Flag.InBloodStance, Condition.Unique("Are you in a Bladestorm?"))
+                },
+                {
+                    "sand bladestorms grant to you",
+                    And(Flag.InSandStance, Condition.Unique("Are you in a Bladestorm?"))
+                },
+                {
+                    "enemies maimed by this skill",
+                    And(Condition.ModifierSourceIs(new ModifierSource.Local.Skill("BloodSandArmour")),
+                        Buff.Maim.IsOn(Enemy), Flag.InBloodStance, For(Enemy))
+                },
                 // traps and mines
                 { "with traps", With(Keyword.Trap) },
                 { "skills used by traps have", With(Keyword.Trap) },
@@ -360,8 +377,8 @@ namespace PoESkillTree.Computation.Data
                 { "templar:", PassiveTree.ConnectsToClass(CharacterClass.Templar).IsSet },
                 { "scion:", PassiveTree.ConnectsToClass(CharacterClass.Scion).IsSet },
                 // stance
-                { "while in blood stance", Stat.Unique<Stance>("Stance").Eq((int) Stance.BloodStance) },
-                { "while in sand stance", Stat.Unique<Stance>("Stance").Eq((int) Stance.SandStance) },
+                { "(while )?in blood stance", Flag.InBloodStance },
+                { "(while )?in sand stance", Flag.InSandStance },
                 // other
                 { "enemies have", For(Enemy) },
                 { "against targets they pierce", Projectile.PierceCount.Value >= 1 },
@@ -394,12 +411,5 @@ namespace PoESkillTree.Computation.Data
                 { "supported attack skills deal", Condition.True },
                 { "of supported curse skills", Condition.True },
             };
-
-        private enum Stance
-        {
-            None,
-            BloodStance,
-            SandStance,
-        }
     }
 }

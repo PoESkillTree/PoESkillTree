@@ -44,6 +44,15 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 IsMainSkill("Barrage", 1)
             },
 
+            {
+                TotalOverride, Buff.Blind.On(Enemy), 1,
+                And(Skills.FromId("BloodSandArmour").Buff.IsOn(Enemy), Flag.InSandStance)
+            },
+            {
+                TotalOverride, Buff.Maim.On(Enemy), 1,
+                And(Skills.FromId("BloodSandArmour").Buff.IsOn(Enemy), Flag.InBloodStance)
+            },
+
             { TotalOverride, Skills[Keyword.Banner].Reservation, 0, Flag.IsBannerPlanted },
 
             { TotalOverride, Fire.Invert.Damage, 0, IsMainSkill("ElementalHit", 0) },

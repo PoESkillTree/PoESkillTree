@@ -143,8 +143,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// </summary>
         ValueBuilder UniqueAmount(string name);
 
-        ValueBuilder Unique<T>(string name) where T: struct, System.Enum;
-
         IStatBuilder IndependentMultiplier(string identity);
         IStatBuilder IndependentTotal(string identity);
 

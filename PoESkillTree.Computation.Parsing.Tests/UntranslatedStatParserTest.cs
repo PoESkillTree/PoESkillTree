@@ -21,7 +21,7 @@ namespace PoESkillTree.Computation.Parsing
             var modifierLines = new[] { "a1", "b2" };
             var statTranslatorResult = new StatTranslatorResult(modifierLines, new UntranslatedStat[0]);
             var translator = Mock.Of<IStatTranslator>(t => t.Translate(untranslatedStats) == statTranslatorResult);
-            var localSource = new ModifierSource.Local.Skill();
+            var localSource = new ModifierSource.Local.Skill("");
             var globalSource = new ModifierSource.Global(localSource);
             var coreParserParameters = new[]
             {

@@ -64,6 +64,7 @@ namespace PoESkillTree.Computation.Data
                         And(ModifierSourceIs(ItemSlot.OffHand), OffHandAttack, Hit.On, Buff.Blind.IsOn(Enemy)))
                 },
                 { "on hit no more than once every # seconds", Hit.On },
+                { "on melee hit, no more than once every # seconds", And(Condition.WithPart(Keyword.Melee), Hit.On) },
                 // critical strike
                 { "critical strikes have a", CriticalStrike.On },
                 { "when you deal a critical strike", CriticalStrike.On },
@@ -106,6 +107,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "on use", Action.Unique("When you use the Flask").On },
                 { "when you use a flask", Action.Unique("When you use any Flask").On },
+                { "if this skill hits any enemies", Action.Unique("When your active skill hits any enemies").On },
                 { "when you gain Adrenaline", Action.Unique("When you gain Adrenaline").On },
                 { "when you block attack damage", Action.Unique("Block.Attack").On },
                 { "when you block spell damage", Action.Unique("Block.Spell").On },

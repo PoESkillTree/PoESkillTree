@@ -411,39 +411,39 @@
   },
   {
     "English": [
-	  {
-	    "condition": [
-		  {
-			"min": 1
-		  }
-	    ],
-	    "format": [
-		  "#"
-	    ],
-	    "index_handlers": [
-		  []
-	    ],
-	    "string": "{0}% more Damage if Rare or Unique"
-	  },
-	  {
-	    "condition": [
-		  {
-			"max": -1
-		  }
-	    ],
-	    "format": [
-		  "#"
-	    ],
-	    "index_handlers": [
-		  [
-			"negate"
-		  ]
-	    ],
-	    "string": "{0}% less Damage if Rare or Unique"
-	  }
+      {
+        "condition": [
+          {
+            "min": 1
+          }
+        ],
+        "format": [
+          "#"
+        ],
+        "index_handlers": [
+          []
+        ],
+        "string": "{0}% more Damage if Rare or Unique"
+      },
+      {
+        "condition": [
+          {
+            "max": -1
+          }
+        ],
+        "format": [
+          "#"
+        ],
+        "index_handlers": [
+          [
+            "negate"
+          ]
+        ],
+        "string": "{0}% less Damage if Rare or Unique"
+      }
     ],
     "ids": [
-	  "damage_+%_vs_rare_or_unique_final"
+      "damage_+%_vs_rare_or_unique_final"
     ]
   },
   {
@@ -485,39 +485,39 @@
   },
   {
     "English": [
-	  {
-	    "condition": [
-		  {
-			"min": 1
-		  }
-	    ],
-	    "format": [
-		  "#"
-	    ],
-	    "index_handlers": [
-		  []
-	    ],
-	    "string": "{0}% more Action Speed if Rare or Unique"
-	  },
-	  {
-	    "condition": [
-		  {
-			"max": -1
-		  }
-	    ],
-	    "format": [
-		  "#"
-	    ],
-	    "index_handlers": [
-		  [
-			"negate"
-		  ]
-	    ],
-	    "string": "{0}% less Action Speed if Rare or Unique"
-	  }
+      {
+        "condition": [
+          {
+            "min": 1
+          }
+        ],
+        "format": [
+          "#"
+        ],
+        "index_handlers": [
+          []
+        ],
+        "string": "{0}% more Action Speed if Rare or Unique"
+      },
+      {
+        "condition": [
+          {
+            "max": -1
+          }
+        ],
+        "format": [
+          "#"
+        ],
+        "index_handlers": [
+          [
+            "negate"
+          ]
+        ],
+        "string": "{0}% less Action Speed if Rare or Unique"
+      }
     ],
     "ids": [
-	  "action_speed_+%_vs_rare_or_unique_final"
+      "action_speed_+%_vs_rare_or_unique_final"
     ]
   },
   {
@@ -649,6 +649,43 @@
     ],
     "ids": [
       "spell_damage_+%_final"
+    ]
+  },
+  {
+    "English": [
+      {
+        "condition": [
+          {
+            "min": 1
+          }
+        ],
+        "format": [
+          "#"
+        ],
+        "index_handlers": [
+          []
+        ],
+        "string": "{0}% more Physical Damage taken"
+      },
+      {
+        "condition": [
+          {
+            "max": -1
+          }
+        ],
+        "format": [
+          "#"
+        ],
+        "index_handlers": [
+          [
+            "negate"
+          ]
+        ],
+        "string": "{0}% less Physical Damage taken"
+      }
+    ],
+    "ids": [
+      "physical_damage_taken_+%_final"
     ]
   }
 ]

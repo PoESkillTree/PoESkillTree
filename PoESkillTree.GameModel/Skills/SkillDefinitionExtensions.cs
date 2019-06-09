@@ -37,6 +37,10 @@ namespace PoESkillTree.GameModel.Skills
                     "abyssal_cry_movement_velocity_+%_per_one_hundred_nearby_enemies")
             },
             {
+                "AccuracyAndCritsAura", // Precision
+                Aura("accuracy_rating", "critical_strike_chance_+%")
+            },
+            {
                 "AncestorTotemSlam", // Ancestral Warchief
                 new SkillPartDefinitionExtension(
                     ReplaceStat("slam_ancestor_totem_grant_owner_melee_damage_+%_final", "melee_damage_+%_final")),
@@ -85,6 +89,22 @@ namespace PoESkillTree.GameModel.Skills
                 EnemyBuff("bear_trap_damage_taken_+%_from_traps_and_mines")
             },
             {
+                "Berserk",
+                SelfBuff("berserk_attack_damage_+%_final",
+                    "berserk_attack_speed_+%_final",
+                    "berserk_movement_speed_+%_final",
+                    "berserk_base_damage_taken_+%_final",
+                    "base_actor_scale_+%")
+            },
+            {
+                "Bladestorm",
+                SelfBuff("bladestorm_attack_speed_+%_final_while_in_bloodstorm",
+                    "bladestorm_movement_speed_+%_while_in_sandstorm"),
+                ("Attack", new SkillPartDefinitionExtension(RemoveStat("bladestorm_storm_damage_+%_final"))),
+                ("Bladestorm", new SkillPartDefinitionExtension(
+                    ReplaceStat("bladestorm_storm_damage_+%_final", "damage_+%_final")))
+            },
+            {
                 "BladeVortex",
                 new SkillPartDefinitionExtension(
                     RemoveStat("base_skill_show_average_damage_instead_of_dps"),
@@ -108,6 +128,19 @@ namespace PoESkillTree.GameModel.Skills
                     "base_physical_damage_%_of_maximum_energy_shield_to_deal_per_minute",
                     "add_frenzy_charge_on_kill_%_chance",
                     "attack_speed_+%_granted_from_skill")
+            },
+            {
+                "BloodSandArmour", // Flesh and Stone
+                // This stat can't be parsed but is required for the buff to be applied to enemies
+                EnemyBuff("damage_taken_+%_final_from_enemies_unaffected_by_sand_armour"),
+                Passive("support_maimed_enemies_physical_damage_taken_+%")
+            },
+            {
+                "BloodSandStance", // Blood and Sand
+                SelfBuff("blood_sand_stance_melee_skills_area_of_effect_+%_final_in_blood_stance",
+                    "blood_sand_stance_melee_skills_area_damage_+%_final_in_blood_stance",
+                    "blood_sand_stance_melee_skills_area_of_effect_+%_final_in_sand_stance",
+                    "blood_sand_stance_melee_skills_area_damage_+%_final_in_sand_stance")
             },
             {
                 "BloodstainedBanner", // War Banner
@@ -378,6 +411,10 @@ namespace PoESkillTree.GameModel.Skills
                     ReplaceStat("ice_crash_third_hit_damage_+%_final", "damage_+%_final")))
             },
             {
+                "IceDash", // Frostblink
+                new SkillPartDefinitionExtension(AddStat("base_skill_show_average_damage_instead_of_dps", 1))
+            },
+            {
                 "IceShot",
                 ("Projectile", new SkillPartDefinitionExtension()),
                 ("Cone", new SkillPartDefinitionExtension(
@@ -436,6 +473,16 @@ namespace PoESkillTree.GameModel.Skills
                     ReplaceStat("active_skill_damage_over_time_from_projectile_hits_+%_final",
                         "damage_over_time_+%_final"),
                     removedKeywords: new[] { Keyword.Melee }))
+            },
+            {
+                "PhysicalDamageAura", // Pride
+                EnemyBuff("physical_damage_taken_+%_final"),
+                ("Initial effect", new SkillPartDefinitionExtension(
+                    RemoveStat("physical_damage_aura_nearby_enemies_physical_damage_taken_+%_max"),
+                    ReplaceStat("physical_damage_aura_nearby_enemies_physical_damage_taken_+%", "physical_damage_taken_+%_final"))),
+                ("Maximum effect", new SkillPartDefinitionExtension(
+                    RemoveStat("physical_damage_aura_nearby_enemies_physical_damage_taken_+%"),
+                    ReplaceStat("physical_damage_aura_nearby_enemies_physical_damage_taken_+%_max", "physical_damage_taken_+%_final")))
             },
             {
                 "ProjectileWeakness",

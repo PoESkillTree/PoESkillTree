@@ -70,7 +70,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
         {
             var barFooConversion = new[] { _barFooConversion, _barConversion, _barSkillConversion };
             var localSource = new ModifierSource.Local.Given();
-            var skillSource = new ModifierSource.Local.Skill();
+            var skillSource = new ModifierSource.Local.Skill("");
             _sut.NewBatchUpdate()
                 .AddModifier(_bar, Form.BaseAdd, 3)
                 .AddModifier(_bar, Form.BaseAdd, 2, localSource)

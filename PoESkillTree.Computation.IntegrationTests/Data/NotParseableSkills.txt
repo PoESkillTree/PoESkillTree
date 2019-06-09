@@ -1,5 +1,5 @@
 ﻿// These skills have stat lines that are not parsed successfully (yet)
-// - Require new stats or are otherwise not trivial to support
+// - Require new stats or are otherwise not easy to support
 ArcticArmour
 AssassinsMark
 BloodRage
@@ -15,10 +15,13 @@ SupportDecay
 SupportGemMirageArcher
 SupportMaim
 SupportRuthless
+SupportSlashingWeapon
 SupportSummonGhostOnKill
 ThrownShield
 VaalRighteousFire
 Wither
+// - Provides a secondary skill
+SupportBluntWeapon
 // - Gem affecting supports
 SupportAdditionalLevel
 SupportAdditionalQuality
