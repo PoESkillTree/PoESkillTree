@@ -71,7 +71,7 @@ namespace PoESkillTree.SkillTreeFiles
             var code = await _httpClient.GetStringAsync(Constants.TreeAddress);
             var regex = new Regex("var passiveSkillTreeData.*");
             var skillTreeObj = regex.Match(code).Value.Replace("\\/", "/");
-            skillTreeObj = skillTreeObj.Substring(27, skillTreeObj.Length - 27 - 1).Replace("\"nodes\":{", "\"nodesDict\":{") + "";
+            skillTreeObj = skillTreeObj.Substring(27, skillTreeObj.Length - 27 - 1);
             await FileUtils.WriteAllTextAsync(_tempSkillTreePath, skillTreeObj);
             return skillTreeObj;
         }
