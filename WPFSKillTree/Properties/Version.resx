@@ -150,7 +150,7 @@
     <comment>The URL of product website.</comment>
   </data>
   <data name="ProductVersion" xml:space="preserve">
-    <value>3.0.0-alpha.3</value>
+    <value>3.0.0-alpha.4</value>
     <comment>The application version identical to Git release tag. Change each release.</comment>
   </data>
 </root>

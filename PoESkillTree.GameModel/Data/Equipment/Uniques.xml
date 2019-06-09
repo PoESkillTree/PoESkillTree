@@ -149,10 +149,11 @@
   <Unique Name="Kaom's Primacy" Level="58" BaseMetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxe14">
     <Explicit>
       <string>LocalIncreasedPhysicalDamagePercentUniqueTwoHandAxe1</string>
-      <string>LocalAddedFireDamageUniqueTwoHandAxe1</string>
-      <string>IncreasedAccuracyUniqueTwoHandAxe1</string>
       <string>LifeGainedFromEnemyDeathUniqueTwoHandAxe1</string>
+      <string>IncreasedAccuracyUniqueTwoHandAxe1</string>
       <string>CullingStrike</string>
+      <string>RageOnAttackCritUnique__1</string>
+      <string>PhysicalAddedAsFirePerRageUnique__1</string>
     </Explicit>
     <Properties />
   </Unique>
@@ -323,9 +324,10 @@
       <string>LocalIncreasedPhysicalDamagePercentUniqueBow5</string>
       <string>LocalAddedPhysicalDamageUniqueBow5</string>
       <string>LocalIncreasedAttackSpeedUniqueBow5</string>
-      <string>PhysicalDamageConvertToChaosUniqueBow5</string>
       <string>AccuracyPercentUniqueBow5</string>
+      <string>PhysicalDamageConvertToChaosUniqueBow5</string>
       <string>PhysicalDamagePercentTakesAsChaosDamageUniqueBow5</string>
+      <string>LocalChanceForPoisonDamage300FinalInflictedWithThisWeaponUnique__1_</string>
     </Explicit>
     <Properties />
   </Unique>
@@ -592,11 +594,11 @@
   </Unique>
   <Unique Name="Al Dhih" Level="26" BaseMetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw6">
     <Explicit>
-      <string>SocketedItemsHaveChanceToFleeUniqueClaw6</string>
       <string>TriggeredAbyssalCryUnique__1</string>
       <string>LocalIncreasedPhysicalDamagePercentUniqueClaw6</string>
       <string>LifeLeechPermyriadUniqueClaw6</string>
-      <string>StunThresholdReductionUniqueClaw6</string>
+      <string>WarcryEffectUnique__2</string>
+      <string>WarcryCooldownIs2SecondsUnique__1</string>
     </Explicit>
     <Properties />
   </Unique>
@@ -807,10 +809,11 @@
   <Unique Name="Divinarius" Level="66" BaseMetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger21">
     <Explicit>
       <string>SpellDamageOnWeaponUniqueDagger1</string>
-      <string>SpellCriticalStrikeChanceUniqueDagger1</string>
       <string>LifeGainedFromEnemyDeathUniqueDagger1</string>
       <string>ManaGainedFromEnemyDeathUniqueDagger1</string>
       <string>AreaOfEffectUniqueDagger1</string>
+      <string>SpellCriticalStrikeChanceIfKilledRecentlyUnique__1</string>
+      <string>SpellCriticalStrikeMultiplierIfNotKilledRecentlyUnique__1</string>
     </Explicit>
     <Properties />
   </Unique>
@@ -1040,9 +1043,9 @@
   </Unique>
   <Unique Name="Lavianga's Wisdom" Level="20" BaseMetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace5">
     <Explicit>
+      <string>LocalIncreasedPhysicalDamagePercentUniqueOneHandMace7</string>
       <string>IncreasedLifeUniqueOneHandMace7</string>
       <string>IncreasedManaUniqueOneHandMace7</string>
-      <string>LocalIncreasedPhysicalDamagePercentUniqueOneHandMace7</string>
       <string>ReducedMovementVelocityUniqueOneHandMace7</string>
       <string>AreaOfEffectUniqueOneHandMace7</string>
       <string>AreaDamageUniqueOneHandMace7</string>
@@ -5357,6 +5360,7 @@
       <string>LocalIncreasedArmourAndEnergyShieldUniqueBodyStrInt1</string>
       <string>MaximumManaUniqueBodyStrInt1</string>
       <string>AddPowerChargeOnCrit1__</string>
+      <string>KeystoneInnerConvictionUnique__1</string>
     </Explicit>
     <Properties />
   </Unique>
@@ -5704,13 +5708,12 @@
   </Unique>
   <Unique Name="Lioneye's Paws" Level="30" BaseMetadataId="Metadata/Items/Armours/Boots/BootsStrDex3">
     <Explicit>
+      <string>TriggerRainOfArrowsOnBowAttackUnique__1</string>
       <string>StrengthUniqueBootsStrDex1</string>
       <string>DexterityUniqueBootsStrDex1</string>
       <string>AddedFireDamageUniqueBootsStrDex1</string>
       <string>MovementVelocityUniqueBootsStrDex1</string>
       <string>MovementVelocityOnLowLifeUniqueBootsStrDex1</string>
-      <string>StunRecoveryUniqueBootsStrDex1</string>
-      <string>CannotBeStunnedOnLowLife</string>
     </Explicit>
     <Properties />
   </Unique>
@@ -6408,11 +6411,11 @@
   </Unique>
   <Unique Name="Honourhome" Level="12" BaseMetadataId="Metadata/Items/Armours/Helmets/HelmetStrInt2">
     <Explicit>
+      <string>LocalIncreaseSocketedGemLevelUnique__8</string>
       <string>AddedLightningDamageUniqueHelmetStrInt1</string>
       <string>LocalIncreasedArmourAndEnergyShieldUniqueHelmetStrInt1</string>
-      <string>AllResistancesUniqueHelmetStrInt1</string>
-      <string>ElementalResistsOnLowLifeUniqueHelmetStrInt1</string>
-      <string>ReducedManaCostOnLowLifeUniqueHelmetStrInt1</string>
+      <string>ItemFoundRarityIncreaseUnique__4_</string>
+      <string>ManaCostReductionUnique__2_</string>
     </Explicit>
     <Properties />
   </Unique>
@@ -6930,6 +6933,8 @@
       <string>IncreasedLifeUniqueGlovesInt3</string>
       <string>IncreasedManaUniqueGlovesInt3</string>
       <string>CurseOnHitTemporalChainsUnique__1</string>
+      <string>CursesRemainOnDeathUnique__1_</string>
+      <string>EnemiesNearCursesBlindAndExplodeUnique__1</string>
     </Explicit>
     <Properties />
   </Unique>
@@ -7192,7 +7197,7 @@
       <string>DexterityUniqueGlovesDex2</string>
       <string>IncreasedAttackSpeedUniqueGlovesDex2</string>
       <string>CriticalStrikeChanceUniqueGlovesDex2</string>
-      <string>CriticalMultiplierUniqueGlovesDex2</string>
+      <string>CriticalStrikeMultiplierIs250Unique__1</string>
       <string>LocalIncreasedEvasionRatingPercentUniqueGlovesDex2</string>
     </Explicit>
     <Properties />
@@ -7893,10 +7898,11 @@
   <Unique Name="Rathpith Globe" Level="68" BaseMetadataId="Metadata/Items/Armours/Shields/ShieldInt16">
     <Explicit>
       <string>SpellBlockPercentageUniqueShieldInt1</string>
-      <string>SpellDamageUniqueShieldInt1</string>
-      <string>MaximumLifeShieldInt1</string>
       <string>LocalIncreasedEnergyShieldPercentUniqueShieldInt1</string>
-      <string>LightningResistUniqueShieldInt1</string>
+      <string>MaximumLifeShieldInt1</string>
+      <string>SacrificeLifeOnSpellSkillUnique__1</string>
+      <string>SpellCriticalStrikeChancePerLifeUnique__1</string>
+      <string>SpellDamagePerLifeUnique__1</string>
     </Explicit>
     <Properties />
   </Unique>
@@ -8463,6 +8469,14 @@
     </Explicit>
     <Properties />
   </Unique>
+  <Unique Name="Brutal Restraint" Level="1" BaseMetadataId="Metadata/Items/Jewels/JewelTimeless">
+    <Explicit>
+      <string>UniqueJewelAlternateTreeInRadiusMaraketh</string>
+    </Explicit>
+    <Properties>
+      <string>Limited to: 1</string>
+    </Properties>
+  </Unique>
   <Unique Name="Brute Force Solution" Level="1" BaseMetadataId="Metadata/Items/Jewels/JewelInt">
     <Explicit>
       <string>IntelligenceUniqueJewel35</string>
@@ -8650,6 +8664,14 @@
     </Explicit>
     <Properties />
   </Unique>
+  <Unique Name="Elegant Hubris" Level="1" BaseMetadataId="Metadata/Items/Jewels/JewelTimeless">
+    <Explicit>
+      <string>UniqueJewelAlternateTreeInRadiusEternal</string>
+    </Explicit>
+    <Properties>
+      <string>Limited to: 1</string>
+    </Properties>
+  </Unique>
   <Unique Name="Emperor's Cunning" Level="1" BaseMetadataId="Metadata/Items/Jewels/JewelDex">
     <Explicit>
       <string>PercentIncreasedAccuracyJewelUnique__1</string>
@@ -8790,8 +8812,10 @@
       <string>Limited to: 2</string>
     </Properties>
   </Unique>
-  <Unique Name="Glorious Vanity" Level="1" BaseMetadataId="Metadata/Items/Jewels/JewelStr">
-    <Explicit />
+  <Unique Name="Glorious Vanity" Level="1" BaseMetadataId="Metadata/Items/Jewels/JewelTimeless">
+    <Explicit>
+      <string>UniqueJewelAlternateTreeInRadiusVaal</string>
+    </Explicit>
     <Properties>
       <string>Limited to: 1</string>
     </Properties>
@@ -8915,6 +8939,14 @@
     </Explicit>
     <Properties />
   </Unique>
+  <Unique Name="Lethal Pride" Level="1" BaseMetadataId="Metadata/Items/Jewels/JewelTimeless">
+    <Explicit>
+      <string>UniqueJewelAlternateTreeInRadiusKarui</string>
+    </Explicit>
+    <Properties>
+      <string>Limited to: 1</string>
+    </Properties>
+  </Unique>
   <Unique Name="Lioneye's Fall" Level="1" BaseMetadataId="Metadata/Items/Jewels/JewelDex">
     <Explicit>
       <string>UniqueJewelMeleeToBow</string>
@@ -8970,6 +9002,14 @@
       <string>PassiveEffectivenessJewelUnique__1_</string>
     </Explicit>
     <Properties />
+  </Unique>
+  <Unique Name="Militant Faith" Level="1" BaseMetadataId="Metadata/Items/Jewels/JewelTimeless">
+    <Explicit>
+      <string>UniqueJewelAlternateTreeInRadiusTemplar</string>
+    </Explicit>
+    <Properties>
+      <string>Limited to: 1</string>
+    </Properties>
   </Unique>
   <Unique Name="Miser of Misery" Level="1" DropDisabled="true" BaseMetadataId="Metadata/Items/Jewels/JewelDex">
     <Explicit>
