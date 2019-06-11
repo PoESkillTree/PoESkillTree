@@ -484,7 +484,7 @@ namespace PoESkillTree.Computation.Data
                 { "(?<!chance to |when you )gain a flask charge", BaseAdd, 100, Flask.ChanceToGainCharge },
                 { "recharges # charges?", BaseAdd, Value * 100, Flask.ChanceToGainCharge },
                 { "flasks gain # charges?", BaseAdd, Value * 100, Flask.ChanceToGainCharge },
-                { "instant recovery", TotalOverride, 100, Flask.InstantRecovery },
+                { "instant recovery", BaseSet, 100, Flask.InstantRecovery },
                 // item quantity/quality
                 // range and area of effect
                 // other
