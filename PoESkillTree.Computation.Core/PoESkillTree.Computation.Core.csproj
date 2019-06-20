@@ -1,158 +1,31 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E9C0CF81-6800-4461-8897-F8B569C7CDD0}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PoESkillTree.Computation.Core</RootNamespace>
-    <AssemblyName>PoESkillTree.Computation.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <TargetFramework>net462</TargetFramework>
     <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <AssemblyTitle>PoESkillTree.Computation.Core</AssemblyTitle>
+    <Product>PoESkillTree.Computation.Core</Product>
+    <Copyright>Copyright ©  2017</Copyright>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Enums.NET, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7ea1c1650d506225, processorArchitecture=MSIL">
-      <HintPath>..\packages\Enums.NET.2.3.2\lib\net45\Enums.NET.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.Annotations, Version=2018.3.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\packages\JetBrains.Annotations.2018.3.0\lib\net20\JetBrains.Annotations.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="MoreLinq, Version=3.1.0.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
-      <HintPath>..\packages\morelinq.3.1.0\lib\net451\MoreLinq.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.*" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.*" />
+    <PackageReference Include="System.Net.Http" Version="4.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Enums.NET" Version="2.3.2" />
+    <PackageReference Include="JetBrains.Annotations" Version="2018.3.0" />
+    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="Microsoft.Net.Compilers" Version="2.10.0">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="morelinq" Version="3.1.0" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CalculatorUpdate.cs" />
-    <Compile Include="Events\EventBuffer.cs" />
-    <Compile Include="Events\IBufferableEvent.cs" />
-    <Compile Include="Events\IEventBuffer.cs" />
-    <Compile Include="Events\ImmediateEventBuffer.cs" />
-    <Compile Include="Graphs\CompositeCalculationGraphPruner.cs" />
-    <Compile Include="Graphs\UserSpecifiedValuePruningRuleSet.cs" />
-    <Compile Include="Graphs\CalculationGraphWithEvents.cs" />
-    <Compile Include="Graphs\DefaultPruningRuleSet.cs" />
-    <Compile Include="Graphs\FormNodeSelector.cs" />
-    <Compile Include="Graphs\IDeterminesNodeRemoval.cs" />
-    <Compile Include="Graphs\IGraphPruningRuleSet.cs" />
-    <Compile Include="Graphs\NodeSelector.cs" />
-    <Compile Include="Graphs\StatGraphWithEvents.cs" />
-    <Compile Include="Graphs\StatRegistry.cs" />
-    <Compile Include="Graphs\TransformableNodeFactory.cs" />
-    <Compile Include="Graphs\ValueTransformer.cs" />
-    <Compile Include="IObservableCollection.cs" />
-    <Compile Include="NodeCollections\ObservableCollection.cs" />
-    <Compile Include="NodeCollections\PathDefinitionCollection.cs" />
-    <Compile Include="NodeFactory.cs" />
-    <Compile Include="Nodes\BaseValue.cs" />
-    <Compile Include="Calculator.cs" />
-    <Compile Include="CalculatorExtensions.cs" />
-    <Compile Include="Graphs\CoreCalculationGraph.cs" />
-    <Compile Include="Graphs\CoreStatGraph.cs" />
-    <Compile Include="Graphs\DefaultViewNodeRepository.cs" />
-    <Compile Include="Graphs\ICalculationGraph.cs" />
-    <Compile Include="Graphs\ICalculationGraphPruner.cs" />
-    <Compile Include="Events\ICountsSubsribers.cs" />
-    <Compile Include="Graphs\IModifierCollection.cs" />
-    <Compile Include="INodeCollection.cs" />
-    <Compile Include="Graphs\IStatNodeFactory.cs" />
-    <Compile Include="Nodes\ConvertedBaseValue.cs" />
-    <Compile Include="Nodes\CycleGuard.cs" />
-    <Compile Include="Nodes\FormAggregatingValue.cs" />
-    <Compile Include="Nodes\ICycleGuard.cs" />
-    <Compile Include="Graphs\INodeFactory.cs" />
-    <Compile Include="Graphs\IStatGraph.cs" />
-    <Compile Include="Events\IBufferingEventViewProvider.cs" />
-    <Compile Include="NodeCollections\ModifierNodeCollection.cs" />
-    <Compile Include="NodeCollections\NodeCollection.cs" />
-    <Compile Include="Nodes\IDisposableNodeViewProvider.cs" />
-    <Compile Include="Nodes\IValueTransformable.cs" />
-    <Compile Include="Nodes\MultiPathFormAggregatingValue.cs" />
-    <Compile Include="Nodes\NodeValueAggregators.cs" />
-    <Compile Include="Nodes\ICachingNode.cs" />
-    <Compile Include="ICalculator.cs" />
-    <Compile Include="ICalculationNode.cs" />
-    <Compile Include="INodeRepository.cs" />
-    <Compile Include="Nodes\TransformableValue.cs" />
-    <Compile Include="Nodes\UncappedSubtotalValue.cs" />
-    <Compile Include="Nodes\WrappingNode.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Nodes\CachingNode.cs" />
-    <Compile Include="Nodes\CachingNodeAdapter.cs" />
-    <Compile Include="Graphs\CalculationGraphPruner.cs" />
-    <Compile Include="Nodes\SubscriberCountingNode.cs" />
-    <Compile Include="Nodes\SubtotalValue.cs" />
-    <Compile Include="Events\BufferingEventViewProvider.cs" />
-    <Compile Include="NodeCollections\EventBufferingObservableCollection.cs" />
-    <Compile Include="Graphs\BufferingViewNodeRepository.cs" />
-    <Compile Include="Nodes\TotalValue.cs" />
-    <Compile Include="Nodes\PathTotalValue.cs" />
-    <Compile Include="Nodes\ValueCalculationContext.cs" />
-    <Compile Include="Nodes\ValueNode.cs" />
-    <Compile Include="StatNodeFactory.cs" />
+    <ProjectReference Include="..\PoESkillTree.Utils\PoESkillTree.Utils.csproj" />
+    <ProjectReference Include="..\PoESkillTree.Computation.Common\PoESkillTree.Computation.Common.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PoESkillTree.Utils\PoESkillTree.Utils.csproj">
-      <Project>{1f11d13c-9039-40ab-8b91-8a03e4da934a}</Project>
-      <Name>PoESkillTree.Utils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PoESkillTree.Computation.Common\PoESkillTree.Computation.Common.csproj">
-      <Project>{827be52d-878c-45f0-afc0-75b5385aad53}</Project>
-      <Name>PoESkillTree.Computation.Common</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props'))" />
-  </Target>
 </Project>
