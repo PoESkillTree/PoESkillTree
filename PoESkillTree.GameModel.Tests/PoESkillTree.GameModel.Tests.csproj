@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <RootNamespace>PoESkillTree.GameModel</RootNamespace>
-    <TargetFramework>net462</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <LangVersion>latest</LangVersion>
     <AssemblyTitle>PoESkillTree.GameModel.Tests</AssemblyTitle>
     <Product>PoESkillTree.GameModel.Tests</Product>
@@ -11,7 +11,7 @@
     <NUnit3 Assemblies="$(OutputPath)/$(TargetFileName)" ToolPath="..\packages\NUnit.ConsoleRunner.3.7.0\tools\" />
   </Target>
   <ItemGroup>
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.*" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.1" />
     <PackageReference Include="Microsoft.CSharp" Version="4.*" />
     <PackageReference Include="System.Net.Http" Version="4.*" />
   </ItemGroup>
@@ -33,9 +33,6 @@
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.5.2" />
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.2" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\base_items.json">

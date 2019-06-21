@@ -1,13 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net462</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <AssemblyTitle>PoESkillTree.GameModel</AssemblyTitle>
     <Product>PoESkillTree.GameModel</Product>
     <Copyright>Copyright ©  2018</Copyright>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.*" />
     <PackageReference Include="Microsoft.CSharp" Version="4.*" />
     <PackageReference Include="System.Net.Http" Version="4.*" />
   </ItemGroup>
@@ -26,10 +25,6 @@
     <PackageReference Include="Nito.Disposables" Version="2.0.0" />
     <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Data\RePoE\crafting_bench_options.min.json" />

@@ -1,13 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net462</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <AssemblyTitle>PoESkillTree.Common</AssemblyTitle>
-    <Product>PoESkillTree.Common</Product>
+    <AssemblyTitle>PoESkillTree.Utils</AssemblyTitle>
+    <Product>PoESkillTree.Utils</Product>
     <Copyright>Copyright ©  2017</Copyright>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.*" />
     <PackageReference Include="Microsoft.CSharp" Version="4.*" />
     <PackageReference Include="System.Net.Http" Version="4.*" />
   </ItemGroup>

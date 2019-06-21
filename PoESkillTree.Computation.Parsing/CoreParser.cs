@@ -30,7 +30,7 @@ namespace PoESkillTree.Computation.Parsing
     public class CoreParser<TStep> : ICoreParser
     {
         private static readonly ILog Log =
-            LogManager.GetLogger($"{typeof(CoreParser<>).FullName}<{typeof(TStep).Name}>");
+            LogManager.GetLogger(typeof(CoreParser<>).Assembly, $"{typeof(CoreParser<>).FullName}<{typeof(TStep).Name}>");
 
         private delegate StringParseResult<IReadOnlyList<Modifier>> Parser(CoreParserParameter parameter);
 

@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using MoreLinq;
+using System.Reflection;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Parsing;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.StatTranslation;
+using static MoreLinq.Extensions.EquiZipExtension;
 
 namespace PoESkillTree.Computation.IntegrationTests
 {
@@ -81,7 +82,7 @@ namespace PoESkillTree.Computation.IntegrationTests
             => ReadDataLines("NotParseableStatLines").Concat(ReadDataLines("NotYetParseableStatLines"));
 
         public static IEnumerable<string> ReadDataLines(string fileName)
-            => File.ReadAllLines(TestContext.CurrentContext.TestDirectory + $"/Data/{fileName}.txt")
+            => File.ReadAllLines(AppContext.BaseDirectory + $"/Data/{fileName}.txt")
                 .Where(s => !s.StartsWith("//", StringComparison.Ordinal))
                 .Distinct();
 
