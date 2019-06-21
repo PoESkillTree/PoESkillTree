@@ -1,42 +1,41 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFSKillTree", "WPFSKillTree\WPFSKillTree.csproj", "{FCDA18D8-4FD9-484B-B7DC-DBF771B3AEC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFSKillTree", "WPFSKillTree\WPFSKillTree.csproj", "{FCDA18D8-4FD9-484B-B7DC-DBF771B3AEC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdateDB", "UpdateDB\UpdateDB.csproj", "{E69F0C33-980E-4A6B-BAEA-B8D41A93A481}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpdateDB", "UpdateDB\UpdateDB.csproj", "{E69F0C33-980E-4A6B-BAEA-B8D41A93A481}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Core", "PoESkillTree.Computation.Core\PoESkillTree.Computation.Core.csproj", "{E9C0CF81-6800-4461-8897-F8B569C7CDD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoESkillTree.Computation.Core", "PoESkillTree.Computation.Core\PoESkillTree.Computation.Core.csproj", "{E9C0CF81-6800-4461-8897-F8B569C7CDD0}"
 	ProjectSection(ProjectDependencies) = postProject
 		{827BE52D-878C-45F0-AFC0-75B5385AAD53} = {827BE52D-878C-45F0-AFC0-75B5385AAD53}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Utils", "PoESkillTree.Utils\PoESkillTree.Utils.csproj", "{1F11D13C-9039-40AB-8B91-8A03E4DA934A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoESkillTree.Utils", "PoESkillTree.Utils\PoESkillTree.Utils.csproj", "{1F11D13C-9039-40AB-8B91-8A03E4DA934A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Data", "PoESkillTree.Computation.Data\PoESkillTree.Computation.Data.csproj", "{85CF9690-7EB9-42CB-9574-ADF4239CFFBE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoESkillTree.Computation.Data", "PoESkillTree.Computation.Data\PoESkillTree.Computation.Data.csproj", "{85CF9690-7EB9-42CB-9574-ADF4239CFFBE}"
 	ProjectSection(ProjectDependencies) = postProject
 		{827BE52D-878C-45F0-AFC0-75B5385AAD53} = {827BE52D-878C-45F0-AFC0-75B5385AAD53}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Data.Tests", "PoESkillTree.Computation.Data.Tests\PoESkillTree.Computation.Data.Tests.csproj", "{F5DF3138-0C63-48B4-9908-50CADA452224}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoESkillTree.Computation.Data.Tests", "PoESkillTree.Computation.Data.Tests\PoESkillTree.Computation.Data.Tests.csproj", "{F5DF3138-0C63-48B4-9908-50CADA452224}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Parsing", "PoESkillTree.Computation.Parsing\PoESkillTree.Computation.Parsing.csproj", "{1E573C72-9B7F-40AF-A5E8-739F90B50690}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoESkillTree.Computation.Parsing", "PoESkillTree.Computation.Parsing\PoESkillTree.Computation.Parsing.csproj", "{1E573C72-9B7F-40AF-A5E8-739F90B50690}"
 	ProjectSection(ProjectDependencies) = postProject
 		{827BE52D-878C-45F0-AFC0-75B5385AAD53} = {827BE52D-878C-45F0-AFC0-75B5385AAD53}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Console", "PoESkillTree.Computation.Console\PoESkillTree.Computation.Console.csproj", "{AADCC052-3A9D-4513-9EAE-7AEACBF2DBCA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoESkillTree.Computation.Console", "PoESkillTree.Computation.Console\PoESkillTree.Computation.Console.csproj", "{AADCC052-3A9D-4513-9EAE-7AEACBF2DBCA}"
 	ProjectSection(ProjectDependencies) = postProject
 		{827BE52D-878C-45F0-AFC0-75B5385AAD53} = {827BE52D-878C-45F0-AFC0-75B5385AAD53}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Parsing.Tests", "PoESkillTree.Computation.Parsing.Tests\PoESkillTree.Computation.Parsing.Tests.csproj", "{0EFA2885-50A9-45C9-B1A1-701A83681C90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoESkillTree.Computation.Parsing.Tests", "PoESkillTree.Computation.Parsing.Tests\PoESkillTree.Computation.Parsing.Tests.csproj", "{0EFA2885-50A9-45C9-B1A1-701A83681C90}"
 	ProjectSection(ProjectDependencies) = postProject
 		{844B58AB-4D91-4567-BCA9-F3E1B2A29444} = {844B58AB-4D91-4567-BCA9-F3E1B2A29444}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.IntegrationTests", "PoESkillTree.Computation.IntegrationTests\PoESkillTree.Computation.IntegrationTests.csproj", "{CE77F246-871D-4E8C-8E5F-B44EBDBF2541}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoESkillTree.Computation.IntegrationTests", "PoESkillTree.Computation.IntegrationTests\PoESkillTree.Computation.IntegrationTests.csproj", "{CE77F246-871D-4E8C-8E5F-B44EBDBF2541}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1F11D13C-9039-40AB-8B91-8A03E4DA934A} = {1F11D13C-9039-40AB-8B91-8A03E4DA934A}
 		{AADCC052-3A9D-4513-9EAE-7AEACBF2DBCA} = {AADCC052-3A9D-4513-9EAE-7AEACBF2DBCA}
@@ -45,27 +44,27 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.In
 		{85CF9690-7EB9-42CB-9574-ADF4239CFFBE} = {85CF9690-7EB9-42CB-9574-ADF4239CFFBE}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Common", "PoESkillTree.Computation.Common\PoESkillTree.Computation.Common.csproj", "{827BE52D-878C-45F0-AFC0-75B5385AAD53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoESkillTree.Computation.Common", "PoESkillTree.Computation.Common\PoESkillTree.Computation.Common.csproj", "{827BE52D-878C-45F0-AFC0-75B5385AAD53}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1F11D13C-9039-40AB-8B91-8A03E4DA934A} = {1F11D13C-9039-40AB-8B91-8A03E4DA934A}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Common.Tests", "PoESkillTree.Computation.Common.Tests\PoESkillTree.Computation.Common.Tests.csproj", "{844B58AB-4D91-4567-BCA9-F3E1B2A29444}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoESkillTree.Computation.Common.Tests", "PoESkillTree.Computation.Common.Tests\PoESkillTree.Computation.Common.Tests.csproj", "{844B58AB-4D91-4567-BCA9-F3E1B2A29444}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Core.Tests", "PoESkillTree.Computation.Core.Tests\PoESkillTree.Computation.Core.Tests.csproj", "{02676C0A-817C-4D1D-BE32-640D6D5A9937}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoESkillTree.Computation.Core.Tests", "PoESkillTree.Computation.Core.Tests\PoESkillTree.Computation.Core.Tests.csproj", "{02676C0A-817C-4D1D-BE32-640D6D5A9937}"
 	ProjectSection(ProjectDependencies) = postProject
 		{844B58AB-4D91-4567-BCA9-F3E1B2A29444} = {844B58AB-4D91-4567-BCA9-F3E1B2A29444}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Builders", "PoESkillTree.Computation.Builders\PoESkillTree.Computation.Builders.csproj", "{940A286A-BCA7-4C79-AC89-55C57C7D4784}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoESkillTree.Computation.Builders", "PoESkillTree.Computation.Builders\PoESkillTree.Computation.Builders.csproj", "{940A286A-BCA7-4C79-AC89-55C57C7D4784}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Builders.Tests", "PoESkillTree.Computation.Builders.Tests\PoESkillTree.Computation.Builders.Tests.csproj", "{D6ECC468-961D-4C72-8E8F-DA9037B9B200}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoESkillTree.Computation.Builders.Tests", "PoESkillTree.Computation.Builders.Tests\PoESkillTree.Computation.Builders.Tests.csproj", "{D6ECC468-961D-4C72-8E8F-DA9037B9B200}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.GameModel", "PoESkillTree.GameModel\PoESkillTree.GameModel.csproj", "{C1C73CC9-D825-41F7-86F0-F37EE8178D6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoESkillTree.GameModel", "PoESkillTree.GameModel\PoESkillTree.GameModel.csproj", "{C1C73CC9-D825-41F7-86F0-F37EE8178D6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.GameModel.Tests", "PoESkillTree.GameModel.Tests\PoESkillTree.GameModel.Tests.csproj", "{0664E11C-B04A-469F-A65D-40BFC94BC88D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoESkillTree.GameModel.Tests", "PoESkillTree.GameModel.Tests\PoESkillTree.GameModel.Tests.csproj", "{0664E11C-B04A-469F-A65D-40BFC94BC88D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFSKillTree.Tests", "WPFSKillTree.Tests\WPFSKillTree.Tests.csproj", "{172BA462-EB78-47C4-A85A-677FBD1A6A89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFSKillTree.Tests", "WPFSKillTree.Tests\WPFSKillTree.Tests.csproj", "{172BA462-EB78-47C4-A85A-677FBD1A6A89}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

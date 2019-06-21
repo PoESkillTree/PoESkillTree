@@ -1,832 +1,81 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props')" />
+﻿<Project Sdk="MSBuild.Sdk.Extras">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{FCDA18D8-4FD9-484B-B7DC-DBF771B3AEC7}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PoESkillTree</RootNamespace>
     <AssemblyName>PoESkillTree</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>net462</TargetFramework>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <LangVersion>latest</LangVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
-  </PropertyGroup>
-  <PropertyGroup>
     <GenerateManifests>false</GenerateManifests>
-  </PropertyGroup>
-  <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
-  </PropertyGroup>
-  <PropertyGroup>
     <ApplicationIcon>logo.ico</ApplicationIcon>
-  </PropertyGroup>
-  <PropertyGroup>
     <StartupObject>PoESkillTree.SkillTreeFiles.Bootstrap</StartupObject>
   </PropertyGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent"
+          Condition="$(Configuration) == Release">
+    <Exec Command="$(ProjectDir)build-locale.bat $(TargetDir)" />
+  </Target>
+  <ItemGroup>
+    <PackageReference Include="System.Net.Http" Version="4.*" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ControlzEx" Version="3.0.2.4" />
+    <PackageReference Include="Enums.NET" Version="2.3.2" />
+    <PackageReference Include="gong-wpf-dragdrop" Version="1.1.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="2018.3.0" />
+    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="MahApps.Metro" Version="1.6.5" />
+    <PackageReference Include="MahApps.Metro.IconPacks.Modern" Version="1.9.1" />
+    <PackageReference Include="MahApps.Metro.SimpleChildWindow" Version="1.5.0" />
+    <PackageReference Include="Microsoft.Net.Compilers" Version="2.10.0">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.WindowsAPICodePack-Core" Version="1.1.0.2" />
+    <PackageReference Include="Microsoft.WindowsAPICodePack-Shell" Version="1.1.0.0" />
+    <PackageReference Include="morelinq" Version="3.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="System.Reactive" Version="4.1.3" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.5.2" />
+    <PackageReference Include="System.Threading.Tasks.Dataflow" Version="4.9.0" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.2" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="Antlr3.Runtime">
       <HintPath>.\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
-    </Reference>
-    <Reference Include="Enums.NET, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7ea1c1650d506225, processorArchitecture=MSIL">
-      <HintPath>..\packages\Enums.NET.2.3.2\lib\net45\Enums.NET.dll</HintPath>
-    </Reference>
     <Reference Include="ExpressionEvaluator">
       <HintPath>.\ExpressionEvaluator.dll</HintPath>
     </Reference>
-    <Reference Include="GongSolutions.Wpf.DragDrop, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\gong-wpf-dragdrop.1.1.0\lib\net45\GongSolutions.Wpf.DragDrop.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="JetBrains.Annotations, Version=2018.3.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\packages\JetBrains.Annotations.2018.3.0\lib\net20\JetBrains.Annotations.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net45\MahApps.Metro.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.Modern, Version=1.9.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.IconPacks.Modern.1.9.1\lib\net46\MahApps.Metro.IconPacks.Modern.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.SimpleChildWindow, Version=1.5.0.16, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.SimpleChildWindow.1.5.0\lib\net45\MahApps.Metro.SimpleChildWindow.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.WindowsAPICodePack-Core.1.1.0.2\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.WindowsAPICodePack-Shell.1.1.0.0\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAPICodePack.ShellExtensions">
-      <HintPath>..\packages\Microsoft.WindowsAPICodePack-Shell.1.1.0.0\lib\Microsoft.WindowsAPICodePack.ShellExtensions.dll</HintPath>
-    </Reference>
-    <Reference Include="MoreLinq, Version=3.1.0.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
-      <HintPath>..\packages\morelinq.3.1.0\lib\net451\MoreLinq.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Reactive, Version=4.1.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Reactive.4.1.3\lib\net46\System.Reactive.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Threading.Tasks.Dataflow, Version=4.6.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Tasks.Dataflow.4.9.0\lib\netstandard2.0\System.Threading.Tasks.Dataflow.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
-    </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\System.Windows.Interactivity.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="Xceed.Wpf.Toolkit, Version=2.8.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\Xceed.Wpf.Toolkit.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="Views\App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="Common\ISkillTree.cs" />
-    <Compile Include="Common\ViewModels\CloseableViewModel.cs" />
-    <Compile Include="Common\ViewModels\ErrorInfoViewModel.cs" />
-    <Compile Include="Common\ViewModels\RelayCommand.cs" />
-    <Compile Include="Common\ViewModels\ViewModelBase.cs" />
-    <Compile Include="Computation\ComputationInitializer.cs" />
-    <Compile Include="Computation\Model\ComputationFactory.cs" />
-    <Compile Include="Computation\Model\ComputationSchedulerProvider.cs" />
-    <Compile Include="Computation\Model\ComputationObservables.cs" />
-    <Compile Include="Computation\Model\ConfigurationStats.cs" />
-    <Compile Include="Computation\Model\ExplicitlyRegisteredStatsObserver.cs" />
-    <Compile Include="Computation\Model\IObservingCalculator.cs" />
-    <Compile Include="Computation\Model\ObservableCalculator.cs" />
-    <Compile Include="Computation\ViewModels\CalculationNodeViewModelFactory.cs" />
-    <Compile Include="Computation\ViewModels\ConfigurationNodeViewModel.cs" />
-    <Compile Include="Computation\ViewModels\ConfigurationStatsConnector.cs" />
-    <Compile Include="Computation\ViewModels\ConfigurationStatsViewModel.cs" />
-    <Compile Include="Computation\ViewModels\ExplicitlyRegisteredStatsViewModel.cs" />
-    <Compile Include="Computation\ViewModels\IndependentResultStatsViewModel.cs" />
-    <Compile Include="Computation\ViewModels\ModifierNodeViewModelFactory.cs" />
-    <Compile Include="Computation\ViewModels\GainOnActionStatsViewModel.cs" />
-    <Compile Include="Computation\ViewModels\GainOnActionStatViewModel.cs" />
-    <Compile Include="Computation\ViewModels\ResultNodeViewModel.cs" />
-    <Compile Include="Computation\ViewModels\SharedConfigurationViewModel.cs" />
-    <Compile Include="Computation\ViewModels\CalculationNodeViewModel.cs" />
-    <Compile Include="Computation\ViewModels\ModifierNodeViewModel.cs" />
-    <Compile Include="Computation\Views\GainOnActionStatsView.xaml.cs">
-      <DependentUpon>GainOnActionStatsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Computation\Views\IndependentResultStatsView.xaml.cs">
-      <DependentUpon>IndependentResultStatsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Computation\Views\ResultStatToolTip.xaml.cs">
-      <DependentUpon>ResultStatToolTip.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Contrib\RangeTree\Range.cs" />
-    <Compile Include="Contrib\RangeTree\RangeTree.cs" />
-    <Compile Include="Contrib\RangeTree\RangeTreeAsync.cs" />
-    <Compile Include="Contrib\RangeTree\RangeTreeNode.cs" />
-    <Compile Include="Contrib\WpfRangeControls\RangeAlignment.cs" />
-    <Compile Include="Contrib\WpfRangeControls\RangeItemsControl.cs" />
-    <Compile Include="Contrib\WpfRangeControls\RangePanel.cs" />
-    <Compile Include="Contrib\WpfRangeControls\RangeScrollbar.cs" />
-    <Compile Include="Controls\ColorPickerButton.xaml.cs">
-      <DependentUpon>ColorPickerButton.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SearchableComboBox.cs" />
-    <Compile Include="Model\Builds\GGGBuild.cs" />
-    <Compile Include="Model\GameDataWithOldTreeModel.cs" />
-    <Compile Include="Model\Items\Mods\ModGroup.cs" />
-    <Compile Include="Model\Items\Mods\IMod.cs" />
-    <Compile Include="Model\Items\Mods\JsonCraftingBenchOption.cs" />
-    <Compile Include="Model\Items\Mods\JsonMod.cs" />
-    <Compile Include="Model\Items\Mods\Mod.cs" />
-    <Compile Include="Model\Items\Mods\ModDatabase.cs" />
-    <Compile Include="Model\Items\Mods\Affix.cs" />
-    <Compile Include="Model\Items\Mods\Stat.cs" />
-    <Compile Include="Model\Items\IItemBase.cs" />
-    <Compile Include="Model\ModelConverter.cs" />
-    <Compile Include="Model\ObservableItemCollectionConverter.cs" />
-    <Compile Include="SkillTreeFiles\PoESkillTreeConverter.cs" />
-    <Compile Include="Utils\Extensions\SchedulerExtensions.cs" />
-    <Compile Include="Utils\SemanticVersion.cs" />
-    <Compile Include="Utils\WikiApi\CargoConstants.cs" />
-    <Compile Include="Utils\Wpf\BindableActualSizeBehavior.cs" />
-    <Compile Include="Utils\Wpf\BitmapImageFactory.cs" />
-    <Compile Include="Utils\Wpf\ScrollViewerBindableOffsetBehavior.cs" />
-    <Compile Include="Computation\ViewModels\AddableResultStatViewModel.cs" />
-    <Compile Include="Computation\ViewModels\ComputationViewModel.cs" />
-    <Compile Include="Computation\ViewModels\ConfigurationStatViewModel.cs" />
-    <Compile Include="Computation\ViewModels\MainSkillSelectionViewModel.cs" />
-    <Compile Include="Computation\ViewModels\MainSkillViewModel.cs" />
-    <Compile Include="Computation\ViewModels\ResultStatsViewModel.cs" />
-    <Compile Include="Computation\ViewModels\ResultStatViewModel.cs" />
-    <Compile Include="ViewModels\Crafting\AbstractCraftingViewModel.cs" />
-    <Compile Include="ViewModels\Crafting\BaseGroup.cs" />
-    <Compile Include="ViewModels\Crafting\CraftingViewModel.cs" />
-    <Compile Include="ViewModels\Crafting\ModSelectorViewModel.cs" />
-    <Compile Include="ViewModels\Crafting\SliderGroupViewModel.cs" />
-    <Compile Include="ViewModels\Crafting\SliderViewModel.cs" />
-    <Compile Include="ViewModels\Equipment\SocketedGemsEditingViewModel.cs" />
-    <Compile Include="ViewModels\Crafting\UniqueCraftingViewModel.cs" />
-    <Compile Include="ViewModels\Equipment\BinViewModel.cs" />
-    <Compile Include="ViewModels\Equipment\DraggableItemViewModel.cs" />
-    <Compile Include="ViewModels\Equipment\InventoryItemViewModel.cs" />
-    <Compile Include="ViewModels\Equipment\InventoryViewModel.cs" />
-    <Compile Include="ViewModels\Equipment\StashBookmarkViewModel.cs" />
-    <Compile Include="Computation\Views\ComputationView.xaml.cs">
-      <DependentUpon>ComputationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Computation\Views\ConfigurationStatsView.xaml.cs">
-      <DependentUpon>ConfigurationStatsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Computation\Views\MainSkillSelectionView.xaml.cs">
-      <DependentUpon>MainSkillSelectionView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Computation\Views\ResultStatsView.xaml.cs">
-      <DependentUpon>ResultStatsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Equipment\InventoryFlaskView.xaml.cs">
-      <DependentUpon>InventoryFlaskView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Equipment\ScrollBarPositionConverter.cs" />
-    <Compile Include="ViewModels\Equipment\StashItemViewModel.cs" />
-    <Compile Include="Views\Crafting\BaseCraftingView.xaml.cs">
-      <DependentUpon>BaseCraftingView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Crafting\CraftingView.xaml.cs">
-      <DependentUpon>CraftingView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Crafting\ModSelectorView.xaml.cs">
-      <DependentUpon>ModSelectorView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Crafting\SliderGroupView.xaml.cs">
-      <DependentUpon>SliderGroupView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Crafting\SliderView.xaml.cs">
-      <DependentUpon>SliderView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Items\ItemImageService.cs" />
-    <Compile Include="Model\Items\UniqueBase.cs" />
-    <Compile Include="Utils\WikiApi\ApiAccessor.cs" />
-    <Compile Include="Utils\WikiApi\PoolingImageLoader.cs" />
-    <Compile Include="Utils\WikiApi\WikiApiUtils.cs" />
-    <Compile Include="SkillTreeFiles\Class.cs" />
-    <Compile Include="SkillTreeFiles\IAscendancyClasses.cs" />
-    <Compile Include="Utils\UrlProcessing\BuildUrlDeserializer.cs" />
-    <Compile Include="Utils\UrlProcessing\BuildConverter.cs" />
-    <Compile Include="Utils\UrlProcessing\BuildUrlData.cs" />
-    <Compile Include="Utils\UrlProcessing\IBuildConverter.cs" />
-    <Compile Include="Utils\UrlProcessing\SkillTreeSerializer.cs" />
-    <Compile Include="Utils\UrlProcessing\BuildUrlNormalizer.cs" />
-    <Compile Include="Utils\UrlProcessing\PathofexileUrlDeserializer.cs" />
-    <Compile Include="Utils\UrlProcessing\PoeplannerUrlDeserializer.cs" />
-    <Compile Include="Utils\UrlProcessing\NaivePoEUrlDeserializer.cs" />
-    <Compile Include="Utils\Wpf\ComboBoxTemplateSelector.cs" />
-    <Compile Include="ViewModels\CommandCollectionViewModel.cs" />
-    <Compile Include="Controls\Dialogs\BaseDialog.cs" />
-    <Compile Include="Controls\Dialogs\DialogCoordinator.cs" />
-    <Compile Include="Controls\Dialogs\DialogParticipation.cs" />
-    <Compile Include="Controls\Dialogs\FileSelectorDialogSettings.cs" />
-    <Compile Include="Controls\Dialogs\IDialogCoordinator.cs" />
-    <Compile Include="Controls\Dialogs\ProgressDialogController.cs" />
-    <Compile Include="Controls\Dialogs\ViewModels\FileSelectorViewModel.cs" />
-    <Compile Include="Controls\Dialogs\ViewModels\MetroMessageBoxViewModel.cs" />
-    <Compile Include="Controls\Dialogs\ViewModels\ValidatingInputDialogViewModel.cs" />
-    <Compile Include="Controls\Dialogs\Views\FileSelectorView.xaml.cs">
-      <DependentUpon>FileSelectorView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Dialogs\Views\MetroMessageBoxView.xaml.cs">
-      <DependentUpon>MetroMessageBoxView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Dialogs\Views\ValidatingInputDialogView.xaml.cs">
-      <DependentUpon>ValidatingInputDialogView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Equipment\BinView.xaml.cs">
-      <DependentUpon>BinView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Equipment\InventoryItemView.xaml.cs">
-      <DependentUpon>InventoryItemView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Equipment\InventoryView.xaml.cs">
-      <DependentUpon>InventoryView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ItemTooltip.xaml.cs">
-      <DependentUpon>ItemTooltip.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ItemVisualizer.xaml.cs">
-      <DependentUpon>ItemVisualizer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\MenuItemExtensions.cs" />
-    <Compile Include="Controls\StashBookmark.cs" />
-    <Compile Include="ItemFilter\Model\Block.cs" />
-    <Compile Include="ItemFilter\Model\Filter.cs" />
-    <Compile Include="ItemFilter\Model\FilterManager.cs" />
-    <Compile Include="ItemFilter\Model\IMergeableMatch.cs" />
-    <Compile Include="ItemFilter\Model\Match.cs" />
-    <Compile Include="ItemFilter\Model\MatchBaseType.cs" />
-    <Compile Include="ItemFilter\Model\MatchClass.cs" />
-    <Compile Include="ItemFilter\Model\MatchDropLevel.cs" />
-    <Compile Include="ItemFilter\Model\MatchEnum.cs" />
-    <Compile Include="ItemFilter\Model\MatchItemLevel.cs" />
-    <Compile Include="ItemFilter\Model\MatchLinkedSockets.cs" />
-    <Compile Include="ItemFilter\Model\MatchNumber.cs" />
-    <Compile Include="ItemFilter\Model\MatchQuality.cs" />
-    <Compile Include="ItemFilter\Model\MatchRarity.cs" />
-    <Compile Include="ItemFilter\Model\MatchSocketGroup.cs" />
-    <Compile Include="ItemFilter\Model\MatchSockets.cs" />
-    <Compile Include="ItemFilter\Model\MatchStrings.cs" />
-    <Compile Include="ItemFilter\Model\Rule.cs" />
-    <Compile Include="ItemFilter\Model\RuleGroup.cs" />
-    <Compile Include="ItemFilter\Views\ColorButtonDialog.xaml.cs">
-      <DependentUpon>ColorButtonDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ItemFilter\Views\ItemFilterEditWindow.xaml.cs">
-      <DependentUpon>ItemFilterEditWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ItemFilter\Views\ItemFilterOpenWindow.xaml.cs">
-      <DependentUpon>ItemFilterOpenWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Localization\Catalog.cs" />
-    <Compile Include="Localization\L10n.cs" />
-    <Compile Include="Localization\Markdown\Markdown.cs" />
-    <Compile Include="Localization\Markdown\TextToFlowDocumentConverter.cs" />
-    <Compile Include="Localization\XAML.cs" />
-    <Compile Include="Model\BanditSettings.cs" />
-    <Compile Include="Model\Builds\AbstractBuild.cs" />
-    <Compile Include="Model\Builds\BuildFolder.cs" />
-    <Compile Include="Model\Builds\IBuild.cs" />
-    <Compile Include="Model\IMemento.cs" />
-    <Compile Include="Model\IPersistentData.cs" />
-    <Compile Include="Model\Items\Mods\ItemMod.cs" />
-    <Compile Include="Model\Items\EquipmentData.cs" />
-    <Compile Include="Model\Items\ItemImage.cs" />
-    <Compile Include="Model\Items\XmlItemList.cs" />
-    <Compile Include="Model\Options.cs" />
-    <Compile Include="Model\Serialization\AbstractPersistentData.cs" />
-    <Compile Include="Model\ResetPreferences.cs" />
-    <Compile Include="Model\Serialization\AbstractPersistentDataDeserializer.cs" />
-    <Compile Include="Model\Serialization\BarePersistentData.cs" />
-    <Compile Include="Model\Serialization\IPersistentDataDeserializer.cs" />
-    <Compile Include="Model\Serialization\PersistentDataDeserializerCurrent.cs" />
-    <Compile Include="Model\Serialization\PersistentDataDeserializerUpTo230.cs" />
-    <Compile Include="Model\Serialization\PersistentDataSerializationService.cs" />
-    <Compile Include="Model\Serialization\PersistentDataSerializer.cs" />
-    <Compile Include="Model\Serialization\SerializationConstants.cs" />
-    <Compile Include="Model\Serialization\XmlBuild.cs" />
-    <Compile Include="Model\JsonSettings\AbstractCompositeSetting.cs" />
-    <Compile Include="Model\JsonSettings\ISetting.cs" />
-    <Compile Include="Model\JsonSettings\LeafSetting.cs" />
-    <Compile Include="TreeGenerator\ViewModels\TreeGeneratorInteraction.cs" />
-    <Compile Include="TreeGenerator\Views\SteinerTabView.xaml.cs">
-      <DependentUpon>SteinerTabView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Utils\Util.cs" />
-    <Compile Include="Utils\PathEx.cs" />
-    <Compile Include="Utils\SerializationUtils.cs" />
-    <Compile Include="Model\Serialization\XmlBuildFolder.cs" />
-    <Compile Include="Model\Serialization\XmlPersistentData.cs" />
-    <Compile Include="Model\Serialization\XmlPersistentDataVersion.cs" />
-    <Compile Include="Properties\Version.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Version.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Settings.cs" />
-    <Compile Include="SkillTreeFiles\AscendancyClasses.cs" />
-    <Compile Include="SkillTreeFiles\AssetLoader.cs" />
-    <Compile Include="SkillTreeFiles\Bootstrap.cs" />
-    <Compile Include="SkillTreeFiles\Constants.cs" />
-    <Compile Include="SkillTreeFiles\NodeHighlighter.cs" />
-    <Compile Include="SkillTreeFiles\SkillIcons.cs" />
-    <Compile Include="SkillTreeFiles\Updater.cs" />
-    <Compile Include="TreeGenerator\Algorithm\DisjointSet.cs" />
-    <Compile Include="TreeGenerator\Algorithm\DistanceLookup.cs" />
-    <Compile Include="TreeGenerator\Algorithm\Model\GraphEdge.cs" />
-    <Compile Include="TreeGenerator\Algorithm\Model\GraphEdgeSet.cs" />
-    <Compile Include="TreeGenerator\Algorithm\Model\GraphNode.cs" />
-    <Compile Include="TreeGenerator\Algorithm\HillClimber.cs" />
-    <Compile Include="TreeGenerator\Algorithm\LinkedListPriorityQueue.cs" />
-    <Compile Include="TreeGenerator\Algorithm\MinimalSpanningTree.cs" />
-    <Compile Include="TreeGenerator\Algorithm\Model\SearchGraph.cs" />
-    <Compile Include="TreeGenerator\Algorithm\SteinerPreprocessor.cs" />
-    <Compile Include="TreeGenerator\Algorithm\SteinerReductions\BottleneckSteinerDistanceCalculator.cs" />
-    <Compile Include="TreeGenerator\Algorithm\SteinerReductions\DegreeTest.cs" />
-    <Compile Include="TreeGenerator\Algorithm\SteinerReductions\FarAwayNonTerminalsTest.cs" />
-    <Compile Include="TreeGenerator\Algorithm\Model\Data.cs" />
-    <Compile Include="TreeGenerator\Algorithm\Model\NodeStates.cs" />
-    <Compile Include="TreeGenerator\Algorithm\SteinerReductions\NearestVertexTest.cs" />
-    <Compile Include="TreeGenerator\Algorithm\SteinerReductions\NonTerminalsOfDegreeKTest.cs" />
-    <Compile Include="TreeGenerator\Algorithm\SteinerReductions\PathsWithManyTerminalsTest.cs" />
-    <Compile Include="TreeGenerator\Algorithm\SteinerReductions\SteinerReduction.cs" />
-    <Compile Include="TreeGenerator\Genetic\BitArray.cs" />
-    <Compile Include="TreeGenerator\Genetic\GeneticAlgorithm.cs" />
-    <Compile Include="TreeGenerator\Genetic\WeightedSampling.cs" />
-    <Compile Include="TreeGenerator\Model\PseudoAttributes\Attribute.cs" />
-    <Compile Include="TreeGenerator\Model\PseudoAttributes\Conditions.cs" />
-    <Compile Include="TreeGenerator\Model\PseudoAttributes\PseudoAttributeLoader.cs" />
-    <Compile Include="TreeGenerator\Model\TargetWeightConstraint.cs" />
-    <Compile Include="TreeGenerator\Model\PseudoAttributes\ConditionSettings.cs" />
-    <Compile Include="TreeGenerator\Model\PseudoAttributes\OffHand.cs" />
-    <Compile Include="TreeGenerator\Model\PseudoAttributes\PseudoAttribute.cs" />
-    <Compile Include="TreeGenerator\Model\PseudoAttributes\PseudoAttributeSerialization.cs" />
-    <Compile Include="TreeGenerator\Model\PseudoAttributes\Tags.cs" />
-    <Compile Include="TreeGenerator\Model\PseudoAttributes\WeaponClass.cs" />
-    <Compile Include="TreeGenerator\Settings\AdvancedSolverSettings.cs" />
-    <Compile Include="TreeGenerator\Settings\AutomatedSolverSettings.cs" />
-    <Compile Include="TreeGenerator\Settings\SolverSettings.cs" />
-    <Compile Include="TreeGenerator\Solver\AbstractGeneticSolver.cs" />
-    <Compile Include="TreeGenerator\Solver\AbstractSolver.cs" />
-    <Compile Include="TreeGenerator\Solver\AdvancedSolver.cs" />
-    <Compile Include="TreeGenerator\Solver\ISolver.cs" />
-    <Compile Include="TreeGenerator\Solver\SteinerSolver.cs" />
-    <Compile Include="TreeGenerator\ViewModels\AdvancedTabViewModel.cs" />
-    <Compile Include="TreeGenerator\ViewModels\AutomatedTabViewModel.cs" />
-    <Compile Include="TreeGenerator\ViewModels\SettingsDialogCoordinator.cs" />
-    <Compile Include="Utils\ColorUtils.cs" />
-    <Compile Include="Utils\Converter\BooleanToStringConverter.cs" />
-    <Compile Include="Utils\Converter\EmptyStringConverter.cs" />
-    <Compile Include="Utils\Converter\StringBrushConverter.cs" />
-    <Compile Include="Utils\Converter\ArithmeticConverter.cs" />
-    <Compile Include="Utils\Converter\NullToVisibilityConverter.cs" />
-    <Compile Include="Utils\Converter\StringToVisibilityConverter.cs" />
-    <Compile Include="Controls\Dialogs\ExtendedDialogManager.cs" />
-    <Compile Include="Utils\DirectoryEx.cs" />
-    <Compile Include="Utils\Extensions\DependencyObjectExtensions.cs" />
-    <Compile Include="Utils\Extensions\ImageExtensions.cs" />
-    <Compile Include="Utils\NotifyingTask.cs" />
-    <Compile Include="Utils\ObservableSet.cs" />
-    <Compile Include="Utils\SimpleMonitor.cs" />
-    <Compile Include="Utils\Wpf\BindingProxy.cs" />
-    <Compile Include="Utils\Wpf\Setter.cs" />
-    <Compile Include="Utils\Wpf\Helper.cs" />
-    <Compile Include="ViewModels\AttributeToTextblockConverter.cs" />
-    <Compile Include="ViewModels\Builds\BuildsControlViewModel.cs" />
-    <Compile Include="ViewModels\Builds\AbstractBuildViewModel.cs" />
-    <Compile Include="ViewModels\Builds\BuildFolderViewModel.cs" />
-    <Compile Include="ViewModels\Builds\BuildValidator.cs" />
-    <Compile Include="ViewModels\Builds\BuildViewModel.cs" />
-    <Compile Include="ViewModels\Builds\IBuildViewModel.cs" />
-    <Compile Include="TreeGenerator\ViewModels\ControllerViewModel.cs" />
-    <Compile Include="TreeGenerator\ViewModels\GeneratorTabViewModel.cs" />
-    <Compile Include="TreeGenerator\ViewModels\SettingsViewModel.cs" />
-    <Compile Include="TreeGenerator\ViewModels\SteinerTabViewModel.cs" />
-    <Compile Include="ViewModels\Equipment\DownloadStashViewModel.cs" />
-    <Compile Include="ViewModels\Builds\EditBuildViewModel.cs" />
-    <Compile Include="ViewModels\ExtendedDialogCoordinator.cs" />
-    <Compile Include="ViewModels\SettingsMenuViewModel.cs" />
-    <Compile Include="Utils\Wpf\StyleSelectorByType.cs" />
-    <Compile Include="ViewModels\Equipment\TabPickerViewModel.cs" />
-    <Compile Include="TreeGenerator\Views\AdvancedGeneratorTab.xaml.cs">
-      <DependentUpon>AdvancedGeneratorTab.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="TreeGenerator\Views\AutomatedGeneratorTab.xaml.cs">
-      <DependentUpon>AutomatedGeneratorTab.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Utils\Converter\InvertBoolConverter.cs" />
-    <Compile Include="Utils\Converter\EnumConverter.cs" />
-    <Compile Include="Utils\Converter\GroupStringConverter.cs" />
-    <Compile Include="Utils\Extensions\EnumExtensions.cs" />
-    <Compile Include="Utils\Notifier.cs" />
-    <Compile Include="Utils\RegexTools.cs" />
-    <Compile Include="Utils\ThreadSafeRandom.cs" />
-    <Compile Include="Utils\AppData.cs" />
-    <Compile Include="Utils\CustomSettingsProvider.cs" />
-    <Compile Include="Utils\Extensions\StringExtension.cs" />
-    <Compile Include="ViewModels\AttributeGroup.cs" />
-    <Compile Include="ViewModels\Equipment\DownloadItemsViewModel.cs" />
-    <Compile Include="Model\Items\Item.cs" />
-    <Compile Include="Model\Items\ItemAttributes.cs" />
-    <Compile Include="Model\Items\ItemBase.cs" />
-    <Compile Include="ViewModels\ListGroup.cs" />
-    <Compile Include="ViewModels\Attribute.cs" />
-    <Compile Include="SkillTreeFiles\EXTHelper.cs" />
-    <Compile Include="ViewModels\ListGroupItem.cs" />
-    <Compile Include="Model\Items\ItemConverter.cs" />
-    <Compile Include="TreeGenerator\Views\ControllerWindow.xaml.cs">
-      <DependentUpon>ControllerWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="TreeGenerator\Views\SettingsWindow.xaml.cs">
-      <DependentUpon>SettingsWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\BanditSelection.xaml.cs">
-      <DependentUpon>BanditSelection.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Builds\BuildsControl.xaml.cs">
-      <DependentUpon>BuildsControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Equipment\SocketedGemsEditingView.xaml.cs">
-      <DependentUpon>SocketedGemsEditingView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Crafting\UniqueCraftingView.xaml.cs">
-      <DependentUpon>UniqueCraftingView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Equipment\DownloadStashWindow.xaml.cs">
-      <DependentUpon>DownloadStashWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Builds\EditBuildWindow.xaml.cs">
-      <DependentUpon>EditBuildWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Equipment\DraggableItemView.xaml.cs">
-      <DependentUpon>DraggableItemView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\Equipment\StashViewModel.cs" />
-    <Compile Include="Views\Equipment\StashItemView.xaml.cs">
-      <DependentUpon>StashItemView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Equipment\StashView.xaml.cs">
-      <DependentUpon>StashView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\HelpWindow.xaml.cs">
-      <DependentUpon>HelpWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\HotkeysWindow.xaml.cs">
-      <DependentUpon>HotkeysWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AboutWindow.xaml.cs">
-      <DependentUpon>AboutWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Builds\PoEBuild.cs" />
-    <Compile Include="SkillTreeFiles\PoESkillTree.cs" />
-    <Compile Include="SkillTreeFiles\Rect2D.cs" />
-    <Compile Include="SkillTreeFiles\SkillTree-Drawing.cs" />
-    <Compile Include="SkillTreeFiles\SkillTree.cs" />
-    <Compile Include="SkillTreeFiles\Vector2D.cs" />
-    <Compile Include="Controls\ZoomBorder.cs" />
-    <Compile Include="Views\Equipment\DownloadItemsWindow.xaml.cs">
-      <DependentUpon>DownloadItemsWindow.xaml</DependentUpon>
-    </Compile>
-    <Page Include="Computation\Views\GainOnActionStatsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Computation\Views\IndependentResultStatsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Computation\Views\ResultStatToolTip.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Contrib\Monotone\Styles\ExtendedWPFToolkit.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Dialogs\Views\FileSelectorView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Dialogs\Views\MetroMessageBoxView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Dialogs\Views\ValidatingInputDialogView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\ColorPickerButton.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Computation\Views\ComputationView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Computation\Views\ConfigurationStatsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Computation\Views\MainSkillSelectionView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Computation\Views\ResultStatsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Crafting\BaseCraftingView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Crafting\CraftingView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Crafting\ModSelectorView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Crafting\SliderGroupView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Crafting\SliderView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ItemFilter\Views\ColorButtonDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ItemFilter\Views\ItemFilterEditWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ItemFilter\Views\ItemFilterOpenWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\Dialogs.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\RangeScrollbars.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\SearchableComboBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\BaseDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\Generic.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Contrib\WpfRangeControls\Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="TreeGenerator\Views\AdvancedGeneratorTab.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TreeGenerator\Views\ControllerWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TreeGenerator\Views\AutomatedGeneratorTab.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TreeGenerator\Views\SettingsWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Compile Include="Views\SettingsMenuWindow.xaml.cs">
-      <DependentUpon>SettingsMenuWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Equipment\TabPicker.xaml.cs">
-      <DependentUpon>TabPicker.xaml</DependentUpon>
-    </Compile>
-    <Page Include="Views\Equipment\BinView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Equipment\InventoryFlaskView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Equipment\InventoryItemView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Equipment\InventoryView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\ItemTooltip.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\ItemVisualizer.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\BanditSelection.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TreeGenerator\Views\SteinerTabView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Builds\BuildsControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Equipment\SocketedGemsEditingView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Crafting\UniqueCraftingView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Equipment\DownloadStashWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\Builds\EditBuildWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Equipment\DraggableItemView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Equipment\StashItemView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Equipment\StashView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\HelpWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\HotkeysWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\AboutWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="Views\App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Views\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="Views\Equipment\DownloadItemsWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsMenuWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Equipment\TabPicker.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Version.resx">
+    <EmbeddedResource Update="Properties\Version.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Version.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="app.config" />
     <None Include="build-locale.bat" />
     <None Include="Contrib\RangeTree\LICENSE" />
     <None Include="Contrib\RangeTree\README.md" />
@@ -841,16 +90,7 @@
     <None Include="Locale\ru\Messages.po" />
     <None Include="Locale\sk\Help.md" />
     <None Include="Localization\Markdown\Readme.md" />
-    <None Include="Log4Net.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <AppDesigner Include="Properties\" />
     <None Include="Tools\isetup\Default.isl" />
     <None Include="Tools\isetup\Languages\BrazilianPortuguese.isl" />
     <None Include="Tools\isetup\Languages\Catalan.isl" />
@@ -886,49 +126,15 @@
     <None Include="Tools\MSBuild.ExtensionPack.tasks" />
   </ItemGroup>
   <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\Champion.jpg" />
     <Resource Include="Images\Gladiator.jpg" />
     <Resource Include="Images\Marauder.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\Duelist.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\Ranger.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\Scion.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\Shadow.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\Slayer.jpg" />
     <Resource Include="Images\Templar.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\Witch.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -1096,53 +302,12 @@
     <None Include="Tools\7z.LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\Assets\" />
+    <ProjectReference Include="..\PoESkillTree.Computation.Builders\PoESkillTree.Computation.Builders.csproj" />
+    <ProjectReference Include="..\PoESkillTree.Computation.Common\PoESkillTree.Computation.Common.csproj" />
+    <ProjectReference Include="..\PoESkillTree.Computation.Core\PoESkillTree.Computation.Core.csproj" />
+    <ProjectReference Include="..\PoESkillTree.Computation.Data\PoESkillTree.Computation.Data.csproj" />
+    <ProjectReference Include="..\PoESkillTree.Computation.Parsing\PoESkillTree.Computation.Parsing.csproj" />
+    <ProjectReference Include="..\PoESkillTree.Utils\PoESkillTree.Utils.csproj" />
+    <ProjectReference Include="..\PoESkillTree.GameModel\PoESkillTree.GameModel.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PoESkillTree.Computation.Builders\PoESkillTree.Computation.Builders.csproj">
-      <Project>{940A286A-BCA7-4C79-AC89-55C57C7D4784}</Project>
-      <Name>PoESkillTree.Computation.Builders</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PoESkillTree.Computation.Common\PoESkillTree.Computation.Common.csproj">
-      <Project>{827be52d-878c-45f0-afc0-75b5385aad53}</Project>
-      <Name>PoESkillTree.Computation.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PoESkillTree.Computation.Core\PoESkillTree.Computation.Core.csproj">
-      <Project>{E9C0CF81-6800-4461-8897-F8B569C7CDD0}</Project>
-      <Name>PoESkillTree.Computation.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PoESkillTree.Computation.Data\PoESkillTree.Computation.Data.csproj">
-      <Project>{85CF9690-7EB9-42CB-9574-ADF4239CFFBE}</Project>
-      <Name>PoESkillTree.Computation.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PoESkillTree.Computation.Parsing\PoESkillTree.Computation.Parsing.csproj">
-      <Project>{1E573C72-9B7F-40AF-A5E8-739F90B50690}</Project>
-      <Name>PoESkillTree.Computation.Parsing</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PoESkillTree.Utils\PoESkillTree.Utils.csproj">
-      <Project>{1f11d13c-9039-40ab-8b91-8a03e4da934a}</Project>
-      <Name>PoESkillTree.Utils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PoESkillTree.GameModel\PoESkillTree.GameModel.csproj">
-      <Project>{c1c73cc9-d825-41f7-86f0-f37ee8178d6d}</Project>
-      <Name>PoESkillTree.GameModel</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>if $(ConfigurationName) == Release call $(ProjectDir)build-locale.bat $(TargetDir)</PostBuildEvent>
-  </PropertyGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props'))" />
-  </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
