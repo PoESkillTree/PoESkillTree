@@ -7,27 +7,23 @@
     <Copyright>Copyright ©  2018</Copyright>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Data\RePoETmp\**" />
+    <EmbeddedResource Remove="Data\RePoETmp\**" />
+    <None Remove="Data\RePoETmp\**" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="LibLog" Version="5.0.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.CSharp" Version="4.*" />
-    <PackageReference Include="System.Net.Http" Version="4.*" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Enums.NET" Version="2.3.2" />
-    <PackageReference Include="JetBrains.Annotations" Version="2018.3.0" />
-    <PackageReference Include="Microsoft.Net.Compilers" Version="2.10.0">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="morelinq" Version="3.1.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-    <PackageReference Include="Nito.AsyncEx.Coordination" Version="5.0.0-pre-05" />
-    <PackageReference Include="Nito.AsyncEx.Tasks" Version="5.0.0-pre-05" />
-    <PackageReference Include="Nito.Collections.Deque" Version="1.0.4" />
-    <PackageReference Include="Nito.Disposables" Version="2.0.0" />
-    <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="2019.1.1" />
+    <PackageReference Include="morelinq" Version="3.1.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Nito.AsyncEx.Coordination" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Data\RePoE\crafting_bench_options.min.json" />
