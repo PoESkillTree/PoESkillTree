@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using log4net;
 using MoreLinq;
+using PoESkillTree.GameModel.Logging;
 
 namespace PoESkillTree.GameModel.StatTranslation
 {
@@ -12,7 +12,7 @@ namespace PoESkillTree.GameModel.StatTranslation
     /// </summary>
     public class StatTranslator : IStatTranslator
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(StatTranslator));
+        private static readonly ILog Log = LogProvider.GetCurrentClassLogger();
 
         private readonly Lazy<ILookup<string, Translation>> _translationLookup;
 

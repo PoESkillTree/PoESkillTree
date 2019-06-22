@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
-using log4net;
+using NLog;
 using PoESkillTree.Utils;
 using PoESkillTree.Localization;
 using PoESkillTree.Model;
@@ -18,7 +17,7 @@ namespace PoESkillTree.Views
     /// </summary>
     public partial class App
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(App));
+        private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
         // The flag whether application exit is in progress.
         private bool _isExiting;
@@ -57,7 +56,7 @@ namespace PoESkillTree.Views
             }
             catch (Exception ex)
             {
-                Log.Error("Exception while exiting", ex);
+                Log.Error(ex, "Exception while exiting");
             }
         }
 
@@ -90,33 +89,24 @@ namespace PoESkillTree.Views
             L10n.Initialize(PersistentData.Options.Language);
         }
 
+        // Compared to AppDomain.CurrentDomain.UnhandledException, this allows for a more graceful shutdown for
+        // unhandled exceptions that occur in the main/UI thread
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            OnUnhandledException(e.Exception);
+            if (Debugger.IsAttached) return;
 
-            if (!Debugger.IsAttached)
-            {
-                e.Handled = true;
-                Shutdown();
-            }
+            OnUnhandledException(e.Exception);
+            e.Handled = true;
+            Shutdown();
         }
 
         private static void OnUnhandledException(Exception ex)
         {
-            Log.Error("Unhandled exception", ex);
+            Log.Fatal(ex, "Unhandled exception");
 
             if (!Debugger.IsAttached)
             {
-                string filePath = AppData.GetFolder(true) + "debug.txt";
-                using (TextWriter writer = new StreamWriter(filePath, true))
-                {
-                    writer.WriteLine($"Error time: {DateTime.Now:u}");
-                    while (ex != null)
-                    {
-                        writer.WriteLine($"Exception: {ex}");
-                        ex = ex.InnerException;
-                    }
-                }
+                var filePath = AppData.GetFolder() + "/logs/crash.log";
                 MessageBox.Show("The program crashed. A stack trace can be found at:\n" + filePath);
             }
         }

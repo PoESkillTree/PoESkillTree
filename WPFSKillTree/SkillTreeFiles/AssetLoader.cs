@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using log4net;
 using Newtonsoft.Json;
 using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
@@ -19,8 +18,6 @@ namespace PoESkillTree.SkillTreeFiles
     /// </summary>
     public class AssetLoader
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(AssetLoader));
-
         private const string SpriteUrl = "http://www.pathofexile.com/image/build-gen/passive-skill-sprite/";
 
         private const string SkillTreeFile = "SkillTree.txt";

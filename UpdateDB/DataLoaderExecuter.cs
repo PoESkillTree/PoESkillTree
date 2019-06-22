@@ -6,8 +6,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using log4net;
 using MoreLinq;
+using NLog;
 using PoESkillTree.Utils;
 using UpdateDB.DataLoading;
 
@@ -18,7 +18,7 @@ namespace UpdateDB
     /// </summary>
     public class DataLoaderExecutor : IDisposable
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(DataLoaderExecutor));
+        private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
         private readonly LoaderCollection _loaderDefinitions = new LoaderCollection
         {
@@ -62,7 +62,7 @@ namespace UpdateDB
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            Log.InfoFormat("Using output directory {0}.", _savePath);
+            Log.Info("Using output directory {0}.", _savePath);
             _savePath = Path.Combine(_savePath, "Data");
 
             _loaderDefinitions.ForEach(l => l.DataLoader.HttpClient = _httpClient);
@@ -132,7 +132,7 @@ namespace UpdateDB
 
         private async Task LoadAsync(string name, string path, IDataLoader dataLoader)
         {
-            Log.InfoFormat("Loading {0} ...", name);
+            Log.Info("Loading {0} ...", name);
             var fullPath = Path.Combine(_savePath, path);
 
             if (path.Any())
@@ -156,7 +156,7 @@ namespace UpdateDB
                 // This is for SkillTreeLoader which writes to multiple files/folders and does the tmp stuff itself
                 await dataLoader.LoadAndSaveAsync(fullPath);
             }
-            Log.InfoFormat("Loaded {0}!", name);
+            Log.Info("Loaded {0}!", name);
         }
 
         public void Dispose()

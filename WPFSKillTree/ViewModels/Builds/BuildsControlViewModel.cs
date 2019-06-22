@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using GongSolutions.Wpf.DragDrop;
-using log4net;
 using MoreLinq;
 using PoESkillTree.Common;
 using PoESkillTree.Common.ViewModels;
@@ -23,6 +22,7 @@ using PoESkillTree.Controls.Dialogs;
 using Newtonsoft.Json;
 using System.Text;
 using EnumsNET;
+using NLog;
 using PoESkillTree.GameModel;
 using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
@@ -56,7 +56,7 @@ namespace PoESkillTree.ViewModels.Builds
     /// </summary>
     public class BuildsControlViewModel : Notifier
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(BuildsControlViewModel));
+        private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
         private static readonly ClassFilterItem NoFilterItem = new ClassFilterItem(L10n.Message("All"), null);
 
@@ -379,8 +379,8 @@ namespace PoESkillTree.ViewModels.Builds
 
         private void FileSystemWatcherOnError(object sender, ErrorEventArgs errorEventArgs)
         {
-            Log.Error($"File system watcher for {_fileSystemWatcher.Path} stopped working",
-                errorEventArgs.GetException());
+            Log.Error(errorEventArgs.GetException(),
+                $"File system watcher for {_fileSystemWatcher.Path} stopped working");
         }
 
         private void FileSystemWatcherOnChanged(object sender, EventArgs fileSystemEventArgs)
@@ -819,7 +819,7 @@ namespace PoESkillTree.ViewModels.Builds
             }
             catch (Exception e)
             {
-                Log.Error($"Build save failed for '{build.Build.Name}'", e);
+                Log.Error(e, $"Build save failed for '{build.Build.Name}'");
                 await _dialogCoordinator.ShowErrorAsync(this,
                     L10n.Message("An error occurred during a save operation."), e.Message);
             }
@@ -836,7 +836,7 @@ namespace PoESkillTree.ViewModels.Builds
             }
             catch (Exception e)
             {
-                Log.Error($"Build deletion failed for '{build.Build.Name}'", e);
+                Log.Error(e, $"Build deletion failed for '{build.Build.Name}'");
                 await _dialogCoordinator.ShowErrorAsync(this,
                     L10n.Message("An error occurred during a delete operation."), e.Message);
             }

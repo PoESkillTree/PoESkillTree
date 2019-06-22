@@ -1,4 +1,6 @@
 ﻿using System;
+using NLog.LayoutRenderers;
+using PoESkillTree.Utils;
 using PoESkillTree.Views;
 
 namespace PoESkillTree.SkillTreeFiles
@@ -10,6 +12,7 @@ namespace PoESkillTree.SkillTreeFiles
         [STAThread]
         public static void Main(string[] arguments)
         {
+            LayoutRenderer.Register("appData", _ => AppData.GetFolder());
             App app = new App();
             app.InitializeComponent();
             app.Run();

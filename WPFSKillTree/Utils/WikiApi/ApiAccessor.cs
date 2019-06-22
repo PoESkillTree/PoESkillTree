@@ -4,10 +4,10 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
-using log4net;
 using MoreLinq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NLog;
 
 namespace PoESkillTree.Utils.WikiApi
 {
@@ -16,7 +16,7 @@ namespace PoESkillTree.Utils.WikiApi
     /// </summary>
     public class ApiAccessor
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ApiAccessor));
+        private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
         private const string BaseUri = "https://pathofexile.gamepedia.com/api.php?format=json&formatversion=2";
 
@@ -194,7 +194,8 @@ namespace PoESkillTree.Utils.WikiApi
                     return true;
                 }
                 Log.Error($"Api returned errors for uri {uri}:");
-                errorToken.SelectMany(t => t).SelectMany(t => t).Select(t => t.Value<string>()).ForEach(Log.Error);
+                errorToken.SelectMany(t => t).SelectMany(t => t).Select(t => t.Value<string>())
+                    .ForEach(s => Log.Error(s));
                 return true;
             }
             return false;
@@ -208,7 +209,8 @@ namespace PoESkillTree.Utils.WikiApi
                 {
                     Log.Warn($"Api returned warnings for uri {uri}:");
                     // e.g. warnings.main.warnings.Value is the path to the first warning string
-                    warnings.SelectMany(t => t).SelectMany(t => t).Cast<JProperty>().Select(p => p.Value.Value<string>()).ForEach(Log.Warn);
+                    warnings.SelectMany(t => t).SelectMany(t => t).Cast<JProperty>().Select(p => p.Value.Value<string>())
+                        .ForEach(s => Log.Warn(s));
                 }
             }
         }

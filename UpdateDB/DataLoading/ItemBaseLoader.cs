@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using log4net;
 using Newtonsoft.Json.Linq;
+using NLog;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.Model.Items;
@@ -15,7 +15,7 @@ namespace UpdateDB.DataLoading
     /// </summary>
     public class ItemBaseLoader : XmlDataLoader<XmlItemList>
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ItemBaseLoader));
+        private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
         private const string RepoeUrl = DataUtils.RePoEDataUrl + "base_items.min.json";
 

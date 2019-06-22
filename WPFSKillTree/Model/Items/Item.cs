@@ -5,9 +5,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using log4net;
 using MB.Algodat;
 using Newtonsoft.Json.Linq;
+using NLog;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Modifiers;
 using PoESkillTree.GameModel.Skills;
@@ -19,7 +19,7 @@ namespace PoESkillTree.Model.Items
 {
     public class Item : Notifier, IRangeProvider<int>
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(Item));
+        private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
         private ItemSlot _slot;
         public ItemSlot Slot

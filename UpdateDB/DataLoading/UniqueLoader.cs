@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using log4net;
 using MoreLinq;
 using Newtonsoft.Json.Linq;
+using NLog;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.Utils.Extensions;
 using PoESkillTree.Utils.WikiApi;
@@ -16,7 +16,7 @@ namespace UpdateDB.DataLoading
     /// </summary>
     public class UniqueLoader : XmlDataLoader<XmlUniqueList>
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(UniqueLoader));
+        private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
         private static readonly IReadOnlyList<string> Fields = new[]
         {

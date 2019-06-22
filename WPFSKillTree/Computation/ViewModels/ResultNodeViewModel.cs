@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-using log4net;
+using NLog;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Utils;
 
@@ -10,7 +10,7 @@ namespace PoESkillTree.Computation.ViewModels
 {
     public class ResultNodeViewModel : CalculationNodeViewModel, IDisposable
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ResultNodeViewModel));
+        private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
         private readonly ModifierNodeViewModelFactory _modifierNodeFactory;
         private Lazy<NotifyingTask<IReadOnlyList<ModifierNodeViewModel>>> _modifierNodes;
@@ -41,7 +41,7 @@ namespace PoESkillTree.Computation.ViewModels
                 .ObserveOn(observeScheduler)
                 .Subscribe(
                     v => Value = v,
-                    ex => Log.Error($"ObserveNode({Stat}, {NodeType}) failed", ex));
+                    ex => Log.Error(ex, $"ObserveNode({Stat}, {NodeType}) failed"));
 
         public void Dispose()
             => _subscription?.Dispose();
@@ -51,7 +51,7 @@ namespace PoESkillTree.Computation.ViewModels
             _modifierNodes = new Lazy<NotifyingTask<IReadOnlyList<ModifierNodeViewModel>>>(
                 () => new NotifyingTask<IReadOnlyList<ModifierNodeViewModel>>(
                         _modifierNodeFactory.CreateAsync(Stat, NodeType),
-                        ex => Log.Error($"Failed to create modifier nodes for {Stat} {NodeType}", ex))
+                        ex => Log.Error(ex, $"Failed to create modifier nodes for {Stat} {NodeType}"))
                     { Default = new ModifierNodeViewModel[0] });
             OnPropertyChanged(nameof(ModifierNodes));
         }

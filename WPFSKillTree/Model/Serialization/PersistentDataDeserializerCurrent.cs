@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using log4net;
+using NLog;
 using PoESkillTree.Utils;
 using PoESkillTree.Localization;
 using PoESkillTree.Model.Builds;
@@ -15,7 +15,7 @@ namespace PoESkillTree.Model.Serialization
     /// </summary>
     public class PersistentDataDeserializerCurrent : AbstractPersistentDataDeserializer
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(PersistentDataDeserializerCurrent));
+        private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
         private string _currentBuildPath;
         private string _selectedBuildPath;
@@ -142,7 +142,7 @@ namespace PoESkillTree.Model.Serialization
             }
             catch (Exception e)
             {
-                Log.Error("Error while importing build", e);
+                Log.Error(e, "Error while importing build");
                 await DialogCoordinator.ShowErrorAsync(PersistentData, L10n.Message("Could not import build"),
                         e.Message, L10n.Message("Import failed"));
                 return null;
@@ -277,7 +277,7 @@ namespace PoESkillTree.Model.Serialization
             }
             catch (Exception e)
             {
-                Log.Error($"Could not deserialize file from {path} as type {typeof(T)}", e);
+                Log.Error(e, $"Could not deserialize file from {path} as type {typeof(T)}");
                 return default(T);
             }
         }

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Media;
-using log4net;
+using NLog;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.Utils;
 
@@ -12,7 +12,7 @@ namespace PoESkillTree.Model.Items
     /// </summary>
     public class ItemImage : Notifier
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ItemImage));
+        private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
         private const string OfficialSiteUrl = "https://www.pathofexile.com";
 
@@ -83,7 +83,7 @@ namespace PoESkillTree.Model.Items
         private static NotifyingTask<ImageSource> NewImageSourceTask(Task<ImageSource> task, string errorMessage,
             ImageSource defaultValue)
         {
-            return new NotifyingTask<ImageSource>(task, e => Log.Error(errorMessage, e))
+            return new NotifyingTask<ImageSource>(task, e => Log.Error(e, errorMessage))
             {
                 Default = defaultValue
             };

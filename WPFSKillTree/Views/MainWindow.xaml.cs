@@ -18,10 +18,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using EnumsNET;
-using log4net;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MoreLinq;
+using NLog;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.PassiveTree;
 using PoESkillTree.Utils;
@@ -55,7 +55,7 @@ namespace PoESkillTree.Views
     /// </summary>
     public partial class MainWindow : INotifyPropertyChanged
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(MainWindow));
+        private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// The set of keys of which one needs to be pressed to highlight similar nodes on hover.
@@ -986,7 +986,7 @@ namespace PoESkillTree.Views
                     catch (Exception ex)
                     {
                         assetLoader.RestoreBackup();
-                        Log.Error("Exception while downloading skill tree assets", ex);
+                        Log.Error(ex, "Exception while downloading skill tree assets");
                         await this.ShowErrorAsync(L10n.Message("An error occurred while downloading assets."), ex.Message);
                     }
                     await controller.CloseAsync();

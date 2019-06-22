@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -9,13 +9,17 @@
     <Copyright>Copyright ©  2017</Copyright>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="LibLog" Version="5.0.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.CSharp" Version="4.*" />
+    <PackageReference Include="NLog" Version="4.6.5" />
     <PackageReference Include="System.Net.Http" Version="4.*" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Enums.NET" Version="2.3.2" />
     <PackageReference Include="JetBrains.Annotations" Version="2018.3.0" />
-    <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Microsoft.Net.Compilers" Version="2.10.0">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -31,5 +35,10 @@
     <ProjectReference Include="..\PoESkillTree.Computation.Data\PoESkillTree.Computation.Data.csproj" />
     <ProjectReference Include="..\PoESkillTree.Computation.Parsing\PoESkillTree.Computation.Parsing.csproj" />
     <ProjectReference Include="..\PoESkillTree.GameModel\PoESkillTree.GameModel.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using log4net;
+using NLog;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.StatTranslation;
 
@@ -12,7 +12,7 @@ namespace UpdateDB.DataLoading
     /// </summary>
     public class RePoELoader : DataLoader
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(RePoELoader));
+        private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
         private static readonly string[] Files =
         {

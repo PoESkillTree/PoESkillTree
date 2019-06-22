@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using log4net;
+using NLog;
 using PoESkillTree.Common.ViewModels;
 using PoESkillTree.Controls.Dialogs;
 using PoESkillTree.Localization;
@@ -20,7 +20,7 @@ namespace PoESkillTree.TreeGenerator.ViewModels
     /// </summary>
     public sealed class ControllerViewModel : CloseableViewModel
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ControllerViewModel));
+        private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
         private static readonly string IterationPrefix = L10n.Message("Current iteration:") + " ";
 

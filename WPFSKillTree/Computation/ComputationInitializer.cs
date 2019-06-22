@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using log4net;
+using NLog;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Core;
 using PoESkillTree.Computation.Parsing;
@@ -20,7 +20,7 @@ namespace PoESkillTree.Computation
 {
     public class ComputationInitializer
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ComputationInitializer));
+        private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
         private readonly GameDataWithOldTreeModel _gameData;
 
@@ -124,6 +124,6 @@ namespace PoESkillTree.Computation
 
         public void SetupPeriodicActions()
             => _calculator.PeriodicallyRemoveUnusedNodes(
-                ex => Log.Error("Exception while removing unused calculation nodes", ex));
+                ex => Log.Error(ex, "Exception while removing unused calculation nodes"));
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using log4net;
+using NLog;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
 using PoESkillTree.Utils;
@@ -12,7 +12,7 @@ namespace PoESkillTree.Computation.Model
 {
     public class ExplicitlyRegisteredStatsObserver
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ExplicitlyRegisteredStatsObserver));
+        private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
         private readonly ObservableCalculator _observableCalculator;
 
@@ -44,7 +44,7 @@ namespace PoESkillTree.Computation.Model
         }
 
         private static void OnError(Exception exception)
-            => Log.Error("ObserveExplicitlyRegisteredStats failed", exception);
+            => Log.Error(exception, "ObserveExplicitlyRegisteredStats failed");
 
         private void Add((ICalculationNode, IStat) element)
         {

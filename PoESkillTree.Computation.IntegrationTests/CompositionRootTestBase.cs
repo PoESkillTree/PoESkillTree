@@ -36,9 +36,6 @@ namespace PoESkillTree.Computation.IntegrationTests
                 _parser = new Lazy<Task<IParser>>(
                     () => Parser<ParsingStep>.CreateAsync(_gameData.Value, _builderFactories.Value,
                         _parsingData.Value));
-                
-                // Necessary for logging in other assemblies to work
-                log4net.LogManager.GetLogger(typeof(CompositionRootTestBase));
             }
         }
     }

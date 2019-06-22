@@ -1,5 +1,5 @@
 using System;
-using log4net;
+using NLog;
 using PoESkillTree.GameModel;
 using PoESkillTree.Localization;
 using PoESkillTree.Model.Builds;
@@ -11,7 +11,7 @@ namespace PoESkillTree.ViewModels.Builds
     /// </summary>
     public class BuildViewModel : AbstractBuildViewModel<PoEBuild>
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(BuildViewModel));
+        private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
         private bool _currentlyOpen;
         private bool _isVisible;
@@ -148,7 +148,7 @@ namespace PoESkillTree.ViewModels.Builds
             }
             else
             {
-                Log.Warn($"Could not get tree depending properties for {Build.Name} because the tree is invalid: {Build.TreeUrl}", e);
+                Log.Warn(e, $"Could not get tree depending properties for {Build.Name} because the tree is invalid: {Build.TreeUrl}");
                 PointsUsed = 0;
             }
         }

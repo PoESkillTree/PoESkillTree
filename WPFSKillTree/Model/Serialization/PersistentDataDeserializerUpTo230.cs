@@ -4,8 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-using log4net;
 using MoreLinq;
+using NLog;
 using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
 using PoESkillTree.Controls;
@@ -40,7 +40,7 @@ namespace PoESkillTree.Model.Serialization
             public List<XmlBuild> Builds { get; set; }
         }
 
-        private static readonly ILog Log = LogManager.GetLogger(typeof(PersistentDataDeserializerUpTo230));
+        private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
         public PersistentDataDeserializerUpTo230()
             : base(null, "2.3.0")
@@ -84,8 +84,8 @@ namespace PoESkillTree.Model.Serialization
         {
             var buildNameMatch =
                 (from PoEBuild build in PersistentData.RootBuild.BuildsPreorder()
-                    where build.Name == name
-                    select build).FirstOrDefault();
+                 where build.Name == name
+                 select build).FirstOrDefault();
             if (buildNameMatch == null)
                 return false;
             PersistentData.CurrentBuild = buildNameMatch;
@@ -147,7 +147,7 @@ namespace PoESkillTree.Model.Serialization
             }
             catch (Exception e)
             {
-                Log.Error("Could not load legacy savedBuilds file", e);
+                Log.Error(e, "Could not load legacy savedBuilds file");
             }
         }
 

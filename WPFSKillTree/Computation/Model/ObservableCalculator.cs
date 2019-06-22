@@ -5,7 +5,7 @@ using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
-using log4net;
+using NLog;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
 using PoESkillTree.Utils;
@@ -15,7 +15,7 @@ namespace PoESkillTree.Computation.Model
 {
     public class ObservableCalculator : IObservingCalculator
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ObservableCalculator));
+        private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
         private readonly ICalculator _calculator;
         private readonly IScheduler _calculationScheduler;
@@ -90,7 +90,7 @@ namespace PoESkillTree.Computation.Model
             }
             catch (Exception e)
             {
-                Log.Error($"_calculator.Update({update}) failed", e);
+                Log.Error(e, $"_calculator.Update({update}) failed");
                 throw;
             }
         }
@@ -103,7 +103,7 @@ namespace PoESkillTree.Computation.Model
                 .Where(us => us.Any())
                 .Select(us => us.Aggregate(CalculatorUpdate.Accumulate))
                 .ObserveOn(_calculationScheduler)
-                .Subscribe(UpdateCalculator, ex => Log.Error("Exception while observing calculator updates", ex));
+                .Subscribe(UpdateCalculator, ex => Log.Error(ex, "Exception while observing calculator updates"));
             return subject;
         }
 

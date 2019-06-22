@@ -11,7 +11,7 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using log4net;
+using NLog;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
@@ -26,7 +26,7 @@ namespace PoESkillTree.Model.Items
     /// </summary>
     public class ItemImageService
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ItemImageService));
+        private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Path to images for ItemGroups
@@ -106,7 +106,7 @@ namespace PoESkillTree.Model.Items
                 }
                 catch (Exception e)
                 {
-                    Log.Warn("Could not load default file for ItemClass " + c, e);
+                    Log.Warn(e, "Could not load default file for ItemClass " + c);
                     return _errorImage;
                 }
             });

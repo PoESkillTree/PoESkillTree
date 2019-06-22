@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using log4net;
 using Newtonsoft.Json.Linq;
+using NLog;
 using PoESkillTree.Utils;
 using PoESkillTree.Controls.Dialogs;
 using PoESkillTree.Localization;
@@ -19,7 +19,7 @@ namespace PoESkillTree.Model.Serialization
     /// </summary>
     public abstract class AbstractPersistentDataDeserializer : IPersistentDataDeserializer
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(AbstractPersistentDataDeserializer));
+        private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
         public Version MinimumDeserializableVersion { get; }
         public Version MaximumDeserializableVersion { get; }
@@ -126,7 +126,7 @@ namespace PoESkillTree.Model.Serialization
             }
             catch (Exception e)
             {
-                Log.Error("Could not deserialize stash", e);
+                Log.Error(e, "Could not deserialize stash");
             }
             return Enumerable.Empty<Item>();
         }

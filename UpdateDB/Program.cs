@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using log4net;
-using log4net.Core;
+using NLog;
 
 namespace UpdateDB
 {
@@ -29,7 +28,7 @@ namespace UpdateDB
     /// </remarks>
     public static class Program
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(Program));
+        private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
         // Main entry point.
         public static async Task<int> Main(string[] arguments)
@@ -71,8 +70,6 @@ namespace UpdateDB
                         Console.WriteLine("/SourceCodeDir            Save into the PoESkillTree.GameModel source code directory instead of the AppData directory.");
                         Console.WriteLine("/CurrentDir               Save into the current directory instead of the AppData directory.");
                         Console.WriteLine("/SpecifiedDir:dirPath     Save into the specified directory instead of the AppData directory.");
-                        Console.WriteLine("/Quiet                    Do not display any output.");
-                        Console.WriteLine("/Verbose                  Enable verbose output.");
                         Console.WriteLine("/Items, /ItemImages, /TreeAssets, /Uniques, /RePoE");
                         Console.WriteLine("If at least one is specified, only the specified files are downloaded.\r\n");
                         return 1;
@@ -89,17 +86,6 @@ namespace UpdateDB
                         break;
                     case "/currentdir":
                         args.OutputDirectory = OutputDirectory.Current;
-                        break;
-
-                    case "/quiet":
-                        var repo = (log4net.Repository.Hierarchy.Hierarchy)LogManager.GetRepository();
-                        repo.Root.Level = Level.Off;
-                        repo.RaiseConfigurationChanged(EventArgs.Empty);
-                        break;
-                    case "/verbose":
-                        repo = (log4net.Repository.Hierarchy.Hierarchy)LogManager.GetRepository();
-                        repo.Root.Level = Level.Debug;
-                        repo.RaiseConfigurationChanged(EventArgs.Empty);
                         break;
 
                     default:

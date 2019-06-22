@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using JetBrains.Annotations;
-using log4net;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.PassiveTree;
 using PoESkillTree.Utils.Extensions;
@@ -29,8 +28,6 @@ namespace PoESkillTree.SkillTreeFiles
 {
     public partial class SkillTree : Notifier, ISkillTree
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(SkillTree));
-
         public Vector2D AscButtonPosition = new Vector2D();
         /// <summary>
         /// Nodes with an attribute matching this regex are one of the "Path of the ..." nodes connection Scion

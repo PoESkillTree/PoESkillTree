@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using EnumsNET;
-using log4net;
 using MoreLinq;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
@@ -24,7 +22,6 @@ namespace PoESkillTree.Computation.Console
     {
         public static async Task Main(string[] args)
         {
-            SetupLogger();
             var compositionRoot = new CompositionRoot();
             var program = new Program(compositionRoot);
             await program.LoopAsync();
@@ -391,12 +388,6 @@ namespace PoESkillTree.Computation.Console
 
         private static IEnumerable<string> ReadStatLines()
             => File.ReadAllLines("Data/SkillTreeStatLines.txt").Where(s => !s.StartsWith("//"));
-
-        private static void SetupLogger()
-        {
-            // Necessary for logging in other assemblies to work
-            LogManager.GetLogger(typeof(Program));
-        }
     }
 
 

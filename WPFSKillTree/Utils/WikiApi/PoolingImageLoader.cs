@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-using log4net;
+using NLog;
 
 namespace PoESkillTree.Utils.WikiApi
 {
@@ -21,7 +21,7 @@ namespace PoESkillTree.Utils.WikiApi
     /// </remarks>
     public class PoolingImageLoader
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(PoolingImageLoader));
+        private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
         // with more the queries for the 'cargoquery' action are getting to big
         private const int MaxBatchSize = 10;

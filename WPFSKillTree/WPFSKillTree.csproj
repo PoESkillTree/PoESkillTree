@@ -21,11 +21,11 @@
     <ApplicationIcon>logo.ico</ApplicationIcon>
     <StartupObject>PoESkillTree.SkillTreeFiles.Bootstrap</StartupObject>
   </PropertyGroup>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent"
-          Condition="$(Configuration) == Release">
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="$(Configuration) == Release">
     <Exec Command="$(ProjectDir)build-locale.bat $(TargetDir)" />
   </Target>
   <ItemGroup>
+    <PackageReference Include="NLog" Version="4.6.5" />
     <PackageReference Include="System.Net.Http" Version="4.*" />
     <PackageReference Include="Microsoft.CSharp" Version="4.*" />
   </ItemGroup>
@@ -34,7 +34,6 @@
     <PackageReference Include="Enums.NET" Version="2.3.2" />
     <PackageReference Include="gong-wpf-dragdrop" Version="1.1.0" />
     <PackageReference Include="JetBrains.Annotations" Version="2018.3.0" />
-    <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="MahApps.Metro" Version="1.6.5" />
     <PackageReference Include="MahApps.Metro.IconPacks.Modern" Version="1.9.1" />
     <PackageReference Include="MahApps.Metro.SimpleChildWindow" Version="1.5.0" />
@@ -309,5 +308,10 @@
     <ProjectReference Include="..\PoESkillTree.Computation.Parsing\PoESkillTree.Computation.Parsing.csproj" />
     <ProjectReference Include="..\PoESkillTree.Utils\PoESkillTree.Utils.csproj" />
     <ProjectReference Include="..\PoESkillTree.GameModel\PoESkillTree.GameModel.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

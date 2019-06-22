@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
-using log4net;
+using NLog;
 using PoESkillTree.Utils;
 using PoESkillTree.Controls.Dialogs;
 using PoESkillTree.Model.Builds;
@@ -17,7 +17,7 @@ namespace PoESkillTree.Model.Serialization
     {
         private const string FileName = "PersistentData";
 
-        private static readonly ILog Log = LogManager.GetLogger(typeof(PersistentDataSerializationService));
+        private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
         private static readonly string FilePath = AppData.GetFolder(true) + FileName + ".xml";
         private static readonly string BackupPath = AppData.GetFolder(true) + FileName + ".bak";
@@ -49,7 +49,7 @@ namespace PoESkillTree.Model.Serialization
                 FileUtils.DeleteIfExists(FilePath);
                 FileUtils.DeleteIfExists(BackupPath);
 
-                Log.Error("Could not deserialize PeristentData file", ex);
+                Log.Error(ex, "Could not deserialize PeristentData file");
                 throw new Exception(ex.Message +
                                     "\nYour PersistentData file could not be loaded correctly. It has been moved to " +
                                     badFilePath);
@@ -85,7 +85,7 @@ namespace PoESkillTree.Model.Serialization
             suitableDeserializer.DeserializePersistentDataFile(xmlString);
             return data;
         }
-        
+
         /// <summary>
         /// Creates an empty PersistentData file that only has the language option set.
         /// Used by the installation script.
@@ -93,7 +93,7 @@ namespace PoESkillTree.Model.Serialization
         [UsedImplicitly]
         public static void CreateSetupTemplate(string path, string language)
         {
-            var data = new BarePersistentData {Options = {Language = language}};
+            var data = new BarePersistentData { Options = { Language = language } };
             new PersistentDataSerializer(data).Serialize(Path.Combine(path, FileName + ".xml"));
         }
 
@@ -111,7 +111,7 @@ namespace PoESkillTree.Model.Serialization
                 _deserializer.PersistentData = this;
                 _importedBuildPath = importedBuildPath;
                 _currentDeserializer = deserializer as PersistentDataDeserializerCurrent ??
-                                       new PersistentDataDeserializerCurrent {PersistentData = this};
+                                       new PersistentDataDeserializerCurrent { PersistentData = this };
             }
 
             public override async Task InitializeAsync(IDialogCoordinator dialogCoordinator)
@@ -135,8 +135,8 @@ namespace PoESkillTree.Model.Serialization
                 catch (Exception e)
                 {
                     FileUtils.MoveOverwriting(BackupPath, FilePath);
-                    Log.Error(
-                        "Exception while saving PersistentData. Backup file was restored and changes may be lost.", e);
+                    Log.Error(e,
+                        "Exception while saving PersistentData. Backup file was restored and changes may be lost.");
                 }
             }
 

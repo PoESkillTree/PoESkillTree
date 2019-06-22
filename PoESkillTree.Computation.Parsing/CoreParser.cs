@@ -3,12 +3,12 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using log4net;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Common.Parsing;
+using PoESkillTree.Computation.Parsing.Logging;
 using PoESkillTree.Computation.Parsing.Referencing;
 using PoESkillTree.Computation.Parsing.StringParsers;
 using PoESkillTree.Utils;
@@ -30,7 +30,7 @@ namespace PoESkillTree.Computation.Parsing
     public class CoreParser<TStep> : ICoreParser
     {
         private static readonly ILog Log =
-            LogManager.GetLogger(typeof(CoreParser<>).Assembly, $"{typeof(CoreParser<>).FullName}<{typeof(TStep).Name}>");
+            LogProvider.GetLogger($"{typeof(CoreParser<>).FullName}<{typeof(TStep).Name}>");
 
         private delegate StringParseResult<IReadOnlyList<Modifier>> Parser(CoreParserParameter parameter);
 
@@ -62,12 +62,12 @@ namespace PoESkillTree.Computation.Parsing
                     return ParseResult.Success(result);
                 }
                 var parseResult = ParseResult.Failure(parameter.ModifierLine, remaining);
-                Log.Debug($"ParseResult.Failure({parseResult})");
+                Log.Debug($"ParseResult.Failure{parseResult}");
                 return parseResult;
             }
             catch (ParseException e)
             {
-                Log.Error("ParseException while parsing " + parameter, e);
+                Log.Error(e, "ParseException while parsing " + parameter);
                 return ParseResult.Failure(parameter.ModifierLine, parameter.ModifierLine);
             }
         }
