@@ -15,8 +15,8 @@ namespace PoESkillTree.Computation.Console
     {
         public static void UpdateSkillTreeStatLines()
         {
-            // From PoESkillTree.Computation.Console/bin/Debug/ to the same folder under WPFSKillTree
-            var treePath = "../../../WPFSKillTree/bin/Debug/Data/SkillTree.txt";
+            // From PoESkillTree.Computation.Console/bin/Debug/netcoreapp2.2/ to the same folder under WPFSKillTree
+            var treePath = "../../../../WPFSKillTree/bin/Debug/net462/Data/SkillTree.txt";
             var json = JObject.Parse(File.ReadAllText(treePath));
             var nodes = json.Value<JObject>("nodes");
             var statLines = nodes.PropertyValues()
@@ -24,7 +24,7 @@ namespace PoESkillTree.Computation.Console
                 .SelectMany(t => t["sd"].Values<string>())
                 .Select(s => s.Replace("\n", " "));
 
-            var statLinesPath = "../../../PoESkillTree.GameModel/Data/SkillTreeStatLines.txt";
+            var statLinesPath = "../../../../PoESkillTree.GameModel/Data/SkillTreeStatLines.txt";
             File.WriteAllLines(statLinesPath, statLines);
         }
 
@@ -38,7 +38,7 @@ namespace PoESkillTree.Computation.Console
                             || d.BuffStats.Any(s => seenBuffs.Add(s.StatId)))
                 .Select(d => d.MetadataId);
 
-            var parseablePath = "../../../PoESkillTree.Computation.IntegrationTests/Data/ParseableBaseItems.txt";
+            var parseablePath = "../../../../PoESkillTree.Computation.IntegrationTests/Data/ParseableBaseItems.txt";
             File.WriteAllLines(parseablePath, baseIds);
         }
 
@@ -61,7 +61,7 @@ namespace PoESkillTree.Computation.Console
                 .OrderBy(t => t.Item2)
                 .Select(t => t.s);
 
-            var path = "../../../PoESkillTree.GameModel/Data/ItemAffixes.txt";
+            var path = "../../../../PoESkillTree.GameModel/Data/ItemAffixes.txt";
             File.WriteAllLines(path, affixLines);
         }
     }
