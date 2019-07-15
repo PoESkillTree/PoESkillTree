@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MoreLinq;
-using PoESkillTree.GameModel;
-using PoESkillTree.GameModel.Items;
-using PoESkillTree.GameModel.StatTranslation;
+using PoESkillTree.Engine.GameModel;
+using PoESkillTree.Engine.GameModel.Items;
+using PoESkillTree.Engine.GameModel.StatTranslation;
 using PoESkillTree.Model.Items.Mods;
 
 namespace PoESkillTree.Model.Items

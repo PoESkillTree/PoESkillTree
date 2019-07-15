@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using PoESkillTree.Computation.Common.Builders;
-using PoESkillTree.Computation.Common.Builders.Stats;
-using PoESkillTree.GameModel;
+using PoESkillTree.Engine.Computation.Common.Builders;
+using PoESkillTree.Engine.Computation.Common.Builders.Stats;
+using PoESkillTree.Engine.GameModel;
 
 namespace PoESkillTree.Computation.ViewModels
 {

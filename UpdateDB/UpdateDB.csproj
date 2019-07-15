@@ -12,11 +12,10 @@
   <ItemGroup>
     <PackageReference Include="morelinq" Version="3.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="PoESkillTree.Engine" Version="0.1.1" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PoESkillTree.Utils\PoESkillTree.Utils.csproj" />
-    <ProjectReference Include="..\PoESkillTree.GameModel\PoESkillTree.GameModel.csproj" />
     <ProjectReference Include="..\WPFSKillTree\WPFSKillTree.csproj" />
   </ItemGroup>
   <ItemGroup>

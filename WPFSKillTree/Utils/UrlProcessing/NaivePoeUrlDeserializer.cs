@@ -1,6 +1,6 @@
 using System;
 using System.Text.RegularExpressions;
-using PoESkillTree.GameModel;
+using PoESkillTree.Engine.GameModel;
 using PoESkillTree.Localization;
 using PoESkillTree.SkillTreeFiles;
 

@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using NLog;
-using PoESkillTree.GameModel;
-using PoESkillTree.GameModel.Items;
+using PoESkillTree.Engine.GameModel;
+using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Model.Items;
 
 namespace UpdateDB.DataLoading

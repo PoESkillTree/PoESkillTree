@@ -7,9 +7,10 @@ using System.Xml.Serialization;
 using MoreLinq;
 using NLog;
 using PoESkillTree.Utils;
-using PoESkillTree.Utils.Extensions;
 using PoESkillTree.Controls;
 using PoESkillTree.Model.Builds;
+using PoESkillTree.Engine.Utils;
+using PoESkillTree.Engine.Utils.Extensions;
 
 namespace PoESkillTree.Model.Serialization
 {

@@ -5,14 +5,14 @@ using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using EnumsNET;
 using MoreLinq;
-using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Core;
-using PoESkillTree.Computation.Parsing;
-using PoESkillTree.GameModel.Items;
-using PoESkillTree.GameModel.PassiveTree;
-using PoESkillTree.GameModel.Skills;
-using PoESkillTree.Utils;
-using PoESkillTree.Utils.Extensions;
+using PoESkillTree.Engine.Computation.Common;
+using PoESkillTree.Engine.Computation.Core;
+using PoESkillTree.Engine.Computation.Parsing;
+using PoESkillTree.Engine.GameModel.Items;
+using PoESkillTree.Engine.GameModel.PassiveTree;
+using PoESkillTree.Engine.GameModel.Skills;
+using PoESkillTree.Engine.Utils;
+using PoESkillTree.Engine.Utils.Extensions;
 using PoESkillTree.SkillTreeFiles;
 
 namespace PoESkillTree.Computation.Model

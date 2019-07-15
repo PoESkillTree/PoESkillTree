@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using PoESkillTree.GameModel;
+using PoESkillTree.Engine.GameModel;
 
 namespace PoESkillTree.Utils.UrlProcessing
 {

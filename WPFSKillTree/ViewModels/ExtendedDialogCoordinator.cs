@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using PoESkillTree.GameModel;
-using PoESkillTree.GameModel.Items;
 using PoESkillTree.Controls.Dialogs;
+using PoESkillTree.Engine.GameModel;
+using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Model;
 using PoESkillTree.Model.Builds;
 using PoESkillTree.Model.Items;

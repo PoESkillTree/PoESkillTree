@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using PoESkillTree.Engine.Utils;
+using PoESkillTree.Engine.Utils.Extensions;
 using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
 

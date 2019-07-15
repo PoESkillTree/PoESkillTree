@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 using EnumsNET;
-using PoESkillTree.GameModel;
+using PoESkillTree.Engine.GameModel;
 using PoESkillTree.Utils;
 
 namespace PoESkillTree.Model

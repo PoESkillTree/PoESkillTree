@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using PoESkillTree.Utils.Extensions;
+using PoESkillTree.Engine.Utils;
+using PoESkillTree.Engine.Utils.Extensions;
 
 namespace PoESkillTree.Utils
 {

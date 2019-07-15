@@ -3,14 +3,15 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using JetBrains.Annotations;
-using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Common.Builders;
-using PoESkillTree.Computation.Common.Builders.Stats;
-using PoESkillTree.GameModel;
-using PoESkillTree.GameModel.Items;
-using PoESkillTree.GameModel.Skills;
+using PoESkillTree.Engine.Computation.Common;
+using PoESkillTree.Engine.Computation.Common.Builders;
+using PoESkillTree.Engine.Computation.Common.Builders.Stats;
+using PoESkillTree.Engine.GameModel;
+using PoESkillTree.Engine.GameModel.Items;
+using PoESkillTree.Engine.GameModel.Skills;
+using PoESkillTree.Engine.Utils;
+using PoESkillTree.Engine.Utils.Extensions;
 using PoESkillTree.Utils;
-using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.ViewModels
 {

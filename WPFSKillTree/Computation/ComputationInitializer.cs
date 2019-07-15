@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using NLog;
-using PoESkillTree.Computation.Common.Builders;
-using PoESkillTree.Computation.Core;
-using PoESkillTree.Computation.Parsing;
-using PoESkillTree.GameModel;
-using PoESkillTree.GameModel.Items;
-using PoESkillTree.GameModel.Skills;
-using PoESkillTree.Utils;
-using PoESkillTree.Utils.Extensions;
 using PoESkillTree.Computation.Model;
 using PoESkillTree.Computation.ViewModels;
+using PoESkillTree.Engine.Computation.Common.Builders;
+using PoESkillTree.Engine.Computation.Core;
+using PoESkillTree.Engine.Computation.Parsing;
+using PoESkillTree.Engine.GameModel;
+using PoESkillTree.Engine.GameModel.Items;
+using PoESkillTree.Engine.GameModel.Skills;
 using PoESkillTree.Model;
 using PoESkillTree.SkillTreeFiles;
+using PoESkillTree.Utils;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation
 {

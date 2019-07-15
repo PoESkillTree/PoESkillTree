@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using PoESkillTree.GameModel.Items;
-using PoESkillTree.Utils;
+using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Model.Items;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.ViewModels.Equipment
 {

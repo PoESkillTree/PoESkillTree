@@ -2,8 +2,8 @@
 using System.Windows;
 using System.Windows.Input;
 using GongSolutions.Wpf.DragDrop;
-using PoESkillTree.GameModel.Items;
 using PoESkillTree.Common.ViewModels;
+using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Model.Items;
 using Item = PoESkillTree.Model.Items.Item;
 

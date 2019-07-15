@@ -3,10 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using MoreLinq;
 using NUnit.Framework;
-using PoESkillTree.GameModel;
-using PoESkillTree.GameModel.Items;
-using PoESkillTree.GameModel.Modifiers;
-using PoESkillTree.Model.Items.Mods;
+using PoESkillTree.Engine.GameModel;
+using PoESkillTree.Engine.GameModel.Items;
+using PoESkillTree.Engine.GameModel.Modifiers;
 
 namespace PoESkillTree.Model.Items.Mods
 {

@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using MoreLinq;
 using Newtonsoft.Json.Linq;
 using NLog;
-using PoESkillTree.GameModel.Items;
-using PoESkillTree.Utils.Extensions;
+using PoESkillTree.Engine.GameModel.Items;
+using PoESkillTree.Engine.Utils.Extensions;
 using PoESkillTree.Utils.WikiApi;
 using static PoESkillTree.Utils.WikiApi.CargoConstants;
 

@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using NLog;
-using PoESkillTree.GameModel;
-using PoESkillTree.GameModel.StatTranslation;
+using PoESkillTree.Engine.GameModel;
+using PoESkillTree.Engine.GameModel.StatTranslation;
 
 namespace UpdateDB.DataLoading
 {

@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using PoESkillTree.GameModel;
+using PoESkillTree.Engine.GameModel;
 using PoESkillTree.SkillTreeFiles;
 
 namespace PoESkillTree.Utils.UrlProcessing

@@ -5,10 +5,10 @@ using System.Linq;
 using MoreLinq;
 using Newtonsoft.Json.Linq;
 using NLog;
-using PoESkillTree.Utils;
 using PoESkillTree.Controls;
+using PoESkillTree.Engine.Utils;
 using PoESkillTree.Model.Builds;
-
+using PoESkillTree.Utils;
 using static PoESkillTree.Model.Serialization.SerializationConstants;
 
 namespace PoESkillTree.Model.Serialization

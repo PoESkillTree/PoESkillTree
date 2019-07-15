@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MoreLinq;
 using NLog;
+using PoESkillTree.Engine.Utils;
 using PoESkillTree.Utils;
 using UpdateDB.DataLoading;
 

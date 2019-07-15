@@ -5,8 +5,8 @@ using System.ComponentModel;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Builders.Stats;
-using PoESkillTree.Computation.Common;
+using PoESkillTree.Engine.Computation.Builders.Stats;
+using PoESkillTree.Engine.Computation.Common;
 using PoESkillTree.Model;
 using PoESkillTree.Model.Builds;
 

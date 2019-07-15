@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using PoESkillTree.GameModel.Items;
+using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Model.Items.Mods;
 
 namespace PoESkillTree.Model.Items

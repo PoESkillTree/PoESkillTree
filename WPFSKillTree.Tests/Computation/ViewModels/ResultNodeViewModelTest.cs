@@ -1,9 +1,9 @@
 ﻿using System.Reactive.Concurrency;
 using System.Reactive.Subjects;
 using NUnit.Framework;
-using PoESkillTree.Computation.Builders.Stats;
-using PoESkillTree.Computation.Common;
-using PoESkillTree.GameModel;
+using PoESkillTree.Engine.Computation.Builders.Stats;
+using PoESkillTree.Engine.Computation.Common;
+using PoESkillTree.Engine.GameModel;
 
 namespace PoESkillTree.Computation.ViewModels
 {

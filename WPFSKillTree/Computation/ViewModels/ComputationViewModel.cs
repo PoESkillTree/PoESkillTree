@@ -4,16 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using EnumsNET;
 using MoreLinq;
-using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Common.Builders;
-using PoESkillTree.Computation.Common.Builders.Charges;
-using PoESkillTree.Computation.Common.Builders.Damage;
-using PoESkillTree.Computation.Common.Builders.Effects;
-using PoESkillTree.Computation.Common.Builders.Stats;
-using PoESkillTree.GameModel;
-using PoESkillTree.GameModel.Skills;
-using PoESkillTree.Utils;
 using PoESkillTree.Computation.Model;
+using PoESkillTree.Engine.Computation.Common;
+using PoESkillTree.Engine.Computation.Common.Builders;
+using PoESkillTree.Engine.Computation.Common.Builders.Charges;
+using PoESkillTree.Engine.Computation.Common.Builders.Damage;
+using PoESkillTree.Engine.Computation.Common.Builders.Effects;
+using PoESkillTree.Engine.Computation.Common.Builders.Stats;
+using PoESkillTree.Engine.GameModel;
+using PoESkillTree.Engine.GameModel.Skills;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.ViewModels
 {

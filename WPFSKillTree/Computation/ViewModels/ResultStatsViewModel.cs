@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using EnumsNET;
-using PoESkillTree.Computation.Common;
 using PoESkillTree.Common.ViewModels;
+using PoESkillTree.Engine.Computation.Common;
 
 namespace PoESkillTree.Computation.ViewModels
 {

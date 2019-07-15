@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using PoESkillTree.GameModel.PassiveTree;
+using PoESkillTree.Engine.GameModel.PassiveTree;
 using PoESkillTree.SkillTreeFiles;
 using PoESkillTree.TreeGenerator.Algorithm.Model;
 using PoESkillTree.TreeGenerator.Genetic;

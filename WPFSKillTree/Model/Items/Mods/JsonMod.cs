@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using PoESkillTree.GameModel.Modifiers;
+using PoESkillTree.Engine.GameModel.Modifiers;
 
 namespace PoESkillTree.Model.Items.Mods
 {

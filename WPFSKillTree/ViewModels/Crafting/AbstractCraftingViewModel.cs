@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using EnumsNET;
 using MoreLinq;
-using PoESkillTree.GameModel.Items;
-using PoESkillTree.GameModel.Modifiers;
-using PoESkillTree.GameModel.StatTranslation;
-using PoESkillTree.Utils;
 using PoESkillTree.Common.ViewModels;
+using PoESkillTree.Engine.GameModel.Items;
+using PoESkillTree.Engine.GameModel.Modifiers;
+using PoESkillTree.Engine.GameModel.StatTranslation;
 using PoESkillTree.Model.Items;
 using PoESkillTree.Model.Items.Mods;
+using PoESkillTree.Utils;
 using Item = PoESkillTree.Model.Items.Item;
 
 namespace PoESkillTree.ViewModels.Crafting

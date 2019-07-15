@@ -24,16 +24,11 @@
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit.ConsoleRunner" Version="3.10.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
+    <PackageReference Include="PoESkillTree.Engine" Version="0.1.1" />
     <PackageReference Include="System.Reactive" Version="4.1.5" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PoESkillTree.Computation.Builders\PoESkillTree.Computation.Builders.csproj" />
-    <ProjectReference Include="..\PoESkillTree.Computation.Common\PoESkillTree.Computation.Common.csproj" />
-    <ProjectReference Include="..\PoESkillTree.Computation.Core\PoESkillTree.Computation.Core.csproj" />
-    <ProjectReference Include="..\PoESkillTree.Computation.Parsing\PoESkillTree.Computation.Parsing.csproj" />
-    <ProjectReference Include="..\PoESkillTree.GameModel\PoESkillTree.GameModel.csproj" />
-    <ProjectReference Include="..\PoESkillTree.Utils\PoESkillTree.Utils.csproj" />
     <ProjectReference Include="..\WPFSKillTree\WPFSKillTree.csproj" />
   </ItemGroup>
 </Project>

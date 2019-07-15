@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
-using PoESkillTree.GameModel.PassiveTree;
 using System;
 using System.Collections.Generic;
+using PoESkillTree.Engine.GameModel.PassiveTree;
 
 namespace PoESkillTree.SkillTreeFiles
 {

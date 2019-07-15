@@ -4,10 +4,10 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
 using System.Windows.Input;
-using PoESkillTree.GameModel.Items;
-using PoESkillTree.GameModel.Skills;
 using PoESkillTree.Utils;
 using PoESkillTree.Common.ViewModels;
+using PoESkillTree.Engine.GameModel.Items;
+using PoESkillTree.Engine.GameModel.Skills;
 using PoESkillTree.Model.Items;
 using PoESkillTree.Utils.Wpf;
 

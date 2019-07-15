@@ -1,12 +1,12 @@
 ﻿using System;
-using PoESkillTree.Computation.Common;
-using PoESkillTree.GameModel;
+using PoESkillTree.Engine.Computation.Common;
+using PoESkillTree.Engine.GameModel;
 using PoESkillTree.Localization;
 using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.ViewModels
 {
-    public  class CalculationNodeViewModel : Notifier
+    public class CalculationNodeViewModel : Notifier
     {
         private NodeValue? _value;
         private string _stringValue;
