@@ -62,14 +62,14 @@ namespace PoESkillTree.Model.Items
 
         private async Task<IReadOnlyList<ItemBase>> LoadBases()
         {
-            var xmlList = await DataUtils.LoadXmlAsync<XmlItemList>("Equipment.Items.xml", true);
-            return xmlList.ItemBases.Select(x => new ItemBase(_itemImageService, ModDatabase, x)).ToList();
+            var xmlBases = await ItemBaseLoader.LoadAsync();
+            return xmlBases.Select(x => new ItemBase(_itemImageService, ModDatabase, x)).ToList();
         }
 
         private async Task<IReadOnlyList<UniqueBase>> LoadUniques()
         {
             var metadataToBase = ItemBases.ToDictionary(b => b.MetadataId);
-            var xmlList = await DataUtils.LoadXmlAsync<XmlUniqueList>("Equipment.Uniques.xml", true);
+            var xmlList = await DataUtils.LoadXmlAsync<XmlUniqueList>("Uniques.xml", true);
             return xmlList.Uniques.Select(
                 x => new UniqueBase(_itemImageService, ModDatabase, metadataToBase[x.BaseMetadataId], x)).ToList();
         }

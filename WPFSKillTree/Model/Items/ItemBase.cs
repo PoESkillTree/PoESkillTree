@@ -33,7 +33,7 @@ namespace PoESkillTree.Model.Items
 
         public ItemImage Image { get; }
 
-        public ItemBase(ItemImageService itemImageService, ModDatabase modDatabase, XmlItemBase xmlBase)
+        public ItemBase(ItemImageService itemImageService, ModDatabase modDatabase, ItemBaseDto xmlBase)
         {
             Level = xmlBase.Level;
             RequiredStrength = xmlBase.Strength;

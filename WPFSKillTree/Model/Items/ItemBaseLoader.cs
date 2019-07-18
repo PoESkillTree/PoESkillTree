@@ -6,18 +6,12 @@ using Newtonsoft.Json.Linq;
 using NLog;
 using PoESkillTree.Engine.GameModel;
 using PoESkillTree.Engine.GameModel.Items;
-using PoESkillTree.Model.Items;
 
-namespace UpdateDB.DataLoading
+namespace PoESkillTree.Model.Items
 {
-    /// <summary>
-    /// Retrieves item bases from RePoE and converts them into a XML format.
-    /// </summary>
-    public class ItemBaseLoader : XmlDataLoader<XmlItemList>
+    public class ItemBaseLoader
     {
         private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
-
-        private const string RepoeUrl = DataUtils.RePoEDataUrl + "base_items.min.json";
 
         private static readonly ISet<ItemClass> ItemClassWhitelist = new HashSet<ItemClass>
         {
@@ -60,18 +54,16 @@ namespace UpdateDB.DataLoading
 
         private readonly HashSet<string> _unknownTags = new HashSet<string>();
 
-        protected override async Task LoadAsync()
+        public static async Task<IEnumerable<ItemBaseDto>> LoadAsync()
         {
-            Task<string> jsonTask = HttpClient.GetStringAsync(RepoeUrl);
-            var json = JObject.Parse(await jsonTask);
-            Data = new XmlItemList
-            {
-                ItemBases = CreateXmlItemBases(json).ToArray()
-            };
-            Log.Info("Unknown tags: " + string.Join(", ", _unknownTags));
+            var json = await DataUtils.LoadRePoEAsObjectAsync("base_items", true);
+            var loader = new ItemBaseLoader();
+            var xmlBases = loader.CreateXmlItemBases(json).ToList();
+            Log.Info("Unknown tags: " + string.Join(", ", loader._unknownTags));
+            return xmlBases;
         }
 
-        private IEnumerable<XmlItemBase> CreateXmlItemBases(JObject json)
+        private IEnumerable<ItemBaseDto> CreateXmlItemBases(JObject json)
         {
             return
                 from property in json.Properties()
@@ -95,7 +87,7 @@ namespace UpdateDB.DataLoading
             return itemBaseJson.Value<string>("release_state") != "unreleased";
         }
 
-        private XmlItemBase CreateXmlItemBaseFromJson(string metadataId, JToken obj)
+        private ItemBaseDto CreateXmlItemBaseFromJson(string metadataId, JToken obj)
         {
             var converter = new ItemBaseJsonToXmlConverter(metadataId, obj);
             var itemBase = converter.Parse();
@@ -109,7 +101,7 @@ namespace UpdateDB.DataLoading
         private readonly string _metadataId;
         private readonly JToken _json;
 
-        private XmlItemBase _xml;
+        private ItemBaseDto _xml;
 
         public IReadOnlyCollection<string> UnknownTags { get; private set; }
 
@@ -119,9 +111,9 @@ namespace UpdateDB.DataLoading
             _json = json;
         }
 
-        public XmlItemBase Parse()
+        public ItemBaseDto Parse()
         {
-            _xml = new XmlItemBase();
+            _xml = new ItemBaseDto();
             ParseSimpleFields();
             ParseItemClass();
             ParseImplicits();

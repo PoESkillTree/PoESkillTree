@@ -293,7 +293,7 @@
                Condition="'$(ProductVersion)' == '$(GitVersion)'" />
   
         <!-- Download skill tree assets -->
-        <Exec Command="$(DistDir)\UpdateDB.exe /NotVersionControlledOnly /CurrentDir" WorkingDirectory="$(DistDir)" />
+        <Exec Command="$(DistDir)\UpdateDB.exe /CurrentDir" WorkingDirectory="$(DistDir)" />
 
         <!-- Create empty PersistentData template file -->
         <AssemblyInvokeStatic AssemblyFile="$(DistDir)\$(AssemblyName).exe"
@@ -324,17 +324,6 @@
 
     <Target Name="Test" DependsOnTargets="Build">
         <MSBuild Projects="..\WPFSKillTree.Tests\WPFSKillTree.Tests.csproj" Targets="Build;Test" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0" />
-    </Target>
-
-    <Target Name="Update">
-        <!-- Make regular build using project defined output path -->
-        <MSBuild Projects="..\UpdateDB\UpdateDB.csproj" Targets="Build" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0" />
-
-        <!-- Update items database -->
-        <Exec Command="..\UpdateDB\bin\Release\net462\UpdateDB.exe /VersionControlledOnly /SourceCodeDir" />
-
-        <!-- Make regular clean using project defined output path -->
-        <MSBuild Projects="..\UpdateDB\UpdateDB.csproj" Targets="Clean" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0" />
     </Target>
 
     <Target Name="UpdateItemImages">

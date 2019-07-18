@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MoreLinq;
 using NLog;
 using PoESkillTree.Engine.Utils;
+using PoESkillTree.Engine.Utils.Extensions;
 using PoESkillTree.Utils;
 using UpdateDB.DataLoading;
 
@@ -23,11 +23,8 @@ namespace UpdateDB
 
         private readonly LoaderCollection _loaderDefinitions = new LoaderCollection
         {
-            {"base items", "Equipment/Items.xml", new ItemBaseLoader(), LoaderCategories.VersionControlled, "Items"},
-            {"base item images", "Equipment/Assets", new ItemImageLoader(), LoaderCategories.NotVersionControlled, "ItemImages"},
-            {"skill tree assets", "", new SkillTreeLoader(), LoaderCategories.NotVersionControlled, "TreeAssets"},
-            {"uniques", "Equipment/Uniques.xml", new UniqueLoader(), LoaderCategories.VersionControlled, "Uniques"},
-            {"RePoE", "RePoE", new RePoELoader(), LoaderCategories.VersionControlled, "RePoE" }
+            {"base item images", "Equipment/Assets", new ItemImageLoader(), "ItemImages"},
+            {"skill tree assets", "", new SkillTreeLoader(), "TreeAssets"},
         };
 
         private readonly IArguments _arguments;
@@ -50,10 +47,6 @@ namespace UpdateDB
                 case OutputDirectory.AppData:
                     _savePath = AppData.GetFolder();
                     break;
-                case OutputDirectory.SourceCode:
-                    _savePath = Regex.Replace(Directory.GetCurrentDirectory(),
-                        @"(UpdateDB|WPFSKillTree)((/|\\).*?)?$", "PoESkillTree.GameModel");
-                    break;
                 case OutputDirectory.Current:
                     _savePath = Directory.GetCurrentDirectory();
                     break;
@@ -68,8 +61,6 @@ namespace UpdateDB
 
             _loaderDefinitions.ForEach(l => l.DataLoader.HttpClient = _httpClient);
 
-            // The Affix file is big enough to be starved by other requests sometimes.
-            _httpClient.Timeout = TimeSpan.FromSeconds(120);
             _httpClient.DefaultRequestHeaders.Add("User-Agent",
                 "PoESkillTree UpdateDB (https://github.com/PoESkillTree/PoESkillTree/tree/master/UpdateDB)");
         }
@@ -124,7 +115,7 @@ namespace UpdateDB
             Directory.CreateDirectory(_savePath);
             var explicitlyActivated = _arguments.LoaderFlags.ToList();
             var tasks = from loader in _loaderDefinitions
-                        where loader.Category.HasFlag(_arguments.ActivatedLoaders)
+                        where explicitlyActivated.IsEmpty()
                             || explicitlyActivated.Contains(loader.Flag)
                         select LoadAsync(loader.Name, loader.File, loader.DataLoader);
             await Task.WhenAll(tasks);
@@ -173,14 +164,13 @@ namespace UpdateDB
         {
             private readonly List<LoaderDefinition> _loaderDefinitions = new List<LoaderDefinition>();
 
-            public void Add(string name, string file, IDataLoader dataLoader, LoaderCategories category, string flag)
+            public void Add(string name, string file, IDataLoader dataLoader, string flag)
             {
                 _loaderDefinitions.Add(new LoaderDefinition
                 {
                     Name = name,
                     File = file,
                     DataLoader = dataLoader,
-                    Category = category,
                     Flag = flag
                 });
             }
@@ -214,10 +204,6 @@ namespace UpdateDB
             /// The actual DataLoader instance.
             /// </summary>
             public IDataLoader DataLoader { get; set; }
-            /// <summary>
-            /// The category to which this loader belongs.
-            /// </summary>
-            public LoaderCategories Category { get; set; }
             /// <summary>
             /// A flag that identifies this loader.
             /// </summary>
