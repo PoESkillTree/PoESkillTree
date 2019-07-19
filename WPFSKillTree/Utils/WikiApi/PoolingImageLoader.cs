@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using NLog;
+using PoESkillTree.Engine.Utils.WikiApi;
 
 namespace PoESkillTree.Utils.WikiApi
 {
