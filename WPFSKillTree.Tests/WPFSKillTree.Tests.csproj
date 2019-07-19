@@ -17,7 +17,7 @@
   <ItemGroup>
     <PackageReference Include="Enums.NET" Version="2.3.2" />
     <PackageReference Include="Moq" Version="4.12.0" />
-    <PackageReference Include="morelinq" Version="3.1.1" />
+    <PackageReference Include="morelinq" Version="3.2.0" />
     <PackageReference Include="MSBuildTasks" Version="1.5.0.235">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
