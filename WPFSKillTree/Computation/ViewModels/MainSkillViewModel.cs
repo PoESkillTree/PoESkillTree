@@ -1,4 +1,4 @@
-﻿using PoESkillTree.GameModel.Skills;
+﻿using PoESkillTree.Engine.GameModel.Skills;
 using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.ViewModels

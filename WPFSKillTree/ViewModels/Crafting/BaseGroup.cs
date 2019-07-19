@@ -1,5 +1,5 @@
 using System;
-using PoESkillTree.GameModel.Items;
+using PoESkillTree.Engine.GameModel.Items;
 
 namespace PoESkillTree.ViewModels.Crafting
 {

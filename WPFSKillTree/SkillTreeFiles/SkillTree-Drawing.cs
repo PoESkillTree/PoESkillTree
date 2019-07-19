@@ -6,11 +6,11 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using EnumsNET;
-using PoESkillTree.GameModel;
-using PoESkillTree.GameModel.PassiveTree;
 using HighlightState = PoESkillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
 using PoESkillTree.Model;
 using MoreLinq;
+using PoESkillTree.Engine.GameModel;
+using PoESkillTree.Engine.GameModel.PassiveTree;
 using PoESkillTree.Utils.Wpf;
 
 namespace PoESkillTree.SkillTreeFiles

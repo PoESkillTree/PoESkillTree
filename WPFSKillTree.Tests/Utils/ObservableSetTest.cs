@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using PoESkillTree.Utils.Extensions;
+using PoESkillTree.Engine.Utils.Extensions;
 
 namespace PoESkillTree.Utils
 {

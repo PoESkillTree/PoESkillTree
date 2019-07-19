@@ -7,11 +7,11 @@ using System.Text.RegularExpressions;
 using System.Windows.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using PoESkillTree.GameModel.Items;
-using PoESkillTree.GameModel.Skills;
-using PoESkillTree.Utils;
-using PoESkillTree.Utils.Extensions;
+using PoESkillTree.Engine.GameModel.Items;
+using PoESkillTree.Engine.GameModel.Skills;
+using PoESkillTree.Engine.Utils.Extensions;
 using PoESkillTree.Model.Items.Mods;
+using PoESkillTree.Utils;
 using PoESkillTree.ViewModels;
 
 namespace PoESkillTree.Model.Items

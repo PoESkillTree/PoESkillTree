@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using PoESkillTree.GameModel.Items;
-using PoESkillTree.GameModel.Skills;
+using PoESkillTree.Engine.GameModel.Items;
+using PoESkillTree.Engine.GameModel.Skills;
+using PoESkillTree.Engine.Utils;
 using PoESkillTree.Utils;
 using PoESkillTree.Model.Items;
-using Item = PoESkillTree.GameModel.Items.Item;
+using Item = PoESkillTree.Engine.GameModel.Items.Item;
 using OldItem = PoESkillTree.Model.Items.Item;
 
 namespace PoESkillTree.Model

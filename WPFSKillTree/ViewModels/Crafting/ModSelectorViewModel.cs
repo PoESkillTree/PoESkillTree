@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using MB.Algodat;
 using MoreLinq;
-using PoESkillTree.GameModel.StatTranslation;
+using PoESkillTree.Engine.GameModel.StatTranslation;
 using PoESkillTree.Utils;
 using PoESkillTree.Model.Items.Mods;
 

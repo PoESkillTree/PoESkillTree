@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MoreLinq;
-using PoESkillTree.GameModel;
-using PoESkillTree.GameModel.Items;
-using PoESkillTree.GameModel.StatTranslation;
+using PoESkillTree.Engine.GameModel;
+using PoESkillTree.Engine.GameModel.Items;
+using PoESkillTree.Engine.GameModel.StatTranslation;
 using PoESkillTree.Model.Items.Mods;
 
 namespace PoESkillTree.Model.Items
@@ -62,14 +62,14 @@ namespace PoESkillTree.Model.Items
 
         private async Task<IReadOnlyList<ItemBase>> LoadBases()
         {
-            var xmlList = await DataUtils.LoadXmlAsync<XmlItemList>("Equipment.Items.xml", true);
-            return xmlList.ItemBases.Select(x => new ItemBase(_itemImageService, ModDatabase, x)).ToList();
+            var xmlBases = await ItemBaseLoader.LoadAsync();
+            return xmlBases.Select(x => new ItemBase(_itemImageService, ModDatabase, x)).ToList();
         }
 
         private async Task<IReadOnlyList<UniqueBase>> LoadUniques()
         {
             var metadataToBase = ItemBases.ToDictionary(b => b.MetadataId);
-            var xmlList = await DataUtils.LoadXmlAsync<XmlUniqueList>("Equipment.Uniques.xml", true);
+            var xmlList = await DataUtils.LoadXmlAsync<XmlUniqueList>("Uniques.xml", true);
             return xmlList.Uniques.Select(
                 x => new UniqueBase(_itemImageService, ModDatabase, metadataToBase[x.BaseMetadataId], x)).ToList();
         }

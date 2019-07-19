@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Media;
 using NLog;
-using PoESkillTree.GameModel.Items;
+using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Utils;
 
 namespace PoESkillTree.Model.Items

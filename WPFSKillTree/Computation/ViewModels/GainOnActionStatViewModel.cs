@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
-using PoESkillTree.Computation.Common;
-using PoESkillTree.GameModel;
+using PoESkillTree.Engine.Computation.Common;
+using PoESkillTree.Engine.GameModel;
 using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.ViewModels

@@ -4,9 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using NLog;
-using PoESkillTree.Utils;
 using PoESkillTree.Controls.Dialogs;
+using PoESkillTree.Engine.Utils;
 using PoESkillTree.Model.Builds;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Model.Serialization
 {

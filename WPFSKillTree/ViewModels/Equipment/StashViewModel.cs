@@ -9,13 +9,13 @@ using System.Windows.Input;
 using System.Windows.Media;
 using GongSolutions.Wpf.DragDrop;
 using MoreLinq;
-using PoESkillTree.Utils;
-using PoESkillTree.Utils.Extensions;
 using PoESkillTree.Common.ViewModels;
 using PoESkillTree.Controls;
+using PoESkillTree.Engine.Utils.Extensions;
 using PoESkillTree.Localization;
 using PoESkillTree.Model;
 using PoESkillTree.Model.Items;
+using PoESkillTree.Utils;
 using PoESkillTree.Utils.Wpf;
 
 namespace PoESkillTree.ViewModels.Equipment

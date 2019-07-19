@@ -2,8 +2,8 @@
 using System.ComponentModel;
 using System.Linq;
 using MoreLinq;
-using PoESkillTree.GameModel.Items;
-using PoESkillTree.GameModel.Modifiers;
+using PoESkillTree.Engine.GameModel.Items;
+using PoESkillTree.Engine.GameModel.Modifiers;
 using PoESkillTree.Model.Items;
 using PoESkillTree.Model.Items.Mods;
 using PoESkillTree.Utils.Wpf;

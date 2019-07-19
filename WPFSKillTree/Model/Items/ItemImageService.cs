@@ -12,7 +12,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using NLog;
-using PoESkillTree.GameModel.Items;
+using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
 using PoESkillTree.Utils.WikiApi;

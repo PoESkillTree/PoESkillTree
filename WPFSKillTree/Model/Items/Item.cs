@@ -8,12 +8,13 @@ using System.Text.RegularExpressions;
 using MB.Algodat;
 using Newtonsoft.Json.Linq;
 using NLog;
-using PoESkillTree.GameModel.Items;
-using PoESkillTree.GameModel.Modifiers;
-using PoESkillTree.GameModel.Skills;
+using PoESkillTree.Engine.GameModel.Items;
+using PoESkillTree.Engine.GameModel.Modifiers;
+using PoESkillTree.Engine.GameModel.Skills;
+using PoESkillTree.Engine.Utils.Extensions;
+using PoESkillTree.Model.Items.Mods;
 using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
-using PoESkillTree.Model.Items.Mods;
 
 namespace PoESkillTree.Model.Items
 {

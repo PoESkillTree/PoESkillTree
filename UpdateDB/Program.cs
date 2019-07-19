@@ -7,24 +7,15 @@ using NLog;
 namespace UpdateDB
 {
     /// <summary>
-    /// Updates the item database. This includes affixes, base items, gems, item images and tree assets.
+    /// Updates the data necessary for releases. This item images and tree assets.
     /// What is updated and where it is saved can be set through arguments, see the console output below.
     /// </summary>
     /// <remarks>
-    /// <para>
-    /// For updating the lists that are version controlled (affixes, base items and gems):
-    /// <code>UpdateDB /VersionControlledOnly /SourceCodeDir</code> or run dist-update.bat.
-    /// If you only want to update some of these three lists, you can specify them explicitly
-    /// (skip the arguments that you don't want):
-    /// <code>UpdateDB /Items /Uniques /Gems /RePoE /SourceCodeDir</code>
-    /// </para>
-    /// <para>
-    /// The other files (base item images and skill tree assets) are not version controlled. They are
+    /// Base item images and skill tree assets are not version controlled. They are
     /// packaged into releases via release.xml.
     /// The skill tree assets can be updated through the main program menu. The base item images
     /// can be updated by running dist-updateItemImages.bat. They are written into the main program's Debug directory.
     /// If you are in Release mode, copy them from Debug to Release (Debug/Data/Equipment/Assets/).
-    /// </para>
     /// </remarks>
     public static class Program
     {
@@ -35,7 +26,6 @@ namespace UpdateDB
         {
             var args = new Arguments
             {
-                ActivatedLoaders = LoaderCategories.Any,
                 LoaderFlags = new List<string>(),
                 OutputDirectory = OutputDirectory.AppData
             };
@@ -65,25 +55,12 @@ namespace UpdateDB
                     case "/?":
                         Console.WriteLine("Updates item database.\r\n");
                         Console.WriteLine("Flags:\r\n");
-                        Console.WriteLine("/VersionControlledOnly    Only download version controlled files (gem, base item and unique lists and RePoE data).");
-                        Console.WriteLine("/NotVersionControlledOnly Only download not version controlled files (item images and skill tree assets).");
-                        Console.WriteLine("/SourceCodeDir            Save into the PoESkillTree.GameModel source code directory instead of the AppData directory.");
                         Console.WriteLine("/CurrentDir               Save into the current directory instead of the AppData directory.");
                         Console.WriteLine("/SpecifiedDir:dirPath     Save into the specified directory instead of the AppData directory.");
-                        Console.WriteLine("/Items, /ItemImages, /TreeAssets, /Uniques, /RePoE");
+                        Console.WriteLine("/ItemImages, /TreeAssets");
                         Console.WriteLine("If at least one is specified, only the specified files are downloaded.\r\n");
                         return 1;
 
-                    case "/versioncontrolledonly":
-                        args.ActivatedLoaders = LoaderCategories.VersionControlled;
-                        break;
-                    case "/notversioncontrolledonly":
-                        args.ActivatedLoaders = LoaderCategories.NotVersionControlled;
-                        break;
-
-                    case "/sourcecodedir":
-                        args.OutputDirectory = OutputDirectory.SourceCode;
-                        break;
                     case "/currentdir":
                         args.OutputDirectory = OutputDirectory.Current;
                         break;
@@ -104,7 +81,6 @@ namespace UpdateDB
             }
             if (unrecognizedSwitches.Any())
             {
-                args.ActivatedLoaders = LoaderCategories.None;
                 args.LoaderFlags = unrecognizedSwitches;
             }
 
@@ -129,7 +105,6 @@ namespace UpdateDB
 
         private class Arguments : IArguments
         {
-            public LoaderCategories ActivatedLoaders { get; set; }
             public OutputDirectory OutputDirectory { get; set; }
             public string SpecifiedOutputDirectory { get; set; }
             public IEnumerable<string> LoaderFlags { get; set; }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using PoESkillTree.Utils.WikiApi;
+using PoESkillTree.Engine.Utils.WikiApi;
 
 namespace UpdateDB.DataLoading
 {

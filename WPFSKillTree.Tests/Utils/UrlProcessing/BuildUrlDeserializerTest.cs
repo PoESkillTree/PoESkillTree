@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
-using PoESkillTree.GameModel;
+using PoESkillTree.Engine.GameModel;
 
 namespace PoESkillTree.Utils.UrlProcessing
 {

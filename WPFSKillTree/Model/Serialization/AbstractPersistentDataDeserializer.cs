@@ -5,11 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using NLog;
-using PoESkillTree.Utils;
 using PoESkillTree.Controls.Dialogs;
+using PoESkillTree.Engine.Utils;
 using PoESkillTree.Localization;
 using PoESkillTree.Model.Builds;
 using PoESkillTree.Model.Items;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Model.Serialization
 {

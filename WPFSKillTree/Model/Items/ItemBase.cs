@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using PoESkillTree.GameModel.Items;
+using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Model.Items.Mods;
 
 namespace PoESkillTree.Model.Items
@@ -34,7 +33,7 @@ namespace PoESkillTree.Model.Items
 
         public ItemImage Image { get; }
 
-        public ItemBase(ItemImageService itemImageService, ModDatabase modDatabase, XmlItemBase xmlBase)
+        public ItemBase(ItemImageService itemImageService, ModDatabase modDatabase, ItemBaseDto xmlBase)
         {
             Level = xmlBase.Level;
             RequiredStrength = xmlBase.Strength;

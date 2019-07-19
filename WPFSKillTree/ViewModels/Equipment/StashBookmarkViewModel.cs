@@ -40,6 +40,10 @@ namespace PoESkillTree.ViewModels.Equipment
             IsDragged = false;
         }
 
+        public void DragDropOperationFinished(DragDropEffects operationResult, IDragInfo dragInfo)
+        {
+        }
+
         public void DragCancelled()
         {
             IsDragged = false;

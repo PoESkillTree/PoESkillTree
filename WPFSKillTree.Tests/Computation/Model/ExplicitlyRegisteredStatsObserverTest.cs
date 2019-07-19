@@ -3,11 +3,11 @@ using System.Linq;
 using System.Reactive.Concurrency;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Builders.Stats;
-using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Core;
-using PoESkillTree.Computation.Core.Events;
-using PoESkillTree.Computation.Core.NodeCollections;
+using PoESkillTree.Engine.Computation.Builders.Stats;
+using PoESkillTree.Engine.Computation.Common;
+using PoESkillTree.Engine.Computation.Core;
+using PoESkillTree.Engine.Computation.Core.Events;
+using PoESkillTree.Engine.Computation.Core.NodeCollections;
 
 namespace PoESkillTree.Computation.Model
 {

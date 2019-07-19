@@ -7,16 +7,15 @@ using System.Threading.Tasks;
 using EnumsNET;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Builders.Stats;
-using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Core;
-using PoESkillTree.Computation.Parsing;
-using PoESkillTree.GameModel.Items;
-using PoESkillTree.GameModel.PassiveTree;
-using PoESkillTree.GameModel.Skills;
-using PoESkillTree.Utils;
-using PoESkillTree.Computation.Model;
+using PoESkillTree.Engine.Computation.Builders.Stats;
+using PoESkillTree.Engine.Computation.Common;
+using PoESkillTree.Engine.Computation.Core;
+using PoESkillTree.Engine.Computation.Parsing;
+using PoESkillTree.Engine.GameModel.Items;
+using PoESkillTree.Engine.GameModel.PassiveTree;
+using PoESkillTree.Engine.GameModel.Skills;
 using PoESkillTree.SkillTreeFiles;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Model
 {

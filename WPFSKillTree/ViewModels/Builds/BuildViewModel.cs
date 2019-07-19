@@ -1,6 +1,6 @@
 using System;
 using NLog;
-using PoESkillTree.GameModel;
+using PoESkillTree.Engine.GameModel;
 using PoESkillTree.Localization;
 using PoESkillTree.Model.Builds;
 

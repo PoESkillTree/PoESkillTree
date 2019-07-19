@@ -1,4 +1,4 @@
-﻿using PoESkillTree.Computation.Common;
+﻿using PoESkillTree.Engine.Computation.Common;
 
 namespace PoESkillTree.Computation.ViewModels
 {

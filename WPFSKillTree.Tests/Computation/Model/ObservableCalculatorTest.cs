@@ -6,10 +6,10 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Builders.Stats;
-using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Core;
-using PoESkillTree.Utils;
+using PoESkillTree.Engine.Computation.Builders.Stats;
+using PoESkillTree.Engine.Computation.Common;
+using PoESkillTree.Engine.Computation.Core;
+using PoESkillTree.Engine.Utils;
 
 namespace PoESkillTree.Computation.Model
 {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using PoESkillTree.GameModel.Modifiers;
+using PoESkillTree.Engine.GameModel.Modifiers;
 
 namespace PoESkillTree.Model.Items.Mods
 {

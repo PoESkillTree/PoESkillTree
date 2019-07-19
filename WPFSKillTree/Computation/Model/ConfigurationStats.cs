@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using PoESkillTree.Computation.Common;
+using PoESkillTree.Engine.Computation.Common;
 
 namespace PoESkillTree.Computation.Model
 {
