@@ -93,9 +93,10 @@ Note: Both these options require that you can access the official Path of Exile 
 
 ## Information for contributors
 
-* The code requires Visual Studio 2017 to be compiled and run
+* The code requires Visual Studio 2017 or higher to be compiled and run
 * It is compiled to .NET 4.6.2 using C# 7.3
 * To run the batch scripts in WPFSKillTree (and by extension, compile the code in Release configuration), your Visual Studio installation's Common7/Tools/ folder must be added to the PATH environment variable
+* https://github.com/PoESkillTree/PoESkillTree.Engine contains the GameModel and Computation engine and is included as a NuGet package
 
 ## Credits
 
