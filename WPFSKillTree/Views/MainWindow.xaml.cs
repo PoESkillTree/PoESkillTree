@@ -150,8 +150,6 @@ namespace PoESkillTree.Views
         private bool _justLoaded;
         private string _lasttooltip;
 
-        private bool _showChangeSummary;
-
         private Vector2D _multransform;
 
         private List<SkillNode> _prePath;

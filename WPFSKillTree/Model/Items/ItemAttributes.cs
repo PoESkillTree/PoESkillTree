@@ -20,19 +20,19 @@ namespace PoESkillTree.Model.Items
     {
         #region slotted items
 
-        private Item MainHand => GetItemInSlot(ItemSlot.MainHand);
+        private Item MainHand => GetItemInSlot(ItemSlot.MainHand, null);
 
-        private Item OffHand => GetItemInSlot(ItemSlot.OffHand);
+        private Item OffHand => GetItemInSlot(ItemSlot.OffHand, null);
 
-        public Item GetItemInSlot(ItemSlot slot)
-            => Equip.FirstOrDefault(i => i.Slot == slot);
+        public Item GetItemInSlot(ItemSlot slot, int? socket)
+            => Equip.FirstOrDefault(i => i.Slot == slot && i.Socket == socket);
 
-        public void SetItemInSlot(Item value, ItemSlot slot)
+        public void SetItemInSlot(Item value, ItemSlot slot, int? socket)
         {
-            if (!CanEquip(value, slot))
+            if (!CanEquip(value, slot, socket))
                 return;
             
-            var old = Equip.FirstOrDefault(i => i.Slot == slot);
+            var old = Equip.FirstOrDefault(i => i.Slot == slot && i.Socket == socket);
             if (value is null)
             {
                 Equip.Remove(old);
@@ -40,12 +40,14 @@ namespace PoESkillTree.Model.Items
             else
             {
                 value.Slot = slot;
+                value.Socket = socket;
                 Equip.RemoveAndAdd(old, value);
             }
 
             if (old != null)
             {
                 old.Slot = ItemSlot.Unequipable;
+                old.Socket = null;
                 old.PropertyChanged -= SlottedItemOnPropertyChanged;
             }
             if (value != null)
@@ -56,10 +58,26 @@ namespace PoESkillTree.Model.Items
             RefreshItemAttributes();
         }
 
-        public bool CanEquip(Item item, ItemSlot slot)
+        public bool CanEquip(Item item, ItemSlot slot, int? socket)
         {
-            if (item == null) return true;
-            if (slot == ItemSlot.Unequipable) return false;
+            if (item == null)
+                return true;
+            if (slot == ItemSlot.Unequipable)
+                return false;
+
+            if (socket.HasValue)
+            {
+                if (slot == ItemSlot.SkillTree)
+                {
+                    return item.IsJewel;
+                }
+                return item.ItemClass == ItemClass.AbyssJewel;
+            }
+            if (item.IsJewel)
+            {
+                return false;
+            }
+
             // one handed -> only equippable if other hand is free, shield or matching one handed
             if (item.Tags.HasFlag(Tags.OneHand)
                 && (slot == ItemSlot.MainHand || slot == ItemSlot.OffHand))

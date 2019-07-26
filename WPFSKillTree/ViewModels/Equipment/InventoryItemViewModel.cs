@@ -17,12 +17,13 @@ namespace PoESkillTree.ViewModels.Equipment
         private readonly IExtendedDialogCoordinator _dialogCoordinator;
         private readonly ItemAttributes _itemAttributes;
         private readonly ItemSlot _slot;
+        private readonly int? _socket;
 
         // the item is delegated to this view model's slot in ItemAttributes
         public override Item Item
         {
-            get => _itemAttributes.GetItemInSlot(_slot);
-            set => _itemAttributes.SetItemInSlot(value, _slot);
+            get => _itemAttributes.GetItemInSlot(_slot, _socket);
+            set => _itemAttributes.SetItemInSlot(value, _slot, _socket);
         }
 
         private string _emptyBackgroundImagePath;
@@ -41,11 +42,12 @@ namespace PoESkillTree.ViewModels.Equipment
         public ICommand EditSocketedGemsCommand { get; }
 
         public InventoryItemViewModel(
-            IExtendedDialogCoordinator dialogCoordinator, ItemAttributes itemAttributes, ItemSlot slot)
+            IExtendedDialogCoordinator dialogCoordinator, ItemAttributes itemAttributes, ItemSlot slot, int? socket)
         {
             _dialogCoordinator = dialogCoordinator;
             _itemAttributes = itemAttributes;
             _slot = slot;
+            _socket = socket;
 
             EditSocketedGemsCommand = new AsyncRelayCommand(EditSocketedGemsAsync, CanEditSocketedGems);
 
@@ -63,14 +65,14 @@ namespace PoESkillTree.ViewModels.Equipment
             => await _dialogCoordinator.EditSocketedGemsAsync(this, _itemAttributes, _slot);
 
         private bool CanEditSocketedGems()
-            => !_slot.IsFlask();
+            => !_slot.IsFlask() && _socket is null;
 
         public void DragOver(IDropInfo dropInfo)
         {
             var draggedItem = dropInfo.Data as DraggableItemViewModel;
 
             if (draggedItem == null
-                || !_itemAttributes.CanEquip(draggedItem.Item, _slot)
+                || !_itemAttributes.CanEquip(draggedItem.Item, _slot, _socket)
                 || draggedItem == this) // can't drop onto itself
             {
                 return;

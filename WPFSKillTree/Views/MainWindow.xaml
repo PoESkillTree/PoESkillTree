@@ -711,7 +711,7 @@
 
                             <UniformGrid Grid.Column="0" Grid.Row="0"
                                          Margin="0 6 18 0"
-                                         Height="32" Width="480"
+                                         Height="32" Width="539"
                                          Rows="1"
                                          HorizontalAlignment="Right">
                                 <Button Margin="4 0"

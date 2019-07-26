@@ -25,6 +25,7 @@ namespace PoESkillTree.ViewModels.Equipment
         public InventoryItemViewModel Boots { get; }
         public InventoryItemViewModel Belt { get; }
         public IReadOnlyList<InventoryItemViewModel> Flasks { get; }
+        public IReadOnlyList<InventoryItemViewModel> TreeJewels { get; }
 
         public InventoryViewModel(IExtendedDialogCoordinator dialogCoordinator, ItemAttributes itemAttributes)
         {
@@ -40,13 +41,14 @@ namespace PoESkillTree.ViewModels.Equipment
             Gloves = CreateSlotVm(ItemSlot.Gloves);
             Boots = CreateSlotVm(ItemSlot.Boots);
             Belt = CreateSlotVm(ItemSlot.Belt);
-            Flasks = ItemSlotExtensions.Flasks.Select(CreateSlotVm).ToList();
+            Flasks = ItemSlotExtensions.Flasks.Select(s => CreateSlotVm(s)).ToList();
+            TreeJewels = Enumerable.Range(0, 21).Select(i => CreateSlotVm(ItemSlot.SkillTree, i)).ToList();
         }
 
-        private InventoryItemViewModel CreateSlotVm(ItemSlot slot)
+        private InventoryItemViewModel CreateSlotVm(ItemSlot slot, int? socket = null)
         {
             var imageName = SlotToImageName(slot);
-            return new InventoryItemViewModel(_dialogCoordinator, _itemAttributes, slot)
+            return new InventoryItemViewModel(_dialogCoordinator, _itemAttributes, slot, socket)
             {
                 EmptyBackgroundImagePath = $"/PoESkillTree;component/Images/EquipmentUI/ItemDefaults/{imageName}.png"
             };
@@ -66,6 +68,8 @@ namespace PoESkillTree.ViewModels.Equipment
                     return "Ring";
                 case ItemSlot.Helm:
                     return "Helmet";
+                case ItemSlot.SkillTree:
+                    return "Jewel";
                 default:
                     return slot.ToString();
             }

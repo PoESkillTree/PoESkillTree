@@ -55,7 +55,7 @@ namespace PoESkillTree.Model
         private void ChangeItems(IEnumerable<OldItem> oldToRemove, IEnumerable<OldItem> oldToAdd)
         {
             var toRemove = new List<(Item, ItemSlot)>();
-            foreach (var oldItem in oldToRemove)
+            foreach (var oldItem in oldToRemove.Where(i => i.Socket is null))
             {
                 var tuple = Convert(oldItem);
                 oldItem.PropertyChanged -= OldItemOnPropertyChanged;
@@ -63,7 +63,7 @@ namespace PoESkillTree.Model
                 toRemove.Add(tuple);
             }
             var toAdd = new List<(Item, ItemSlot)>();
-            foreach (var oldItem in oldToAdd)
+            foreach (var oldItem in oldToAdd.Where(i => i.Socket is null))
             {
                 var tuple = Convert(oldItem);
                 oldItem.PropertyChanged += OldItemOnPropertyChanged;

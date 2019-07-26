@@ -29,6 +29,20 @@ namespace PoESkillTree.Model.Items
             set => SetProperty(ref _slot, value);
         }
 
+        private int? _socket;
+        public int? Socket
+        {
+            get => _socket;
+            set => SetProperty(ref _socket, value, () =>
+            {
+                if (JsonBase != null)
+                {
+                    JsonBase["socket"] = value;
+                    OnPropertyChanged(nameof(JsonBase));
+                }
+            });
+        }
+
         public ItemClass ItemClass { get; }
         public Tags Tags { get; }
         public bool IsFlask => Tags.HasFlag(Tags.Flask);
@@ -184,26 +198,26 @@ namespace PoESkillTree.Model.Items
 
         public Item(Item source)
         {
-            //_slot, ItemClass, Tags, _gems, _frame, _isEnabled
             _slot = source._slot;
+            _socket = source._socket;
             ItemClass = source.ItemClass;
             Tags = source.Tags;
             _frame = source._frame;
             _isEnabled = source._isEnabled;
-            //_properties, _requirements, _explicit-, _implicit-, _craftedMods
+
             _properties = new ObservableCollection<ItemMod>(source._properties);
             _requirements = new ObservableCollection<ItemMod>(source._requirements);
             _explicitMods = source._explicitMods.ToList();
             _implicitMods = source._implicitMods.ToList();
             _craftedMods = source._craftedMods.ToList();
-            //_flavourText, _nameLine, _typeLine, _socketGroup, _baseType, _iconUrl, _image
+
             _flavourText = source.FlavourText;
             _nameLine = source.NameLine;
             _typeLine = source.TypeLine;
             BaseType = source.BaseType;
             _iconUrl = source._iconUrl;
             Image = source.Image;
-            //JsonBase, _x, _y, Width, Height
+
             JsonBase = new JObject(source.JsonBase);
             _x = source._x;
             _y = source._y;
@@ -215,6 +229,7 @@ namespace PoESkillTree.Model.Items
         {
             JsonBase = val;
             Slot = itemSlot;
+            Socket = val["socket"]?.Value<int?>();
 
             Width = val["w"].Value<int>();
             Height = val["h"].Value<int>();
@@ -518,6 +533,8 @@ namespace PoESkillTree.Model.Items
                 );
             if (_iconUrl != null)
                 j["icon"] = _iconUrl;
+            if (_socket.HasValue)
+                j["socket"] = _socket;
 
             if (Properties.Count > 0)
             {
