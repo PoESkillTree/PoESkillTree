@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using GongSolutions.Wpf.DragDrop;
@@ -29,6 +29,25 @@ namespace PoESkillTree.ViewModels.Equipment
             set => _itemAttributes.SetItemInSlot(value, _slot, Socket);
         }
 
+        private bool _isEnabled;
+        public bool IsEnabled
+        {
+            get => _isEnabled;
+            set => SetProperty(ref _isEnabled, value, () => ItemIsEnabled = value);
+        }
+
+        private bool ItemIsEnabled
+        {
+            get => Item?.IsEnabled ?? true;
+            set
+            {
+                if (Item is Item item)
+                {
+                    item.IsEnabled = value;
+                }
+            }
+        }
+
         private string _emptyBackgroundImagePath;
         /// <summary>
         /// Gets or sets the path to the image that should be shown if Item is null.
@@ -51,6 +70,7 @@ namespace PoESkillTree.ViewModels.Equipment
             _itemAttributes = itemAttributes;
             _slot = slot;
             Socket = socket;
+            _isEnabled = ItemIsEnabled;
 
             EditSocketedGemsCommand = new AsyncRelayCommand(EditSocketedGemsAsync, CanEditSocketedGems);
 
@@ -60,6 +80,7 @@ namespace PoESkillTree.ViewModels.Equipment
                 if ((_slot, Socket) == tuple)
                 {
                     OnPropertyChanged(nameof(Item));
+                    ItemIsEnabled = IsEnabled;
                 }
             };
         }
@@ -86,24 +107,22 @@ namespace PoESkillTree.ViewModels.Equipment
         public void Drop(IDropInfo dropInfo)
         {
             var draggedItem = (DraggableItemViewModel) dropInfo.Data;
+            var dropEffects = dropInfo.Effects;
 
-            if (dropInfo.Effects == DragDropEffects.Move)
+            var oldItem = Item;
+            var newItem = dropEffects == DragDropEffects.Copy
+                ? new Item(draggedItem.Item) : draggedItem.Item;
+
+            if (dropEffects == DragDropEffects.Move || dropEffects == DragDropEffects.Link)
             {
-                Item = draggedItem.Item;
                 draggedItem.Item = null;
             }
-            else if (dropInfo.Effects == DragDropEffects.Copy)
+
+            Item = newItem;
+
+            if (dropEffects == DragDropEffects.Link)
             {
-                Item = new Item(draggedItem.Item);
-            }
-            else if (dropInfo.Effects == DragDropEffects.Link)
-            {
-                // Link = Swap
-                var newItem = draggedItem.Item;
-                var oldItem = Item;
-                Item = null;
                 draggedItem.Item = oldItem;
-                Item = newItem;
             }
         }
     }

@@ -86,9 +86,10 @@ namespace PoESkillTree.Model
 
         private void OldItemOnIsEnabledChanged(OldItem oldItem)
         {
-            var itemTuple = Convert(oldItem);
-            Items.Remove(itemTuple);
-            Items.Add(itemTuple);
+            var (item, slot) = Convert(oldItem);
+            var itemWithInvertedIsEnabled = new Item(item.BaseMetadataId, item.Name, item.Quality, item.RequiredLevel,
+                item.FrameType, item.IsCorrupted, item.Modifiers, !item.IsEnabled);
+            Items.RemoveAndAdd((itemWithInvertedIsEnabled, slot), (item, slot));
         }
     }
 }
