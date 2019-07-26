@@ -1607,6 +1607,7 @@ namespace PoESkillTree.Views
                 ItemAttributes.ItemDataChanged -= ItemAttributesOnItemDataChanged;
                 ItemAttributes.Dispose();
             }
+            InventoryViewModel?.Dispose();
 
             var equipmentData = PersistentData.EquipmentData;
             var itemData = PersistentData.CurrentBuild.ItemData;
@@ -1628,11 +1629,6 @@ namespace PoESkillTree.Views
             ItemAttributes = itemAttributes;
             InventoryViewModel =
                 new InventoryViewModel(_dialogCoordinator, itemAttributes, await GetJewelPassiveNodesAsync());
-            UpdateUI();
-        }
-
-        private void ItemAttributesOnPropertyChanged(object sender, PropertyChangedEventArgs args)
-        {
             UpdateUI();
         }
 

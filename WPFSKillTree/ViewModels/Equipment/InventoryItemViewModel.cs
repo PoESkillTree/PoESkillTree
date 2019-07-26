@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using GongSolutions.Wpf.DragDrop;
@@ -13,7 +14,7 @@ namespace PoESkillTree.ViewModels.Equipment
     /// <summary>
     /// View model for draggable items in the inventory. This is also a drop target.
     /// </summary>
-    public class InventoryItemViewModel : DraggableItemViewModel, IDropTarget
+    public class InventoryItemViewModel : DraggableItemViewModel, IDropTarget, IDisposable
     {
         private readonly IExtendedDialogCoordinator _dialogCoordinator;
         private readonly ItemAttributes _itemAttributes;
@@ -74,15 +75,21 @@ namespace PoESkillTree.ViewModels.Equipment
 
             EditSocketedGemsCommand = new AsyncRelayCommand(EditSocketedGemsAsync, CanEditSocketedGems);
 
-            // Item changes when the slotted item in ItemAttribute changes as they are the same
-            _itemAttributes.ItemChanged += tuple =>
+            _itemAttributes.ItemChanged += ItemAttributesOnItemChanged;
+        }
+
+        public void Dispose()
+        {
+            _itemAttributes.ItemChanged -= ItemAttributesOnItemChanged;
+        }
+
+        private void ItemAttributesOnItemChanged((ItemSlot, ushort?) args)
+        {
+            if ((_slot, Socket) == args)
             {
-                if ((_slot, Socket) == tuple)
-                {
-                    OnPropertyChanged(nameof(Item));
-                    ItemIsEnabled = IsEnabled;
-                }
-            };
+                ItemIsEnabled = IsEnabled;
+                OnPropertyChanged(nameof(Item));
+            }
         }
 
         private async Task EditSocketedGemsAsync()

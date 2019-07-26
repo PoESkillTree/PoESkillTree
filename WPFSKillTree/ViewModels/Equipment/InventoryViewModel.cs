@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using MoreLinq;
 using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Model.Items;
 using PoESkillTree.Utils;
@@ -9,7 +11,7 @@ namespace PoESkillTree.ViewModels.Equipment
     /// <summary>
     /// View model for the inventory. Only a collection of the the InventoryItemViewModels for the slots.
     /// </summary>
-    public class InventoryViewModel : Notifier
+    public class InventoryViewModel : Notifier, IDisposable
     {
         private readonly IExtendedDialogCoordinator _dialogCoordinator;
         private readonly ItemAttributes _itemAttributes;
@@ -76,6 +78,22 @@ namespace PoESkillTree.ViewModels.Equipment
                 default:
                     return slot.ToString();
             }
+        }
+
+        public void Dispose()
+        {
+            Armor.Dispose();
+            MainHand.Dispose();
+            OffHand.Dispose();
+            Ring.Dispose();
+            Ring2.Dispose();
+            Amulet.Dispose();
+            Helm.Dispose();
+            Gloves.Dispose();
+            Boots.Dispose();
+            Belt.Dispose();
+            Flasks.ForEach(vm => vm.Dispose());
+            TreeJewels.ForEach(vm => vm.Dispose());
         }
     }
 }
