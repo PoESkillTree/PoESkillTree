@@ -27,7 +27,10 @@ namespace PoESkillTree.ViewModels.Equipment
         public IReadOnlyList<InventoryItemViewModel> Flasks { get; }
         public IReadOnlyList<InventoryItemViewModel> TreeJewels { get; }
 
-        public InventoryViewModel(IExtendedDialogCoordinator dialogCoordinator, ItemAttributes itemAttributes)
+        public InventoryViewModel(
+            IExtendedDialogCoordinator dialogCoordinator,
+            ItemAttributes itemAttributes,
+            IEnumerable<ushort> jewelPassiveNodes)
         {
             _dialogCoordinator = dialogCoordinator;
             _itemAttributes = itemAttributes;
@@ -42,10 +45,10 @@ namespace PoESkillTree.ViewModels.Equipment
             Boots = CreateSlotVm(ItemSlot.Boots);
             Belt = CreateSlotVm(ItemSlot.Belt);
             Flasks = ItemSlotExtensions.Flasks.Select(s => CreateSlotVm(s)).ToList();
-            TreeJewels = Enumerable.Range(0, 21).Select(i => CreateSlotVm(ItemSlot.SkillTree, i)).ToList();
+            TreeJewels = jewelPassiveNodes.Select(i => CreateSlotVm(ItemSlot.SkillTree, i)).ToList();
         }
 
-        private InventoryItemViewModel CreateSlotVm(ItemSlot slot, int? socket = null)
+        private InventoryItemViewModel CreateSlotVm(ItemSlot slot, ushort? socket = null)
         {
             var imageName = SlotToImageName(slot);
             return new InventoryItemViewModel(_dialogCoordinator, _itemAttributes, slot, socket)

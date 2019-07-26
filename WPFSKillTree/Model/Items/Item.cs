@@ -29,8 +29,8 @@ namespace PoESkillTree.Model.Items
             set => SetProperty(ref _slot, value);
         }
 
-        private int? _socket;
-        public int? Socket
+        private ushort? _socket;
+        public ushort? Socket
         {
             get => _socket;
             set => SetProperty(ref _socket, value, () =>
@@ -229,7 +229,7 @@ namespace PoESkillTree.Model.Items
         {
             JsonBase = val;
             Slot = itemSlot;
-            Socket = val["socket"]?.Value<int?>();
+            Socket = val["socket"]?.Value<ushort?>();
 
             Width = val["w"].Value<int>();
             Height = val["h"].Value<int>();

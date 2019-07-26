@@ -1,7 +1,8 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using GongSolutions.Wpf.DragDrop;
+using JetBrains.Annotations;
 using PoESkillTree.Common.ViewModels;
 using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Model.Items;
@@ -17,13 +18,15 @@ namespace PoESkillTree.ViewModels.Equipment
         private readonly IExtendedDialogCoordinator _dialogCoordinator;
         private readonly ItemAttributes _itemAttributes;
         private readonly ItemSlot _slot;
-        private readonly int? _socket;
+
+        public ushort? Socket { get; }
 
         // the item is delegated to this view model's slot in ItemAttributes
+        [CanBeNull]
         public override Item Item
         {
-            get => _itemAttributes.GetItemInSlot(_slot, _socket);
-            set => _itemAttributes.SetItemInSlot(value, _slot, _socket);
+            get => _itemAttributes.GetItemInSlot(_slot, Socket);
+            set => _itemAttributes.SetItemInSlot(value, _slot, Socket);
         }
 
         private string _emptyBackgroundImagePath;
@@ -42,19 +45,19 @@ namespace PoESkillTree.ViewModels.Equipment
         public ICommand EditSocketedGemsCommand { get; }
 
         public InventoryItemViewModel(
-            IExtendedDialogCoordinator dialogCoordinator, ItemAttributes itemAttributes, ItemSlot slot, int? socket)
+            IExtendedDialogCoordinator dialogCoordinator, ItemAttributes itemAttributes, ItemSlot slot, ushort? socket)
         {
             _dialogCoordinator = dialogCoordinator;
             _itemAttributes = itemAttributes;
             _slot = slot;
-            _socket = socket;
+            Socket = socket;
 
             EditSocketedGemsCommand = new AsyncRelayCommand(EditSocketedGemsAsync, CanEditSocketedGems);
 
             // Item changes when the slotted item in ItemAttribute changes as they are the same
-            _itemAttributes.PropertyChanged += (sender, args) =>
+            _itemAttributes.ItemChanged += tuple =>
             {
-                if (args.PropertyName == slot.ToString())
+                if ((_slot, Socket) == tuple)
                 {
                     OnPropertyChanged(nameof(Item));
                 }
@@ -65,14 +68,14 @@ namespace PoESkillTree.ViewModels.Equipment
             => await _dialogCoordinator.EditSocketedGemsAsync(this, _itemAttributes, _slot);
 
         private bool CanEditSocketedGems()
-            => !_slot.IsFlask() && _socket is null;
+            => !_slot.IsFlask() && Socket is null;
 
         public void DragOver(IDropInfo dropInfo)
         {
             var draggedItem = dropInfo.Data as DraggableItemViewModel;
 
             if (draggedItem == null
-                || !_itemAttributes.CanEquip(draggedItem.Item, _slot, _socket)
+                || !_itemAttributes.CanEquip(draggedItem.Item, _slot, Socket)
                 || draggedItem == this) // can't drop onto itself
             {
                 return;
