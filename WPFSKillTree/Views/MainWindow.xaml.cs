@@ -94,6 +94,8 @@ namespace PoESkillTree.Views
             private set => SetProperty(ref _inventoryViewModel, value);
         }
 
+        private JewelSocketObserver _jewelSocketObserver;
+
         public StashViewModel StashViewModel { get; } = new StashViewModel();
 
         private readonly ObservableItemCollectionConverter
@@ -132,6 +134,8 @@ namespace PoESkillTree.Views
                 BuildsControlViewModel.SkillTree = tree;
             if (TreeGeneratorInteraction != null)
                 TreeGeneratorInteraction.SkillTree = tree;
+            _jewelSocketObserver?.Dispose();
+            _jewelSocketObserver = new JewelSocketObserver(tree.SkilledNodes);
             return tree;
         }
 
@@ -260,6 +264,7 @@ namespace PoESkillTree.Views
             {
                 case nameof(PoEBuild.ItemData):
                     await LoadItemData();
+                    _jewelSocketObserver.SetTreeJewelViewModels(InventoryViewModel.TreeJewels);
                     break;
                 case nameof(PoEBuild.TreeUrl):
                     if (!_skipLoadOnCurrentBuildTreeChange)
@@ -1602,6 +1607,7 @@ namespace PoESkillTree.Views
             if (_pauseLoadItemData)
                 return;
 
+            _jewelSocketObserver.ResetTreeJewelViewModels();
             if (ItemAttributes != null)
             {
                 ItemAttributes.ItemDataChanged -= ItemAttributesOnItemDataChanged;
@@ -1661,6 +1667,7 @@ namespace PoESkillTree.Views
             await LoadItemData();
             SetCustomGroups(build.CustomGroups);
             await ResetTreeUrl();
+            _jewelSocketObserver.SetTreeJewelViewModels(InventoryViewModel.TreeJewels);
             ComputationViewModel?.SharedConfiguration.SetBandit(build.Bandits.Choice);
         }
 

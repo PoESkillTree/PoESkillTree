@@ -130,9 +130,8 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <views:InventoryItemView Margin="-2 -2 0 0"
-                                             Width="51" Height="51"
-                                             DataContext="{Binding}"/>
+                    <views:InventoryTreeJewelView Margin="-2 -2 0 0"
+                                                  DataContext="{Binding}" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
