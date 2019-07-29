@@ -7,6 +7,7 @@
              xmlns:viewModels="clr-namespace:PoESkillTree.ViewModels.Equipment"
              xmlns:views="clr-namespace:PoESkillTree.Views.Equipment"
              xmlns:dialogs="clr-namespace:PoESkillTree.Controls.Dialogs"
+             xmlns:items="clr-namespace:PoESkillTree.Engine.GameModel.Items;assembly=PoESkillTree.Engine.GameModel"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:InventoryViewModel}"
              dialogs:DialogParticipation.Register="{Binding}">
@@ -23,10 +24,12 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         
         <TextBlock Grid.Column="1" Grid.ColumnSpan="3"
                    Grid.Row="0"
+                   Margin="0 0 0 5"
                    HorizontalAlignment="Center"
                    FontSize="36" FontWeight="Bold" 
                    Foreground="{DynamicResource AccentColorBrush}">
@@ -34,6 +37,19 @@
                 <l:Catalog>Inventory</l:Catalog>
             </TextBlock.Text>
         </TextBlock>
+
+        <views:InventoryItemView Grid.Column="1"
+                                 Grid.Row="1"
+                                 Margin="0 0 -22 0"
+                                 HorizontalAlignment="Right" VerticalAlignment="Top"
+                                 Width="51" Height="51"
+                                 DataContext="{Binding Path=ItemJewels[(items:ItemSlot)Helm][0]}" />
+        <views:InventoryItemView Grid.Column="1"
+                                 Grid.Row="1"
+                                 Margin="0 0 -22 165"
+                                 HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                 Width="51" Height="51"
+                                 DataContext="{Binding Path=ItemJewels[(items:ItemSlot)BodyArmour][0]}" />
         <views:InventoryItemView Grid.Column="1"
                                  Grid.Row="1"
                                  Margin="0 0 71 108"
@@ -56,10 +72,10 @@
         <StackPanel Grid.Column="2" Grid.Row="1"
                     Margin="20 0 20 0"
                     Orientation="Vertical">
-            <views:InventoryItemView Margin="0 0 0 10"
+            <views:InventoryItemView Margin="0 0 0 20"
                                      Width="98" Height="98"
                                      DataContext="{Binding Helm}"/>
-            <views:InventoryItemView Margin="0 0 0 10"
+            <views:InventoryItemView Margin="0 0 0 20"
                                      Width="98" Height="145"
                                      DataContext="{Binding Armor}"/>
             <views:InventoryItemView Margin="0 0 0 0"
@@ -67,6 +83,12 @@
                                      DataContext="{Binding Belt}"/>
         </StackPanel>
 
+        <views:InventoryItemView Grid.Column="3"
+                                 Grid.Row="1"
+                                 Margin="-22 0 0 0"
+                                 HorizontalAlignment="Left" VerticalAlignment="Top"
+                                 Width="51" Height="51"
+                                 DataContext="{Binding Path=ItemJewels[(items:ItemSlot)Helm][1]}" />
         <views:InventoryItemView Grid.Column="3"
                                  Grid.Row="1"
                                  Margin="71 0 0 108"
@@ -95,6 +117,32 @@
         <StackPanel Grid.Column="1"
                     Grid.ColumnSpan="3"
                     Grid.Row="2"
+                    Margin="0 -2 0 0"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+            <views:InventoryItemView Margin="0 0 -2 0"
+                                     Width="51" Height="51"
+                                     DataContext="{Binding Path=ItemJewels[(items:ItemSlot)Gloves][1]}"/>
+            <views:InventoryItemView Margin="0 0 19 0"
+                                     Width="51" Height="51"
+                                     DataContext="{Binding Path=ItemJewels[(items:ItemSlot)Gloves][0]}"/>
+            <views:InventoryItemView Margin="0 0 -1 0"
+                                     Width="51" Height="51"
+                                     DataContext="{Binding Path=ItemJewels[(items:ItemSlot)Belt][0]}"/>
+            <views:InventoryItemView Margin="-1 0 0 0"
+                                     Width="51" Height="51"
+                                     DataContext="{Binding Path=ItemJewels[(items:ItemSlot)Belt][1]}"/>
+            <views:InventoryItemView Margin="19 0 0 0"
+                                     Width="51" Height="51"
+                                     DataContext="{Binding Path=ItemJewels[(items:ItemSlot)Boots][0]}"/>
+            <views:InventoryItemView Margin="-2 0 0 0"
+                                     Width="51" Height="51"
+                                     DataContext="{Binding Path=ItemJewels[(items:ItemSlot)Boots][1]}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1"
+                    Grid.ColumnSpan="3"
+                    Grid.Row="3"
                     Orientation="Horizontal"
                     Margin="0 10 0 0"
                     HorizontalAlignment="Center" VerticalAlignment="Top">
@@ -112,13 +160,13 @@
 
         <views:BinView Grid.Column="3"
                        Grid.ColumnSpan="2"
-                       Grid.Row="2"
+                       Grid.Row="3"
                        Margin="0 10 0 0"
                        HorizontalAlignment="Right" VerticalAlignment="Top" />
 
         <ItemsControl Grid.Column="0"
                       Grid.ColumnSpan="5"
-                      Grid.Row="3"
+                      Grid.Row="4"
                       Margin="0 10 0 0"
                       HorizontalAlignment="Center"
                       ItemsSource="{Binding TreeJewels}"
