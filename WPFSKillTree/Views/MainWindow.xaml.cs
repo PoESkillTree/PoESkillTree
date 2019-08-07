@@ -95,6 +95,7 @@ namespace PoESkillTree.Views
         }
 
         private JewelSocketObserver _jewelSocketObserver;
+        private AbyssalSocketObserver _abyssalSocketObserver;
 
         public StashViewModel StashViewModel { get; } = new StashViewModel();
 
@@ -470,6 +471,7 @@ namespace PoESkillTree.Views
                 Tree.SkilledNodes, _equipmentConverter.Items, _equipmentConverter.Skills);
             ComputationViewModel = await computationInitializer.CreateComputationViewModelAsync(PersistentData);
             computationInitializer.SetupPeriodicActions();
+            _abyssalSocketObserver = computationInitializer.CreateAbyssalSocketObserver(InventoryViewModel.ItemJewels);
             Log.Info($"Computation UI initialized after {stopwatch.ElapsedMilliseconds} ms");
 
             await controller.CloseAsync();
@@ -1608,6 +1610,7 @@ namespace PoESkillTree.Views
                 return;
 
             _jewelSocketObserver.ResetTreeJewelViewModels();
+            _abyssalSocketObserver?.ResetItemJewelViewModels();
             if (ItemAttributes != null)
             {
                 ItemAttributes.ItemDataChanged -= ItemAttributesOnItemDataChanged;
@@ -1635,6 +1638,7 @@ namespace PoESkillTree.Views
             ItemAttributes = itemAttributes;
             InventoryViewModel =
                 new InventoryViewModel(_dialogCoordinator, itemAttributes, await GetJewelPassiveNodesAsync());
+            _abyssalSocketObserver?.SetItemJewelViewModels(InventoryViewModel.ItemJewels);
             UpdateUI();
         }
 

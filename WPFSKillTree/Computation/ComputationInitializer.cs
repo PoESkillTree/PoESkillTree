@@ -15,6 +15,7 @@ using PoESkillTree.Model;
 using PoESkillTree.SkillTreeFiles;
 using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
+using PoESkillTree.ViewModels.Equipment;
 
 namespace PoESkillTree.Computation
 {
@@ -125,5 +126,13 @@ namespace PoESkillTree.Computation
         public void SetupPeriodicActions()
             => _calculator.PeriodicallyRemoveUnusedNodes(
                 ex => Log.Error(ex, "Exception while removing unused calculation nodes"));
+
+        public AbyssalSocketObserver CreateAbyssalSocketObserver(
+            IReadOnlyDictionary<ItemSlot, IReadOnlyList<InventoryItemViewModel>> jewels)
+        {
+            var observer = AbyssalSocketObserver.Create(_calculator, _schedulers.Dispatcher, _builderFactories);
+            observer.SetItemJewelViewModels(jewels);
+            return observer;
+        }
     }
 }

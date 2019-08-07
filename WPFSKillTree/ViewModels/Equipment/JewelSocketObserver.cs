@@ -11,7 +11,7 @@ namespace PoESkillTree.ViewModels.Equipment
     public class JewelSocketObserver : IDisposable
     {
         private readonly ObservableSet<SkillNode> _skilledNodes;
-        private IDictionary<ushort, InventoryItemViewModel> _treeJewelViewModels;
+        private IReadOnlyDictionary<ushort, InventoryItemViewModel> _treeJewelViewModels;
 
         public JewelSocketObserver(ObservableSet<SkillNode> skilledNodes)
         {
