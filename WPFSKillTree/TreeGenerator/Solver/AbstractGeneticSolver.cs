@@ -162,27 +162,30 @@ namespace PoESkillTree.TreeGenerator.Solver
 
         private HashSet<ushort> DnaToUsedNodes(BitArray dna)
         {
-            var mstNodes = new List<int>();
-            for (var i = 0; i < dna.Length; i++)
+            using (var mstNodes = new PooledList<int>(dna.Length + TargetNodes.Count))
+            using (var mst = new MinimalSpanningTree(mstNodes, Distances))
             {
-                if (dna[i])
+                for (var i = 0; i < dna.Length; i++)
                 {
-                    mstNodes.Add(i);
+                    if (dna[i])
+                    {
+                        mstNodes.Add(i);
+                    }
                 }
-            }
-            var searchSpaceNodeCount = mstNodes.Count;
-            for (var i = 0; i < TargetNodes.Count; i++)
-            {
-                mstNodes.Add(TargetNodes[i].DistancesIndex);
+                var searchSpaceNodeCount = mstNodes.Count;
+                for (var i = 0; i < TargetNodes.Count; i++)
+                {
+                    mstNodes.Add(TargetNodes[i].DistancesIndex);
+                }
+
+                if (_orderedEdges != null)
+                    mst.Span(_orderedEdges);
+                else
+                    mst.Span(StartNode.DistancesIndex);
+
+                return GetSkillNodeIds(mstNodes, searchSpaceNodeCount, mst.SpanningEdges);
             }
 
-            var mst = new MinimalSpanningTree(mstNodes, Distances);
-            if (_orderedEdges != null)
-                mst.Span(_orderedEdges);
-            else
-                mst.Span(StartNode.DistancesIndex);
-
-            return GetSkillNodeIds(mstNodes, searchSpaceNodeCount, mst.SpanningEdges);
         }
 
         private HashSet<ushort> GetSkillNodeIds(

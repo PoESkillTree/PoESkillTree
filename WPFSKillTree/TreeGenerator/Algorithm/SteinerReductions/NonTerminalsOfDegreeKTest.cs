@@ -63,10 +63,13 @@ namespace PoESkillTree.TreeGenerator.Algorithm.SteinerReductions
                     var edgeSum = subset.Sum(j => edges[j].Weight);
                     // Build the MST of the fully connected graph of the nodes in the subset with the bottleneck
                     // Steiner distances as edge weights.
-                    var mst = new MinimalSpanningTree(subset, SMatrix);
-                    mst.Span(subset[0]);
-                    // Sum up the edge weights of the MST.
-                    var mstSum = mst.SpanningEdges.Sum(e => DistanceLookup[e.Inside, e.Outside]);
+                    long mstSum;
+                    using (var mst = new MinimalSpanningTree(subset, SMatrix))
+                    {
+                        mst.Span(subset[0]);
+                        // Sum up the edge weights of the MST.
+                        mstSum = mst.SpanningEdges.Sum(e => DistanceLookup[e.Inside, e.Outside]);
+                    }
                     // The condition is only satisfied if edgeSum >= mstSum.
                     if (edgeSum < mstSum)
                     {

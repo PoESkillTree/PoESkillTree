@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Buffers;
-using System.Collections.Concurrent;
 
 namespace PoESkillTree.TreeGenerator.Algorithm
 {
@@ -60,10 +59,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm
         /// <summary>
         /// Returns true iff the queue currently holds no elements.
         /// </summary>
-        public bool IsEmpty
-        {
-            get { return _count == 0; }
-        }
+        public bool IsEmpty => _count == 0;
 
         /// <summary>
         /// Stores the first element of the linked list of each priority. An entry p

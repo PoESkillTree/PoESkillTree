@@ -29,15 +29,18 @@ namespace PoESkillTree.TreeGenerator.Algorithm.SteinerReductions
             if (NodeStates.FixedTargetNodeCount <= 1 || NodeStates.VariableTargetNodeCount > 0) return 0;
 
             var removedNodes = 0;
-
-            var mst = new MinimalSpanningTree(NodeStates.FixedTargetNodeIndices.ToList(), DistanceLookup);
-            mst.Span(StartNodeIndex);
-            var maxEdgeDistance = mst.SpanningEdges.Max(e => DistanceLookup[e.Inside, e.Outside]);
+            
+            uint maxEdgeDistance;
+            using (var mst = new MinimalSpanningTree(NodeStates.FixedTargetNodeIndices.ToList(), DistanceLookup))
+            {
+                mst.Span(StartNodeIndex);
+                maxEdgeDistance = mst.SpanningEdges.Max(e => DistanceLookup[e.Inside, e.Outside]);
+            }
 
             for (var i = 0; i < SearchSpaceSize; i++)
             {
                 if (NodeStates.IsTarget(i) || NodeStates.IsRemoved(i)) continue;
-                
+
                 // Theoretically, this can be sped up by using Voronoi partitions. The Voronoi base of i is the
                 // terminal with the smallest distance to i by definition, so only the distance to that terminal
                 // has to be checked.

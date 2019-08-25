@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -385,7 +386,8 @@ namespace PoESkillTree.TreeGenerator.Solver
         protected override double FitnessFunction(HashSet<ushort> skilledNodes)
         {
             // Add stats of the MST-nodes and start stats.
-            var totalStats = (float[]) _fixedAttributes.Clone();
+            var totalStats = ArrayPool<float>.Shared.Rent(_fixedAttributes.Length);
+            _fixedAttributes.CopyTo(totalStats, 0);
             var usedNodeCount = CountExpandedNodes(skilledNodes);
             var totalPoints = Settings.TotalPoints;
             foreach (var fixedNode in _fixedNodes)
@@ -418,6 +420,7 @@ namespace PoESkillTree.TreeGenerator.Solver
                 csvs *= 1 + UsedNodeCountFactor * Math.Log(totalPoints + 1 - usedNodeCount);
             }
 
+            ArrayPool<float>.Shared.Return(totalStats);
             // Make sure the fitness is not < 0 (can't happen with the current implementation anyway).
             return Math.Max(csvs, 0);
         }
