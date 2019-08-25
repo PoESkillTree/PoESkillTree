@@ -31,7 +31,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm
     /// </summary>
     public interface IDistancePathLookup : IDistanceLookup
     {
-        IReadOnlyCollection<ushort> GetShortestPath(int a, int b);
+        IReadOnlyList<ushort> GetShortestPath(int a, int b);
     }
 
     /// <summary>
@@ -87,7 +87,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm
         ///  If the nodes are not connected, null will be returned.
         ///  If at least one of the nodes is greater or equals CacheSize, a IndexOutOfRangeException will be thrown.
         /// </remarks>
-        public IReadOnlyCollection<ushort> GetShortestPath(int a, int b)
+        public IReadOnlyList<ushort> GetShortestPath(int a, int b)
         {
             return _paths[a, b];
         }

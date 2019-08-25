@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.Collections.Generic;
 
 namespace PoESkillTree.TreeGenerator.Algorithm
@@ -43,21 +44,24 @@ namespace PoESkillTree.TreeGenerator.Algorithm
             // All nodes that are not yet included.
             var toAdd = new List<int>(_mstNodes.Count);
             // If the index node is already included.
-            var inMst = new bool[_distances.CacheSize];
+            var inMst = ArrayPool<bool>.Shared.Rent(_distances.CacheSize);
+            Array.Clear(inMst, 0, inMst.Length);
             // The spanning edges.
             var mstEdges = new List<DirectedGraphEdge>(_mstNodes.Count);
 
             using (var adjacentEdgeQueue = new LinkedListPriorityQueue<DirectedGraphEdge>(100, _mstNodes.Count*_mstNodes.Count))
             {
-                foreach (var t in _mstNodes)
+                for (var i = 0; i < _mstNodes.Count; i++)
                 {
+                    var t = _mstNodes[i];
                     if (t != startIndex)
                     {
                         toAdd.Add(t);
-                        adjacentEdgeQueue.Enqueue(new DirectedGraphEdge(startIndex, t), 
+                        adjacentEdgeQueue.Enqueue(new DirectedGraphEdge(startIndex, t),
                             _distances[startIndex, t]);
                     }
                 }
+
                 inMst[startIndex] = true;
 
                 while (toAdd.Count > 0 && !adjacentEdgeQueue.IsEmpty)
@@ -91,6 +95,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm
                 }
             }
 
+            ArrayPool<bool>.Shared.Return(inMst);
             SpanningEdges = mstEdges;
         }
 

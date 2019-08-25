@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.Collections.Concurrent;
 
 namespace PoESkillTree.TreeGenerator.Algorithm
@@ -45,31 +46,6 @@ namespace PoESkillTree.TreeGenerator.Algorithm
         // The large arrays (_elements and _links) are reused through an object pool because allocation of arrays of this size
         // (with easily a few 100k elements) is expensive and was bottlenecking the priority queue class.
         // (yes, Enqueue and Dequeue are that fast)
-
-        /// <summary>
-        /// Struct that saves the two large arrays used by Queue instances so they don't need to be reallocated every time.
-        /// </summary>
-        /// <remarks>
-        /// Do not read any entry that was not overwriten by the same instance as the arrays are not cleaned of data from previous
-        /// queues.
-        /// </remarks>
-        private struct DataArrays
-        {
-            public readonly T[] Elements;
-
-            public readonly int[] Links;
-
-            public DataArrays(T[] elements, int[] links)
-            {
-                Elements = elements;
-                Links = links;
-            }
-        }
-
-        /// <summary>
-        /// Object pool of DataArrays which stores all arrays that are no longer in use.
-        /// </summary>
-        private static readonly ConcurrentBag<DataArrays> DataStack = new ConcurrentBag<DataArrays>();
 
         /// <summary>
         /// The smallest priority for which elements are currently stored.
@@ -146,31 +122,12 @@ namespace PoESkillTree.TreeGenerator.Algorithm
         /// once with the same type parameter because the allocated arrays are reused.</param>
         public LinkedListPriorityQueue(int maxPriority, int size)
         {
-            _firstElements = new int[maxPriority + 1];
-            _lastElements = new int[maxPriority + 1];
-            DataArrays current;
-            if (!DataStack.TryTake(out current))
-            {
-                // If the pool is currently empty: create new Arrays of the necessary size.
-                _elements = new T[size + 1];
-                _links = new int[size + 1];
-            }
-            else if (current.Links.Length < size + 1)
-            {
-                // If the taken arrays are too small:
-                // Create new Arrays of the necessary size, but at least twice the size of the taken arrays.
-                // The taken arrays are thrown away since they will likely be too small more often than not and they
-                // will be replaced by the newly created ones.
-                var length = Math.Max(size + 1, current.Links.Length*2);
-                _elements = new T[length];
-                _links = new int[length];
-            }
-            else
-            {
-                // If the taken arrays are big enough: use them.
-                _links = current.Links;
-                _elements = current.Elements;
-            }
+            _firstElements = ArrayPool<int>.Shared.Rent(maxPriority + 1);
+            Array.Clear(_firstElements, 0, _firstElements.Length);
+            _lastElements = ArrayPool<int>.Shared.Rent(maxPriority + 1);
+            Array.Clear(_lastElements, 0, _lastElements.Length);
+            _elements = ArrayPool<T>.Shared.Rent(size + 1);
+            _links = ArrayPool<int>.Shared.Rent(size + 1);
         }
 
         /// <summary>
@@ -249,7 +206,10 @@ namespace PoESkillTree.TreeGenerator.Algorithm
         /// </summary>
         public void Dispose()
         {
-            DataStack.Add(new DataArrays(_elements, _links));
+            ArrayPool<int>.Shared.Return(_firstElements);
+            ArrayPool<int>.Shared.Return(_lastElements);
+            ArrayPool<T>.Shared.Return(_elements);
+            ArrayPool<int>.Shared.Return(_links);
         }
     }
 }

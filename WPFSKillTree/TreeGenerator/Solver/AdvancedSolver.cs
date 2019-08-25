@@ -353,7 +353,10 @@ namespace PoESkillTree.TreeGenerator.Solver
         {
             _fixedNodes = TargetNodes.Select(n => n.Id).ToList();
             // Set start stats from start and target nodes.
-            AddAttributes(_fixedNodes, _fixedAttributes);
+            foreach (var fixedNode in _fixedNodes)
+            {
+                AddAttributes(fixedNode, _fixedAttributes);
+            }
             // Add the initial stats from the settings.
             foreach (var initialStat in Settings.InitialAttributes)
             {
@@ -369,28 +372,30 @@ namespace PoESkillTree.TreeGenerator.Solver
         }
 
         /// <summary>
-        /// Adds all attributes of the given node ids to the given list.
+        /// Adds all attributes of the given node id to the given list.
         /// </summary>
-        private void AddAttributes(IEnumerable<ushort> ids, IList<float> to)
+        private void AddAttributes(ushort id, float[] to)
         {
-            foreach (var id in ids)
+            foreach (var (constraint, value) in _nodeAttributes[id])
             {
-                foreach (var tuple in _nodeAttributes[id])
-                {
-                    to[tuple.Item1] += tuple.Item2;
-                }
+                to[constraint] += value;
             }
         }
 
         protected override double FitnessFunction(HashSet<ushort> skilledNodes)
         {
             // Add stats of the MST-nodes and start stats.
-            var totalStats = (float[])_fixedAttributes.Clone();
-            // Don't count the character start node.
-            var usedNodeCount = skilledNodes.Select(n => NodeExpansionDictionary[n].Count).Sum() - UncountedNodes;
+            var totalStats = (float[]) _fixedAttributes.Clone();
+            var usedNodeCount = CountExpandedNodes(skilledNodes);
             var totalPoints = Settings.TotalPoints;
-            skilledNodes.ExceptWith(_fixedNodes);
-            AddAttributes(skilledNodes, totalStats);
+            foreach (var fixedNode in _fixedNodes)
+            {
+                skilledNodes.Remove(fixedNode);
+            }
+            foreach (var skilledNode in skilledNodes)
+            {
+                AddAttributes(skilledNode, totalStats);
+            }
 
             // Calculate constraint value for each stat and multiply them.
             var csvs = 1.0;
@@ -415,6 +420,16 @@ namespace PoESkillTree.TreeGenerator.Solver
 
             // Make sure the fitness is not < 0 (can't happen with the current implementation anyway).
             return Math.Max(csvs, 0);
+        }
+
+        private int CountExpandedNodes(HashSet<ushort> nodes)
+        {
+            var count = 0;
+            foreach (var node in nodes)
+            {
+                count += NodeExpansionDictionary[node].Count;
+            }
+            return count - UncountedNodes;
         }
 
         private static double CalcCsv(float x, double weight, float target)
