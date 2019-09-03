@@ -297,6 +297,13 @@
     <None Include="Tools\7z.LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Properties\Version.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Version.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <None Update="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

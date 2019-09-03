@@ -1121,41 +1121,41 @@ msgstr ""
 msgid "Information"
 msgstr ""
 
-#: Model\Serialization\AbstractPersistentDataDeserializer.cs:93
+#: Model\Serialization\AbstractPersistentDataDeserializer.cs:94
 msgid "Directory must be empty."
 msgstr ""
 
-#: Model\Serialization\AbstractPersistentDataDeserializer.cs:97
+#: Model\Serialization\AbstractPersistentDataDeserializer.cs:98
 #: ViewModels\SettingsMenuViewModel.cs:66
 msgid "Select build directory"
 msgstr ""
 
-#: Model\Serialization\AbstractPersistentDataDeserializer.cs:98
+#: Model\Serialization\AbstractPersistentDataDeserializer.cs:99
 msgid ""
 "Select the directory where builds will be stored.\n"
 "It will be created if it does not yet exist. You can change it in the settings later."
 msgstr ""
 
-#: Model\Serialization\PersistentDataDeserializerCurrent.cs:74
+#: Model\Serialization\PersistentDataDeserializerCurrent.cs:75
 #, csharp-format
 msgid "Could not import build file, only existing files with the extension {0} can be imported."
 msgstr ""
 
-#: Model\Serialization\PersistentDataDeserializerCurrent.cs:76
-#: Model\Serialization\PersistentDataDeserializerCurrent.cs:138
-#: Model\Serialization\PersistentDataDeserializerCurrent.cs:147
+#: Model\Serialization\PersistentDataDeserializerCurrent.cs:77
+#: Model\Serialization\PersistentDataDeserializerCurrent.cs:139
+#: Model\Serialization\PersistentDataDeserializerCurrent.cs:148
 msgid "Import failed"
 msgstr ""
 
-#: Model\Serialization\PersistentDataDeserializerCurrent.cs:137
+#: Model\Serialization\PersistentDataDeserializerCurrent.cs:138
 msgid "Build is of an old version and can't be imported"
 msgstr ""
 
-#: Model\Serialization\PersistentDataDeserializerCurrent.cs:146
+#: Model\Serialization\PersistentDataDeserializerCurrent.cs:147
 msgid "Could not import build"
 msgstr ""
 
-#: SkillTreeFiles\SkillTree.cs:1158
+#: SkillTreeFiles\SkillTree.cs:1156
 msgid "Some nodes ({unknownNodes}) are unknown and have been omitted."
 msgstr ""
 
