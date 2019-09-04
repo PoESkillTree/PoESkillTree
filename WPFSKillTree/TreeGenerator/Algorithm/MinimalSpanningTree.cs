@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Buffers;
 using System.Collections.Generic;
 
@@ -10,7 +10,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm
     /// </summary>
     public class MinimalSpanningTree : IDisposable
     {
-        private readonly IDistanceLookup _distances;
+        private readonly DistanceLookup _distances;
 
         private readonly IReadOnlyList<int> _mstNodes;
 
@@ -20,11 +20,11 @@ namespace PoESkillTree.TreeGenerator.Algorithm
         ///     Instantiates a new MinimalSpanningTree.
         /// </summary>
         /// <param name="mstNodes">The GraphNodes that should be spanned. (not null)</param>
-        /// <param name="distances">The DistanceLookup used as cache. (not null)</param>
-        public MinimalSpanningTree(IReadOnlyList<int> mstNodes, IDistanceLookup distances)
+        /// <param name="distances">The DistanceLookup used as cache.</param>
+        public MinimalSpanningTree(IReadOnlyList<int> mstNodes, DistanceLookup distances)
         {
             _mstNodes = mstNodes ?? throw new ArgumentNullException(nameof(mstNodes));
-            _distances = distances ?? throw new ArgumentNullException(nameof(distances));
+            _distances = distances;
         }
 
         /// <summary>

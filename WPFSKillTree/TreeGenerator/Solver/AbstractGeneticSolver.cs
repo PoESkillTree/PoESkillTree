@@ -202,7 +202,7 @@ namespace PoESkillTree.TreeGenerator.Solver
             for (var i = 0; i < mstEdges.Count; i++)
             {
                 var edge = mstEdges[i];
-                var path = Distances.GetShortestPath(edge.Inside, edge.Outside);
+                var path = ShortestPaths[edge.Inside, edge.Outside];
                 for (var j = 0; j < path.Count; j++)
                 {
                     set.Add(path[j]);

@@ -1,37 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using PoESkillTree.TreeGenerator.Algorithm.Model;
 
-[assembly: InternalsVisibleTo("UnitTests")]
 namespace PoESkillTree.TreeGenerator.Algorithm
 {
-    /// <summary>
-    /// Interface that serves as a cache for uint distances between nodes represented as
-    /// ints between 0 and <see cref="CacheSize"/>.
-    /// </summary>
-    public interface IDistanceLookup
+    public readonly struct DistanceLookup
     {
-        /// <summary>
-        /// Gets the number of cached nodes. CacheSize - 1 is the maximum index that can be used
-        /// for <see cref="this"/>.
-        /// </summary>
-        int CacheSize { get; }
+        private readonly uint[][] _distances;
 
-        /// <summary>
-        /// Gets the stored distance between a and b.
-        /// </summary>
-        uint this[int a, int b] { get; }
+        public readonly int CacheSize;
+
+        public uint this[int a, int b] => _distances[a][b];
+
+        public DistanceLookup(int cacheSize, uint[][] distances)
+        {
+            CacheSize = cacheSize;
+            _distances = distances;
+        }
     }
 
-    /// <summary>
-    /// Interface that provides shortest path between nodes in addition to what
-    /// <see cref="IDistanceLookup"/> provides.
-    /// </summary>
-    public interface IDistancePathLookup : IDistanceLookup
+    public readonly struct ShortestPathLookup
     {
-        IReadOnlyList<ushort> GetShortestPath(int a, int b);
+        private readonly ushort[][][] _paths;
+
+        public IReadOnlyList<ushort> this[int a, int b]
+            => _paths[a][b];
+
+        public ShortestPathLookup(ushort[][][] paths)
+        {
+            _paths = paths;
+        }
     }
 
     /// <summary>
@@ -46,12 +45,11 @@ namespace PoESkillTree.TreeGenerator.Algorithm
     ///  Calculates and caches distances between nodes. Only relies on adjacency
     ///  information stored in the nodes.
     /// </summary>
-    public class DistanceLookup : IDistancePathLookup
+    public class DistanceCalculator
     {
-        
-        private uint[,] _distances;
+        private uint[][] _distances;
 
-        private ushort[,][] _paths;
+        private ushort[][][] _paths;
 
         /// <summary>
         /// The GraphNodes of which distances and paths are cached.
@@ -73,9 +71,15 @@ namespace PoESkillTree.TreeGenerator.Algorithm
         /// </remarks>
         public uint this[int a, int b]
         {
-            get { return _distances[a, b]; }
-            private set { _distances[a, b] = _distances[b, a] = value; }
+            get => _distances[a][b];
+            private set => _distances[a][b] = _distances[b][a] = value;
         }
+
+        public DistanceLookup DistanceLookup
+            => new DistanceLookup(CacheSize, _distances);
+
+        public ShortestPathLookup ShortestPathLookup
+            => new ShortestPathLookup(_paths);
 
         /// <summary>
         ///  Retrieves the shortest path from one node to another.
@@ -88,16 +92,14 @@ namespace PoESkillTree.TreeGenerator.Algorithm
         ///  If at least one of the nodes is greater or equals CacheSize, a IndexOutOfRangeException will be thrown.
         /// </remarks>
         public IReadOnlyList<ushort> GetShortestPath(int a, int b)
-        {
-            return _paths[a, b];
-        }
+            => _paths[a][b];
 
         /// <summary>
         /// Sets the shortest path between the given two nodes.
         /// </summary>
         private void SetShortestPath(int a, int b, ushort[] path)
         {
-            _paths[a, b] = _paths[b, a] = path;
+            _paths[a][b] = _paths[b][a] = path;
         }
 
         /// <summary>
@@ -158,19 +160,21 @@ namespace PoESkillTree.TreeGenerator.Algorithm
         /// Calculates and caches all distances between the given nodes.
         /// Sets DistancesIndex of the nodes as incremental index in the cache starting from 0.
         /// </summary>
-        public DistanceLookup(IReadOnlyList<GraphNode> nodes)
+        public DistanceCalculator(IReadOnlyList<GraphNode> nodes)
         {
             if (nodes == null) throw new ArgumentNullException("nodes");
 
             CacheSize = nodes.Count;
             _nodes = new GraphNode[CacheSize];
+            _distances = new uint[CacheSize][];
+            _paths = new ushort[CacheSize][][];
             for (var i = 0; i < CacheSize; i++)
             {
                 nodes[i].DistancesIndex = i;
                 _nodes[i] = nodes[i];
+                _distances[i] = new uint[CacheSize];
+                _paths[i] = new ushort[CacheSize][];
             }
-            _distances = new uint[CacheSize, CacheSize];
-            _paths = new ushort[CacheSize, CacheSize][];
 
             foreach (var node in nodes)
             {
@@ -205,17 +209,19 @@ namespace PoESkillTree.TreeGenerator.Algorithm
             var oldDistances = _distances;
             var oldPaths = _paths;
             CacheSize = remainingNodes.Count;
-            _distances = new uint[CacheSize, CacheSize];
-            _paths = new ushort[CacheSize, CacheSize][];
+            _distances = new uint[CacheSize][];
+            _paths = new ushort[CacheSize][][];
 
             for (var i = 0; i < CacheSize; i++)
             {
+                _distances[i] = new uint[CacheSize];
+                _paths[i] = new ushort[CacheSize][];
                 var oldi = remainingNodes[i].DistancesIndex;
                 for (var j = 0; j < CacheSize; j++)
                 {
                     var oldj = remainingNodes[j].DistancesIndex;
-                    _distances[i, j] = oldDistances[oldi, oldj];
-                    _paths[i, j] = oldPaths[oldi, oldj];
+                    _distances[i][j] = oldDistances[oldi][oldj];
+                    _paths[i][j] = oldPaths[oldi][oldj];
                 }
             }
 
@@ -287,7 +293,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm
             
             var i1 = from.DistancesIndex;
             var i2 = to.DistancesIndex;
-            if (_paths[i1, i2] != null) return;
+            if (_paths[i1][i2] != null) return;
 
             var path = length > 0 ? GenerateShortestPath(from.Id, to.Id, predecessors, length) : new ushort[0];
             this[i1, i2] = (uint) length;
