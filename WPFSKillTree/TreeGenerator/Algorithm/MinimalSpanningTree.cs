@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Buffers;
 using System.Collections.Generic;
 
@@ -40,31 +40,21 @@ namespace PoESkillTree.TreeGenerator.Algorithm
         /// <param name="startIndex">The node index to start from.</param>
         public void Span(int startIndex)
         {
-            // If the index node is already included.
-            var inMst = ArrayPool<bool>.Shared.Rent(_distances.CacheSize);
-            Array.Clear(inMst, 0, inMst.Length);
+            var notIncluded = ArrayPool<int>.Shared.Rent(_mstNodes.Count);
+            var notIncludedCount = 0;
+
+            var isIncluded = ArrayPool<bool>.Shared.Rent(_distances.CacheSize);
+            Array.Clear(isIncluded, 0, isIncluded.Length);
 
             _spanningEdges?.Dispose();
             _spanningEdges = new PooledList<DirectedGraphEdge>(_mstNodes.Count);
-            
-            // All nodes that are not yet included.
-            using (var toAdd = new PooledList<int>(_mstNodes.Count))
+
             using (var adjacentEdgeQueue = new LinkedListPriorityQueue<DirectedGraphEdge>(100, _mstNodes.Count*_mstNodes.Count))
             {
-                for (var i = 0; i < _mstNodes.Count; i++)
-                {
-                    var t = _mstNodes[i];
-                    if (t != startIndex)
-                    {
-                        toAdd.Add(t);
-                        adjacentEdgeQueue.Enqueue(new DirectedGraphEdge(startIndex, t),
-                            _distances[startIndex, t]);
-                    }
-                }
+                InitializeDataStructures(startIndex, notIncluded, ref notIncludedCount, adjacentEdgeQueue);
+                isIncluded[startIndex] = true;
 
-                inMst[startIndex] = true;
-
-                while (toAdd.Count > 0 && !adjacentEdgeQueue.IsEmpty)
+                while (notIncludedCount > 0 && !adjacentEdgeQueue.IsEmpty)
                 {
                     int newIn;
                     DirectedGraphEdge shortestEdge;
@@ -74,28 +64,65 @@ namespace PoESkillTree.TreeGenerator.Algorithm
                     {
                         shortestEdge = adjacentEdgeQueue.Dequeue();
                         newIn = shortestEdge.Outside;
-                    } while (inMst[newIn]);
+                    } while (isIncluded[newIn]);
+
                     _spanningEdges.Add(shortestEdge);
-                    inMst[newIn] = true;
+                    isIncluded[newIn] = true;
 
                     // Find all newly adjacent edges and enqueue them.
-                    for (var i = 0; i < toAdd.Count; i++)
-                    {
-                        var otherNode = toAdd[i];
-                        if (otherNode == newIn)
-                        {
-                            toAdd.RemoveAt(i--);
-                        }
-                        else
-                        {
-                            adjacentEdgeQueue.Enqueue(new DirectedGraphEdge(newIn, otherNode), 
-                                _distances[newIn, otherNode]);
-                        }
-                    }
+                    IncludeNode(notIncluded, ref notIncludedCount, adjacentEdgeQueue, newIn);
                 }
             }
 
-            ArrayPool<bool>.Shared.Return(inMst);
+            ArrayPool<bool>.Shared.Return(isIncluded);
+            ArrayPool<int>.Shared.Return(notIncluded);
+        }
+
+        private void InitializeDataStructures(
+            int startIndex, int[] notIncluded, ref int notIncludedCount,
+            LinkedListPriorityQueue<DirectedGraphEdge> adjacentEdgeQueue)
+        {
+            for (var i = 0; i < _mstNodes.Count; i++)
+            {
+                var t = _mstNodes[i];
+                if (t != startIndex)
+                {
+                    notIncluded[notIncludedCount] = t;
+                    notIncludedCount++;
+                    var distance = _distances[startIndex, t];
+                    adjacentEdgeQueue.Enqueue(new DirectedGraphEdge(startIndex, t), distance);
+                }
+            }
+        }
+
+        private void IncludeNode(
+            int[] notIncluded, ref int notIncludedCount,
+            LinkedListPriorityQueue<DirectedGraphEdge> adjacentEdgeQueue,
+            int node)
+        {
+            for (var i = 0; i < notIncludedCount; i++)
+            {
+                var otherNode = notIncluded[i];
+                if (otherNode == node)
+                {
+                    RemoveAt(notIncluded, ref notIncludedCount, i);
+                    i--;
+                }
+                else
+                {
+                    var distance = _distances[node, otherNode];
+                    adjacentEdgeQueue.Enqueue(new DirectedGraphEdge(node, otherNode), distance);
+                }
+            }
+        }
+
+        private static void RemoveAt(int[] array, ref int arrayCount, int index)
+        {
+            arrayCount--;
+            if (index < arrayCount)
+            {
+                Array.Copy(array, index + 1, array, index, arrayCount - index);
+            }
         }
 
         /// <summary>

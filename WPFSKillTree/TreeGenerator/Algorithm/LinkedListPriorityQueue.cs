@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Buffers;
+using System.Runtime.CompilerServices;
 
 namespace PoESkillTree.TreeGenerator.Algorithm
 {
@@ -133,6 +134,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm
         /// </summary>
         /// <param name="node">The node to be stored.</param>
         /// <param name="priority">the priority of the node</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Enqueue(T node, uint priority)
         {
             var id = _nextId++;

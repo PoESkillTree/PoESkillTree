@@ -18,7 +18,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm
             _items = ArrayPool<T>.Shared.Rent(minimumLength);
         }
 
-        public int Count { get; private set; } = 0;
+        public int Count { get; private set; }
 
         public T this[int index]
         {
@@ -40,19 +40,6 @@ namespace PoESkillTree.TreeGenerator.Algorithm
         {
             _items[Count] = item;
             Count++;
-        }
-
-        public void RemoveAt(int index)
-        {
-            if (index >= Count)
-                throw new ArgumentOutOfRangeException(nameof(index));
-
-            Count--;
-            if (index < Count)
-            {
-                Array.Copy(_items, index + 1, _items, index, Count - index);
-            }
-            _items[Count] = default;
         }
 
         public void Dispose()
