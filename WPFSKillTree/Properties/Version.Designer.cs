@@ -133,7 +133,7 @@ namespace PoESkillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 3.0.0-alpha.5.
+        ///   Looks up a localized string similar to 3.0.0-alpha.6.
         /// </summary>
         public static string ProductVersion {
             get {
