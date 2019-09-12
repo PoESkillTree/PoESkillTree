@@ -18,8 +18,8 @@ namespace UpdateDB.DataLoading
         // the wiki's item classes for which images are retrieved
         private static readonly IReadOnlyList<string> RelevantWikiClasses = new[]
         {
-            "One Hand Axes", "Two Hand Axes", "Bows", "Claws", "Daggers",
-            "One Hand Maces", "Sceptres", "Two Hand Maces", "Staves",
+            "One Hand Axes", "Two Hand Axes", "Bows", "Claws", "Daggers", "Rune Dagger",
+            "One Hand Maces", "Sceptres", "Two Hand Maces", "Staves", "Warstaff",
             "One Hand Swords", "Thrusting One Hand Swords", "Two Hand Swords", "Wands",
             "Amulets", "Belts", "Quivers", "Rings",
             "Body Armours", "Boots", "Helmets", "Gloves", "Shields", "Jewel",

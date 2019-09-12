@@ -25,6 +25,10 @@
     <Exec Command="$(ProjectDir)build-locale.bat $(TargetDir)" />
   </Target>
   <ItemGroup>
+    <None Remove="Images\EquipmentUI\ItemDefaults\RuneDagger.png" />
+    <None Remove="Images\EquipmentUI\ItemDefaults\Warstaff.png" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="NLog" Version="4.6.7" />
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
   </ItemGroup>
@@ -122,6 +126,8 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Champion.jpg" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\RuneDagger.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Warstaff.png" />
     <Resource Include="Images\Gladiator.jpg" />
     <Resource Include="Images\Marauder.jpg" />
     <Resource Include="Images\Duelist.jpg" />
