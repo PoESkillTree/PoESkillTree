@@ -17,7 +17,7 @@ namespace PoESkillTree.Model.Items.Mods
             // only added by other mods, which is not supported anyway
             "no_attack_mods", "no_caster_mods", "has_physical_conversion_mod", "has_damage_taken_as_mod",
             "specific_weapon", "two_handed_mod", "shield_mod", "dual_wielding_mod", "one_handed_mod", "melee_mod",
-            "grants_crit_chance_support", "local_item_quality", "spell_dodge_mod",
+            "grants_crit_chance_support", "local_item_quality", "spell_dodge_mod", "weapon_can_roll_minion_modifiers",
             // map crafting is not supported
             "map",
             // no idea where these come from
