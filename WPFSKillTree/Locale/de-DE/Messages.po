@@ -1134,16 +1134,16 @@ msgstr "Warnung"
 msgid "Information"
 msgstr "Information"
 
-#: Model\Serialization\AbstractPersistentDataDeserializer.cs:93
+#: Model\Serialization\AbstractPersistentDataDeserializer.cs:94
 msgid "Directory must be empty."
 msgstr "Verzeichnis muss leer sein."
 
-#: Model\Serialization\AbstractPersistentDataDeserializer.cs:97
+#: Model\Serialization\AbstractPersistentDataDeserializer.cs:98
 #: ViewModels\SettingsMenuViewModel.cs:66
 msgid "Select build directory"
 msgstr "Wähle das Verzeichnis für Builds aus"
 
-#: Model\Serialization\AbstractPersistentDataDeserializer.cs:98
+#: Model\Serialization\AbstractPersistentDataDeserializer.cs:99
 msgid ""
 "Select the directory where builds will be stored.\n"
 "It will be created if it does not yet exist. You can change it in the settings later."
@@ -1151,26 +1151,26 @@ msgstr ""
 "Wähle das Verzeichnis in dem die Builds gespeichert werden sollen.\n"
 "Wenn das Verzeichnis nicht existiert wird es automatisch erstellt. Es kann später in den Einstellungen geändert werden.."
 
-#: Model\Serialization\PersistentDataDeserializerCurrent.cs:74
+#: Model\Serialization\PersistentDataDeserializerCurrent.cs:75
 #, csharp-format
 msgid "Could not import build file, only existing files with the extension {0} can be imported."
 msgstr "Konnte Build nicht importieren. Es können nur vorhandende Datein mit der Endung {0} importiert werden."
 
-#: Model\Serialization\PersistentDataDeserializerCurrent.cs:76
-#: Model\Serialization\PersistentDataDeserializerCurrent.cs:138
-#: Model\Serialization\PersistentDataDeserializerCurrent.cs:147
+#: Model\Serialization\PersistentDataDeserializerCurrent.cs:77
+#: Model\Serialization\PersistentDataDeserializerCurrent.cs:139
+#: Model\Serialization\PersistentDataDeserializerCurrent.cs:148
 msgid "Import failed"
 msgstr "Import ist fehlgeschlagen"
 
-#: Model\Serialization\PersistentDataDeserializerCurrent.cs:137
+#: Model\Serialization\PersistentDataDeserializerCurrent.cs:138
 msgid "Build is of an old version and can't be imported"
 msgstr "Build ist von einer älteren Version und kann nicht importiert werden."
 
-#: Model\Serialization\PersistentDataDeserializerCurrent.cs:146
+#: Model\Serialization\PersistentDataDeserializerCurrent.cs:147
 msgid "Could not import build"
 msgstr "Konnte Build nicht importieren"
 
-#: SkillTreeFiles\SkillTree.cs:1158
+#: SkillTreeFiles\SkillTree.cs:1156
 msgid "Some nodes ({unknownNodes}) are unknown and have been omitted."
 msgstr "Manche Knoten ({unknownNodes}) sind unbekannt und wurden weggelassen."
 

@@ -25,42 +25,32 @@ namespace PoESkillTree.TreeGenerator.Algorithm.SteinerReductions
         /// Gets the set of edges currently in the search space.
         /// </summary>
         protected GraphEdgeSet EdgeSet
-        {
-            get { return _data.EdgeSet; }
-        }
+            => _data.EdgeSet;
 
         /// <summary>
         /// Gets the number of nodes currently in the search space. The actual nodes are described as
         /// search space indices from 0 (inclusive) to SearchSpaceSize (exlusive).
         /// </summary>
         protected int SearchSpaceSize
-        {
-            get { return _data.DistanceLookup.CacheSize; }
-        }
+            => _data.DistanceCalculator.CacheSize;
 
         /// <summary>
         /// Gets a lookup for the distances between the nodes currently in the search space.
         /// </summary>
-        protected IDistanceLookup DistanceLookup
-        {
-            get { return _data.DistanceLookup; }
-        }
+        protected DistanceLookup DistanceLookup
+            => _data.DistanceCalculator.DistanceLookup;
 
         /// <summary>
         /// Gets a lookup for the bottleneck Steiner distances between the nodes currently in the search space.
         /// </summary>
-        protected IDistanceLookup SMatrix
-        {
-            get { return _data.SMatrix; }
-        }
+        protected DistanceLookup SMatrix
+            => _data.SMatrix;
 
         /// <summary>
         /// Gets the search space index of the start node which is used for tree generation and connection tests.
         /// </summary>
         protected int StartNodeIndex
-        {
-            get { return _data.StartNodeIndex; }
-        }
+            => _data.StartNodeIndex;
 
         /// <summary>
         /// Gets the identifier of this reduction test.
@@ -132,8 +122,8 @@ namespace PoESkillTree.TreeGenerator.Algorithm.SteinerReductions
             if (!NodeStates.IsFixedTarget(into))
                 throw new ArgumentException("Nodes can only be merged into fixed target nodes", "into");
 
-            _data.DistanceLookup.IndexToNode(into).MergeWith(_data.DistanceLookup.IndexToNode(x), _data.DistanceLookup.GetShortestPath(x, into));
-            _data.DistanceLookup.MergeInto(x, into);
+            _data.DistanceCalculator.IndexToNode(into).MergeWith(_data.DistanceCalculator.IndexToNode(x), _data.DistanceCalculator.GetShortestPath(x, into));
+            _data.DistanceCalculator.MergeInto(x, into);
 
             EdgeSet.Remove(x, into);
             var intoNeighbors = EdgeSet.NeighborsOf(into);
@@ -145,7 +135,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm.SteinerReductions
             }
             foreach (var neighbor in neighbors)
             {
-                EdgeSet.Add(into, neighbor, _data.DistanceLookup[into, neighbor]);
+                EdgeSet.Add(into, neighbor, _data.DistanceCalculator[into, neighbor]);
             }
 
             if (StartNodeIndex == x)

@@ -21,6 +21,7 @@ namespace PoESkillTree.Model.Items
             ItemClass.OneHandMace,
             ItemClass.Sceptre,
             ItemClass.Dagger,
+            ItemClass.RuneDagger,
             ItemClass.Claw,
             ItemClass.Wand,
 
@@ -29,6 +30,7 @@ namespace PoESkillTree.Model.Items
             ItemClass.TwoHandMace,
             ItemClass.Bow,
             ItemClass.Staff,
+            ItemClass.Warstaff,
             ItemClass.FishingRod,
 
             ItemClass.Belt,

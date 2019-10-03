@@ -21,35 +21,6 @@ namespace PoESkillTree.TreeGenerator.Algorithm
          */
 
         /// <summary>
-        /// Gets the target nodes of this problem instance. These are the subset of target nodes provided
-        /// at construction which remained in the search space.
-        /// </summary>
-        public IReadOnlyList<GraphNode> FixedTargetNodes
-        {
-            get { return _nodeStates.FixedTargetNodes.ToList(); }
-        }
-
-        /// <summary>
-        /// Gets the GraphNode which serves as the start node from which trees are built. Is changed if the old start node
-        /// is merged into another node (the new start node).
-        /// 
-        /// <code>StartNode.Nodes</code> always contains the initial start node.
-        /// </summary>
-        public GraphNode StartNode { get { return _data.StartNode; } }
-
-        /// <summary>
-        /// Gets a distance lookup containing distances and shortest paths between all nodes of the search space.
-        /// Contents of the lookup change while <see cref="ReduceSearchSpace"/> is executed.
-        /// </summary>
-        public IDistancePathLookup DistanceLookup { get { return _data.DistanceLookup; } }
-
-        /// <summary>
-        /// Gets the set of edges containing all edges that are currently part of the search space.
-        /// Edges change while <see cref="ReduceSearchSpace"/> is executed.
-        /// </summary>
-        public IReadOnlyGraphEdgeSet EdgeSet { get { return _data.EdgeSet; } }
-
-        /// <summary>
         /// Contains the search space and target node states.
         /// </summary>
         private readonly NodeStates _nodeStates;
@@ -96,7 +67,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm
         /// Reduces the search space by removing nodes, removing edges and merging nodes.
         /// </summary>
         /// <returns>The nodes contained in the reduced search space.</returns>
-        public IReadOnlyList<GraphNode> ReduceSearchSpace()
+        public SteinerPreprocessorResult ReduceSearchSpace()
         {
             // Remove all non target nodes with 2 or less edges. (Steiner nodes always have more than 2 edges)
             var nodeCountBefore = _nodeStates.SearchSpaceSize;
@@ -105,8 +76,8 @@ namespace PoESkillTree.TreeGenerator.Algorithm
                             "   removed nodes: " + (nodeCountBefore - _nodeStates.SearchSpaceSize) + " (of " + nodeCountBefore +
                             " initial nodes)");
             // Initialise the distance lookup.
-            _data.DistanceLookup = new DistanceLookup(_nodeStates.SearchSpace);
-            var distanceLookup = _data.DistanceLookup;
+            _data.DistanceCalculator = new DistanceCalculator(_nodeStates.SearchSpace);
+            var distanceLookup = _data.DistanceCalculator;
             // Distance indices were not set before.
             _nodeStates.ComputeFields();
 
@@ -118,7 +89,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm
 
             nodeCountBefore = _nodeStates.SearchSpaceSize;
             // Remove all unconnected nodes.
-            _nodeStates.SearchSpace = distanceLookup.RemoveNodes(_nodeStates.SearchSpace.Where(n => !distanceLookup.AreConnected(n, StartNode)));
+            _nodeStates.SearchSpace = distanceLookup.RemoveNodes(_nodeStates.SearchSpace.Where(n => !distanceLookup.AreConnected(n, _data.StartNode)));
             Debug.WriteLine("Removed unconnected nodes:");
             Debug.WriteLine("   removed nodes: " + (nodeCountBefore - _nodeStates.SearchSpaceSize));
 
@@ -127,7 +98,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm
             // todo experiment with reductions and AdvancedSolver
             if (_nodeStates.VariableTargetNodeCount > 0)
             {
-                return _nodeStates.SearchSpace;
+                return CreateResult();
             }
 
             // Initialise node states and edges. Edges are calculated from the information in the
@@ -152,7 +123,8 @@ namespace PoESkillTree.TreeGenerator.Algorithm
             // These values may become lower by merging nodes. Since the reductions based on these distance
             // don't help if there are many variable target nodes, it is not really worth it to always recalculate them.
             // It would either slow the preprocessing by like 30% or would need an approximation algorithm.
-            _data.SMatrix = new BottleneckSteinerDistanceCalculator(distanceLookup).CalcBottleneckSteinerDistances(_nodeStates.FixedTargetNodeIndices);
+            _data.SMatrix = new BottleneckSteinerDistanceCalculator(distanceLookup.DistanceLookup)
+                .CalcBottleneckSteinerDistances(_nodeStates.FixedTargetNodeIndices);
 
             // The set of reduction test that are run until they are no longer able to reduce the search space.
             var tests = new List<SteinerReduction>
@@ -197,7 +169,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm
                 + "     fixed targets: " + _nodeStates.FixedTargetNodeCount + "\n"
                 + "             edges: " + _data.EdgeSet.Count + " (of " + initialEdgeCount + " after basic reductions)");
 
-            return _nodeStates.SearchSpace;
+            return CreateResult();
         }
 
         /// <summary>
@@ -205,7 +177,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm
         /// </summary>
         private void ContractSearchSpace()
         {
-            var distanceLookup = _data.DistanceLookup;
+            var distanceLookup = _data.DistanceCalculator;
             // Save all edges by the GraphNodes they are connecting. (the indices are worthless after the search space is contracted)
             var edges =
                 _data.EdgeSet.Select(
@@ -249,15 +221,64 @@ namespace PoESkillTree.TreeGenerator.Algorithm
                     // - the edge is not reflexive
                     // - the edge is the shortest path between both nodes
                     if (current.DistancesIndex >= 0 && node != current &&
-                        path.SetEquals(_data.DistanceLookup.GetShortestPath(node.DistancesIndex, current.DistancesIndex)))
+                        path.SetEquals(_data.DistanceCalculator.GetShortestPath(node.DistancesIndex, current.DistancesIndex)))
                     {
                         edgeSet.Add(node.DistancesIndex, current.DistancesIndex,
-                            _data.DistanceLookup[node.DistancesIndex, current.DistancesIndex]);
+                            _data.DistanceCalculator[node.DistancesIndex, current.DistancesIndex]);
                     }
                 }
             }
             return edgeSet;
         }
-        
+
+        private SteinerPreprocessorResult CreateResult()
+            => new SteinerPreprocessorResult(
+                _nodeStates.FixedTargetNodes.ToList(),
+                _data.StartNode,
+                _nodeStates.SearchSpace,
+                _data.DistanceCalculator.DistanceLookup,
+                _data.DistanceCalculator.ShortestPathLookup);
+    }
+
+    public class SteinerPreprocessorResult
+    {
+        /// <summary>
+        /// Gets the target nodes of this problem instance. These are the subset of target nodes provided
+        /// at construction which remained in the search space.
+        /// </summary>
+        public IReadOnlyList<GraphNode> FixedTargetNodes { get; }
+
+        /// <summary>
+        /// Gets the GraphNode which serves as the start node from which trees are built.
+        /// 
+        /// <code>StartNode.Nodes</code> always contains the initial start node.
+        /// </summary>
+        public GraphNode StartNode { get; }
+
+        /// <summary>
+        /// Gets the nodes in the reduced search space.
+        /// </summary>
+        public IReadOnlyList<GraphNode> RemainingNodes { get; }
+
+        /// <summary>
+        /// Gets a distance lookup containing distances between all nodes of the search space.
+        /// </summary>
+        public DistanceLookup DistanceLookup { get; }
+
+        /// <summary>
+        /// Gets a distance lookup containing shortest paths between all nodes of the search space.
+        /// </summary>
+        public ShortestPathLookup ShortestPathLookup { get; }
+
+        public SteinerPreprocessorResult(
+            IReadOnlyList<GraphNode> fixedTargetNodes, GraphNode startNode, IReadOnlyList<GraphNode> remainingNodes,
+            DistanceLookup distanceLookup, ShortestPathLookup shortestPathLookup)
+        {
+            FixedTargetNodes = fixedTargetNodes;
+            StartNode = startNode;
+            RemainingNodes = remainingNodes;
+            DistanceLookup = distanceLookup;
+            ShortestPathLookup = shortestPathLookup;
+        }
     }
 }

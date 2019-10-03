@@ -70,10 +70,9 @@ namespace PoESkillTree.TreeGenerator.Solver
         /// </summary>
         protected IReadOnlyList<GraphNode> SearchSpace { get; private set; }
 
-        /// <summary>
-        /// DistanceLookup for calculating and caching distances and shortest paths between nodes.
-        /// </summary>
-        protected IDistancePathLookup Distances { get; private set; }
+        protected DistanceLookup Distances { get; private set; }
+
+        protected ShortestPathLookup ShortestPaths { get; private set; }
 
         /// <summary>
         /// Nodes may be merged by the Preprocessor. This Pseudo-Dictionary contains the node-ids that are represented
@@ -114,13 +113,14 @@ namespace PoESkillTree.TreeGenerator.Solver
             SearchSpace = AllNodes.ToList();
             var variableTargetNodes = SearchSpace.Where(IsVariableTargetNode);
             var preProc = new SteinerPreprocessor(SearchSpace, TargetNodes, StartNode, variableTargetNodes);
-            var remainingNodes = preProc.ReduceSearchSpace();
+            var result = preProc.ReduceSearchSpace();
 
-            TargetNodes = preProc.FixedTargetNodes;
+            TargetNodes = result.FixedTargetNodes;
+            var remainingNodes = result.RemainingNodes;
             SearchSpace = remainingNodes.Except(TargetNodes).ToList();
-            Distances = preProc.DistanceLookup;
-            //SearchSpaceEdgeSet = preProc.EdgeSet;
-            StartNode = preProc.StartNode;
+            Distances = result.DistanceLookup;
+            ShortestPaths = result.ShortestPathLookup;
+            StartNode = result.StartNode;
 
             // SkillNode-Ids of the remaining search space may represent more than one node. This
             // information needs to be safed.

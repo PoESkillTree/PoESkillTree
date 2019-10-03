@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.SkillTreeFiles;
 using PoESkillTree.TreeGenerator.Algorithm;
-using PoESkillTree.TreeGenerator.Algorithm.Model;
 using PoESkillTree.TreeGenerator.Genetic;
 using PoESkillTree.TreeGenerator.Settings;
+using BitArray = PoESkillTree.TreeGenerator.Genetic.BitArray;
 
 namespace PoESkillTree.TreeGenerator.Solver
 {
@@ -17,28 +18,17 @@ namespace PoESkillTree.TreeGenerator.Solver
     public abstract class AbstractGeneticSolver<TS> : AbstractSolver<TS>
         where TS : SolverSettings
     {
+        private static readonly ConcurrentBag<HashSet<ushort>> UsedNodesPool = new ConcurrentBag<HashSet<ushort>>();
         
-        public override int Steps
-        {
-            get { return IsInitialized ? Generations : 0; }
-        }
+        public override int Steps => IsInitialized ? Generations : 0;
 
-        public override int CurrentStep
-        {
-            get { return IsInitialized ? _ga.GenerationCount : 0; }
-        }
+        public override int CurrentStep => IsInitialized ? _ga.GenerationCount : 0;
 
-        public override int CurrentIteration
-        {
-            get { return IsInitialized ? _ga.CurrentIteration : 0; }
-        }
+        public override int CurrentIteration => IsInitialized ? _ga.CurrentIteration : 0;
 
         private HashSet<ushort> _bestSolution;
 
-        public override IEnumerable<ushort> BestSolution
-        {
-            get { return _bestSolution; }
-        }
+        public override IEnumerable<ushort> BestSolution => _bestSolution;
 
         /// <summary>
         /// The best dna calculated by the GA up to this point.
@@ -135,8 +125,7 @@ namespace PoESkillTree.TreeGenerator.Solver
         {
             _ga = new GeneticAlgorithm(FitnessFunction);
             _ga.InitializeEvolution(GaParameters, new BitArray(SearchSpace.Count));
-            _bestDna = _ga.GetBestDNA();
-            _bestSolution = Extend(DnaToUsedNodes(_bestDna));
+            SetBestDnaAndSolution();
         }
 
         /// <summary>
@@ -156,46 +145,80 @@ namespace PoESkillTree.TreeGenerator.Solver
 
             if (_bestDna == null || !_ga.GetBestDNA().Equals(_bestDna))
             {
-                _bestDna = _ga.GetBestDNA();
-                _bestSolution = Extend(DnaToUsedNodes(_bestDna));
+                SetBestDnaAndSolution();
             }
+        }
+
+        private void SetBestDnaAndSolution()
+        {
+            _bestDna = _ga.GetBestDNA();
+            var usedNodes = DnaToUsedNodes(_bestDna);
+            _bestSolution = Extend(usedNodes);
+            Return(usedNodes);
         }
 
         private HashSet<ushort> Extend(IEnumerable<ushort> nodes)
-        {
-            return new HashSet<ushort>(nodes.SelectMany(n => NodeExpansionDictionary[n]));
-        }
+            => new HashSet<ushort>(nodes.SelectMany(n => NodeExpansionDictionary[n]));
 
         private HashSet<ushort> DnaToUsedNodes(BitArray dna)
         {
-            // Convert dna to corresponding GraphNodes.
-            var mstNodes = new List<GraphNode>();
-            var mstIndices = new List<int>();
-            for (var i = 0; i < dna.Length; i++)
+            using (var mstNodes = new PooledList<int>(dna.Length + TargetNodes.Count))
+            using (var mst = new MinimalSpanningTree(mstNodes, Distances))
             {
-                if (dna[i])
+                for (var i = 0; i < dna.Length; i++)
                 {
-                    mstNodes.Add(SearchSpace[i]);
-                    mstIndices.Add(i);
+                    if (dna[i])
+                    {
+                        mstNodes.Add(i);
+                    }
+                }
+                var searchSpaceNodeCount = mstNodes.Count;
+                for (var i = 0; i < TargetNodes.Count; i++)
+                {
+                    mstNodes.Add(TargetNodes[i].DistancesIndex);
+                }
+
+                if (_orderedEdges != null)
+                    mst.Span(_orderedEdges);
+                else
+                    mst.Span(StartNode.DistancesIndex);
+
+                return GetSkillNodeIds(mstNodes, searchSpaceNodeCount, mst.SpanningEdges);
+            }
+
+        }
+
+        private HashSet<ushort> GetSkillNodeIds(
+            IReadOnlyList<int> mstNodes, int searchSpaceNodeCount, IReadOnlyList<DirectedGraphEdge> mstEdges)
+        {
+            var set = Rent();
+
+            for (var i = 0; i < mstNodes.Count; i++)
+            {
+                var node = i >= searchSpaceNodeCount ? TargetNodes[i - searchSpaceNodeCount] : SearchSpace[mstNodes[i]];
+                set.Add(node.Id);
+            }
+
+            for (var i = 0; i < mstEdges.Count; i++)
+            {
+                var edge = mstEdges[i];
+                var path = ShortestPaths[edge.Inside, edge.Outside];
+                for (var j = 0; j < path.Count; j++)
+                {
+                    set.Add(path[j]);
                 }
             }
-            mstNodes.AddRange(TargetNodes);
-            mstIndices.AddRange(TargetNodes.Select(n => n.DistancesIndex));
 
-            // Calculate MST from nodes.
-            var mst = new MinimalSpanningTree(mstIndices, Distances);
-            if (_orderedEdges != null)
-                mst.Span(_orderedEdges);
-            else
-                mst.Span(StartNode.DistancesIndex);
+            return set;
+        }
 
-            // Convert GraphNodes and GraphEdges to SkillNode-Ids.
-            var usedNodes = new HashSet<ushort>(mstNodes.Select(n => n.Id));
-            foreach (var edge in mst.SpanningEdges)
-            {
-                usedNodes.UnionWith(Distances.GetShortestPath(edge.Inside, edge.Outside));
-            }
-            return usedNodes;
+        private static HashSet<ushort> Rent()
+            => UsedNodesPool.TryTake(out var set) ? set : new HashSet<ushort>();
+
+        private static void Return(HashSet<ushort> usedNodes)
+        {
+            usedNodes.Clear();
+            UsedNodesPool.Add(usedNodes);
         }
 
         public override void FinalStep()
@@ -203,7 +226,9 @@ namespace PoESkillTree.TreeGenerator.Solver
             if (FinalHillClimbEnabled)
             {
                 var hillClimber = new HillClimber(FitnessFunction, TargetNodes, AllNodes);
-                _bestSolution = Extend(hillClimber.Improve(DnaToUsedNodes(_bestDna)));
+                var usedNodes = DnaToUsedNodes(_bestDna);
+                _bestSolution = Extend(hillClimber.Improve(usedNodes));
+                Return(usedNodes);
             }
         }
 
@@ -215,7 +240,10 @@ namespace PoESkillTree.TreeGenerator.Solver
 
         private double FitnessFunction(BitArray dna)
         {
-            return FitnessFunction(DnaToUsedNodes(dna));
+            var usedNodes = DnaToUsedNodes(dna);
+            var fitness = FitnessFunction(usedNodes);
+            Return(usedNodes);
+            return fitness;
         }
     }
 }

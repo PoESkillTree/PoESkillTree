@@ -69,7 +69,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm
             var searchGraph = SearchGraphFromData(graph);
             var graphNodes = GetGraphNodesIdIndex(searchGraph);
 
-            var distanceLookup = new DistanceLookup(graphNodes.Values.ToList());
+            var distanceLookup = new DistanceCalculator(graphNodes.Values.ToList());
 
             Assert.AreEqual((uint) 0, distanceLookup[graphNodes[0].DistancesIndex, graphNodes[0].DistancesIndex],
                 "Failed 0 distance test");
@@ -99,7 +99,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm
             var graphNodes = GetGraphNodesIdIndex(searchGraph);
             var mstNodes = new List<GraphNode> { graphNodes[0], graphNodes[2], graphNodes[4], graphNodes[3] };
 
-            var distances = new DistanceLookup(graphNodes.Values.ToArray());
+            var distances = new DistanceCalculator(graphNodes.Values.ToArray());
 
             Assert.IsNull(distances.GetShortestPath(mstNodes[0].DistancesIndex, mstNodes[3].DistancesIndex));
         }
@@ -126,9 +126,9 @@ namespace PoESkillTree.TreeGenerator.Algorithm
             var graphNodes = GetGraphNodesIdIndex(searchGraph);
             var mstNodes = new List<GraphNode>
                 { graphNodes[3], graphNodes[5], graphNodes[7], graphNodes[0] };
-            var distances = new DistanceLookup(mstNodes);
+            var distances = new DistanceCalculator(mstNodes);
 
-            var mst = new MinimalSpanningTree(mstNodes.Select(n => n.DistancesIndex).ToList(), distances);
+            var mst = new MinimalSpanningTree(mstNodes.Select(n => n.DistancesIndex).ToList(), distances.DistanceLookup);
             mst.Span(graphNodes[0].DistancesIndex);
 
             Assert.AreEqual(3, mst.SpanningEdges.Count, "Wrong amount of spanning edges");

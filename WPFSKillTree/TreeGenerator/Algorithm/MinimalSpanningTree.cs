@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.Collections.Generic;
 
 namespace PoESkillTree.TreeGenerator.Algorithm
@@ -7,23 +8,22 @@ namespace PoESkillTree.TreeGenerator.Algorithm
     ///     Provides algorithms for building the minimal spanning distance tree between a set of nodes
     ///     while saving the spanning edges.
     /// </summary>
-    public class MinimalSpanningTree
+    public class MinimalSpanningTree : IDisposable
     {
-        private readonly IDistanceLookup _distances;
+        private readonly DistanceLookup _distances;
 
         private readonly IReadOnlyList<int> _mstNodes;
+
+        private PooledList<DirectedGraphEdge> _spanningEdges;
 
         /// <summary>
         ///     Instantiates a new MinimalSpanningTree.
         /// </summary>
         /// <param name="mstNodes">The GraphNodes that should be spanned. (not null)</param>
-        /// <param name="distances">The DistanceLookup used as cache. (not null)</param>
-        public MinimalSpanningTree(IReadOnlyList<int> mstNodes, IDistanceLookup distances)
+        /// <param name="distances">The DistanceLookup used as cache.</param>
+        public MinimalSpanningTree(IReadOnlyList<int> mstNodes, DistanceLookup distances)
         {
-            if (mstNodes == null) throw new ArgumentNullException("mstNodes");
-            if (distances == null) throw new ArgumentNullException("distances");
-
-            _mstNodes = mstNodes;
+            _mstNodes = mstNodes ?? throw new ArgumentNullException(nameof(mstNodes));
             _distances = distances;
         }
 
@@ -31,7 +31,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm
         ///     Gets the edges which span this tree as a list of <see cref="DirectedGraphEdge" />s.
         ///     Only set after a Span-method has been called.
         /// </summary>
-        public IReadOnlyList<DirectedGraphEdge> SpanningEdges { get; private set; }
+        public IReadOnlyList<DirectedGraphEdge> SpanningEdges => _spanningEdges;
 
         /// <summary>
         ///     Uses Prim's algorithm to build an MST spanning the mstNodes.
@@ -40,27 +40,21 @@ namespace PoESkillTree.TreeGenerator.Algorithm
         /// <param name="startIndex">The node index to start from.</param>
         public void Span(int startIndex)
         {
-            // All nodes that are not yet included.
-            var toAdd = new List<int>(_mstNodes.Count);
-            // If the index node is already included.
-            var inMst = new bool[_distances.CacheSize];
-            // The spanning edges.
-            var mstEdges = new List<DirectedGraphEdge>(_mstNodes.Count);
+            var notIncluded = ArrayPool<int>.Shared.Rent(_mstNodes.Count);
+            var notIncludedCount = 0;
+
+            var isIncluded = ArrayPool<bool>.Shared.Rent(_distances.CacheSize);
+            Array.Clear(isIncluded, 0, isIncluded.Length);
+
+            _spanningEdges?.Dispose();
+            _spanningEdges = new PooledList<DirectedGraphEdge>(_mstNodes.Count);
 
             using (var adjacentEdgeQueue = new LinkedListPriorityQueue<DirectedGraphEdge>(100, _mstNodes.Count*_mstNodes.Count))
             {
-                foreach (var t in _mstNodes)
-                {
-                    if (t != startIndex)
-                    {
-                        toAdd.Add(t);
-                        adjacentEdgeQueue.Enqueue(new DirectedGraphEdge(startIndex, t), 
-                            _distances[startIndex, t]);
-                    }
-                }
-                inMst[startIndex] = true;
+                InitializeDataStructures(startIndex, notIncluded, ref notIncludedCount, adjacentEdgeQueue);
+                isIncluded[startIndex] = true;
 
-                while (toAdd.Count > 0 && !adjacentEdgeQueue.IsEmpty)
+                while (notIncludedCount > 0 && !adjacentEdgeQueue.IsEmpty)
                 {
                     int newIn;
                     DirectedGraphEdge shortestEdge;
@@ -70,28 +64,65 @@ namespace PoESkillTree.TreeGenerator.Algorithm
                     {
                         shortestEdge = adjacentEdgeQueue.Dequeue();
                         newIn = shortestEdge.Outside;
-                    } while (inMst[newIn]);
-                    mstEdges.Add(shortestEdge);
-                    inMst[newIn] = true;
+                    } while (isIncluded[newIn]);
+
+                    _spanningEdges.Add(shortestEdge);
+                    isIncluded[newIn] = true;
 
                     // Find all newly adjacent edges and enqueue them.
-                    for (var i = 0; i < toAdd.Count; i++)
-                    {
-                        var otherNode = toAdd[i];
-                        if (otherNode == newIn)
-                        {
-                            toAdd.RemoveAt(i--);
-                        }
-                        else
-                        {
-                            adjacentEdgeQueue.Enqueue(new DirectedGraphEdge(newIn, otherNode), 
-                                _distances[newIn, otherNode]);
-                        }
-                    }
+                    IncludeNode(notIncluded, ref notIncludedCount, adjacentEdgeQueue, newIn);
                 }
             }
 
-            SpanningEdges = mstEdges;
+            ArrayPool<bool>.Shared.Return(isIncluded);
+            ArrayPool<int>.Shared.Return(notIncluded);
+        }
+
+        private void InitializeDataStructures(
+            int startIndex, int[] notIncluded, ref int notIncludedCount,
+            LinkedListPriorityQueue<DirectedGraphEdge> adjacentEdgeQueue)
+        {
+            for (var i = 0; i < _mstNodes.Count; i++)
+            {
+                var t = _mstNodes[i];
+                if (t != startIndex)
+                {
+                    notIncluded[notIncludedCount] = t;
+                    notIncludedCount++;
+                    var distance = _distances[startIndex, t];
+                    adjacentEdgeQueue.Enqueue(new DirectedGraphEdge(startIndex, t), distance);
+                }
+            }
+        }
+
+        private void IncludeNode(
+            int[] notIncluded, ref int notIncludedCount,
+            LinkedListPriorityQueue<DirectedGraphEdge> adjacentEdgeQueue,
+            int node)
+        {
+            for (var i = 0; i < notIncludedCount; i++)
+            {
+                var otherNode = notIncluded[i];
+                if (otherNode == node)
+                {
+                    RemoveAt(notIncluded, ref notIncludedCount, i);
+                    i--;
+                }
+                else
+                {
+                    var distance = _distances[node, otherNode];
+                    adjacentEdgeQueue.Enqueue(new DirectedGraphEdge(node, otherNode), distance);
+                }
+            }
+        }
+
+        private static void RemoveAt(int[] array, ref int arrayCount, int index)
+        {
+            arrayCount--;
+            if (index < arrayCount)
+            {
+                Array.Copy(array, index + 1, array, index, arrayCount - index);
+            }
         }
 
         /// <summary>
@@ -101,7 +132,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm
         ///     via constructor.
         ///     O(|edges|) runtime.
         /// </summary>
-        /// <param name="ordererdEdges">Edges ordered by priority ascending.</param>
+        /// <param name="orderedEdges">Edges ordered by priority ascending.</param>
         /// <remarks>
         ///     Both Span methods have quadratic runtime in the graph nodes. This one
         ///     has a lower constant factor but needs to filter out unneeded edges (quadratic
@@ -109,9 +140,9 @@ namespace PoESkillTree.TreeGenerator.Algorithm
         ///     considered nodes) so if the mst nodes are generally only a very small
         ///     portion of all nodes, use the other Span method, if not, use this one.
         /// </remarks>
-        public void Span(IEnumerable<DirectedGraphEdge> ordererdEdges)
+        public void Span(IEnumerable<DirectedGraphEdge> orderedEdges)
         {
-            var mstEdges = new List<DirectedGraphEdge>(_mstNodes.Count);
+            _spanningEdges = new PooledList<DirectedGraphEdge>(_mstNodes.Count);
             var set = new DisjointSet(_distances.CacheSize);
             var considered = new bool[_distances.CacheSize];
             var toAddCount = _mstNodes.Count - 1;
@@ -119,7 +150,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm
             {
                 considered[t] = true;
             }
-            foreach (var current in ordererdEdges)
+            foreach (var current in orderedEdges)
             {
                 var inside = current.Inside;
                 var outside = current.Outside;
@@ -127,11 +158,15 @@ namespace PoESkillTree.TreeGenerator.Algorithm
                 // (most likely because branch prediction can't predict the result)
                 if (!considered[inside] | !considered[outside]) continue;
                 if (set.Find(inside) == set.Find(outside)) continue;
-                mstEdges.Add(current);
+                _spanningEdges.Add(current);
                 set.Union(inside, outside);
                 if (--toAddCount == 0) break;
             }
-            SpanningEdges = mstEdges;
+        }
+
+        public void Dispose()
+        {
+            _spanningEdges?.Dispose();
         }
     }
 }

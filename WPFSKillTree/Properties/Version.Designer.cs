@@ -106,7 +106,7 @@ namespace PoESkillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 3.7.0.
+        ///   Looks up a localized string similar to 3.8.0.
         /// </summary>
         public static string GGGPatchVersion {
             get {
@@ -133,7 +133,7 @@ namespace PoESkillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 3.0.0-alpha.4.
+        ///   Looks up a localized string similar to 3.0.0-alpha.6.
         /// </summary>
         public static string ProductVersion {
             get {

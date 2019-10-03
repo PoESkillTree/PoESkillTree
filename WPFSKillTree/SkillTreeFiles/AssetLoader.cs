@@ -20,7 +20,7 @@ namespace PoESkillTree.SkillTreeFiles
     /// </summary>
     public class AssetLoader
     {
-        private const string SpriteUrl = "http://www.pathofexile.com/image/build-gen/passive-skill-sprite/";
+        private const string SpriteUrl = "http://www.pathofexile.com/image/passive-skill/";
 
         private const string SkillTreeFile = "SkillTree.txt";
         private const string OptsFile = "Opts.txt";

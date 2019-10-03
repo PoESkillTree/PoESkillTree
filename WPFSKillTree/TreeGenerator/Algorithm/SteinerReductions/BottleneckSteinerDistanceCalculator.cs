@@ -30,34 +30,11 @@ namespace PoESkillTree.TreeGenerator.Algorithm.SteinerReductions
     /// </remarks>
     public class BottleneckSteinerDistanceCalculator
     {
-
-        /// <summary>
-        /// Trivial implementation of <see cref="IDistanceLookup"/>. Serves as a lookup for 
-        /// bottleneck Steiner distances.
-        /// </summary>
-        private class SMatrixLookup : IDistanceLookup
-        {
-            public int CacheSize { get; private set; }
-
-            private readonly uint[][] _smatrix;
-
-            public uint this[int a, int b]
-            {
-                get { return _smatrix[a][b]; }
-            }
-
-            public SMatrixLookup(int cacheSize, uint[][] smatrix)
-            {
-                CacheSize = cacheSize;
-                _smatrix = smatrix;
-            }
-        }
-
-        private readonly IDistanceLookup _distances;
+        private readonly DistanceLookup _distances;
 
         private List<int> _fixedTargetNodes;
 
-        public BottleneckSteinerDistanceCalculator(IDistanceLookup distances)
+        public BottleneckSteinerDistanceCalculator(DistanceLookup distances)
         {
             _distances = distances;
         }
@@ -67,7 +44,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm.SteinerReductions
         /// to the given target nodes.
         /// </summary>
         /// <returns>Lookup for the calculated distances between all nodes.</returns>
-        public IDistanceLookup CalcBottleneckSteinerDistances(IEnumerable<int> fixedTargetNodes)
+        public DistanceLookup CalcBottleneckSteinerDistances(IEnumerable<int> fixedTargetNodes)
         {
             _fixedTargetNodes = fixedTargetNodes.ToList();
 
@@ -79,7 +56,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm.SteinerReductions
             {
                 smatrix[i] = CalcBottleneckSteinerDistancesTo(i, searchSpaceIndices);
             }
-            return new SMatrixLookup(nodeCount, smatrix);
+            return new DistanceLookup(nodeCount, smatrix);
         }
 
         private uint[] CalcBottleneckSteinerDistancesTo(int i, IEnumerable<int> searchSpaceIndices)
