@@ -16,10 +16,13 @@ namespace PoESkillTree.Model
         private ObservableSet<OldItem> _itemAttributesEquip;
         private ObservableSet<IReadOnlyList<Skill>> _itemAttributesSkills;
 
-        private readonly Dictionary<ItemSlot, OldItem> _itemSlotToOldItem =
-            new Dictionary<ItemSlot, OldItem>();
+        private readonly Dictionary<(ItemSlot, ushort?), OldItem> _oldItems =
+            new Dictionary<(ItemSlot, ushort?), OldItem>();
 
-        public ObservableSet<(Item, ItemSlot)> Items { get; } = new ObservableSet<(Item, ItemSlot)>();
+        public ObservableSet<(Item, ItemSlot)> Equipment { get; } = new ObservableSet<(Item, ItemSlot)>();
+
+        public ObservableSet<(Item, ItemSlot, ushort, JewelRadius)> Jewels { get; } =
+            new ObservableSet<(Item, ItemSlot, ushort, JewelRadius)>();
 
         public ObservableSet<IReadOnlyList<Skill>> Skills { get; } = new ObservableSet<IReadOnlyList<Skill>>();
 
@@ -47,34 +50,70 @@ namespace PoESkillTree.Model
             => Skills.ExceptAndUnionWith(args.RemovedItems, args.AddedItems);
 
         private void ResetItems()
-            => ChangeItems(_itemSlotToOldItem.Values.ToList(), _itemAttributesEquip);
+            => ChangeItems(_oldItems.Values.ToList(), _itemAttributesEquip);
 
         private void ResetSkills()
             => Skills.ExceptAndUnionWith(Skills.ToList(), _itemAttributesSkills);
 
         private void ChangeItems(IEnumerable<OldItem> oldToRemove, IEnumerable<OldItem> oldToAdd)
         {
-            var toRemove = new List<(Item, ItemSlot)>();
-            foreach (var oldItem in oldToRemove.Where(i => i.Socket is null))
-            {
-                var tuple = Convert(oldItem);
-                oldItem.PropertyChanged -= OldItemOnPropertyChanged;
-                _itemSlotToOldItem.Remove(tuple.slot);
-                toRemove.Add(tuple);
-            }
-            var toAdd = new List<(Item, ItemSlot)>();
-            foreach (var oldItem in oldToAdd.Where(i => i.Socket is null))
-            {
-                var tuple = Convert(oldItem);
-                oldItem.PropertyChanged += OldItemOnPropertyChanged;
-                _itemSlotToOldItem[tuple.slot] = oldItem;
-                toAdd.Add(tuple);
-            }
-            Items.ExceptAndUnionWith(toRemove, toAdd);
+            var equipmentToRemove = new List<(Item, ItemSlot)>();
+            var jewelsToRemove = new List<(Item, ItemSlot, ushort, JewelRadius)>();
+            RemoveItems(oldToRemove, equipmentToRemove, jewelsToRemove);
+
+            var equipmentToAdd = new List<(Item, ItemSlot)>();
+            var jewelsToAdd = new List<(Item, ItemSlot, ushort, JewelRadius)>();
+            AddItems(oldToAdd, equipmentToAdd, jewelsToAdd);
+
+            Equipment.ExceptAndUnionWith(equipmentToRemove, equipmentToAdd);
+            Jewels.ExceptAndUnionWith(jewelsToRemove, jewelsToAdd);
         }
 
-        private static (Item item, ItemSlot slot) Convert(OldItem oldItem)
-            => (ModelConverter.Convert(oldItem), oldItem.Slot);
+        private void RemoveItems(
+            IEnumerable<OldItem> oldToRemove,
+            List<(Item, ItemSlot)> equipmentToRemove,
+            List<(Item, ItemSlot, ushort, JewelRadius)> jewelsToRemove)
+        {
+            foreach (var oldItem in oldToRemove)
+            {
+                var (item, slot, socket) = Convert(oldItem);
+                oldItem.PropertyChanged -= OldItemOnPropertyChanged;
+                if (socket is null)
+                {
+                    equipmentToRemove.Add((item, slot));
+                }
+                else
+                {
+                    jewelsToRemove.Add((item, slot, socket.Value, oldItem.JewelRadius));
+                }
+                _oldItems.Remove((slot, socket));
+            }
+        }
+
+        private void AddItems(
+            IEnumerable<OldItem> oldToAdd,
+            List<(Item, ItemSlot)> equipmentToAdd,
+            List<(Item, ItemSlot, ushort, JewelRadius)> jewelsToAdd)
+        {
+            foreach (var oldItem in oldToAdd)
+            {
+                var (item, slot, socket) = Convert(oldItem);
+                oldItem.PropertyChanged += OldItemOnPropertyChanged;
+                if (socket is null)
+                {
+                    equipmentToAdd.Add((item, slot));
+                }
+                else
+                {
+                    jewelsToAdd.Add((item, slot, socket.Value, oldItem.JewelRadius));
+                }
+
+                _oldItems[(slot, socket)] = oldItem;
+            }
+        }
+
+        private static (Item item, ItemSlot slot, ushort? socket) Convert(OldItem oldItem)
+            => (ModelConverter.Convert(oldItem), oldItem.Slot, oldItem.Socket);
 
         private void OldItemOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -86,10 +125,19 @@ namespace PoESkillTree.Model
 
         private void OldItemOnIsEnabledChanged(OldItem oldItem)
         {
-            var (item, slot) = Convert(oldItem);
+            var (item, slot, socket) = Convert(oldItem);
             var itemWithInvertedIsEnabled = new Item(item.BaseMetadataId, item.Name, item.Quality, item.RequiredLevel,
                 item.FrameType, item.IsCorrupted, item.Modifiers, !item.IsEnabled);
-            Items.RemoveAndAdd((itemWithInvertedIsEnabled, slot), (item, slot));
+            if (socket is null)
+            {
+                Equipment.RemoveAndAdd((itemWithInvertedIsEnabled, slot), (item, slot));
+            }
+            else
+            {
+                Jewels.RemoveAndAdd(
+                    (itemWithInvertedIsEnabled, slot, socket.Value, oldItem.JewelRadius),
+                    (item, slot, socket.Value, oldItem.JewelRadius));
+            }
         }
     }
 }

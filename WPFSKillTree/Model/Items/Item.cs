@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using EnumsNET;
 using MB.Algodat;
 using Newtonsoft.Json.Linq;
 using NLog;
@@ -77,6 +78,22 @@ namespace PoESkillTree.Model.Items
         {
             get => _properties;
             set => SetProperty(ref _properties, value);
+        }
+
+        public JewelRadius JewelRadius
+        {
+            get
+            {
+                if (ItemClass != ItemClass.Jewel)
+                    return JewelRadius.None;
+
+                var radiusString = Properties
+                    .FirstOrDefault(m => m.Attribute.StartsWith("Radius: "))
+                    ?.Attribute.Substring("Radius: ".Length);
+                if (radiusString != null && Enums.TryParse(radiusString, out JewelRadius radius))
+                    return radius;
+                return JewelRadius.None;
+            }
         }
 
         private readonly ObservableCollection<ItemMod> _requirements = new ObservableCollection<ItemMod>();
