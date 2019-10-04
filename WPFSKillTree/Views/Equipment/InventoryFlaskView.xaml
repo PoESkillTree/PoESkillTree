@@ -14,7 +14,7 @@
         <mah:ToggleSwitch Margin="-10 -4 0 0"
                           ThumbIndicatorWidth="10"
                           OffLabel="" OnLabel=""
-                          IsChecked="{Binding Item.IsEnabled}">
+                          IsChecked="{Binding IsEnabled}">
             <mah:ToggleSwitch.ToggleSwitchButtonStyle>
                 <Style TargetType="{x:Type mah:ToggleSwitchButton}" BasedOn="{StaticResource MetroToggleSwitchButton}">
                     <Setter Property="Width" Value="51" />

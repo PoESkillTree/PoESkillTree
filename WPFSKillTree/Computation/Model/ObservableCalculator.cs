@@ -37,6 +37,9 @@ namespace PoESkillTree.Computation.Model
         public IObservable<NodeValue?> ObserveNode(IStat stat, NodeType nodeType = NodeType.Total)
             => ObserveNode(() => GetNode(stat, nodeType));
 
+        public IObservable<NodeValue?> ObserveNode(IStat stat, NodeType nodeType, ModifierSource modifierSource)
+            => ObserveNode(() => GetNode(stat, nodeType, new PathDefinition(modifierSource)));
+
         public IObservable<NodeValue?> ObserveNode(ICalculationNode node)
             => ObserveNode(() => node);
 

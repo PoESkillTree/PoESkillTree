@@ -67,12 +67,10 @@ namespace PoESkillTree.Views
         private IExtendedDialogCoordinator _dialogCoordinator;
         public IPersistentData PersistentData { get; } = App.PersistentData;
 
-        private readonly List<Attribute> _allAttributesList = new List<Attribute>();
         private readonly List<Attribute> _attiblist = new List<Attribute>();
         private readonly Regex _backreplace = new Regex("#");
         private readonly ToolTip _sToolTip = new ToolTip();
         private readonly BuildUrlNormalizer _buildUrlNormalizer = new BuildUrlNormalizer();
-        private ListCollectionView _allAttributeCollection;
         private ListCollectionView _attributeCollection;
         private RenderTargetBitmap _clipboardBmp;
 
@@ -95,6 +93,9 @@ namespace PoESkillTree.Views
             get => _inventoryViewModel;
             private set => SetProperty(ref _inventoryViewModel, value);
         }
+
+        private JewelSocketObserver _jewelSocketObserver;
+        private AbyssalSocketObserver _abyssalSocketObserver;
 
         public StashViewModel StashViewModel { get; } = new StashViewModel();
 
@@ -134,6 +135,8 @@ namespace PoESkillTree.Views
                 BuildsControlViewModel.SkillTree = tree;
             if (TreeGeneratorInteraction != null)
                 TreeGeneratorInteraction.SkillTree = tree;
+            _jewelSocketObserver?.Dispose();
+            _jewelSocketObserver = new JewelSocketObserver(tree.SkilledNodes);
             return tree;
         }
 
@@ -149,8 +152,6 @@ namespace PoESkillTree.Views
         private Vector2D _addtransform;
         private bool _justLoaded;
         private string _lasttooltip;
-
-        private bool _showChangeSummary;
 
         private Vector2D _multransform;
 
@@ -264,6 +265,7 @@ namespace PoESkillTree.Views
             {
                 case nameof(PoEBuild.ItemData):
                     await LoadItemData();
+                    _jewelSocketObserver.SetTreeJewelViewModels(InventoryViewModel.TreeJewels);
                     break;
                 case nameof(PoEBuild.TreeUrl):
                     if (!_skipLoadOnCurrentBuildTreeChange)
@@ -287,25 +289,11 @@ namespace PoESkillTree.Views
         //This whole region, along with most of GroupStringConverter, makes up our user-defined attribute group functionality - Sectoidfodder 02/29/16
         #region Attribute grouping helpers
 
-        //there's probably a better way that doesn't break if tab ordering changes but I'm UI-challenged
-        private ListBox GetActiveAttributeGroupList()
-        {
-            if (tabControl1.SelectedIndex == 2)
-                return lbAllAttr;
-            else if (tabControl1.SelectedIndex == 0)
-                return lbAttr;
-            else
-                return null;
-        }
-
         //Necessary to update the summed numbers in group names before every refresh
         private void RefreshAttributeLists()
         {
-            _attributeGroups.UpdateGroupNames(Equals(GetActiveAttributeGroupList(), lbAllAttr)
-                ? _allAttributesList
-                : _attiblist);
+            _attributeGroups.UpdateGroupNames(_attiblist);
             _attributeCollection.Refresh();
-            _allAttributeCollection.Refresh();
         }
 
         private void SetCustomGroups(IList<string[]> customgroups)
@@ -345,11 +333,8 @@ namespace PoESkillTree.Views
         //Adds currently selected attributes to a new group
         private async void CreateGroup(object sender, RoutedEventArgs e)
         {
-            var lb = GetActiveAttributeGroupList();
-            if (lb == null)
-                return;
             var attributelist = new List<string>();
-            foreach (var o in lb.SelectedItems)
+            foreach (var o in lbAttr.SelectedItems)
             {
                 attributelist.Add(o.ToString());
             }
@@ -383,11 +368,8 @@ namespace PoESkillTree.Views
         //Removes currently selected attributes from their custom groups, restoring them to their default groups
         private void RemoveFromGroup(object sender, RoutedEventArgs e)
         {
-            var lb = GetActiveAttributeGroupList();
-            if (lb == null)
-                return;
             var attributelist = new List<string>();
-            foreach (var o in lb.SelectedItems)
+            foreach (var o in lbAttr.SelectedItems)
             {
                 attributelist.Add(o.ToString());
             }
@@ -401,11 +383,8 @@ namespace PoESkillTree.Views
         //Adds currently selected attributes to an existing custom group named by sender.Header
         private void AddToGroup(object sender, RoutedEventArgs e)
         {
-            var lb = GetActiveAttributeGroupList();
-            if (lb == null)
-                return;
             var attributelist = new List<string>();
-            foreach (var o in lb.SelectedItems)
+            foreach (var o in lbAttr.SelectedItems)
             {
                 attributelist.Add(o.ToString());
             }
@@ -489,9 +468,13 @@ namespace PoESkillTree.Views
             
             await initialComputationTask;
             await computationInitializer.InitializeAfterBuildLoadAsync(
-                Tree.SkilledNodes, _equipmentConverter.Items, _equipmentConverter.Skills);
+                Tree.SkilledNodes,
+                _equipmentConverter.Equipment,
+                _equipmentConverter.Jewels,
+                _equipmentConverter.Skills);
             ComputationViewModel = await computationInitializer.CreateComputationViewModelAsync(PersistentData);
             computationInitializer.SetupPeriodicActions();
+            _abyssalSocketObserver = computationInitializer.CreateAbyssalSocketObserver(InventoryViewModel.ItemJewels);
             Log.Info($"Computation UI initialized after {stopwatch.ElapsedMilliseconds} ms");
 
             await controller.CloseAsync();
@@ -542,13 +525,6 @@ namespace PoESkillTree.Views
             lbAttr.ItemsSource = _attributeCollection;
             lbAttr.SelectionMode = SelectionMode.Extended;
             lbAttr.ContextMenu = _attributeContextMenu;
-
-            _allAttributeCollection = new ListCollectionView(_allAttributesList);
-            _allAttributeCollection.GroupDescriptions?.Add(new PropertyGroupDescription("Text", _attributeGroups));
-            _allAttributeCollection.CustomSort = _attributeGroups;
-            lbAllAttr.ItemsSource = _allAttributeCollection;
-            lbAllAttr.SelectionMode = SelectionMode.Extended;
-            lbAllAttr.ContextMenu = _attributeContextMenu;
 
             cbCharType.ItemsSource = Enums.GetValues<CharacterClass>();
             cbAscType.SelectedIndex = 0;
@@ -1207,64 +1183,9 @@ namespace PoESkillTree.Views
         public void UpdateUI()
         {
             UpdateAttributeList();
-            UpdateAllAttributeList();
             RefreshAttributeLists();
             UpdateClass();
             UpdatePoints();
-        }
-
-        public void UpdateAllAttributeList()
-        {
-            lbAllAttr.SelectedIndex = -1;
-            _allAttributesList.Clear();
-
-            if (_itemAttributes == null) return;
-
-            var attritemp = Tree.SelectedAttributesWithoutImplicit;
-
-            var itemAttris = _itemAttributes.NonLocalMods
-                .Select(m => new KeyValuePair<string, IReadOnlyList<float>>(m.Attribute, m.Values))
-                .SelectMany(SkillTree.ExpandHybridAttributes);
-            foreach (var mod in itemAttris)
-            {
-                if (attritemp.ContainsKey(mod.Key))
-                {
-                    for (var i = 0; i < mod.Value.Count; i++)
-                    {
-                        attritemp[mod.Key][i] += mod.Value[i];
-                    }
-                }
-                else
-                {
-                    attritemp[mod.Key] = new List<float>(mod.Value);
-                }
-            }
-
-            foreach (var a in SkillTree.ImplicitAttributes(attritemp, Tree.Level))
-            {
-                var key = SkillTree.RenameImplicitAttributes.ContainsKey(a.Key)
-                    ? SkillTree.RenameImplicitAttributes[a.Key]
-                    : a.Key;
-
-                if (!attritemp.ContainsKey(key))
-                    attritemp[key] = new List<float>();
-                for (var i = 0; i < a.Value.Count; i++)
-                {
-                    if (attritemp.ContainsKey(key) && attritemp[key].Count > i)
-                        attritemp[key][i] += a.Value[i];
-                    else
-                    {
-                        attritemp[key].Add(a.Value[i]);
-                    }
-                }
-            }
-            
-            foreach (var item in (attritemp.Select(InsertNumbersInAttributes)))
-            {
-                var a = new Attribute(item);
-                if (!CheckIfAttributeMatchesFilter(a)) continue;
-                _allAttributesList.Add(a);
-            }
         }
 
         public void UpdateClass()
@@ -1404,14 +1325,13 @@ namespace PoESkillTree.Views
         private void FilterAttributeLists()
         {
             if (cbAttributesFilterRegEx.IsChecked == true && !RegexTools.IsValidRegex(tbAttributesFilter.Text)) return;
-            UpdateAllAttributeList();
             UpdateAttributeList();
             RefreshAttributeLists();
         }
 
         private void tabControl1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (tabItem1.IsSelected || tabItem3.IsSelected)
+            if (tabItem1.IsSelected)
                 gAttributesFilter.Visibility = Visibility.Visible;
             else
                 gAttributesFilter.Visibility = Visibility.Collapsed;
@@ -1692,12 +1612,14 @@ namespace PoESkillTree.Views
             if (_pauseLoadItemData)
                 return;
 
+            _jewelSocketObserver.ResetTreeJewelViewModels();
+            _abyssalSocketObserver?.ResetItemJewelViewModels();
             if (ItemAttributes != null)
             {
                 ItemAttributes.ItemDataChanged -= ItemAttributesOnItemDataChanged;
-                ItemAttributes.PropertyChanged -= ItemAttributesOnPropertyChanged;
                 ItemAttributes.Dispose();
             }
+            InventoryViewModel?.Dispose();
 
             var equipmentData = PersistentData.EquipmentData;
             var itemData = PersistentData.CurrentBuild.ItemData;
@@ -1715,15 +1637,11 @@ namespace PoESkillTree.Views
             }
 
             itemAttributes.ItemDataChanged += ItemAttributesOnItemDataChanged;
-            itemAttributes.PropertyChanged += ItemAttributesOnPropertyChanged;
             _equipmentConverter.ConvertFrom(itemAttributes);
             ItemAttributes = itemAttributes;
-            InventoryViewModel = new InventoryViewModel(_dialogCoordinator, itemAttributes);
-            UpdateUI();
-        }
-
-        private void ItemAttributesOnPropertyChanged(object sender, PropertyChangedEventArgs args)
-        {
+            InventoryViewModel =
+                new InventoryViewModel(_dialogCoordinator, itemAttributes, await GetJewelPassiveNodesAsync());
+            _abyssalSocketObserver?.SetItemJewelViewModels(InventoryViewModel.ItemJewels);
             UpdateUI();
         }
 
@@ -1732,6 +1650,14 @@ namespace PoESkillTree.Views
             _pauseLoadItemData = true;
             PersistentData.CurrentBuild.ItemData = ItemAttributes.ToJsonString();
             _pauseLoadItemData = false;
+        }
+
+        private async Task<IEnumerable<ushort>> GetJewelPassiveNodesAsync()
+        {
+            var treeDefinition = await _gameData.PassiveTree;
+            return treeDefinition.Nodes
+                .Where(d => d.Type == PassiveNodeType.JewelSocket)
+                .Select(d => d.Id);
         }
 
 #endregion
@@ -1748,6 +1674,7 @@ namespace PoESkillTree.Views
             await LoadItemData();
             SetCustomGroups(build.CustomGroups);
             await ResetTreeUrl();
+            _jewelSocketObserver.SetTreeJewelViewModels(InventoryViewModel.TreeJewels);
             ComputationViewModel?.SharedConfiguration.SetBandit(build.Bandits.Choice);
         }
 

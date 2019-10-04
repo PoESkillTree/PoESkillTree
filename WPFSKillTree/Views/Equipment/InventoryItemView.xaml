@@ -13,18 +13,18 @@
                              dd:DragDrop.DropHandler="{Binding}"
                              BorderThickness="2" BorderBrush="{DynamicResource AccentColorBrush}"
                              d:DataContext="{d:DesignInstance equipment:InventoryItemViewModel}">
+        <UserControl.Resources>
+            <ImageBrush x:Key="EmptyBackgroundImage"
+                        ImageSource="{Binding EmptyBackgroundImagePath}"
+                        Stretch="None" />
+        </UserControl.Resources>
         <UserControl.Style>
             <Style TargetType="{x:Type local:DraggableItemView}">
                 <Setter Property="Background" Value="#202051" />
                 <Setter Property="Opacity" Value="1" />
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding Item}" Value="{x:Null}">
-                        <Setter Property="Background">
-                            <Setter.Value>
-                                <ImageBrush ImageSource="{Binding EmptyBackgroundImagePath}"
-                                            Stretch="None" />
-                            </Setter.Value>
-                        </Setter>
+                        <Setter Property="Background" Value="{StaticResource EmptyBackgroundImage}" />
                     </DataTrigger>
                     <DataTrigger Binding="{Binding IsDragged}" Value="True">
                         <Setter Property="Opacity" Value="0.5" />

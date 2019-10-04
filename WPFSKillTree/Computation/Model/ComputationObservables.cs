@@ -67,6 +67,22 @@ namespace PoESkillTree.Computation.Model
         public IObservable<CalculatorUpdate> ObserveItems(INotifyCollectionChanged<(Item item, ItemSlot slot)> items)
             => ObserveCollection(items, t => _parser.ParseItem(t.item, t.slot).Modifiers);
 
+        public IObservable<CalculatorUpdate> ParseJewels(
+            IEnumerable<(Item item, ItemSlot slot, ushort socket, JewelRadius radius)> jewels)
+            => AggregateModifiers(jewels.ToObservable().SelectMany(ParseJewel));
+
+        public IObservable<CalculatorUpdate> ObserveJewels(
+            INotifyCollectionChanged<(Item item, ItemSlot slot, ushort socket, JewelRadius radius)> jewels)
+            => ObserveCollection(jewels, ParseJewel);
+
+        private IReadOnlyList<Modifier> ParseJewel((Item item, ItemSlot slot, ushort socket, JewelRadius radius) jewel)
+        {
+            var (item, slot, socket, radius) = jewel;
+            return slot == ItemSlot.SkillTree
+                ? _parser.ParseJewelSocketedInSkillTree(item, radius, socket).Modifiers
+                : _parser.ParseJewelSocketedInItem(item, slot).Modifiers;
+        }
+
         public IObservable<CalculatorUpdate> ParseSkills(IEnumerable<IReadOnlyList<Skill>> skills)
             => AggregateModifiers(skills.ToObservable().SelectMany(ParseSkills));
 

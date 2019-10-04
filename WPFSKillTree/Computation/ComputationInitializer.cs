@@ -15,6 +15,7 @@ using PoESkillTree.Model;
 using PoESkillTree.SkillTreeFiles;
 using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
+using PoESkillTree.ViewModels.Equipment;
 
 namespace PoESkillTree.Computation
 {
@@ -81,12 +82,13 @@ namespace PoESkillTree.Computation
 
         public async Task InitializeAfterBuildLoadAsync(
             ObservableSet<SkillNode> skilledNodes, ObservableSet<(Item, ItemSlot)> items,
-            ObservableSet<IReadOnlyList<Skill>> skills)
+            ObservableSet<(Item, ItemSlot, ushort, JewelRadius)> jewels, ObservableSet<IReadOnlyList<Skill>> skills)
         {
             _skills = skills;
             await Task.WhenAll(_initialParseTask,
                 ConnectToSkilledPassiveNodesAsync(skilledNodes),
                 ConnectToEquipmentAsync(items),
+                ConnectToJewelsAsync(jewels),
                 ConnectToSkillsAsync(skills));
         }
 
@@ -99,6 +101,11 @@ namespace PoESkillTree.Computation
             => await ConnectAsync(
                 _observables.ParseItems(items),
                 _observables.ObserveItems(items));
+
+        private async Task ConnectToJewelsAsync(ObservableSet<(Item, ItemSlot, ushort, JewelRadius)> jewels)
+            => await ConnectAsync(
+                _observables.ParseJewels(jewels),
+                _observables.ObserveJewels(jewels));
 
         private async Task ConnectToSkillsAsync(ObservableSet<IReadOnlyList<Skill>> skills)
             => await ConnectAsync(
@@ -125,5 +132,13 @@ namespace PoESkillTree.Computation
         public void SetupPeriodicActions()
             => _calculator.PeriodicallyRemoveUnusedNodes(
                 ex => Log.Error(ex, "Exception while removing unused calculation nodes"));
+
+        public AbyssalSocketObserver CreateAbyssalSocketObserver(
+            IReadOnlyDictionary<ItemSlot, IReadOnlyList<InventoryItemViewModel>> jewels)
+        {
+            var observer = AbyssalSocketObserver.Create(_calculator, _schedulers.Dispatcher, _builderFactories);
+            observer.SetItemJewelViewModels(jewels);
+            return observer;
+        }
     }
 }

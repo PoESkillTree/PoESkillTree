@@ -129,7 +129,7 @@ namespace PoESkillTree.ViewModels.Equipment
         public ICommand RemoveGemCommand { get; }
 
         public int NumberOfSockets
-            => _itemAttributes.GetItemInSlot(_slot)?.BaseType.MaximumNumberOfSockets ?? 0;
+            => _itemAttributes.GetItemInSlot(_slot, null)?.BaseType.MaximumNumberOfSockets ?? 0;
 
         private SocketedGemViewModel _newSocketedGem;
         /// <summary>
