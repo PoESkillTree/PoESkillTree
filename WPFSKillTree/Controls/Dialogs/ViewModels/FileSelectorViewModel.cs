@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows.Forms;
 using System.Windows.Input;
-using Microsoft.WindowsAPICodePack.Dialogs;
 using PoESkillTree.Utils;
 using PoESkillTree.Common.ViewModels;
 
@@ -61,17 +61,28 @@ namespace PoESkillTree.Controls.Dialogs.ViewModels
         private void SelectFile()
         {
             var path = Path.GetFullPath(SanitizedFilePath);
-            var dialog = new CommonOpenFileDialog
+            if (_isFolderPicker)
             {
-                IsFolderPicker = _isFolderPicker,
-                InitialDirectory = Path.GetDirectoryName(path),
-                DefaultFileName = Path.GetFileName(path)
-            };
-            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-            {
-                path = dialog.FileName;
-                FilePath = _useRelativePaths ? AppData.ToRelativePath(path) : path;
+                var dialog = new FolderBrowserDialog
+                {
+                    SelectedPath = Path.GetDirectoryName(path),
+                };
+                if (dialog.ShowDialog() != DialogResult.OK)
+                    return;
+                path = dialog.SelectedPath;
             }
+            else
+            {
+                var dialog = new OpenFileDialog
+                {
+                    InitialDirectory = Path.GetDirectoryName(path),
+                    FileName = Path.GetFileName(path),
+                };
+                if (dialog.ShowDialog() != DialogResult.OK)
+                    return;
+                path = dialog.FileName;
+            }
+            FilePath = _useRelativePaths ? AppData.ToRelativePath(path) : path;
         }
 
         protected override IEnumerable<string> ValidateProperty(string propertyName)
