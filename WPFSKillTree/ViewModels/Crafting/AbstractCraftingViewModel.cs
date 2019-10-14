@@ -6,7 +6,6 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using EnumsNET;
-using MoreLinq;
 using PoESkillTree.Common.ViewModels;
 using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Engine.GameModel.Modifiers;
@@ -284,7 +283,11 @@ namespace PoESkillTree.ViewModels.Crafting
                 var ibase = SelectedBase;
                 Item = new Item(ibase);
 
-                MsImplicits.ForEach(ms => ms.PropertyChanged -= MsOnPropertyChanged);
+                foreach (var modSelector in MsImplicits)
+                {
+                    modSelector.PropertyChanged -= MsOnPropertyChanged;
+                }
+
                 var modSelectors = new List<ModSelectorViewModel>();
                 foreach (var implicitMod in ibase.ImplicitMods)
                 {

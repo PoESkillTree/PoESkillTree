@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using MB.Algodat;
-using MoreLinq;
 using PoESkillTree.Engine.GameModel.StatTranslation;
 using PoESkillTree.Utils;
 using PoESkillTree.Model.Items.Mods;
+using static MoreLinq.Extensions.EquiZipExtension;
 
 namespace PoESkillTree.ViewModels.Crafting
 {
@@ -69,8 +69,10 @@ namespace PoESkillTree.ViewModels.Crafting
                             if (SelectedValues.Count() == valuesBefore.Count
                                 && matchingAffix.QueryMods(valuesBefore).Any())
                             {
-                                _sliders.Zip(valuesBefore, Tuple.Create)
-                                    .ForEach(t => t.Item1.Value = t.Item2.value);
+                                foreach (var (slider, valueTuple) in _sliders.Zip(valuesBefore, Tuple.Create))
+                                {
+                                    slider.Value = valueTuple.value;
+                                }
                             }
                             return;
                         }
