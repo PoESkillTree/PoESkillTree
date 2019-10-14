@@ -480,14 +480,6 @@
                         <iconPacks:PackIconModern Kind="PageDownload" HorizontalAlignment="Center" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Click="Menu_ItemFilterEditor">
-                    <MenuItem.Header>
-                        <l:Catalog Message="Item _Filter Editor" />
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="Filter" HorizontalAlignment="Center" />
-                    </MenuItem.Icon>
-                </MenuItem>
             </MenuItem>
             <MenuItem>
                 <MenuItem.Header>

@@ -60,10 +60,6 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="Xceed.Wpf.Toolkit, Version=2.8.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>Libs\Xceed.Wpf.Toolkit.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Properties\Version.resx">
@@ -136,8 +132,6 @@
   <ItemGroup>
     <Content Include="Antlr3.Runtime.dll" />
     <Resource Include="TreeGenerator\ideas_todos.txt" />
-    <Resource Include="Contrib\Monotone\LICENSE.txt" />
-    <Resource Include="Contrib\Monotone\README.txt" />
     <Content Include="Data\PseudoAttributes\Crit.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -210,7 +204,6 @@
     <Resource Include="Images\Pathfinder_Highlighted.jpg" />
     <Resource Include="Images\Raider.jpg" />
     <Resource Include="Images\Raider_Highlighted.jpg" />
-    <Resource Include="Libs\README.txt" />
     <Resource Include="Images\EquipmentUI\Bin.png" />
     <Resource Include="Images\EquipmentUI\ItemsHeaderCurrencyLeft.png" />
     <Resource Include="Images\EquipmentUI\ItemsHeaderCurrencyMiddle.png" />
@@ -262,7 +255,6 @@
     <Resource Include="Images\EquipmentUI\ItemDefaults\Wand.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\UtilityFlaskCritical.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\AbyssJewel.png" />
-    <Content Include="Libs\Xceed.Wpf.Toolkit.dll" />
     <Content Include="release.iss" />
     <None Include="Tools\isetup\ISCC.exe" />
     <None Include="Tools\isetup\ISCmplr.dll" />

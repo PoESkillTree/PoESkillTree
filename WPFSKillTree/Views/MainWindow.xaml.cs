@@ -30,7 +30,6 @@ using PoESkillTree.Computation.ViewModels;
 using PoESkillTree.Controls.Dialogs;
 using PoESkillTree.Engine.GameModel;
 using PoESkillTree.Engine.GameModel.PassiveTree;
-using PoESkillTree.ItemFilter.Views;
 using PoESkillTree.Localization;
 using PoESkillTree.Model;
 using PoESkillTree.Model.Builds;
@@ -906,12 +905,6 @@ namespace PoESkillTree.Views
         {
             var vm = new DownloadStashViewModel(DialogCoordinator.Instance, _gameData, PersistentData, StashViewModel);
             await this.ShowDialogAsync(vm, new DownloadStashWindow(), () => vm.ViewLoaded());
-        }
-
-        private void Menu_ItemFilterEditor(object sender, RoutedEventArgs e)
-        {
-            var window = new ItemFilterOpenWindow() { Owner = this };
-            window.ShowDialog();
         }
 
         private async void Menu_CopyStats(object sender, RoutedEventArgs e)
