@@ -152,8 +152,8 @@
                         <DataTemplate DataType="viewModels:SocketedGemViewModel">
                             <Button Command="{Binding Data.RemoveGemCommand, Source={StaticResource VmProxy}}"
                                     CommandParameter="{Binding}"
-                                    Width="26" Height="26"
-                                    Style="{DynamicResource MetroCircleButtonStyle}">
+                                    Width="20" Height="20"
+                                    Style="{DynamicResource MahApps.Styles.Button.Circle}">
                                 <iconPacks:PackIconModern Kind="Close" Height="8" Width="8" />
                             </Button>
                         </DataTemplate>

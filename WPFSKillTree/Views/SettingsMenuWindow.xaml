@@ -36,7 +36,7 @@
         <Style x:Key="SectionLabel" TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">
             <Setter Property="VerticalContentAlignment" Value="Center" />
             <Setter Property="Height" Value="30" />
-            <Setter Property="FontSize" Value="{DynamicResource DialogMessageFontSize}"></Setter>
+            <Setter Property="FontSize" Value="{DynamicResource MahApps.Sizes.Font.DialogMessage}"></Setter>
         </Style>
         <Style x:Key="SettingLabel" TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">
             <Setter Property="VerticalContentAlignment" Value="Center" />

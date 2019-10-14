@@ -11,7 +11,7 @@
     <local:DraggableItemView DataContext="{Binding}"
                              dd:DragDrop.IsDropTarget="True"
                              dd:DragDrop.DropHandler="{Binding}"
-                             BorderThickness="2" BorderBrush="{DynamicResource AccentColorBrush}"
+                             BorderThickness="2" BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
                              d:DataContext="{d:DesignInstance equipment:InventoryItemViewModel}">
         <UserControl.Resources>
             <ImageBrush x:Key="EmptyBackgroundImage"

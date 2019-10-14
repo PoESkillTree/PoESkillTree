@@ -49,7 +49,7 @@
                     Background="{TemplateBinding Background}"
                     BorderBrush="{TemplateBinding BorderBrush}"
                     BorderThickness="{TemplateBinding BorderThickness}"
-                    CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(controls:ControlsHelper.CornerRadius), Mode=OneWay}"
+                    CornerRadius="{TemplateBinding controls:ControlsHelper.CornerRadius}"
                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
 
             <Grid Margin="{TemplateBinding BorderThickness}">
@@ -71,7 +71,7 @@
                               Margin="0"
                               Padding="{TemplateBinding Padding}"
                               VerticalAlignment="Stretch"
-                              controls:ControlsHelper.CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(controls:ControlsHelper.CornerRadius), Mode=OneWay}"
+                              controls:ControlsHelper.CornerRadius="{TemplateBinding controls:ControlsHelper.CornerRadius}"
                               controls:TextBoxHelper.ButtonContent="{TemplateBinding controls:TextBoxHelper.ButtonContent}"
                               controls:TextBoxHelper.ButtonContentTemplate="{TemplateBinding controls:TextBoxHelper.ButtonContentTemplate}"
                               controls:TextBoxHelper.ButtonFontFamily="{TemplateBinding controls:TextBoxHelper.ButtonFontFamily}"
@@ -84,7 +84,7 @@
                               IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                               KeyboardNavigation.IsTabStop="False"
                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                              Style="{DynamicResource MetroComboBoxDropDownToggleButtonStyle}" />
+                              Style="{DynamicResource MahApps.Styles.ToggleButton.ComboBoxDropDown}" />
 
                 <TextBox x:Name="PART_EditableTextBox"
                          Grid.Row="1"
@@ -114,7 +114,7 @@
                          IsReadOnly="{TemplateBinding IsReadOnly}"
                          MaxLength="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(controls:ComboBoxHelper.MaxLength), Mode=OneWay}"
                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                         Style="{StaticResource EditableTextBoxStyle}"
+                         Style="{StaticResource MahApps.Styles.TextBox.Editable}"
                          Visibility="Collapsed" />
 
                 <TextBlock x:Name="PART_WatermarkMessage"
@@ -125,7 +125,7 @@
                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                            Foreground="{TemplateBinding Foreground}"
-                           Style="{DynamicResource MahApps.Metro.Styles.MetroWatermarkTextBlock}"
+                           Style="{DynamicResource MahApps.Styles.TextBlock.Watermark}"
                            Text="{TemplateBinding controls:TextBoxHelper.Watermark}"
                            TextAlignment="{TemplateBinding controls:TextBoxHelper.WatermarkAlignment}"
                            TextTrimming="{TemplateBinding controls:TextBoxHelper.WatermarkTrimming}"
@@ -133,7 +133,7 @@
                 <ContentControl x:Name="PART_FloatingMessageContainer"
                                 Grid.Row="0"
                                 Grid.Column="0"
-                                Style="{DynamicResource FloatingMessageContainerStyle}">
+                                Style="{DynamicResource MahApps.Styles.ContentControl.FloatingMessageContainer}">
                     <ContentControl.Height>
                         <MultiBinding Converter="{converters:MathMultiplyConverter}">
                             <Binding ElementName="PART_FloatingMessage"
@@ -149,7 +149,7 @@
                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                Foreground="{TemplateBinding Foreground}"
-                               Style="{DynamicResource MetroAutoCollapsingTextBlock}"
+                               Style="{DynamicResource MahApps.Styles.TextBlock.AutoCollapsing}"
                                Text="{TemplateBinding controls:TextBoxHelper.Watermark}"
                                TextAlignment="{TemplateBinding controls:TextBoxHelper.WatermarkAlignment}"
                                TextTrimming="{TemplateBinding controls:TextBoxHelper.WatermarkTrimming}">
@@ -188,10 +188,10 @@
 
             <Border x:Name="DisabledVisualElement"
                     Grid.ColumnSpan="3"
-                    Background="{DynamicResource ControlsDisabledBrush}"
-                    BorderBrush="{DynamicResource ControlsDisabledBrush}"
+                    Background="{DynamicResource MahApps.Brushes.Controls.Disabled}"
+                    BorderBrush="{DynamicResource MahApps.Brushes.Controls.Disabled}"
                     BorderThickness="{TemplateBinding BorderThickness}"
-                    CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(controls:ControlsHelper.CornerRadius), Mode=OneWay}"
+                    CornerRadius="{TemplateBinding controls:ControlsHelper.CornerRadius}"
                     IsHitTestVisible="False"
                     Opacity="0.6"
                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
@@ -213,8 +213,8 @@
                     <Border x:Name="PopupBorder"
                             Height="Auto"
                             HorizontalAlignment="Stretch"
-                            Background="{DynamicResource WhiteBrush}"
-                            BorderBrush="{DynamicResource ComboBoxPopupBorderBrush}"
+                            Background="{DynamicResource MahApps.Brushes.White}"
+                            BorderBrush="{DynamicResource MahApps.Brushes.ComboBox.PopupBorder}"
                             BorderThickness="{DynamicResource ComboBoxPopupBorderThemeThickness}"
                             SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                             Grid.Row="0" Grid.RowSpan="2" />
@@ -315,10 +315,10 @@
                         Value="False" />
                 </MultiDataTrigger.Conditions>
                 <MultiDataTrigger.EnterActions>
-                    <BeginStoryboard Storyboard="{StaticResource ShowFloatingMessageStoryboard}" />
+                    <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.ShowFloatingMessage}" />
                 </MultiDataTrigger.EnterActions>
                 <MultiDataTrigger.ExitActions>
-                    <BeginStoryboard Storyboard="{StaticResource HideFloatingMessageStoryboard}" />
+                    <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.HideFloatingMessage}" />
                 </MultiDataTrigger.ExitActions>
             </MultiDataTrigger>
 
@@ -342,7 +342,7 @@
                     <Condition Property="IsEditable" Value="False" />
                     <Condition Property="IsMouseOver" Value="True" />
                 </MultiTrigger.Conditions>
-                <Setter Property="Background" Value="{DynamicResource GrayBrush9}" />
+                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Gray9}" />
             </MultiTrigger>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter TargetName="Border" Property="BorderBrush"
@@ -356,14 +356,21 @@
             <Trigger Property="IsFocused" Value="True">
                 <Setter TargetName="Border" Property="BorderBrush"
                         Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(controls:ControlsHelper.FocusBorderBrush)}" />
-                <Setter TargetName="PART_FloatingMessage" Property="Foreground"
-                        Value="{DynamicResource AccentColorBrush}" />
+                <Setter TargetName="PART_FloatingMessage" Property="Foreground" Value="{DynamicResource MahApps.Brushes.Accent}" />
                 <Setter TargetName="PART_FloatingMessage" Property="Opacity" Value="1" />
             </Trigger>
             <Trigger Property="IsKeyboardFocusWithin" Value="True">
                 <Setter TargetName="Border" Property="BorderBrush"
                         Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(controls:ControlsHelper.FocusBorderBrush)}" />
             </Trigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsGrouping" Value="true" />
+                    <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false" />
+                </MultiTrigger.Conditions>
+                <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
+            </MultiTrigger>
 
             <Trigger Property="IsEnabled" Value="False">
                 <Setter TargetName="DisabledVisualElement" Property="Visibility" Value="Visible" />
@@ -372,7 +379,7 @@
     </ControlTemplate>
 
     <Style TargetType="local:SearchableComboBox"
-           BasedOn="{StaticResource VirtualisedMetroComboBox}">
+           BasedOn="{StaticResource MahApps.Styles.ComboBox.Virtualized}">
         <Setter Property="Template" Value="{StaticResource SearchableComboBoxTemplate}" />
     </Style>
 

@@ -9,7 +9,7 @@
              xmlns:wpf="clr-namespace:PoESkillTree.Utils.Wpf"
              xmlns:wpfRangeControls="clr-namespace:WpfRangeControls"
              xmlns:dd="urn:gong-wpf-dragdrop"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:converter="clr-namespace:PoESkillTree.Utils.Converter"
              xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"

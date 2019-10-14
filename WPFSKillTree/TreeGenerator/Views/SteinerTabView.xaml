@@ -26,7 +26,7 @@
         </DockPanel>
         
         <TextBlock TextWrapping="Wrap"
-                   FontSize="{StaticResource NormalFontSize}"
+                   FontSize="{StaticResource MahApps.Sizes.Font.Normal}"
                    Padding="5">
             <Run>
                 <l:Catalog>This generator connects all Check-tagged nodes to the current tree with the least amount of

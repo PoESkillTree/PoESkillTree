@@ -14,7 +14,7 @@
     </Style>
 
     <Style x:Key="DialogPanelButton"
-           BasedOn="{StaticResource SquareButtonStyle}"
+           BasedOn="{StaticResource MahApps.Styles.Button.Square}"
            TargetType="Button">
         <Setter Property="controls:ControlsHelper.ContentCharacterCasing" Value="Normal" />
         <Setter Property="Margin" Value="5 0" />
@@ -24,7 +24,7 @@
     </Style>
 
     <Style x:Key="AccentedDialogPanelButton"
-           BasedOn="{StaticResource AccentedSquareButtonStyle}"
+           BasedOn="{StaticResource MahApps.Styles.Button.AccentedSquare}"
            TargetType="Button">
         <Setter Property="controls:ControlsHelper.ContentCharacterCasing" Value="Normal" />
         <Setter Property="Margin" Value="5 0" />
@@ -44,8 +44,8 @@
                     <Condition Property="IsMouseOver" Value="False" />
                     <Condition Property="IsPressed" Value="False" />
                 </MultiTrigger.Conditions>
-                <Setter Property="Foreground" Value="{DynamicResource IdealForegroundColorBrush}" />
-                <Setter Property="Background" Value="{DynamicResource AccentColorBrush}" />
+                <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.IdealForeground}" />
+                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Accent}" />
             </MultiTrigger>
         </Style.Triggers>
     </Style>

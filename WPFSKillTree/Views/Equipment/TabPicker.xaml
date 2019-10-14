@@ -7,7 +7,7 @@
         xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
         xmlns:dialogs="clr-namespace:PoESkillTree.Controls.Dialogs"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:wpf="clr-namespace:PoESkillTree.Utils.Wpf"
         xmlns:viewModels="clr-namespace:PoESkillTree.ViewModels.Equipment"
         mc:Ignorable="d"

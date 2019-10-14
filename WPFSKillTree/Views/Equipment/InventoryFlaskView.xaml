@@ -16,7 +16,8 @@
                           OffLabel="" OnLabel=""
                           IsChecked="{Binding IsEnabled}">
             <mah:ToggleSwitch.ToggleSwitchButtonStyle>
-                <Style TargetType="{x:Type mah:ToggleSwitchButton}" BasedOn="{StaticResource MetroToggleSwitchButton}">
+                <Style TargetType="{x:Type mah:ToggleSwitchButton}"
+                       BasedOn="{StaticResource {x:Type mah:ToggleSwitchButton}}">
                     <Setter Property="Width" Value="51" />
                     <Setter Property="Height" Value="25" />
                 </Style>

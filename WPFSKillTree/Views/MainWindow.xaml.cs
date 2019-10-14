@@ -1919,9 +1919,7 @@ namespace PoESkillTree.Views
 
         private void SetTheme(string sTheme)
         {
-            var accent = ThemeManager.Accents.First(x => Equals(x.Name, PersistentData.Options.Accent));
-            var theme = ThemeManager.GetAppTheme("Base" + sTheme);
-            ThemeManager.ChangeAppStyle(Application.Current, accent, theme);
+            ThemeManager.ChangeTheme(Application.Current, sTheme, PersistentData.Options.Accent);
             ((MenuItem)NameScope.GetNameScope(this).FindName("mnuViewTheme" + sTheme)).IsChecked = true;
             PersistentData.Options.Theme = sTheme;
         }
@@ -1936,9 +1934,7 @@ namespace PoESkillTree.Views
 
         private void SetAccent(string sAccent)
         {
-            var accent = ThemeManager.Accents.First(x => Equals(x.Name, sAccent));
-            var theme = ThemeManager.GetAppTheme("Base" + PersistentData.Options.Theme);
-            ThemeManager.ChangeAppStyle(Application.Current, accent, theme);
+            ThemeManager.ChangeTheme(Application.Current, PersistentData.Options.Theme, sAccent);
             ((MenuItem)NameScope.GetNameScope(this).FindName("mnuViewAccent" + sAccent)).IsChecked = true;
             PersistentData.Options.Accent = sAccent;
         }

@@ -85,7 +85,7 @@
                 <SolidColorBrush Color="{Binding TabsView.CurrentItem.Color}"/>
             </ComboBox.Background>
             <ComboBox.ItemContainerStyle>
-                <Style TargetType="ComboBoxItem" BasedOn="{StaticResource MetroComboBoxItem}">
+                <Style TargetType="ComboBoxItem" BasedOn="{StaticResource MahApps.Styles.ComboBoxItem}">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                     <Setter Property="Background">
                         <Setter.Value>
