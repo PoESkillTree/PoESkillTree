@@ -52,6 +52,8 @@
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="controls:ControlsHelper.ContentCharacterCasing" Value="Normal" />
             <Setter Property="controls:ControlsHelper.HeaderFontSize" Value="16" />
+            <Setter Property="controls:HeaderedControlHelper.HeaderBackground"
+                    Value="{DynamicResource MahApps.Brushes.WhiteColor}" />
         </Style>
     </Window.Resources>
 
@@ -759,7 +761,7 @@
                 <Expander.Header>
                     <l:Catalog Message="Attributes"/>
                 </Expander.Header>
-                <Grid Background="{DynamicResource MahApps.Brushes.WhiteColor}">
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
