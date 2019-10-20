@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -19,15 +18,6 @@ namespace PoESkillTree.SkillTreeFiles
      */ 
     public class Updater
     {
-        // Use stronger cryptographic standards (https://githubengineering.com/crypto-removal-notice/)
-        static Updater()
-        {
-            ServicePointManager.SecurityProtocol =
-                                           SecurityProtocolType.Tls12
-                                         | SecurityProtocolType.Tls11
-                                         | SecurityProtocolType.Tls
-                                         | SecurityProtocolType.Ssl3;
-        }
         // Git API URL to fetch releases (the first one is latest one).
         private static readonly string GitAPILatestReleaseURL = "https://api.github.com/repos/PoESkillTree/PoESkillTree/releases";
         // The language value name of Uninstall registry key.
