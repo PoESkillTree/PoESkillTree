@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Release" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <!-- MSBuild file used by dist-*.bat scripts -->
     <Import Project="$(MSBuildProjectDirectory)\Tools\MSBuild.ExtensionPack.tasks" />
 
     <!-- Takes LocaleLanguageDir items and outputs same items with "Locale" metadata set to correct PO locale -->
-    <UsingTask TaskName="PupulateLocale" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsTasksPath)">
+    <UsingTask TaskName="PopulateLocale" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsTasksPath)">
         <ParameterGroup>
             <Dirs ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
             <Locales ParameterType="Microsoft.Build.Framework.ITaskItem[]" Output="true" />
@@ -38,47 +38,7 @@
         </Task>
     </UsingTask>
 
-    <UsingTask TaskName="AssemblyInvokeStatic" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsTasksPath)">
-        <ParameterGroup>
-            <AssemblyFile ParameterType="System.String" Required="true" />
-            <ClassFullName ParameterType="System.String" Required="true" />
-            <Method ParameterType="System.String" Required="true" />
-            <Input1 ParameterType="System.String" Required="false" />
-            <Input2 ParameterType="System.String" Required="false" />
-            <ReturnValue ParameterType="System.String" Output="true" />
-        </ParameterGroup>
-        <Task>
-            <Using Namespace="System.IO" />
-            <Using Namespace="System.Reflection" />
-            <Code Type="Fragment" Language="cs">
-                <![CDATA[
-                Assembly assembly = System.Reflection.Assembly.LoadFrom(AssemblyFile);
-                Type classType = assembly.GetType(ClassFullName);
-                MethodInfo method = classType.GetMethod(Method, BindingFlags.Public|BindingFlags.Static);
-
-                object[] parameters;
-                if (Input2 != null)
-                {
-                    parameters = new object[] { Input1, Input2 };
-                }
-                else if (Input1 != null)
-                {
-                    parameters = new object[] { Input1 };
-                }
-                else
-                    parameters = null;
-
-                object retVal = method.Invoke(null, parameters);
-
-                ReturnValue = retVal is string ? retVal as string : null;
-]]>
-            </Code>
-        </Task>
-    </UsingTask>
-
     <PropertyGroup>
-        <InstallDir>PoESkillTree</InstallDir>
-        <Platform>AnyCPU</Platform>
         <WorkDir>$(MSBuildProjectDirectory)\dist</WorkDir>
         <ZipTool>Tools\7z.exe a -tzip</ZipTool>
         <ISCCTool>Tools\isetup\ISCC.exe</ISCCTool>
@@ -92,7 +52,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <DistDir>$(WorkDir)\$(InstallDir)</DistDir>
+        <DistDir>$(WorkDir)\PoESkillTree</DistDir>
         <TagFile>$(WorkDir)\tag</TagFile>
         <RevisionCountFile>$(WorkDir)\revcount</RevisionCountFile>
         <ObjDir>obj</ObjDir>
@@ -124,14 +84,23 @@
         <LocaleCopyFiles Include="$(LocaleDir)\**" />
     </ItemGroup>
 
-    <ItemGroup>
-        <PortableIniLines Include="line1">
-            <Line>[Setup]</Line>
+    <PropertyGroup>
+        <PortableIniLines>
+[Setup]
+Language=en_US
         </PortableIniLines>
-        <PortableIniLines Include="line2">
-            <Line>Language=en_US</Line>
-        </PortableIniLines>
-    </ItemGroup>
+        <PersistentDataLines>
+<![CDATA[
+<?xml version="1.0" encoding="utf-8"?>
+<PersistentData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <AppVersion>%AppVersion%</AppVersion>
+  <Options>
+    <Language>%LANGUAGE%</Language>
+  </Options>
+</PersistentData>
+]]>
+        </PersistentDataLines>
+    </PropertyGroup>
 
     <Target Name="UpdateAssemblyInfo" DependsOnTargets="Clean;Identity">
         <!-- Files updated by this target -->
@@ -157,18 +126,8 @@
                                      AssemblyName="$(AssemblyName).exe" AssemblyVersion="$(AssemblyVersion)" />
     </Target>
 
-    <Target Name="Build" DependsOnTargets="Clean;Identity;UpdateAssemblyInfo">
-        <!-- Build projects (OutputPath=$(DistDir) => No copying needed) -->
-        <MSBuild Projects="WPFSKillTree.csproj" Targets="Build" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0;OutputPath=$(DistDir)" />
-        <MSBuild Projects="..\UpdateDB\UpdateDB.csproj" Targets="Build" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0;OutputPath=$(DistDir)" />
-    </Target>
-
     <Target Name="BuildLocale" DependsOnTargets="BuildLocaleCatalog">
         <!-- Don't make any dependencies on this target, it's invoked explicitely as Post-Build event -->
-    </Target>
-
-    <Target Name="BuildAndCopyLocale" DependsOnTargets="BuildLocaleCatalog">
-        <Copy SourceFiles="@(LocaleCopyFiles)" DestinationFiles="@(LocaleCopyFiles->'$(LocaleTargetDir)$(LocaleDir)\%(RecursiveDir)%(Filename)%(Extension)')" />
     </Target>
 
     <Target Name="TransformXAML">
@@ -202,9 +161,9 @@
     </Target>
 
     <Target Name="BuildLocalePopulateLocales" DependsOnTargets="BuildLocaleTemplate">
-        <PupulateLocale Dirs="@(LocaleLanguageDir)">
+        <PopulateLocale Dirs="@(LocaleLanguageDir)">
             <Output ItemName="LocaleLocales" TaskParameter="Locales" />
-        </PupulateLocale>
+        </PopulateLocale>
     </Target>
     
     <Target Name="BuildLocaleCatalog" DependsOnTargets="BuildLocalePopulateLocales">
@@ -222,10 +181,7 @@
     </Target>
 
     <Target Name="Clean">
-        <MSBuild Projects="..\WPFSKillTree.Tests\WPFSKillTree.Tests.csproj" Targets="Clean" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0" />
-
-        <MSBuild Projects="..\UpdateDB\UpdateDB.csproj" Targets="Clean" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0;OutputPath=$(DistDir)" />
-        <MSBuild Projects="WPFSKillTree.csproj" Targets="Clean" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0;OutputPath=$(DistDir)" />
+        <Exec Command="dotnet clean -c release -o $(DistDir)" />
         <RemoveDir Directories="$(LocaleWorkDir)" />
         <RemoveDir Directories="$(WorkDir)" />
     </Target>
@@ -281,7 +237,7 @@
         </PropertyGroup>
     </Target>
 
-    <Target Name="Release" DependsOnTargets="Test">
+    <Target Name="Release" DependsOnTargets="Clean;Identity;UpdateAssemblyInfo">
         <!-- Compare ProductVersion with recent Git tag (version) -->
         <Exec Command="git describe --tags --abbrev=0 >$(TagFile)" />
         <ReadLinesFromFile File="$(TagFile)">
@@ -291,49 +247,23 @@
         <Message Text="%09Recent Git version: $(GitVersion)" />
         <Error Text="Release product version and recent Git version are identical!%0APlease, edit ProductVersion of Properties\Version.resx file to reflect a new release."
                Condition="'$(ProductVersion)' == '$(GitVersion)'" />
-  
-        <!-- Download skill tree assets -->
-        <Exec Command="$(DistDir)\UpdateDB.exe /CurrentDir" WorkingDirectory="$(DistDir)" />
 
-        <!-- Create empty PersistentData template file -->
-        <AssemblyInvokeStatic AssemblyFile="$(DistDir)\$(AssemblyName).exe"
-                              ClassFullName="PoESkillTree.Model.Serialization.PersistentDataSerializationService"
-                              Method="CreateSetupTemplate"
-                              Input1="$(DistDir)"
-                              Input2="%LANGUAGE%" />
+        <Exec Command="dotnet test -c release ..\WPFSKillTree.sln" />
+        <Exec Command="dotnet publish -c release -o $(DistDir)" />
+        <Exec Command="dotnet run -c release -p ..\UpdateDB /SpecifiedDir:$(DistDir)" />
 
         <!-- Create PackageName from ProductName -->
-        <AssemblyInvokeStatic AssemblyFile="$(DistDir)\$(AssemblyName).exe"
-                              ClassFullName="PoESkillTree.SkillTreeFiles.Updater"
-                              Method="GetPackageName"
-                              Input1="$(ProductName)">
-            <Output PropertyName="PackageName" TaskParameter="ReturnValue" />
-        </AssemblyInvokeStatic>
+        <PropertyGroup>
+            <PackageName>$(ProductName.Replace(" ", ""))</PackageName>
+        </PropertyGroup>
 
         <!-- Create release installer -->
-        <Exec Command="..\$(ISCCTool) /dAppId=$(AppId) /dAssemblyCompany=&quot;$(AssemblyCompany)&quot; /dAssemblyCopyright=&quot;$(AssemblyCopyright)&quot; /dAssemblyName=&quot;$(AssemblyName)&quot; /dFileVersion=&quot;$(FileVersion)&quot; /dPackageName=&quot;$(PackageName)&quot; /dProductName=&quot;$(ProductName)&quot; /dProductURL=&quot;$(ProductURL)&quot; /dProductVersion=$(ProductVersion) /dProjectDir=&quot;$(MSBuildProjectDirectory)&quot; ..\release.iss" WorkingDirectory="$(WorkDir)" />
+        <WriteLinesToFile File="$(DistDir)\PersistentData.xml" Lines="$(PersistentDataLines.Replace(&quot;%AppVersion%&quot;, $(FileVersion)))" Overwrite="true" />
+        <Exec Command="..\$(ISCCTool) /dAppId=&quot;$(AppId)&quot; /dAssemblyCompany=&quot;$(AssemblyCompany)&quot; /dAssemblyCopyright=&quot;$(AssemblyCopyright)&quot; /dAssemblyName=&quot;$(AssemblyName)&quot; /dFileVersion=&quot;$(FileVersion)&quot; /dPackageName=&quot;$(PackageName)&quot; /dProductName=&quot;$(ProductName)&quot; /dProductURL=&quot;$(ProductURL)&quot; /dProductVersion=$(ProductVersion) /dProjectDir=&quot;$(MSBuildProjectDirectory)&quot; ..\release.iss" WorkingDirectory="$(WorkDir)" />
 
-        <!-- Create Portable.ini file to include it into Zip package -->
-        <WriteLinesToFile File="$(DistDir)\Portable.ini" Lines="@(PortableIniLines->'%(Line)')" Overwrite="true" />
-        <!-- Delete PersistenData.xml file to exclude it from Zip package -->
+        <!-- Create release zip package -->
         <Delete Files="$(DistDir)\PersistentData.xml" />
-
-        <!-- Create release package -->
-        <Exec Command="..\$(ZipTool) $(PackageName)-$(ProductVersion).zip $(InstallDir)" WorkingDirectory="$(WorkDir)" />
-    </Target>
-
-    <Target Name="Test" DependsOnTargets="Build">
-        <MSBuild Projects="..\WPFSKillTree.Tests\WPFSKillTree.Tests.csproj" Targets="Build;Test" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0" />
-    </Target>
-
-    <Target Name="UpdateItemImages">
-        <!-- Make regular build using project defined output path -->
-        <MSBuild Projects="..\UpdateDB\UpdateDB.csproj" Targets="Build" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0" />
-
-        <!-- Update item images directly in bin/Debug -->
-        <Exec Command="..\UpdateDB\bin\Release\net462\UpdateDB.exe /ItemImages /SpecifiedDir:bin/Debug/net462" />
-
-        <!-- Make regular clean using project defined output path -->
-        <MSBuild Projects="..\UpdateDB\UpdateDB.csproj" Targets="Clean" Properties="Configuration=Release;Platform=$(Platform);WarningLevel=0" />
+        <WriteLinesToFile File="$(DistDir)\Portable.ini" Lines="$(PortableIniLines)" Overwrite="true" />
+        <Exec Command="..\$(ZipTool) $(PackageName)-$(ProductVersion).zip $(DistDir)" WorkingDirectory="$(WorkDir)" />
     </Target>
 </Project>

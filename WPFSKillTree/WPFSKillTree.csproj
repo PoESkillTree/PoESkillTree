@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <ProductVersion>8.0.30703</ProductVersion>
     <OutputType>WinExe</OutputType>
@@ -22,7 +22,7 @@
     <StartupObject>PoESkillTree.SkillTreeFiles.Bootstrap</StartupObject>
   </PropertyGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="$(Configuration) == Release">
-    <Exec Command="$(ProjectDir)build-locale.bat $(TargetDir)" />
+    <Exec Command="$(ProjectDir)build-locale.bat" />
   </Target>
   <ItemGroup>
     <PackageReference Include="ControlzEx" Version="4.1.0" />
@@ -69,6 +69,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="ExpressionEvaluator.dll" />
+    <Content Include="Locale\**"> 
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
+    </Content> 
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Properties\Version.resx">

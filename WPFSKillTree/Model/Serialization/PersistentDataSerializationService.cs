@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
 using NLog;
 using PoESkillTree.Controls.Dialogs;
 using PoESkillTree.Engine.Utils;
@@ -85,17 +84,6 @@ namespace PoESkillTree.Model.Serialization
             var data = new PersistentData(suitableDeserializer, importedBuildPath);
             suitableDeserializer.DeserializePersistentDataFile(xmlString);
             return data;
-        }
-
-        /// <summary>
-        /// Creates an empty PersistentData file that only has the language option set.
-        /// Used by the installation script.
-        /// </summary>
-        [UsedImplicitly]
-        public static void CreateSetupTemplate(string path, string language)
-        {
-            var data = new BarePersistentData { Options = { Language = language } };
-            new PersistentDataSerializer(data).Serialize(Path.Combine(path, FileName + ".xml"));
         }
 
 
