@@ -1,10 +1,8 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<Project ToolsVersion="4.0" DefaultTargets="Release" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <!-- MSBuild file used by dist-*.bat scripts -->
-    <Import Project="$(MSBuildProjectDirectory)\Tools\MSBuild.ExtensionPack.tasks" />
-
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project ToolsVersion="16.0" DefaultTargets="Release" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <!-- Takes LocaleLanguageDir items and outputs same items with "Locale" metadata set to correct PO locale -->
-    <UsingTask TaskName="PopulateLocale" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsTasksPath)">
+    <UsingTask TaskName="PopulateLocale" TaskFactory="RoslynCodeTaskFactory"
+               AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
         <ParameterGroup>
             <Dirs ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
             <Locales ParameterType="Microsoft.Build.Framework.ITaskItem[]" Output="true" />
@@ -39,23 +37,13 @@
     </UsingTask>
 
     <PropertyGroup>
-        <WorkDir>$(MSBuildProjectDirectory)\dist</WorkDir>
-        <ZipTool>Tools\7z.exe a -tzip</ZipTool>
-        <ISCCTool>Tools\isetup\ISCC.exe</ISCCTool>
-    </PropertyGroup>
-    
-    <PropertyGroup>
-        <MSBuildToolsTasksPathOld>$(MSBuildToolsPath)\Microsoft.Build.Tasks.v$(MSBuildToolsVersion).dll</MSBuildToolsTasksPathOld>
-        <MSBuildToolsTasksPathNew>$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll</MSBuildToolsTasksPathNew>
-        <MSBuildToolsTasksPath Condition="Exists('$(MSBuildToolsTasksPathOld)')">$(MSBuildToolsPath)\Microsoft.Build.Tasks.v$(MSBuildToolsVersion).dll</MSBuildToolsTasksPath>
-        <MSBuildToolsTasksPath Condition="Exists('$(MSBuildToolsTasksPathNew)')">$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll</MSBuildToolsTasksPath>
-    </PropertyGroup>
-
-    <PropertyGroup>
-        <DistDir>$(WorkDir)\PoESkillTree</DistDir>
-        <TagFile>$(WorkDir)\tag</TagFile>
-        <RevisionCountFile>$(WorkDir)\revcount</RevisionCountFile>
-        <ObjDir>obj</ObjDir>
+      <WorkDir>$(MSBuildProjectDirectory)\dist</WorkDir>
+      <DistDir>$(WorkDir)\PoESkillTree</DistDir>
+      <TagFile>$(WorkDir)\tag</TagFile>
+      <ObjDir>obj</ObjDir>
+      <RevisionCountFile>$(WorkDir)\revcount</RevisionCountFile>
+      <ZipTool>Tools\7z.exe a -tzip</ZipTool>
+      <ISCCTool>Tools\isetup\ISCC.exe</ISCCTool>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -81,7 +69,6 @@
         <LocaleLanguageDir Include="$([System.IO.Directory]::GetDirectories(&quot;$(LocaleDir)&quot;))" Exclude="$(LocaleDir)\$(DefaultCatalogDir)">
             <MessageFile>%(Identity)\$(LocaleMessageFilename)</MessageFile>
         </LocaleLanguageDir>
-        <LocaleCopyFiles Include="$(LocaleDir)\**" />
     </ItemGroup>
 
     <PropertyGroup>
@@ -101,10 +88,6 @@ Language=en_US
 ]]>
         </PersistentDataLines>
     </PropertyGroup>
-
-    <Target Name="BuildLocale" DependsOnTargets="BuildLocaleCatalog">
-        <!-- Don't make any dependencies on this target, it's invoked explicitely as Post-Build event -->
-    </Target>
 
     <Target Name="TransformXAML">
         <!-- Make output directory for fake C# file -->
@@ -142,7 +125,7 @@ Language=en_US
         </PopulateLocale>
     </Target>
     
-    <Target Name="BuildLocaleCatalog" DependsOnTargets="BuildLocalePopulateLocales">
+    <Target Name="BuildLocale" DependsOnTargets="BuildLocalePopulateLocales">
         <!-- Remove BOM from catalog messages -->
         <Exec Command="Tools\DeBOM %(LocaleLocales.MessageFile)"
               Condition="Exists('%(LocaleLocales.MessageFile)')" />
@@ -157,7 +140,7 @@ Language=en_US
     </Target>
 
     <Target Name="Clean">
-        <Exec Command="dotnet clean -c release -o $(DistDir)" />
+        <Exec Command="dotnet clean -c release -o $(DistDir) -verbosity:minimal" />
         <RemoveDir Directories="$(LocaleWorkDir)" />
         <RemoveDir Directories="$(WorkDir)" />
     </Target>
@@ -227,11 +210,11 @@ Language=en_US
 
         <!-- Create release installer -->
         <WriteLinesToFile File="$(DistDir)\PersistentData.xml" Lines="$(PersistentDataLines.Replace(&quot;%AppVersion%&quot;, $(FileVersion)))" Overwrite="true" />
-        <Exec Command="..\$(ISCCTool) /dCompany=&quot;$(Company)&quot; /dCopyright=&quot;$(Copyright)&quot; /dAssemblyName=&quot;$(AssemblyName)&quot; /dFileVersion=&quot;$(FileVersion)&quot; /dArtifactFileName=&quot;$(ArtifactFileName)&quot; /dProductName=&quot;$(ProductName)&quot; /dProductURL=&quot;$(ProductURL)&quot; /dVersion=$(Version) /dProjectDir=&quot;$(MSBuildProjectDirectory)&quot; ..\release.iss" WorkingDirectory="$(WorkDir)" />
+        <Exec Command="..\$(ISCCTool) /qp /dCompany=&quot;$(Company)&quot; /dCopyright=&quot;$(Copyright)&quot; /dAssemblyName=&quot;$(AssemblyName)&quot; /dFileVersion=&quot;$(FileVersion)&quot; /dArtifactFileName=&quot;$(ArtifactFileName)&quot; /dProductName=&quot;$(ProductName)&quot; /dProductURL=&quot;$(ProductURL)&quot; /dVersion=$(Version) /dProjectDir=&quot;$(MSBuildProjectDirectory)&quot; ..\release.iss" WorkingDirectory="$(WorkDir)" />
 
         <!-- Create release zip package -->
         <Delete Files="$(DistDir)\PersistentData.xml" />
         <WriteLinesToFile File="$(DistDir)\Portable.ini" Lines="$(PortableIniLines)" Overwrite="true" />
-        <Exec Command="..\$(ZipTool) $(ArtifactFileName).zip $(DistDir)" WorkingDirectory="$(WorkDir)" />
+        <Exec Command="..\$(ZipTool) $(ArtifactFileName).zip $(DistDir) > nul" WorkingDirectory="$(WorkDir)" />
     </Target>
 </Project>
