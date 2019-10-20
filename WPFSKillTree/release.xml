@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <Project ToolsVersion="4.0" DefaultTargets="Release" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <!-- MSBuild file used by dist-*.bat scripts -->
     <Import Project="$(MSBuildProjectDirectory)\Tools\MSBuild.ExtensionPack.tasks" />
@@ -102,30 +102,6 @@ Language=en_US
         </PersistentDataLines>
     </PropertyGroup>
 
-    <Target Name="UpdateAssemblyInfo" DependsOnTargets="Clean;Identity">
-        <!-- Files updated by this target -->
-        <ItemGroup>
-            <ApplicationManifest Include="Properties\app.manifest" />
-            <AssemblyInfoFiles Include="Properties\AssemblyInfo.cs" />
-            <AssemblyInfoFiles Include="..\UpdateDB\Properties\AssemblyInfo.cs" />
-        </ItemGroup>
-
-        <!-- Create working directory for release -->
-        <MakeDir Directories="$(WorkDir)" />
-
-        <!-- Update AssemblyInfo files. Don't update AssemblyTitle. PoESkillTree.exe and UpdateDB.exe must have own AssemblyTitle. -->
-        <AssemblyInfo AssemblyInfoFiles="@(AssemblyInfoFiles)" UpdateAssemblyInformationalVersion="true"
-                      AssemblyVersion="$(AssemblyVersion)"
-                      AssemblyFileVersion="$(FileVersion)"
-                      AssemblyInformationalVersion="$(ProductVersion)"
-                      AssemblyDescription="$(AssemblyDescription)" AssemblyCopyright="$(AssemblyCopyright)"
-                      AssemblyCompany="$(AssemblyCompany)" AssemblyProduct="$(ProductName)" />
-
-        <!-- Generate app.manifest -->
-        <GenerateApplicationManifest ManifestType="Native" InputManifest="@(ApplicationManifest -> '%(Identity).i')" OutputManifest="@(ApplicationManifest)"
-                                     AssemblyName="$(AssemblyName).exe" AssemblyVersion="$(AssemblyVersion)" />
-    </Target>
-
     <Target Name="BuildLocale" DependsOnTargets="BuildLocaleCatalog">
         <!-- Don't make any dependencies on this target, it's invoked explicitely as Post-Build event -->
     </Target>
@@ -188,82 +164,78 @@ Language=en_US
 
     <!-- Target fetches all properties used to identify application and release -->
     <Target Name="Identity">
-        <!-- Create properties from Properties\Version.resx -->
-        <XmlPeek XmlInputPath="Properties\Version.resx" Query="//root/data[@name='AppId']/value/text()">
-            <Output PropertyName="AppId" TaskParameter="Result" />
+        <!-- Get properties from WPFSKillTree project file -->
+        <XmlPeek XmlInputPath="WPFSKillTree.csproj" Query="//Project/PropertyGroup/AssemblyName/text()">
+          <Output PropertyName="AssemblyName" TaskParameter="Result" />
         </XmlPeek>
-        <XmlPeek XmlInputPath="Properties\Version.resx" Query="//root/data[@name='AssemblyCompany']/value/text()">
-            <Output PropertyName="AssemblyCompany" TaskParameter="Result" />
+        <XmlPeek XmlInputPath="WPFSKillTree.csproj" Query="//Project/PropertyGroup/Company/text()">
+          <Output PropertyName="Company" TaskParameter="Result" />
         </XmlPeek>
-        <XmlPeek XmlInputPath="Properties\Version.resx" Query="//root/data[@name='AssemblyCopyright']/value/text()">
-            <Output PropertyName="AssemblyCopyright" TaskParameter="Result" />
+        <XmlPeek XmlInputPath="WPFSKillTree.csproj" Query="//Project/PropertyGroup/Copyright/text()">
+          <Output PropertyName="Copyright" TaskParameter="Result" />
         </XmlPeek>
-        <XmlPeek XmlInputPath="Properties\Version.resx" Query="//root/data[@name='AssemblyDescription']/value/text()">
-            <Output PropertyName="AssemblyDescription" TaskParameter="Result" />
+        <XmlPeek XmlInputPath="WPFSKillTree.csproj" Query="//Project/PropertyGroup/Product/text()">
+          <Output PropertyName="ProductName" TaskParameter="Result" />
         </XmlPeek>
-        <XmlPeek XmlInputPath="Properties\Version.resx" Query="//root/data[@name='AssemblyVersion']/value/text()">
-            <Output PropertyName="AssemblyVersion" TaskParameter="Result" />
+        <XmlPeek XmlInputPath="WPFSKillTree.csproj" Query="//Project/PropertyGroup/ProductUrl/text()">
+          <Output PropertyName="ProductUrl" TaskParameter="Result" />
         </XmlPeek>
-        <XmlPeek XmlInputPath="Properties\Version.resx" Query="//root/data[@name='ProductName']/value/text()">
-            <Output PropertyName="ProductName" TaskParameter="Result" />
+        <XmlPeek XmlInputPath="WPFSKillTree.csproj" Query="//Project/PropertyGroup/VersionPrefix/text()">
+          <Output PropertyName="VersionPrefix" TaskParameter="Result" />
         </XmlPeek>
-        <XmlPeek XmlInputPath="Properties\Version.resx" Query="//root/data[@name='ProductVersion']/value/text()">
-            <Output PropertyName="ProductVersion" TaskParameter="Result" />
-        </XmlPeek>
-        <XmlPeek XmlInputPath="Properties\Version.resx" Query="//root/data[@name='ProductURL']/value/text()">
-            <Output PropertyName="ProductURL" TaskParameter="Result" />
+        <XmlPeek XmlInputPath="WPFSKillTree.csproj" Query="//Project/PropertyGroup/VersionSuffix/text()">
+          <Output PropertyName="VersionSuffix" TaskParameter="Result" />
         </XmlPeek>
 
-        <!-- Get assembly name from WPFSKillTree project file -->
-        <XmlPeek XmlInputPath="WPFSKillTree.csproj" Query="//Project/PropertyGroup/AssemblyName/text()">
-            <Output PropertyName="AssemblyName" TaskParameter="Result" />
-        </XmlPeek>
+        <PropertyGroup>
+          <Version Condition=" '$(VersionSuffix)' != '' ">$(VersionPrefix)-$(VersionSuffix)</Version>
+          <Version Condition=" '$(Version)' == '' ">$(VersionPrefix)</Version>
+        </PropertyGroup>
 
         <!-- Create working directory for temporary files -->
         <MakeDir Directories="$(WorkDir)" />
 
-        <!-- Create FileVersion from ProductVersion using Git revision count as build number -->
+        <!-- Create FileVersion from VersionPrefix using Git revision count as build number -->
         <Exec Command="git rev-list --count HEAD >$(RevisionCountFile)" />
         <ReadLinesFromFile File="$(RevisionCountFile)">
             <Output PropertyName="BuildNumber" TaskParameter="Lines" />
         </ReadLinesFromFile>
         <Message Text="%09Revision count: $(BuildNumber)" />
         <PropertyGroup>
-            <!-- Remove pre-release suffix from ProductVersion and add format item for BuildNumber as Revision.
-                 (Major, Minor and Patch are kept) -->
-            <FormatFileVersion>$([System.Text.RegularExpressions.Regex]::Replace($(ProductVersion), "\.([0-9]+)(-.+)?$", ".$1.{0}"))</FormatFileVersion>
-            <!-- Set BuildNumber -->
-            <FileVersion>$([System.String]::Format($(FormatFileVersion), $(BuildNumber)))</FileVersion>
+            <FileVersion>$(VersionPrefix).$(BuildNumber)</FileVersion>
         </PropertyGroup>
     </Target>
 
-    <Target Name="Release" DependsOnTargets="Clean;Identity;UpdateAssemblyInfo">
-        <!-- Compare ProductVersion with recent Git tag (version) -->
+    <Target Name="Release" DependsOnTargets="Clean;Identity">
+        <!-- Compare Version with recent Git tag (version) -->
         <Exec Command="git describe --tags --abbrev=0 >$(TagFile)" />
         <ReadLinesFromFile File="$(TagFile)">
             <Output PropertyName="GitVersion" TaskParameter="Lines" />
         </ReadLinesFromFile>
-        <Message Text="%09Release product version: $(ProductVersion)" />
+        <Message Text="%09Release version: $(Version)" />
         <Message Text="%09Recent Git version: $(GitVersion)" />
-        <Error Text="Release product version and recent Git version are identical!%0APlease, edit ProductVersion of Properties\Version.resx file to reflect a new release."
-               Condition="'$(ProductVersion)' == '$(GitVersion)'" />
+        <Error Text="Release version and recent Git version are identical!%0APlease, edit VersionPrefix/-Suffix of WPFSKillTree.csproj file to reflect a new release."
+               Condition="'$(Version)' == '$(GitVersion)'" />
+
+        <!-- Generate app.manifest -->
+        <GenerateApplicationManifest ManifestType="Native" InputManifest="Properties\app.manifest.i" OutputManifest="Properties\app.manifest"
+                                     AssemblyName="$(AssemblyName).exe" AssemblyVersion="$(VersionPrefix).0" />
 
         <Exec Command="dotnet test -c release ..\WPFSKillTree.sln" />
-        <Exec Command="dotnet publish -c release -o $(DistDir)" />
+        <Exec Command="dotnet publish -c release -o $(DistDir) /p:FileVersion=$(FileVersion)" />
         <Exec Command="dotnet run -c release -p ..\UpdateDB /SpecifiedDir:$(DistDir)" />
 
-        <!-- Create PackageName from ProductName -->
         <PropertyGroup>
-            <PackageName>$(ProductName.Replace(" ", ""))</PackageName>
+          <ArtifactFileName>$(ProductName.Replace(" ", ""))-$(Version)</ArtifactFileName>
         </PropertyGroup>
 
         <!-- Create release installer -->
         <WriteLinesToFile File="$(DistDir)\PersistentData.xml" Lines="$(PersistentDataLines.Replace(&quot;%AppVersion%&quot;, $(FileVersion)))" Overwrite="true" />
-        <Exec Command="..\$(ISCCTool) /dAppId=&quot;$(AppId)&quot; /dAssemblyCompany=&quot;$(AssemblyCompany)&quot; /dAssemblyCopyright=&quot;$(AssemblyCopyright)&quot; /dAssemblyName=&quot;$(AssemblyName)&quot; /dFileVersion=&quot;$(FileVersion)&quot; /dPackageName=&quot;$(PackageName)&quot; /dProductName=&quot;$(ProductName)&quot; /dProductURL=&quot;$(ProductURL)&quot; /dProductVersion=$(ProductVersion) /dProjectDir=&quot;$(MSBuildProjectDirectory)&quot; ..\release.iss" WorkingDirectory="$(WorkDir)" />
+        <Exec Command="..\$(ISCCTool) /dCompany=&quot;$(Company)&quot; /dCopyright=&quot;$(Copyright)&quot; /dAssemblyName=&quot;$(AssemblyName)&quot; /dFileVersion=&quot;$(FileVersion)&quot; /dArtifactFileName=&quot;$(ArtifactFileName)&quot; /dProductName=&quot;$(ProductName)&quot; /dProductURL=&quot;$(ProductURL)&quot; /dVersion=$(Version) /dProjectDir=&quot;$(MSBuildProjectDirectory)&quot; ..\release.iss" WorkingDirectory="$(WorkDir)" />
 
         <!-- Create release zip package -->
         <Delete Files="$(DistDir)\PersistentData.xml" />
         <WriteLinesToFile File="$(DistDir)\Portable.ini" Lines="$(PortableIniLines)" Overwrite="true" />
-        <Exec Command="..\$(ZipTool) $(PackageName)-$(ProductVersion).zip $(DistDir)" WorkingDirectory="$(WorkDir)" />
+        <Exec Command="..\$(ZipTool) $(ArtifactFileName).zip $(DistDir)" WorkingDirectory="$(WorkDir)" />
     </Target>
 </Project>

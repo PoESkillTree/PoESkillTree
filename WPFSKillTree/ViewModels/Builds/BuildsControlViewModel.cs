@@ -294,7 +294,6 @@ namespace PoESkillTree.ViewModels.Builds
             var build = new GGGBuild()
             {
                 Name = target.Build.Name,
-                Version = PoESkillTree.Properties.Version.GGGPatchVersion,
                 Parts = new List<GGGBuildPart>()
             };
 

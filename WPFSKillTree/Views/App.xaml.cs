@@ -31,7 +31,7 @@ namespace PoESkillTree.Views
         // The Mutex for detecting running application instance.
         private Mutex _runningInstanceMutex;
 
-        private static string RunningInstanceMutexName => PoESkillTree.Properties.Version.AppId;
+        private static string RunningInstanceMutexName => AppData.ProductName;
 
         // Invoked when application is about to exit.
         protected override void OnExit(ExitEventArgs e)

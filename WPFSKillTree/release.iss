@@ -6,7 +6,6 @@
 ; If certain language cannot be found there, try looking on Internet for its ISL file. Probably someone already made one.
 ; Note that, ISL files with ".isl" extension use ANSI encoding in LanguageCodePage specified in file. ISL files with ".islu" extension use UTF-8 encoding.
 
-#define AppId "{" + AppId
 #define AppExeName AssemblyName + ".exe"
 #define AppDataFolderName ProductName
 #define DistDir ProjectDir + "\dist"
@@ -14,24 +13,23 @@
 #define PortableIniFileName "Portable.ini"
 
 [Setup]
-AppId={#AppId}
-AppMutex={#AppId}
+AppId={#ProductName}
+AppMutex={#ProductName}
 AppName={#ProductName}
-AppVersion={#ProductVersion}
-AppPublisher={#AssemblyCompany}
+AppVersion={#Version}
+AppPublisher={#Company}
 AppPublisherURL={#ProductURL}
 AppSupportURL={#ProductURL}
 AppUpdatesURL={#ProductURL}
-AppCopyright={#AssemblyCopyright}
+AppCopyright={#Copyright}
 DefaultDirName={pf}\{#ProductName}
 DefaultGroupName={#ProductName}
 Uninstallable=not CheckPortableMode
 UninstallDisplayName={#ProductName}
 UninstallDisplayIcon={app}\{#AppExeName},0
-;InfoBeforeFile="Release-Notes.txt"
 LicenseFile={#BuildOutputDir}\LICENSE.txt
 OutputDir={#DistDir}
-OutputBaseFilename={#PackageName}-{#ProductVersion}
+OutputBaseFilename={#ArtifactFileName}
 VersionInfoVersion={#FileVersion}
 SetupIconFile={#ProjectDir}\logo.ico
 Compression=lzma
@@ -51,7 +49,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Check: CheckStandardMode; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Dirs]
-Name: "{userappdata}\{#AppId}"; Check: CheckStandardMode
+Name: "{userappdata}\{#ProductName}"; Check: CheckStandardMode
 
 [Files]
 ; Program Files
@@ -85,10 +83,10 @@ Filename: "{app}\{#AppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(
 Filename: "{app}\{#AppExeName}"; Flags: nowait skipifnotsilent
 
 [Registry]
-Root: HKCR; Subkey: ".pbuild";                      ValueData: "{#AppId}";          Flags: uninsdeletevalue; ValueType: string; Check: CheckStandardMode;
-Root: HKCR; Subkey: "{#AppId}";                     ValueData: "Program {#AppId}";  Flags: uninsdeletekey;   ValueType: string; Check: CheckStandardMode;
-Root: HKCR; Subkey: "{#AppId}\DefaultIcon";         ValueData: "{app}\{#AppExeName},0";                      ValueType: string; Check: CheckStandardMode;
-Root: HKCR; Subkey: "{#AppId}\shell\open\command";  ValueData: """{app}\{#AppExeName}"" ""%1""";             ValueType: string; Check: CheckStandardMode;
+Root: HKCR; Subkey: ".pbuild";                          ValueData: "{#ProductName}";          Flags: uninsdeletevalue; ValueType: string; Check: CheckStandardMode;
+Root: HKCR; Subkey: "{#ProductName}";                   ValueData: "Program {#ProductName}";  Flags: uninsdeletekey;   ValueType: string; Check: CheckStandardMode;
+Root: HKCR; Subkey: "{#ProductName}\DefaultIcon";       ValueData: "{app}\{#AppExeName},0";                            ValueType: string; Check: CheckStandardMode;
+Root: HKCR; Subkey: "{#ProductName}\shell\open\command";ValueData: """{app}\{#AppExeName}"" ""%1""";                   ValueType: string; Check: CheckStandardMode;
 
 [Code]
 var
@@ -145,7 +143,7 @@ begin
 		else
 			begin
 				{ Use InstallLocation from registry if possible }
-				if RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\Microsoft\Windows\CurrentVersion\Uninstall\' + ExpandConstant('{#AppId}') + '_is1', 'InstallLocation', InstallLocation) then
+				if RegQueryStringValue(HKEY_LOCAL_MACHINE, 'Software\Microsoft\Windows\CurrentVersion\Uninstall\' + ExpandConstant('{#ProductName}') + '_is1', 'InstallLocation', InstallLocation) then
 					WizardForm.DirEdit.Text := RemoveBackslashUnlessRoot(InstallLocation)
 				else
 					WizardForm.DirEdit.Text := ExpandConstant('{pf}\{#ProductName}')

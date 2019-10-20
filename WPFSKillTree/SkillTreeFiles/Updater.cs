@@ -9,7 +9,6 @@ using Microsoft.Win32;
 using PoESkillTree.Localization;
 using Newtonsoft.Json.Linq;
 using PoESkillTree.Utils;
-using Version = PoESkillTree.Properties.Version;
 
 namespace PoESkillTree.SkillTreeFiles
 {
@@ -24,12 +23,6 @@ namespace PoESkillTree.SkillTreeFiles
         private const string InnoSetupUninstallLanguageValue = "Inno Setup: Language";
         // The suffix added to AppId to form Uninstall registry key for an application.
         private const string InnoSetupUninstallAppIdSuffix = "_is1";
-        // The flag whether check for updates was done and was successful.
-        public static bool IsChecked = false;
-        // The flag whether download is complete.
-        public static bool IsDownloaded { get { return Latest != null && Latest.IsDownloaded; } }
-        // The flag whether download is in progress.
-        public static bool IsDownloading { get { return Latest != null && Latest.IsDownloading; } }
         // Latest release.
         private static Release Latest;
         // Asset content type of package.
@@ -44,10 +37,6 @@ namespace PoESkillTree.SkillTreeFiles
         {
             // The web client instance of current download process.
             private WebClient Client;
-            // The name.
-            public string Name;
-            // The description.
-            public string Description;
             // The destination file for package download.
             private string DownloadFile;
             // The flag whether release was downloaded.
@@ -244,8 +233,6 @@ namespace PoESkillTree.SkillTreeFiles
             if (IsNewerProductInstalled())
             {
                 // Newer product is installed, there is no update.
-                IsChecked = true;
-
                 return null;
             }
 
@@ -278,8 +265,6 @@ namespace PoESkillTree.SkillTreeFiles
                     if (version.CompareTo(current) <= 0)
                     {
                         // Same or older version.
-                        IsChecked = true;
-
                         return null;
                     }
 
@@ -311,14 +296,11 @@ namespace PoESkillTree.SkillTreeFiles
                     if (pkgAsset == null) continue; // No package found.
 
                     // This is newer release.
-                    IsChecked = true;
                     Latest = new Release
                     {
-                        Name = release["name"].Value<string>(),
-                        Description = release["body"].Value<string>(),
                         IsPrerelease = prerelease,
                         // A release is an update, if file name starts with our PackageName.
-                        IsUpdate = fileName.StartsWith(GetPackageName(Version.ProductName) + "-"),
+                        IsUpdate = fileName.StartsWith(GetPackageName(AppData.ProductName) + "-"),
                         PackageFileName = fileName,
                         Version = tag,
                         URI = new Uri(pkgAsset["browser_download_url"].Value<string>())
@@ -353,8 +335,6 @@ namespace PoESkillTree.SkillTreeFiles
                 Latest.Dispose();
                 Latest = null;
             }
-
-            IsChecked = false;
         }
 
         /* Downloads latest release.
@@ -374,7 +354,7 @@ namespace PoESkillTree.SkillTreeFiles
         // Returns current version.
         private static SemanticVersion GetCurrentVersion()
         {
-            return SemanticVersion.Parse(Version.ProductVersion);
+            return SemanticVersion.Parse(AppData.ProductVersion);
         }
 
         // Return latest release, or null if there is none or it wasn't checked for yet.
@@ -402,7 +382,7 @@ namespace PoESkillTree.SkillTreeFiles
                 return AppData.GetIniValue("Setup", "Language");
             }
             else
-                using (RegistryKey uninstallKey = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall\" + Version.AppId + InnoSetupUninstallAppIdSuffix))
+                using (RegistryKey uninstallKey = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall\" + AppData.ProductName + InnoSetupUninstallAppIdSuffix))
                 {
                     if (uninstallKey == null)
                         throw new Exception(L10n.Message("The application is not correctly installed"));
@@ -448,7 +428,7 @@ namespace PoESkillTree.SkillTreeFiles
 
                         if (!productName.ToLowerInvariant().Contains("PoESkillTree")) continue; // Not our application.
 
-                        if (productName != Version.ProductName)
+                        if (productName != AppData.ProductName)
                         {
                             var version = SemanticVersion.Parse((string) key.GetValue("DisplayVersion"));
                             if (version.CompareTo(current) > 0)
@@ -462,14 +442,8 @@ namespace PoESkillTree.SkillTreeFiles
         }
     }
 
-    // Updater exception.
     public class UpdaterException : Exception
     {
-        public UpdaterException()
-            : base()
-        {
-        }
-
         public UpdaterException(string message)
             : base(message)
         {

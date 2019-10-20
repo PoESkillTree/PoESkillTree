@@ -43,7 +43,6 @@ using PoESkillTree.ViewModels.Equipment;
 using PoESkillTree.Views.Crafting;
 using PoESkillTree.Views.Equipment;
 using Attribute = PoESkillTree.ViewModels.Attribute;
-using Version = PoESkillTree.Properties.Version;
 
 namespace PoESkillTree.Views
 {
@@ -187,8 +186,7 @@ namespace PoESkillTree.Views
             private set => SetProperty(ref _treeGeneratorInteraction, value);
         }
 
-        public string MainWindowTitle { get; } =
-            FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location).ProductName;
+        public string MainWindowTitle { get; } = AppData.ProductName;
 
         /// <summary>
         /// Set to true when CurrentBuild.TreeUrl was set after direct SkillTree changes so the SkillTree
@@ -1020,7 +1018,7 @@ namespace PoESkillTree.Views
                 {
                     var message = release.IsUpdate
                         ? string.Format(L10n.Message("An update for {0} ({1}) is available!"),
-                            Version.ProductName, release.Version)
+                            AppData.ProductName, release.Version)
                           + "\n\n" +
                           L10n.Message("The application will be closed when download completes to proceed with the update.")
                         : string.Format(L10n.Message("A new version {0} is available!"), release.Version)
