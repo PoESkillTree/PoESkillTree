@@ -5,6 +5,7 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyName>PoESkillTree</AssemblyName>
@@ -15,13 +16,6 @@
     <ProductUrl>https://github.com/PoESkillTree/PoESkillTree/</ProductUrl>
     <VersionPrefix>3.0.0</VersionPrefix>
     <VersionSuffix>alpha.7</VersionSuffix>
-  </PropertyGroup>
-  <PropertyGroup>
-    <TargetZone>LocalIntranet</TargetZone>
-    <GenerateManifests>false</GenerateManifests>
-    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
-    <ApplicationIcon>logo.ico</ApplicationIcon>
-    <StartupObject>PoESkillTree.SkillTreeFiles.Bootstrap</StartupObject>
   </PropertyGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="$(Configuration) == Release">
     <Exec Command="$(ProjectDir)build-locale.bat" />

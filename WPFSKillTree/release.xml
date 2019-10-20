@@ -217,10 +217,6 @@ Language=en_US
         <Error Text="Release version and recent Git version are identical!%0APlease, edit VersionPrefix/-Suffix of WPFSKillTree.csproj file to reflect a new release."
                Condition="'$(Version)' == '$(GitVersion)'" />
 
-        <!-- Generate app.manifest -->
-        <GenerateApplicationManifest ManifestType="Native" InputManifest="Properties\app.manifest.i" OutputManifest="Properties\app.manifest"
-                                     AssemblyName="$(AssemblyName).exe" AssemblyVersion="$(VersionPrefix).0" />
-
         <Exec Command="dotnet test -c release ..\WPFSKillTree.sln" />
         <Exec Command="dotnet publish -c release -o $(DistDir) /p:FileVersion=$(FileVersion)" />
         <Exec Command="dotnet run -c release -p ..\UpdateDB /SpecifiedDir:$(DistDir)" />

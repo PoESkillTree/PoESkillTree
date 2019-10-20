@@ -65,7 +65,7 @@ namespace PoESkillTree.Controls.Dialogs.ViewModels
             {
                 var dialog = new FolderBrowserDialog
                 {
-                    SelectedPath = Path.GetDirectoryName(path),
+                    SelectedPath = path,
                 };
                 if (dialog.ShowDialog() != DialogResult.OK)
                     return;
