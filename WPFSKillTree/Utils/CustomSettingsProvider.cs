@@ -5,7 +5,6 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using PoESkillTree.Properties;
 
 namespace PoESkillTree.Utils
 {
@@ -21,25 +20,13 @@ namespace PoESkillTree.Utils
         const string SETTING = "setting";
 
         private readonly string _settingsKey;
-        /// <summary>
-        /// Loads the file into memory.
-        /// </summary>
-        public CustomSettingsProvider()
-        {
-            SettingsDictionary = new Dictionary<string, SettingStruct>();
-            _settingsKey = Settings.Default.SettingsKey;
-        }
 
         /// <summary>
         /// Loads the file into memory.
         /// </summary>
-        public CustomSettingsProvider(string settingsKey = null)
+        public CustomSettingsProvider(string settingsKey)
         {
             SettingsDictionary = new Dictionary<string, SettingStruct>();
-            if (settingsKey == null)
-            {
-                settingsKey = Settings.Default.SettingsKey;
-            }
             _settingsKey = settingsKey;
         }
 
@@ -152,8 +139,7 @@ namespace PoESkillTree.Utils
                 var configXml = XDocument.Load(UserConfigPath);
 
                 //get all of the <setting name="..." serializeAs="..."> elements.
-                var settingElements = configXml.Element(CONFIG).Element(USER_SETTINGS)
-                    .Element(typeof(Settings).FullName)?.Elements(SETTING);
+                var settingElements = configXml.Element(CONFIG)?.Element(USER_SETTINGS)?.Elements(SETTING);
 
                 if (settingElements is null)
                 {
@@ -192,8 +178,6 @@ namespace PoESkillTree.Utils
             var declaration = new XDeclaration("1.0", "utf-8", "true");
             var config = new XElement(CONFIG);
             var userSettings = new XElement(USER_SETTINGS);
-            var group = new XElement(typeof(Settings).FullName);
-            userSettings.Add(group);
             config.Add(userSettings);
             doc.Add(config);
             doc.Declaration = declaration;
@@ -215,12 +199,12 @@ namespace PoESkillTree.Utils
             var import = XDocument.Load(UserConfigPath);
 
             //get the settings group (e.g. <Company.Project.Desktop.Settings>)
-            var settingsSection = import.Element(CONFIG).Element(USER_SETTINGS).Element(typeof(Settings).FullName);
+            var settingsSection = import.Element(CONFIG).Element(USER_SETTINGS);
 
             //iterate though the dictionary, either updating the value or adding the new setting.
             foreach (var entry in SettingsDictionary)
             {
-                var setting = settingsSection.Elements().FirstOrDefault(e => e.Attribute(NAME).Value == entry.Key);
+                var setting = settingsSection.Elements().FirstOrDefault(e => e.Attribute(NAME)?.Value == entry.Key);
                 if (setting == null) //this can happen if a new setting is added via the .settings designer.
                 {
                     var newSetting = new XElement(SETTING);
@@ -241,7 +225,7 @@ namespace PoESkillTree.Utils
         {
             get
             {
-                return Path.Combine(Settings.SettingsPath, _settingsKey) + ".config";
+                return Path.Combine(AppData.GetFolder("Settings"), _settingsKey) + ".config";
             }
 
         }
