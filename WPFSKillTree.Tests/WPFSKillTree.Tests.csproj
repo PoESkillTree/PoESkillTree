@@ -3,7 +3,7 @@
     <RootNamespace>PoESkillTree</RootNamespace>
     <AssemblyName>PoESkillTree.Tests</AssemblyName>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>8</LangVersion>
     <AssemblyTitle>WPFSKillTree.Tests</AssemblyTitle>
     <Product>WPFSKillTree.Tests</Product>
     <Copyright>Copyright ©  2019</Copyright>
