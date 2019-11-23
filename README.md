@@ -54,7 +54,7 @@ A Passive Skill Tree and Character Planner for Path of Exile
 
 1. Go to the [release page](https://github.com/EmmittJ/PoESkillTree/releases) and select the version you would like, most likely the latest.
 2. Download
-  1. Portal: choose the zip file
+  1. Portable: choose the zip file
   2. Installer: choose the exe file
 3. Unzip/Install it to a location of your choice
 4. Start PoESkillTree.exe
@@ -93,9 +93,8 @@ Note: Both these options require that you can access the official Path of Exile 
 
 ## Information for contributors
 
-* The code requires Visual Studio 2017 or higher to be compiled and run
-* It is compiled to .NET 4.6.2 using C# 7.3
-* To run the batch scripts in WPFSKillTree (and by extension, compile the code in Release configuration), your Visual Studio installation's Common7/Tools/ folder must be added to the PATH environment variable
+* The code requires Visual Studio 2019 or higher to be compiled and run
+* It is compiled to .NET Core 3.0 using C# 8
 * https://github.com/PoESkillTree/PoESkillTree.Engine contains the GameModel and Computation engine and is included as a NuGet package
 
 ## Credits

@@ -201,7 +201,7 @@ Language=en_US
                Condition="'$(Version)' == '$(GitVersion)'" />
 
         <Exec Command="dotnet test -c release ..\WPFSKillTree.sln" />
-        <Exec Command="dotnet publish -c release -o $(DistDir) /p:FileVersion=$(FileVersion)" />
+        <Exec Command="dotnet publish -c release -r win-x64 --self-contained -o $(DistDir) /p:FileVersion=$(FileVersion)" />
         <Exec Command="dotnet run -c release -p ..\UpdateDB /SpecifiedDir:$(DistDir)" />
 
         <PropertyGroup>

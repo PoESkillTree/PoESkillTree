@@ -56,7 +56,9 @@ Name: "{userappdata}\{#ProductName}"; Check: CheckStandardMode
 Source: "{#BuildOutputDir}\*.exe"; DestDir: "{app}"
 Source: "{#BuildOutputDir}\*.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#BuildOutputDir}\*.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#BuildOutputDir}\*.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BuildOutputDir}\**.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BuildOutputDir}\*.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#BuildOutputDir}\*.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#BuildOutputDir}\LICENSE.txt"; DestDir: "{app}"; Flags: ignoreversion
 ; Application Data (Standard mode)
 Source: "{#BuildOutputDir}\Data\*"; DestDir: "{userappdata}\{#AppDataFolderName}\Data"; Check: CheckStandardMode; Flags: ignoreversion recursesubdirs
