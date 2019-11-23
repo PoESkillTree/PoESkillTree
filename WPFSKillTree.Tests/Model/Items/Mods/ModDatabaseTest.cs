@@ -28,9 +28,11 @@ namespace PoESkillTree.Model.Items.Mods
             "Map", "MapFragment",
         };
 
+#pragma warning disable 8618 // Initialized in InitializeAsync
         private static Dictionary<string, JsonMod> _mods;
         private static JsonCraftingBenchOption[] _benchOptions;
         private static ModDatabase _modDatabase;
+#pragma warning restore
 
         [OneTimeSetUp]
         public static async Task InitializeAsync()

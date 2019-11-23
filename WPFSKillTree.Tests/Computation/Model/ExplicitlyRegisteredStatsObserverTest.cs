@@ -23,7 +23,7 @@ namespace PoESkillTree.Computation.Model
             var nodeCollection = CreateNodeCollection();
             SetupSut(nodeCollection, actualAdded, actualRemoved);
 
-            nodeCollection.Add(null, expected);
+            nodeCollection.Add(Node, expected);
 
             Assert.That(actualAdded, Has.One.EqualTo(expected));
             Assert.IsEmpty(actualRemoved);
@@ -37,10 +37,10 @@ namespace PoESkillTree.Computation.Model
             var actualRemoved = new List<IStat>();
             var nodeCollection = CreateNodeCollection();
             SetupSut(nodeCollection, actualAdded, actualRemoved);
-            nodeCollection.Add(null, expected);
+            nodeCollection.Add(Node, expected);
             actualAdded.Clear();
 
-            nodeCollection.Remove(null, expected);
+            nodeCollection.Remove(Node, expected);
             
             Assert.IsEmpty(actualAdded);
             Assert.That(actualRemoved, Has.One.EqualTo(expected));
@@ -55,13 +55,13 @@ namespace PoESkillTree.Computation.Model
             var eventBuffer = new EventBuffer();
             var nodeCollection = CreateNodeCollection(eventBuffer);
             SetupSut(nodeCollection, actualAdded, actualRemoved);
-            nodeCollection.Add(null, stats[0]);
-            nodeCollection.Add(null, stats[1]);
+            nodeCollection.Add(Node, stats[0]);
+            nodeCollection.Add(Node, stats[1]);
             actualAdded.Clear();
 
             eventBuffer.StartBuffering();
-            nodeCollection.Add(null, stats[2]);
-            nodeCollection.Remove(null, stats[0]);
+            nodeCollection.Add(Node, stats[2]);
+            nodeCollection.Remove(Node, stats[0]);
             eventBuffer.Flush();
 
             Assert.AreEqual(stats.Skip(2), actualAdded);
@@ -75,7 +75,7 @@ namespace PoESkillTree.Computation.Model
             var actualAdded = new List<IStat>();
             var actualRemoved = new List<IStat>();
             var nodeCollection = CreateNodeCollection();
-            nodeCollection.Add(null, expected);
+            nodeCollection.Add(Node, expected);
 
             SetupSut(nodeCollection, actualAdded, actualRemoved);
 
@@ -95,7 +95,9 @@ namespace PoESkillTree.Computation.Model
             sut.InitializeAsync(ImmediateScheduler.Instance).GetAwaiter().GetResult();
         }
 
-        private static NodeCollection<IStat> CreateNodeCollection(IEventBuffer eventBuffer = null)
+        private static readonly ICalculationNode Node = Mock.Of<ICalculationNode>();
+
+        private static NodeCollection<IStat> CreateNodeCollection(IEventBuffer? eventBuffer = null)
             => new NodeCollection<IStat>(eventBuffer ?? new EventBuffer());
     }
 }

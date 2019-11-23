@@ -5,7 +5,9 @@ namespace PoESkillTree.Utils.UrlProcessing
     [TestFixture]
     public class BuildConverterTest
     {
+#pragma warning disable 8618 // Initialized in TestInitialize
         private IBuildConverter _buildConverter;
+#pragma warning restore
 
         [SetUp]
         public void TestInitialize()

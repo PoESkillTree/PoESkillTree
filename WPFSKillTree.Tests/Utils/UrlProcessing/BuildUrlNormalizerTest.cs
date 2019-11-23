@@ -106,7 +106,7 @@ namespace PoESkillTree.Utils.UrlProcessing
                 "http://poeurl.com/redirect.php?url=0dE",
                 Ascendant);
             var sut = data.CreateNormalizer();
-            string message = null;
+            string? message = null;
 
             Task LoadingWrapper(string msg, Task task)
             {

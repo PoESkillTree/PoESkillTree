@@ -239,7 +239,7 @@ namespace PoESkillTree.Computation.Model
             => Enumerable.Range(0, count).Select(i => CreateModifier(i.ToString())).ToList();
 
         private static Modifier CreateModifier(string statIdentity)
-            => new Modifier(new[] { new Stat(statIdentity) }, default, null, null);
+            => new Modifier(new[] {new Stat(statIdentity)}, default, new Constant(true), new ModifierSource.Global());
 
         private static IReadOnlyList<ParseResult> CreateParseResults(List<Modifier> modifiers)
             => new[]
