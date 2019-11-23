@@ -24,11 +24,7 @@ namespace UpdateDB
         // Main entry point.
         public static async Task<int> Main(string[] arguments)
         {
-            var args = new Arguments
-            {
-                LoaderFlags = new List<string>(),
-                OutputDirectory = OutputDirectory.AppData
-            };
+            var args = new Arguments();
 
             // Get options.
             var unrecognizedSwitches = new List<string>();
@@ -64,7 +60,7 @@ namespace UpdateDB
                 }
             }
 
-            var exec = new DataLoaderExecutor(args);
+            using var exec = new DataLoaderExecutor(args);
 
             var nonFlags = unrecognizedSwitches.Where(s => !exec.IsLoaderFlagRecognized(s)).ToList();
             if (nonFlags.Any())
@@ -84,9 +80,9 @@ namespace UpdateDB
 
         private class Arguments : IArguments
         {
-            public OutputDirectory OutputDirectory { get; set; }
-            public string SpecifiedOutputDirectory { get; set; }
-            public IEnumerable<string> LoaderFlags { get; set; }
+            public OutputDirectory OutputDirectory { get; set; } = OutputDirectory.AppData;
+            public string SpecifiedOutputDirectory { get; set; } = "";
+            public IEnumerable<string> LoaderFlags { get; set; } = Enumerable.Empty<string>();
         }
     }
 }
