@@ -22,8 +22,8 @@ namespace PoESkillTree.Computation.Model
         public ExplicitlyRegisteredStatsObserver(ObservableCalculator observableCalculator)
             => _observableCalculator = observableCalculator;
 
-        public event Action<ICalculationNode, IStat> StatAdded;
-        public event Action<ICalculationNode, IStat> StatRemoved;
+        public event Action<ICalculationNode, IStat>? StatAdded;
+        public event Action<ICalculationNode, IStat>? StatRemoved;
 
         public async Task InitializeAsync(IScheduler observeScheduler)
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Input;
 using PoESkillTree.Utils;
@@ -11,7 +12,7 @@ namespace PoESkillTree.Controls.Dialogs.ViewModels
     /// <summary>
     /// View model used for selecting a path to a file or directory.
     /// </summary>
-    public class FileSelectorViewModel : ErrorInfoViewModel<string>
+    public class FileSelectorViewModel : ErrorInfoViewModel<string?>
     {
         private string _filePath;
         private string _sanitizedFilePath;
@@ -88,7 +89,7 @@ namespace PoESkillTree.Controls.Dialogs.ViewModels
         protected override IEnumerable<string> ValidateProperty(string propertyName)
         {
             if (propertyName != nameof(FilePath))
-                return null;
+                return Enumerable.Empty<string>();
             string message;
             var trimmed = PathEx.TrimTrailingDirectorySeparators(FilePath);
             if (PathEx.IsPathValid(trimmed, out message, mustBeDirectory: _isFolderPicker, mustBeFile: !_isFolderPicker,

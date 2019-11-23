@@ -23,7 +23,7 @@ namespace PoESkillTree.Controls.Dialogs
         /// Sets up the connection between view and viewModel, shows the view as a metro dialog,
         /// calls <paramref name="onShown"/> and waits for the dialog to be closed.
         /// </summary>
-        public static async Task<T> ShowDialogAsync<T>(this MetroWindow window, CloseableViewModel<T> viewModel,
+        public static async Task<T> ShowDialogAsync<T>(this MetroWindow window, CloseableViewModelBase<T> viewModel,
             BaseMetroDialog view, Action onShown = null)
         {
             view.DataContext = viewModel;

@@ -2,7 +2,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
                     xmlns:dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
-                    xmlns:controls="clr-namespace:PoESkillTree.Controls.Dialogs">
+                    xmlns:controls="clr-namespace:PoESkillTree.Controls.Dialogs"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:viewModels="clr-namespace:PoESkillTree.Common.ViewModels"
+                    mc:Ignorable="d">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Themes/Dialogs/BaseMetroDialog.xaml" />
@@ -85,6 +89,9 @@
 
     <Style TargetType="{x:Type controls:BaseDialog}"
            BasedOn="{StaticResource {x:Type dialogs:BaseMetroDialog}}">
+        <d:Style.DataContext>
+            <x:Type Type="viewModels:ViewModelBase" />
+        </d:Style.DataContext>
         <Setter Property="Title" Value="{Binding DisplayName}" />
         <Setter Property="Template" Value="{StaticResource BaseDialogTemplate}" />
         <Setter Property="controls:DialogParticipation.Register" Value="{Binding}" />
@@ -92,6 +99,9 @@
 
     <Style TargetType="{x:Type controls:CloseableBaseDialog}"
            BasedOn="{StaticResource {x:Type controls:BaseDialog}}">
+        <d:Style.DataContext>
+            <x:Type Type="viewModels:CloseableViewModelBase{T}" />
+        </d:Style.DataContext>
         <Setter Property="CloseButtonVisibility" Value="Visible" />
         <Setter Property="CloseCommand" Value="{Binding CloseCommand}" />
     </Style>

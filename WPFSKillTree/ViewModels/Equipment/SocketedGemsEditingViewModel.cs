@@ -233,7 +233,6 @@ namespace PoESkillTree.ViewModels.Equipment
                 }
                 _itemAttributes.SetSkillsInSlot(skills, _slot);
             }
-            base.OnClose(param);
         }
     }
 }

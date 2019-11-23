@@ -14,7 +14,7 @@ namespace PoESkillTree.Utils.UrlProcessing
         private readonly IAscendancyClasses _ascendancyClasses;
 
         private ISet<TryCreateDeserializer> _deserializersFactories = new HashSet<TryCreateDeserializer>();
-        private Func<string, BuildUrlDeserializer> _factory;
+        private Func<string, BuildUrlDeserializer>? _factory;
 
         public BuildConverter(IAscendancyClasses ascendancyClasses)
         {

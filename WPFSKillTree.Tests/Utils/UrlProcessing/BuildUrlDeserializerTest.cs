@@ -124,11 +124,11 @@ namespace PoESkillTree.Utils.UrlProcessing
 
         private static BuildUrlDeserializer CreateSut(string url)
         {
-            var buildConverter = new BuildConverter(null);
+            var buildConverter = new BuildConverter(null!);
             buildConverter.RegisterDeserializersFactories(
                 PathofexileUrlDeserializer.TryCreate,
                 PoeplannerUrlDeserializer.TryCreate);
-            buildConverter.RegisterDefaultDeserializer(u => new NaivePoEUrlDeserializer(u, null));
+            buildConverter.RegisterDefaultDeserializer(u => new NaivePoEUrlDeserializer(u, null!));
             return buildConverter.GetUrlDeserializer(url);
         }
     }

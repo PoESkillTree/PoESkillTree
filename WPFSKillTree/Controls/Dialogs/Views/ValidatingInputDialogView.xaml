@@ -6,7 +6,6 @@
                     xmlns:dialogs="clr-namespace:PoESkillTree.Controls.Dialogs"
                     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
-                    xmlns:wpf="clr-namespace:PoESkillTree.Utils.Wpf"
                     xmlns:viewModels="clr-namespace:PoESkillTree.Controls.Dialogs.ViewModels"
                     mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:ValidatingInputDialogViewModel}">
     <!-- Based on https://github.com/MahApps/MahApps.Metro/blob/1.2.4/MahApps.Metro/Themes/Dialogs/InputDialog.xaml

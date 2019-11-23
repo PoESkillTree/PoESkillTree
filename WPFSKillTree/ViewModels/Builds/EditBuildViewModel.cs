@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.Common.ViewModels;
 using PoESkillTree.Model.Builds;
 
@@ -59,14 +60,14 @@ namespace PoESkillTree.ViewModels.Builds
                 case nameof(Name):
                     return new[] {_buildValidator.ValidateExistingFileName(Name, _buildVm)};
                 default:
-                    return null;
+                    return Enumerable.Empty<string>();
             }
         }
 
         protected override bool CanClose(bool param)
         {
             // Always allow canceling
-            return !param || !HasErrors;
+            return !param || base.CanClose(true);
         }
     }
 }

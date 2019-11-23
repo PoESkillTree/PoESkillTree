@@ -34,7 +34,9 @@ namespace PoESkillTree.Computation.ViewModels
             return vm;
         }
 
+#pragma warning disable CS8618 // SelectedSkill is initalized in Initialize and can't be set to null.
         private MainSkillSelectionViewModel(
+#pragma warning restore
             SkillDefinitions skillDefinitions, IBuilderFactories builderFactories,
             CalculationNodeViewModelFactory nodeFactory)
         {

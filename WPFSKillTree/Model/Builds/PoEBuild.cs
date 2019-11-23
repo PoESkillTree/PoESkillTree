@@ -186,9 +186,9 @@ namespace PoESkillTree.Model.Builds
             PropertyChanging += PropertyChangingHandler;
         }
 
-        public PoEBuild(BanditSettings bandits, IEnumerable<string[]> customGroups,
+        public PoEBuild(BanditSettings? bandits, IEnumerable<string[]> customGroups,
             IEnumerable<ushort> checkedNodeIds, IEnumerable<ushort> crossedNodeIds,
-            IEnumerable<(string, double?)> configurationStats, string additionalData)
+            IEnumerable<(string, double?)> configurationStats, string? additionalData)
         {
             PropertyChanged += PropertyChangedHandler;
             Bandits = bandits ?? new BanditSettings();

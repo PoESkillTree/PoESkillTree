@@ -34,7 +34,7 @@ namespace PoESkillTree.Controls.Dialogs
             return metroWindow;
         }
 
-        protected Task<T> ShowDialogAsync<T>(object context, CloseableViewModel<T> viewModel, BaseMetroDialog view,
+        protected Task<T> ShowDialogAsync<T>(object context, CloseableViewModelBase<T> viewModel, BaseMetroDialog view,
             Action onShown = null)
         {
             var metroWindow = GetMetroWindow(context);

@@ -26,9 +26,9 @@ namespace PoESkillTree.Computation.ViewModels
         protected override bool IsResponsibleFor(IStat stat)
             => stat.ExplicitRegistrationType is ExplicitRegistrationType.IndependentResult;
 
-        protected override ResultNodeViewModel CreateViewModel(ICalculationNode node, IStat stat)
+        protected override ResultNodeViewModel CreateViewModel(ICalculationNode? node, IStat stat)
         {
-            var nodeType = ((ExplicitRegistrationType.IndependentResult) stat.ExplicitRegistrationType).ResultType;
+            var nodeType = ((ExplicitRegistrationType.IndependentResult) stat.ExplicitRegistrationType!).ResultType;
             return _nodeFactory.CreateResult(stat, nodeType);
         }
 

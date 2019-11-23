@@ -31,11 +31,11 @@ namespace PoESkillTree.Utils.UrlProcessing
 
         private static SkillTreeSerializer CreateSut(string url)
         {
-            var buildConverter = new BuildConverter(null);
+            var buildConverter = new BuildConverter(null!);
             buildConverter.RegisterDeserializersFactories(
                 PathofexileUrlDeserializer.TryCreate,
                 PoeplannerUrlDeserializer.TryCreate);
-            buildConverter.RegisterDefaultDeserializer(u => new NaivePoEUrlDeserializer(u, null));
+            buildConverter.RegisterDefaultDeserializer(u => new NaivePoEUrlDeserializer(u, null!));
             var buildData = buildConverter.GetUrlDeserializer(url).GetBuildData();
             var allNodes = Mock.Of<ICollection<ushort>>(c => c.Contains(It.IsAny<ushort>()));
             return new SkillTreeSerializer(buildData, allNodes);

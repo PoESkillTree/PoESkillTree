@@ -9,7 +9,7 @@ namespace PoESkillTree.Computation.ViewModels
     public class CalculationNodeViewModel : Notifier
     {
         private NodeValue? _value;
-        private string _stringValue;
+        private string? _stringValue;
 
         public CalculationNodeViewModel(IStat stat, NodeType nodeType = NodeType.Total)
             => (Stat, NodeType) = (stat, nodeType);
@@ -63,7 +63,7 @@ namespace PoESkillTree.Computation.ViewModels
 
         public string StringValue
         {
-            get => _stringValue ?? (_stringValue = CalculateStringValue());
+            get => _stringValue ??= CalculateStringValue();
             private set => SetProperty(ref _stringValue, value);
         }
 
@@ -74,9 +74,9 @@ namespace PoESkillTree.Computation.ViewModels
             if (Value is null)
                 return L10n.Message("None");
             if (DataType.IsEnum)
-                return EnumValues.GetValue((int) Value.Single()).ToString();
+                return EnumValues.GetValue((int) Value.Single())!.ToString()!;
             return Value.Select(d => Math.Round(d, 2, MidpointRounding.AwayFromZero))
-                .ToString().Replace(" to ", " \nto ");
+                .ToString()!.Replace(" to ", " \nto ");
         }
     }
 }

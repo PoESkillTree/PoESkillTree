@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.Common.ViewModels;
 
 namespace PoESkillTree.Controls.Dialogs.ViewModels
@@ -7,7 +8,7 @@ namespace PoESkillTree.Controls.Dialogs.ViewModels
     /// <summary>
     /// View model for a input dialog that validates the input.
     /// </summary>
-    public class ValidatingInputDialogViewModel : ErrorInfoViewModel<string>
+    public class ValidatingInputDialogViewModel : ErrorInfoViewModel<string?>
     {
         private readonly Func<string, string> _inputValidationFunc;
         private string _input;
@@ -30,7 +31,7 @@ namespace PoESkillTree.Controls.Dialogs.ViewModels
         
         protected override IEnumerable<string> ValidateProperty(string propertyName)
         {
-            return propertyName != nameof(Input) ? null : new[] {_inputValidationFunc(Input)};
+            return propertyName != nameof(Input) ? Enumerable.Empty<string>() : new[] {_inputValidationFunc(Input)};
         }
     }
 }
