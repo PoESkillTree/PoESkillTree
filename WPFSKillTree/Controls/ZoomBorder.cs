@@ -10,41 +10,29 @@ namespace PoESkillTree.Controls
 {
     public class ZoomBorder : Border
     {
-        enum ManipulationState
+        private enum ManipulationState
         {
-            NONE, MOUSE_DRAG, MOUSE_ZOOM, TOUCH
+            None, MouseDrag, MouseZoom, Touch
         };
-
-        private UIElement _child;
 
         private Point _originalTranslation;
         private Point _mouseDragAbsoluteStart;
         private Point _mouseZoomRelativeStart;
         private double _lastMouseAbsoluteY;
         private bool _thresholdExceeded;
-        private ManipulationState _manipulationState = ManipulationState.NONE;
+        private ManipulationState _manipulationState = ManipulationState.None;
 
-        const double ZOOM_STEP = 0.3;
-        
-        const double MAX_ZOOM = 75;
-        const double MIN_ZOOM = 0.5;
-        
-        const double DRAG_THRESHOLD = 5; // (in ZoomBorder coordinates, not _child)
-        const double DRAG_THRESHOLD_SQUARED = DRAG_THRESHOLD * DRAG_THRESHOLD;
+        private const double ZoomStep = 0.3;
 
-        public Point Origin
-        {
-            get
-            {
-                TranslateTransform tt = GetTranslateTransform(_child);
+        private const double MaxZoom = 75;
+        private const double MinZoom = 0.5;
 
-                return new Point(tt.X, tt.Y);
-            }
-        }
+        private const double DragThreshold = 5; // (in ZoomBorder coordinates, not Child)
+        private const double DragThresholdSquared = DragThreshold * DragThreshold;
 
         public override UIElement Child
         {
-            get { return base.Child; }
+            get => base.Child;
             set
             {
                 if (value != null && !Equals(value, Child))
@@ -56,61 +44,57 @@ namespace PoESkillTree.Controls
             }
         }
 
-        public ScaleTransform GetScaleTransform(UIElement element)
+        private static ScaleTransform GetScaleTransform(UIElement element)
         {
             return
                 (ScaleTransform) ((TransformGroup) element.RenderTransform).Children.First(tr => tr is ScaleTransform);
         }
 
-        public TranslateTransform GetTranslateTransform(UIElement element)
+        private static TranslateTransform GetTranslateTransform(UIElement element)
         {
             return
                 (TranslateTransform)
                     ((TransformGroup) element.RenderTransform).Children.First(tr => tr is TranslateTransform);
         }
 
-        public void Initialize(UIElement element)
+        private void Initialize(UIElement element)
         {
-            _child = element;
-            if (_child != null)
-            {
-                var group = new TransformGroup();
+            var group = new TransformGroup();
 
-                var st = new ScaleTransform();
-                group.Children.Add(st);
+            var st = new ScaleTransform();
+            group.Children.Add(st);
 
-                var tt = new TranslateTransform();
+            var tt = new TranslateTransform();
 
-                group.Children.Add(tt);
+            group.Children.Add(tt);
 
-                _child.RenderTransform = group;
-                _child.RenderTransformOrigin = new Point(0.0, 0.0);
+            element.RenderTransform = group;
+            element.RenderTransformOrigin = new Point(0.0, 0.0);
 
-                _child.MouseWheel += child_MouseWheel;
-                _child.MouseLeftButtonDown += child_MouseLeftButtonDown;
-                _child.MouseLeftButtonUp += child_MouseEitherButtonUp;
-                _child.MouseRightButtonDown += child_MouseRightButtonDown;
-                _child.MouseRightButtonUp += child_MouseEitherButtonUp;
-                _child.MouseMove += child_MouseMove;
+            element.MouseWheel += Child_MouseWheel;
+            element.MouseLeftButtonDown += Child_MouseLeftButtonDown;
+            element.MouseLeftButtonUp += Child_MouseEitherButtonUp;
+            element.MouseRightButtonDown += Child_MouseRightButtonDown;
+            element.MouseRightButtonUp += Child_MouseEitherButtonUp;
+            element.MouseMove += Child_MouseMove;
 
-                _child.IsManipulationEnabled = true;
-                _child.ManipulationStarting += child_ManipulationStarting;
-                _child.ManipulationDelta += child_ManipulationDelta;
-                _child.ManipulationCompleted += child_ManipulationCompleted;
-            }
+            element.IsManipulationEnabled = true;
+            element.ManipulationStarting += Child_ManipulationStarting;
+            element.ManipulationDelta += Child_ManipulationDelta;
+            element.ManipulationCompleted += Child_ManipulationCompleted;
         }
 
         public void Reset()
         {
-            if (_child != null)
+            if (Child != null)
             {
                 // reset zoom
-                ScaleTransform st = GetScaleTransform(_child);
+                ScaleTransform st = GetScaleTransform(Child);
                 st.ScaleX = 1.0;
                 st.ScaleY = 1.0;
 
                 // reset pan
-                TranslateTransform tt = GetTranslateTransform(_child);
+                TranslateTransform tt = GetTranslateTransform(Child);
                 tt.X = 0.0;
                 tt.Y = 0.0;
             }
@@ -136,14 +120,14 @@ namespace PoESkillTree.Controls
 
         public void ZoomIn(dynamic e)
         {
-            if (_child != null)
-                ZoomOnPoint(e.GetPosition(_child), 1.0 + ZOOM_STEP);
+            if (Child != null)
+                ZoomOnPoint(e.GetPosition(Child), 1.0 + ZoomStep);
         }
 
         public void ZoomOut(dynamic e)
         {
-            if (_child != null)
-                ZoomOnPoint(e.GetPosition(_child), 1.0 - ZOOM_STEP);
+            if (Child != null)
+                ZoomOnPoint(e.GetPosition(Child), 1.0 - ZoomStep);
         }
 
         /// <summary>
@@ -152,20 +136,20 @@ namespace PoESkillTree.Controls
         /// </summary>
         /// <param name="relativeCenter">The zoom center relative to the child.</param>
         /// <param name="zoomFactor">Factor (around 1.0) by how much to zoom in or out.</param>
-        public void ZoomOnPoint(Point relativeCenter, double zoomFactor)
+        private void ZoomOnPoint(Point relativeCenter, double zoomFactor)
         {
-            if (_child == null)
+            if (Child == null)
                 return;
 
-            if (_manipulationState == ManipulationState.MOUSE_DRAG)
+            if (_manipulationState == ManipulationState.MouseDrag)
                 return;
 
-            TranslateTransform tt = GetTranslateTransform(_child);
-            ScaleTransform st = GetScaleTransform(_child);
+            TranslateTransform tt = GetTranslateTransform(Child);
+            ScaleTransform st = GetScaleTransform(Child);
 
-            if (st.ScaleX * zoomFactor < MIN_ZOOM || st.ScaleY * zoomFactor < MIN_ZOOM)
+            if (st.ScaleX * zoomFactor < MinZoom || st.ScaleY * zoomFactor < MinZoom)
                 return;
-            if (st.ScaleX * zoomFactor > MAX_ZOOM || st.ScaleY * zoomFactor > MAX_ZOOM)
+            if (st.ScaleX * zoomFactor > MaxZoom || st.ScaleY * zoomFactor > MaxZoom)
                 return;
 
             double absoluteX = relativeCenter.X * st.ScaleX + tt.X;
@@ -181,9 +165,9 @@ namespace PoESkillTree.Controls
         }
 
         // Initiate translational dragging.
-        private void child_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void Child_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (_manipulationState != ManipulationState.NONE)
+            if (_manipulationState != ManipulationState.None)
                 return;
 
             if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
@@ -196,50 +180,50 @@ namespace PoESkillTree.Controls
                 ZoomIn(e);
             }
 
-            _manipulationState = ManipulationState.MOUSE_DRAG;
-            var tt = GetTranslateTransform(_child);
+            _manipulationState = ManipulationState.MouseDrag;
+            var tt = GetTranslateTransform(Child);
             _mouseDragAbsoluteStart = e.GetPosition(this);
             _originalTranslation = new Point(tt.X, tt.Y);
             _thresholdExceeded = false;
 
             Cursor = Cursors.Hand;
-            _child.CaptureMouse();
+            Child.CaptureMouse();
         }
 
         // Initiate zoom dragging.
-        private void child_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void Child_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (_manipulationState != ManipulationState.NONE)
+            if (_manipulationState != ManipulationState.None)
                 return;
 
-            _manipulationState = ManipulationState.MOUSE_ZOOM;
-            _mouseZoomRelativeStart = e.GetPosition(_child);
+            _manipulationState = ManipulationState.MouseZoom;
+            _mouseZoomRelativeStart = e.GetPosition(Child);
             _mouseDragAbsoluteStart = e.GetPosition(this);
             _lastMouseAbsoluteY = _mouseDragAbsoluteStart.Y;
             _thresholdExceeded = false;
 
             Cursor = Cursors.Hand;
-            _child.CaptureMouse();
+            Child.CaptureMouse();
         }
 
         // Process translational or zoom dragging updates.
-        private void child_MouseMove(object sender, MouseEventArgs e)
+        private void Child_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!_child.IsMouseCaptured)
+            if (!Child.IsMouseCaptured)
                 return;
 
-            if (_manipulationState == ManipulationState.MOUSE_DRAG)
+            if (_manipulationState == ManipulationState.MouseDrag)
             {
-                var tt = GetTranslateTransform(_child);
+                var tt = GetTranslateTransform(Child);
                 var v = _mouseDragAbsoluteStart - e.GetPosition(this);
                 tt.X = _originalTranslation.X - v.X;
                 tt.Y = _originalTranslation.Y - v.Y;
 
-                if (v.LengthSquared > DRAG_THRESHOLD_SQUARED)
+                if (v.LengthSquared > DragThresholdSquared)
                     _thresholdExceeded = true;
             }
 
-            if (_manipulationState == ManipulationState.MOUSE_ZOOM)
+            if (_manipulationState == ManipulationState.MouseZoom)
             {
                 var currentAbsolutePosition = e.GetPosition(this);
                 double dy = _lastMouseAbsoluteY - currentAbsolutePosition.Y;
@@ -247,16 +231,16 @@ namespace PoESkillTree.Controls
                 ZoomOnPoint(_mouseZoomRelativeStart, scale);
                 _lastMouseAbsoluteY = currentAbsolutePosition.Y;
 
-                if (Math.Abs(currentAbsolutePosition.Y - _mouseDragAbsoluteStart.Y) > DRAG_THRESHOLD)
+                if (Math.Abs(currentAbsolutePosition.Y - _mouseDragAbsoluteStart.Y) > DragThreshold)
                     _thresholdExceeded = true;
             }
         }
 
         // End either kind of dragging, consuming the event if the drag threshold was exceeded.
-        private void child_MouseEitherButtonUp(object sender, MouseButtonEventArgs e)
+        private void Child_MouseEitherButtonUp(object sender, MouseButtonEventArgs e)
         {
-            _manipulationState = ManipulationState.NONE;
-            _child.ReleaseMouseCapture();
+            _manipulationState = ManipulationState.None;
+            Child.ReleaseMouseCapture();
             Cursor = Cursors.Arrow;
 
             // If we dragged a distance larger than our threshold, handle the up event so that
@@ -265,7 +249,7 @@ namespace PoESkillTree.Controls
                 e.Handled = true;
         }
 
-        private void child_MouseWheel(object sender, MouseWheelEventArgs e)
+        private void Child_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (e.Delta > 0)
                 ZoomIn(e);
@@ -274,12 +258,12 @@ namespace PoESkillTree.Controls
         }
 
         // Initiate touch dragging/pinching.
-        private void child_ManipulationStarting(object sender, ManipulationStartingEventArgs e)
+        private void Child_ManipulationStarting(object? sender, ManipulationStartingEventArgs e)
         {
-            if (_manipulationState != ManipulationState.NONE)
+            if (_manipulationState != ManipulationState.None)
                 return;
 
-            _manipulationState = ManipulationState.TOUCH;
+            _manipulationState = ManipulationState.Touch;
             _thresholdExceeded = false;
             // Things would be easier if we made the child the container to use as reference
             // for all calculations, but changing the child transformations while manipulation
@@ -292,13 +276,12 @@ namespace PoESkillTree.Controls
         }
 
         // Process touch dragging/pinching updates.
-        private void child_ManipulationDelta(object sender, ManipulationDeltaEventArgs e)
+        private void Child_ManipulationDelta(object? sender, ManipulationDeltaEventArgs e)
         {
             if (e.IsInertial)
                 e.Complete();
 
-            TranslateTransform tt = GetTranslateTransform(_child);
-            ScaleTransform st = GetScaleTransform(_child);
+            TranslateTransform tt = GetTranslateTransform(Child);
 
             // Apply any translation (from drag or pinch).
             var translationDelta = e.DeltaManipulation.Translation;
@@ -308,11 +291,11 @@ namespace PoESkillTree.Controls
             // Apply any zoom (from pinch).
             var absoluteOrigin = e.ManipulationOrigin;
             // Using the above transforms alone is not enough because there are more (due to layout).
-            var relativeOrigin = TranslatePoint(absoluteOrigin, _child);
+            var relativeOrigin = TranslatePoint(absoluteOrigin, Child);
             var scale = e.DeltaManipulation.Scale.X;
             ZoomOnPoint(relativeOrigin, scale);
 
-            if (e.CumulativeManipulation.Translation.LengthSquared > DRAG_THRESHOLD_SQUARED)
+            if (e.CumulativeManipulation.Translation.LengthSquared > DragThresholdSquared)
                 _thresholdExceeded = true;
 
             if (e.CumulativeManipulation.Scale.X != 1.0)
@@ -322,10 +305,10 @@ namespace PoESkillTree.Controls
         }
 
         // End touch dragging/pinching.
-        private void child_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        private void Child_ManipulationCompleted(object? sender, ManipulationCompletedEventArgs e)
         {
             e.Handled = true;
-            _manipulationState = ManipulationState.NONE;
+            _manipulationState = ManipulationState.None;
 
             // If no real manipulation (zoom or translation) happened, cancel this 
             // manipulation event. This results in equivalent mouse events being raised

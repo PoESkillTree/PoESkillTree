@@ -21,7 +21,9 @@ namespace PoESkillTree.Controls.Dialogs.ViewModels
             set { SetProperty(ref _input, value); }
         }
 
+#pragma warning disable CS8618 // _input is set through Input
         public ValidatingInputDialogViewModel(string title, string message, string defaultText, Func<string, string> inputValidationFunc)
+#pragma warning restore
         {
             _inputValidationFunc = inputValidationFunc;
             DisplayName = title;

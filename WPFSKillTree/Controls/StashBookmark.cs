@@ -11,16 +11,18 @@ namespace PoESkillTree.Controls
         [Obsolete("only for serialization")]
         public StashBookmark()
         {
-
+            _name = "";
         }
-        public StashBookmark(string name, int positon) : this(name, positon, DefaultColor)
-        { }
 
-        public StashBookmark(string name, int positon, Color color)
+        public StashBookmark(string name, int position) : this(name, position, DefaultColor)
+        {
+        }
+
+        public StashBookmark(string name, int position, Color color)
         {
             _color = color;
             _name = name;
-            _position = positon;
+            _position = position;
         }
 
         private int _position;

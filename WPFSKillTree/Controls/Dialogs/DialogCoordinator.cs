@@ -34,34 +34,34 @@ namespace PoESkillTree.Controls.Dialogs
             return metroWindow;
         }
 
-        protected Task<T> ShowDialogAsync<T>(object context, CloseableViewModelBase<T> viewModel, BaseMetroDialog view,
-            Action onShown = null)
+        protected static Task<T> ShowDialogAsync<T>(object context, CloseableViewModelBase<T> viewModel, BaseMetroDialog view,
+            Action? onShown = null)
         {
             var metroWindow = GetMetroWindow(context);
             return metroWindow.Invoke(() => metroWindow.ShowDialogAsync(viewModel, view, onShown));
         }
 
-        public Task<MessageBoxResult> ShowQuestionAsync(object context, string message, string details = null,
-            string title = null, MessageBoxButton buttons = MessageBoxButton.YesNo,
+        public Task<MessageBoxResult> ShowQuestionAsync(object context, string message, string? details = null,
+            string? title = null, MessageBoxButton buttons = MessageBoxButton.YesNo,
             MessageBoxImage image = MessageBoxImage.Question)
         {
             var metroWindow = GetMetroWindow(context);
             return metroWindow.Invoke(() => metroWindow.ShowQuestionAsync(message, details, title, buttons, image));
         }
 
-        public Task ShowErrorAsync(object context, string message, string details = null, string title = null)
+        public Task ShowErrorAsync(object context, string message, string? details = null, string? title = null)
         {
             var metroWindow = GetMetroWindow(context);
             return metroWindow.Invoke(() => metroWindow.ShowErrorAsync(message, details, title));
         }
 
-        public Task ShowWarningAsync(object context, string message, string details = null, string title = null)
+        public Task ShowWarningAsync(object context, string message, string? details = null, string? title = null)
         {
             var metroWindow = GetMetroWindow(context);
             return metroWindow.Invoke(() => metroWindow.ShowWarningAsync(message, details, title));
         }
 
-        public Task ShowInfoAsync(object context, string message, string details = null, string title = null)
+        public Task ShowInfoAsync(object context, string message, string? details = null, string? title = null)
         {
             var metroWindow = GetMetroWindow(context);
             return metroWindow.Invoke(() => metroWindow.ShowInfoAsync(message, details, title));
@@ -80,7 +80,7 @@ namespace PoESkillTree.Controls.Dialogs
             return metroWindow.Invoke(() => metroWindow.ShowProgressAsync(title, message, isCancelable));
         }
 
-        public Task<string> ShowFileSelectorAsync(object context, string title, string message,
+        public Task<string?> ShowFileSelectorAsync(object context, string title, string message,
             FileSelectorDialogSettings settings)
         {
             return ShowDialogAsync(context,
@@ -88,7 +88,7 @@ namespace PoESkillTree.Controls.Dialogs
                 new FileSelectorView());
         }
 
-        public Task<string> ShowValidatingInputDialogAsync(object context, string title, string message,
+        public Task<string?> ShowValidatingInputDialogAsync(object context, string title, string message,
             string defaultText, Func<string, string> inputValidationFunc)
         {
             return ShowDialogAsync(context,

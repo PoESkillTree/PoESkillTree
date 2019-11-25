@@ -19,7 +19,7 @@ namespace PoESkillTree.Controls.Dialogs
         /// Gets or sets a relative sub path of the selected path that is required to be creatable.
         /// Only allowed to be non-null if <see name="IsFolderPicker"/> is true. Default is null.
         /// </summary>
-        public string ValidationSubPath { get; set; }
+        public string? ValidationSubPath { get; set; }
 
         /// <summary>
         /// Gets or sets whether the user can cancel the dialog. Default is true.
@@ -31,6 +31,6 @@ namespace PoESkillTree.Controls.Dialogs
         /// the path can't be selected that will be displayed to the user. It returns null if the path is valid.
         /// Default is a function that allows all paths.
         /// </summary>
-        public Func<string, string> AdditionalValidationFunc { get; set; } = _ => null;
+        public Func<string, string?> AdditionalValidationFunc { get; set; } = _ => null;
     }
 }

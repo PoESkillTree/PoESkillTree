@@ -28,7 +28,7 @@ namespace PoESkillTree.Utils
         /// <param name="mustBeDirectory">True if the path must point to a directory if it already exists.</param>
         /// <param name="mustBeAbsolute">True if the path must be a absolute path (be equal to its full path)</param>
         /// <returns></returns>
-        public static bool IsPathValid(string path, out string errorMessage, bool canExist = true,
+        public static bool IsPathValid(string path, out string? errorMessage, bool canExist = true,
             bool mustBeFile = false, bool mustBeDirectory = false, bool mustBeAbsolute = false)
         {
             errorMessage = null;
