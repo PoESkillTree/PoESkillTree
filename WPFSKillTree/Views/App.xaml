@@ -3,7 +3,7 @@
              xmlns:mahApps="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converter="clr-namespace:PoESkillTree.Utils.Converter"
-             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
              StartupUri="MainWindow.xaml"
              DispatcherUnhandledException="App_DispatcherUnhandledException">
     <Application.Resources>
@@ -14,8 +14,6 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Dark.Steel.xaml" />
                 <ResourceDictionary
                     Source="pack://application:,,,/MahApps.Metro.IconPacks.Modern;component/Themes/PackIconModern.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/Contrib/WpfRangeControls/Themes/Generic.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/Styles/RangeScrollbars.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/Dialogs.xaml" />
             </ResourceDictionary.MergedDictionaries>
 

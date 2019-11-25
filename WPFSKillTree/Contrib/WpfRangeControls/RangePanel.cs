@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 
 namespace WpfRangeControls
 {
     public class RangePanel : Panel
     {
-
         static RangePanel()
         {
             ClipToBoundsProperty.OverrideMetadata(typeof(RangePanel), new FrameworkPropertyMetadata(true));
@@ -45,77 +38,14 @@ namespace WpfRangeControls
                     FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsParentMeasure)
         );
 
+        protected override bool HasLogicalOrientation => true;
 
-
-        public static RangeAlignment GetAlignment(DependencyObject obj)
-        {
-            return (RangeAlignment)obj.GetValue(AlignmentProperty);
-        }
-
-        public static void SetAlignment(DependencyObject obj, RangeAlignment value)
-        {
-            obj.SetValue(AlignmentProperty, value);
-        }
-
-        // Using a DependencyProperty as the backing store for Alignment.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty AlignmentProperty =
-            DependencyProperty.RegisterAttached(
-                "Alignment",
-                typeof(RangeAlignment),
-                typeof(RangePanel),
-                new FrameworkPropertyMetadata(
-                    RangeAlignment.Center,
-                    FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsParentMeasure)
-                , new ValidateValueCallback(IsValidRangeAlignment));
-
-        private static bool IsValidRangeAlignment(object value)
-        {
-            var val = (RangeAlignment)value;
-            return (val == RangeAlignment.Begin || val == RangeAlignment.Center || val == RangeAlignment.End);
-        }
-
-        public static double GetRange(DependencyObject obj)
-        {
-            return (double)obj.GetValue(RangeProperty);
-        }
-
-        public static void SetRange(DependencyObject obj, double value)
-        {
-            obj.SetValue(RangeProperty, value);
-        }
-
-        // Using a DependencyProperty as the backing store for Range.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty RangeProperty =
-            DependencyProperty.RegisterAttached(
-                "Range",
-                typeof(double),
-                typeof(RangePanel),
-                new FrameworkPropertyMetadata(
-                    double.NaN,
-                    FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsParentMeasure));
-
-
-
-        protected override bool HasLogicalOrientation
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        protected override Orientation LogicalOrientation
-        {
-            get
-            {
-                return this.Orientation;
-            }
-        }
+        protected override Orientation LogicalOrientation => Orientation;
 
         public Orientation Orientation
         {
-            get { return (Orientation)GetValue(OrientationProperty); }
-            set { SetValue(OrientationProperty, value); }
+            get => (Orientation)GetValue(OrientationProperty);
+            set => SetValue(OrientationProperty, value);
         }
 
         // Using a DependencyProperty as the backing store for Orientation.  This enables animation, styling, binding, etc...
@@ -127,53 +57,23 @@ namespace WpfRangeControls
                 new FrameworkPropertyMetadata(
                         Orientation.Vertical,
                         FrameworkPropertyMetadataOptions.AffectsMeasure,
-                        new PropertyChangedCallback(OnOrientationChanged)),
-                new ValidateValueCallback(IsValidOrientation));
-
-        private static bool IsValidOrientation(object o)
-        {
-            Orientation value = (Orientation)o;
-            return value == Orientation.Horizontal || value == Orientation.Vertical;
-        }
+                        OnOrientationChanged));
 
         private static void OnOrientationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var el = (d as UIElement);
-            if (el == null)
+            if (!(d is UIElement el))
                 return;
             el.InvalidateMeasure();
         }
 
-        private static bool IsValidDoubleValue(object value)
-        {
-            double d = (double)value;
-            return !(double.IsNaN(d) || double.IsInfinity(d));
-        }
-
         #region minimum property
+
         public static readonly DependencyProperty MinimumProperty =
-        DependencyProperty.Register(
+            DependencyProperty.Register(
                 "Minimum",
                 typeof(double),
                 typeof(RangePanel),
-                new FrameworkPropertyMetadata(
-                        0.0d,
-                        FrameworkPropertyMetadataOptions.AffectsMeasure,
-                        new PropertyChangedCallback(OnMinimumChanged),
-                        new CoerceValueCallback(CoerceMinimum)),
-                new ValidateValueCallback(IsValidDoubleValue));
-
-
-        private static object CoerceMinimum(DependencyObject d, object value)
-        {
-            RangePanel pan = (RangePanel)d;
-            double max = pan.Maximum;
-            if ((double)value > max)
-            {
-                return max;
-            }
-            return value;
-        }
+                new FrameworkPropertyMetadata(0.0d, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
 
         /// <summary>
@@ -182,83 +82,29 @@ namespace WpfRangeControls
         [Bindable(true), Category("Behavior")]
         public double Minimum
         {
-            get { return (double)GetValue(MinimumProperty); }
-            set { SetValue(MinimumProperty, value); }
-        }
-
-        /// <summary>
-        ///     Called when MinimumProperty is changed on "d."
-        /// </summary>
-        private static void OnMinimumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            RangePanel pan = (RangePanel)d;
-            pan.CoerceValue(MaximumProperty);
-            pan.OnMinimumChanged((double)e.OldValue, (double)e.NewValue);
-        }
-
-        /// <summary>
-        ///     This method is invoked when the Minimum property changes.
-        /// </summary>
-        /// <param name="oldMinimum">The old value of the Minimum property.</param>
-        /// <param name="newMinimum">The new value of the Minimum property.</param>
-        protected virtual void OnMinimumChanged(double oldMinimum, double newMinimum)
-        {
+            get => (double)GetValue(MinimumProperty);
+            set => SetValue(MinimumProperty, value);
         }
 
         #endregion
 
         #region Maximum property
+
         public static readonly DependencyProperty MaximumProperty =
-        DependencyProperty.Register(
-        "Maximum",
-        typeof(double),
-        typeof(RangePanel),
-        new FrameworkPropertyMetadata(
-                100.0d,
-                FrameworkPropertyMetadataOptions.AffectsMeasure,
-                new PropertyChangedCallback(OnMaximumChanged),
-                        new CoerceValueCallback(CoerceMaximum)),
-                new ValidateValueCallback(IsValidDoubleValue));
+            DependencyProperty.Register(
+                "Maximum",
+                typeof(double),
+                typeof(RangePanel),
+                new FrameworkPropertyMetadata(100.0d, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
-
-        private static object CoerceMaximum(DependencyObject d, object value)
-        {
-            RangePanel pan = (RangePanel)d;
-            double min = pan.Minimum;
-            if ((double)value < min)
-            {
-                return min;
-            }
-            return value;
-        }
         /// <summary>
         ///     Minimum restricts the minimum value of range
         /// </summary>
         [Bindable(true), Category("Behavior")]
         public double Maximum
         {
-            get { return (double)GetValue(MaximumProperty); }
-            set { SetValue(MaximumProperty, value); }
-        }
-
-        /// <summary>
-        ///     Called when MinimumProperty is changed on "d."
-        /// </summary>
-        private static void OnMaximumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            RangePanel pan = (RangePanel)d;
-            //  pan.CoerceValue(MinimumProperty);
-            pan.OnMaximumChanged((double)e.OldValue, (double)e.NewValue);
-        }
-
-
-        /// <summary>
-        ///     This method is invoked when the Maximum property changes.
-        /// </summary>
-        /// <param name="oldMaximum">The old value of the Maximum property.</param>
-        /// <param name="newMaximum">The new value of the Maximum property.</param>
-        protected virtual void OnMaximumChanged(double oldMaximum, double newMaximum)
-        {
+            get => (double)GetValue(MaximumProperty);
+            set => SetValue(MaximumProperty, value);
         }
 
         #endregion
@@ -268,22 +114,16 @@ namespace WpfRangeControls
             ClipToBounds = true;
         }
 
-
-        /// <summary>
-        /// this should do same thing as canvas arrange
-        /// </summary>
-        /// <param name="arrangeSize"></param>
-        /// <returns></returns>
         protected override Size MeasureOverride(Size constraint)
         {
 
             double w = 0;
             double h = 0;
 
-            foreach (UIElement child in InternalChildren)
+            foreach (var child in InternalChildren.OfType<UIElement>())
             {
                 child.Measure(constraint);
-                var s = GetItemPosition(constraint,child);
+                var s = GetItemPosition(constraint, child);
 
                 if (s.Right > w)
                     w = s.Right;
@@ -292,12 +132,12 @@ namespace WpfRangeControls
                     h = s.Bottom;
             }
 
-            if (!double.IsNaN(this.Width))
-                w = this.Width;
+            if (!double.IsNaN(Width))
+                w = Width;
 
 
-            if (!double.IsNaN(this.Height))
-                h = this.Height;
+            if (!double.IsNaN(Height))
+                h = Height;
 
             if (HorizontalAlignment == HorizontalAlignment.Stretch)
                 w = 0;
@@ -314,6 +154,7 @@ namespace WpfRangeControls
             var len = Maximum - Minimum;
             return val / len * size;
         }
+
         /// <summary>
         /// this should do same thing as canvas arrange
         /// </summary>
@@ -321,7 +162,7 @@ namespace WpfRangeControls
         /// <returns></returns>
         protected override Size ArrangeOverride(Size arrangeSize)
         {
-            foreach (UIElement item in InternalChildren)
+            foreach (var item in InternalChildren.OfType<UIElement>())
             {
                 Rect r = GetItemPosition(arrangeSize, item);
                 item.Arrange(r);
@@ -334,29 +175,16 @@ namespace WpfRangeControls
             if (item is ContentPresenter && item.ReadLocalValue(PositionProperty) == DependencyProperty.UnsetValue)
             { //should this be recursive until uielement with set Position is found?
 
-                var elm = VisualTreeHelper.GetChild(item, 0) as UIElement;
-                if (elm != null)
+                if (VisualTreeHelper.GetChild(item, 0) is UIElement elm)
                     item = elm;
             }
 
-
             var pos = GetPosition(item);
-            var range = GetRange(item);
-            var align = GetAlignment(item);
 
             double x = 0;
             double y = 0;
             double w = item.DesiredSize.Width;
             double h = item.DesiredSize.Height;
-
-            if (!double.IsNaN(range))
-            {
-                if ((Orientation == Orientation.Horizontal))
-                    w = ScaleToSize(range, arrangeSize.Width);
-                else
-                    h = ScaleToSize(range, arrangeSize.Height);
-            }
-
 
             Size size;
 
@@ -364,35 +192,19 @@ namespace WpfRangeControls
             {
                 x = ScaleToSize(pos, arrangeSize.Width);
                 size = new Size(w, arrangeSize.Height);
-                x -= SizeAdjustment(align, w);
+                x -= SizeAdjustment(w);
             }
             else
             {
                 y = ScaleToSize(pos, arrangeSize.Height);
                 size = new Size(arrangeSize.Width, h);
-                y -= SizeAdjustment(align, h);
+                y -= SizeAdjustment(h);
             }
 
             return new Rect(new Point(x, y), size);
         }
 
-        private static double SizeAdjustment(RangeAlignment align, double size)
-        {
-            switch (align) //how to place item beside given pos
-            {
-                case RangeAlignment.Center:
-                    return size / 2;
-                case RangeAlignment.End:
-                    return size;
-            }
-
-            return 0;
-        }
-
-        protected override Geometry GetLayoutClip(Size layoutSlotSize)
-        {
-            return base.GetLayoutClip(layoutSlotSize);
-        }
+        private static double SizeAdjustment(double size) => size / 2;
     }
 
 }

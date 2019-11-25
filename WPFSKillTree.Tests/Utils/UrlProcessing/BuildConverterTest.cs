@@ -12,7 +12,7 @@ namespace PoESkillTree.Utils.UrlProcessing
         [SetUp]
         public void TestInitialize()
         {
-            _buildConverter = new BuildConverter(null);
+            _buildConverter = new BuildConverter(null!);
             RegisterFactories();
         }
 
@@ -50,12 +50,12 @@ namespace PoESkillTree.Utils.UrlProcessing
                 PathofexileUrlDeserializer.TryCreate,
                 PoeplannerUrlDeserializer.TryCreate);
 
-            _buildConverter.RegisterDefaultDeserializer(url => new NaivePoEUrlDeserializer(url, null));
+            _buildConverter.RegisterDefaultDeserializer(url => new NaivePoEUrlDeserializer(url, null!));
         }
 
         private void UnregisterAllFactories()
         {
-            _buildConverter.RegisterDefaultDeserializer(url => null as NaivePoEUrlDeserializer);
+            _buildConverter.RegisterDefaultDeserializer(url => null!);
             _buildConverter.RegisterDeserializersFactories();
         }
 
