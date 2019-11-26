@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable disable
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -537,9 +538,7 @@ namespace PoESkillTree.SkillTreeFiles
                     var skillNodeGroup = i.Value;
                     if (skillNodeGroup.Nodes.Where(n => n.IsAscendancyNode).ToArray().Length > 0)
                         continue;
-                    if (skillNodeGroup.OccupiedOrbits == null)
-                        skillNodeGroup.OccupiedOrbits = new Dictionary<int, bool>();
-                    var cgrp = skillNodeGroup.OccupiedOrbits.Keys.Where(ng => ng <= 3);
+                    var cgrp = skillNodeGroup.OccupiedOrbits?.Keys.Where(ng => ng <= 3) ?? Enumerable.Empty<int>();
                     var enumerable = cgrp as IList<int> ?? cgrp.ToList();
                     if (!enumerable.Any()) continue;
                     var maxr = enumerable.Max(ng => ng);

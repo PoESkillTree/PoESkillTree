@@ -24,16 +24,10 @@ namespace PoESkillTree.SkillTreeFiles
                 var classes = new List<Class>();
                 foreach (KeyValuePair<int, AscendancyClassOption> asc in ascClass.Value.AscendancyClasses)
                 {
-                    var newClass = new Class
-                    {
-                        Order = asc.Key,
-                        DisplayName = asc.Value.DisplayName,
-                        Name = asc.Value.Name,
-                        FlavourText = asc.Value.FlavourText,
-                        FlavourTextColour = asc.Value.FlavourTextColour.Split(',').Select(int.Parse).ToArray()
-                    };
                     int[] tempPointList = asc.Value.FlavourTextRect.Split(',').Select(int.Parse).ToArray();
-                    newClass.FlavourTextRect = new Vector2D(tempPointList[0], tempPointList[1]);
+                    var newClass = new Class(asc.Key, asc.Value.DisplayName, asc.Value.Name,
+                        asc.Value.FlavourText, new Vector2D(tempPointList[0], tempPointList[1]),
+                        asc.Value.FlavourTextColour.Split(',').Select(int.Parse).ToArray());
                     classes.Add(newClass);
 
                 }
@@ -53,7 +47,7 @@ namespace PoESkillTree.SkillTreeFiles
         public IEnumerable<string> AscendancyClassesForCharacter(CharacterClass characterClass)
             => GetClasses(characterClass).Select(c => c.DisplayName);
 
-        public string GetAscendancyClassName(CharacterClass characterClass, int ascOrder)
+        public string? GetAscendancyClassName(CharacterClass characterClass, int ascOrder)
         {
             if (ascOrder > 0)
                 ascOrder -= 1;

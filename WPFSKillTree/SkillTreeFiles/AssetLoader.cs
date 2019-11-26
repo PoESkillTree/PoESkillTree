@@ -98,7 +98,7 @@ namespace PoESkillTree.SkillTreeFiles
         /// from 0 to 1.</param>
         /// <returns></returns>
         internal async Task DownloadSkillNodeSpritesAsync(PoESkillTree inTree,
-            Action<double> reportProgress = null)
+            Action<double>? reportProgress = null)
         {
             Directory.CreateDirectory(_tempAssetsPath);
             var perSpriteProgress = 1.0 / inTree.SkillSprites.Count;
@@ -124,7 +124,7 @@ namespace PoESkillTree.SkillTreeFiles
         /// <param name="reportProgress">If specified, it is called to set this method's progress as a value
         /// from 0 to 1.</param>
         /// <returns></returns>
-        internal async Task DownloadAssetsAsync(PoESkillTree inTree, Action<double> reportProgress = null)
+        internal async Task DownloadAssetsAsync(PoESkillTree inTree, Action<double>? reportProgress = null)
         {
             Directory.CreateDirectory(_tempAssetsPath);
             var zoomLevel = inTree.ImageZoomLevels[Constants.AssetZoomLevel].ToString(CultureInfo.InvariantCulture);
@@ -160,7 +160,7 @@ namespace PoESkillTree.SkillTreeFiles
             var optsTask = DownloadOptsToFileAsync();
 
             var treeString = await skillTreeTask;
-            var inTree = JsonConvert.DeserializeObject<PoESkillTree>(treeString, new PoESkillTreeConverter());
+            var inTree = JsonConvert.DeserializeObject<PoESkillTree>(treeString, new PoESkillTreeConverter())!;
             var spritesTask = DownloadSkillNodeSpritesAsync(inTree);
             var assetsTask = DownloadAssetsAsync(inTree);
 

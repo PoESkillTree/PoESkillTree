@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿#nullable disable
+using Newtonsoft.Json;
 using PoESkillTree.Utils;
 using System;
 using System.Collections.Generic;

@@ -49,7 +49,7 @@ namespace PoESkillTree.SkillTreeFiles
         public override int GetHashCode()
             => TopLeft.GetHashCode() ^ BottomRight.GetHashCode();
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => obj is Rect2D other && Equals(other);
 
         private bool Equals(Rect2D other)

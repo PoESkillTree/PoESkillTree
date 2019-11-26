@@ -13,7 +13,7 @@ namespace PoESkillTree.SkillTreeFiles
             return objectType == typeof(PoESkillTree);
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
             serializer.Converters.Add(new SkillTreeGroupConverter());
 
@@ -28,7 +28,7 @@ namespace PoESkillTree.SkillTreeFiles
 
             if (jObject.GetValue("skillSprites") is JToken spritesToken)
             {
-                var sprites = spritesToken.ToObject<Dictionary<string, List<OldSkillSprite>>>();
+                var sprites = spritesToken.ToObject<Dictionary<string, List<OldSkillSprite>>>()!;
                 if (sprites.Count == 2)
                 {
                     skillTree.SkillSprites = new Dictionary<string, List<SkillSprite>>();
@@ -66,7 +66,7 @@ namespace PoESkillTree.SkillTreeFiles
         }
 
         public override bool CanWrite => false;
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
             throw new NotImplementedException($"Unnecessary because {nameof(CanWrite)} is false. The type will skip the converter.");
         }
@@ -79,7 +79,7 @@ namespace PoESkillTree.SkillTreeFiles
             return objectType == typeof(SkillNodeGroup);
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
             var jObject = JObject.Load(reader);
             var group = new SkillNodeGroup();
@@ -95,7 +95,7 @@ namespace PoESkillTree.SkillTreeFiles
         }
 
         public override bool CanWrite => false;
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
             throw new NotImplementedException($"Unnecessary because {nameof(CanWrite)} is false. The type will skip the converter.");
         }

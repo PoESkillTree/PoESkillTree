@@ -26,7 +26,7 @@ namespace PoESkillTree.SkillTreeFiles
         public double Y { get; set; }
 
         [JsonIgnore]
-        private Vector2D? _position = null;
+        private Vector2D? _position;
         [JsonIgnore]
         public Vector2D Position
         {
@@ -43,13 +43,13 @@ namespace PoESkillTree.SkillTreeFiles
         }
 
         [JsonProperty("oo")]
-        public Dictionary<int, bool> OccupiedOrbits { get; set; }
+        public Dictionary<int, bool>? OccupiedOrbits { get; set; }
 
         [JsonProperty("n")]
-        public List<ushort> NodeIds { get; set; }
+        public List<ushort> NodeIds { get; set; } = default!;
 
         [JsonIgnore]
-        public List<SkillNode> Nodes { get; set; } = new List<SkillNode>();
+        public List<SkillNode> Nodes { get; } = new List<SkillNode>();
     }
 
     public class SkillNode
@@ -58,22 +58,19 @@ namespace PoESkillTree.SkillTreeFiles
         public ushort Id { get; set; }
 
         [JsonProperty("icon")]
-        public string Icon { get; set; }
+        public string Icon { get; set; } = default!;
 
         [JsonProperty("dn")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         [JsonProperty("ascendancyName")]
-        public string AscendancyName { get; set; }
+        public string? AscendancyName { get; set; }
 
         [JsonIgnore]
-        public bool IsRootNode { get; set; } = false;
+        public bool IsRootNode { get; set; }
 
         [JsonIgnore]
         public bool IsAscendancyNode => !string.IsNullOrWhiteSpace(AscendancyName);
-
-        [JsonIgnore]
-        public bool IsSmall => !IsKeystone && !IsNotable && !IsMastery && !IsJewelSocket;
 
         [JsonProperty("not")]
         public bool IsNotable { get; set; }
@@ -109,25 +106,25 @@ namespace PoESkillTree.SkillTreeFiles
         public int IntelligenceGranted { get; set; }
 
         [JsonProperty("spc")]
-        public int[] Characters { get; set; }
+        public int[] Characters { get; set; } = default!;
 
         [JsonIgnore]
         public int? Character => Characters.Length > 0 ? Characters[0] : (int?)null;
 
         [JsonProperty("sd")]
-        public string[] StatDefinitions { get; set; }
+        public string[] StatDefinitions { get; set; } = default!;
 
         [JsonIgnore]
         public Dictionary<string, IReadOnlyList<float>> Attributes { get; set; } = new Dictionary<string, IReadOnlyList<float>>();
 
         [JsonProperty("reminderText")]
-        public string[] ReminderText { get; set; }
+        public string[]? ReminderText { get; set; }
 
         [JsonProperty("g")]
         public int GroupId { get; set; }
 
         [JsonIgnore]
-        public SkillNodeGroup Group { get; set; }
+        public SkillNodeGroup Group { get; set; } = default!;
 
         [JsonProperty("o")]
         public int OrbitRadiiIndex { get; set; }
@@ -136,14 +133,14 @@ namespace PoESkillTree.SkillTreeFiles
         public int SkillsPreOrbitIndex { get; set; }
 
         [JsonProperty("out")]
-        public List<ushort> NodeIdsOut { get; set; }
+        public List<ushort> NodeIdsOut { get; set; } = default!;
 
         [JsonProperty("in")]
-        public List<ushort> NodesIdsIn { get; set; }
+        public List<ushort> NodesIdsIn { get; set; } = default!;
 
         [JsonIgnore]
         // The subset of neighbors to which connections should be drawn.
-        public List<SkillNode> VisibleNeighbors { get; set; } = new List<SkillNode>();
+        public List<SkillNode> VisibleNeighbors { get; } = new List<SkillNode>();
 
         [JsonIgnore]
         public List<SkillNode> Neighbor { get; set; } = new List<SkillNode>();
@@ -155,7 +152,7 @@ namespace PoESkillTree.SkillTreeFiles
         public double Arc => 2 * Math.PI * SkillsPreOrbitIndex / SkillsPerOrbit[OrbitRadiiIndex];
 
         [JsonIgnore]
-        private PassiveNodeType? _type = null;
+        private PassiveNodeType? _type;
 
         [JsonIgnore]
         public PassiveNodeType Type
@@ -170,19 +167,19 @@ namespace PoESkillTree.SkillTreeFiles
                     }
                     else if (!IsKeystone && IsNotable && !IsJewelSocket && !IsMastery)
                     {
-                        Type = PassiveNodeType.Notable;
+                        _type = PassiveNodeType.Notable;
                     }
                     else if (!IsKeystone && !IsNotable && IsJewelSocket && !IsMastery)
                     {
-                        Type = PassiveNodeType.JewelSocket;
+                        _type = PassiveNodeType.JewelSocket;
                     }
                     else if (!IsKeystone && !IsNotable && !IsJewelSocket && IsMastery)
                     {
-                        Type = PassiveNodeType.Mastery;
+                        _type = PassiveNodeType.Mastery;
                     }
                     else if (!IsKeystone && !IsNotable && !IsJewelSocket && !IsMastery)
                     {
-                        Type = PassiveNodeType.Small;
+                        _type = PassiveNodeType.Small;
                     }
                     else
                     {
@@ -192,7 +189,6 @@ namespace PoESkillTree.SkillTreeFiles
 
                 return _type.Value;
             }
-            set => _type = value;
         }
 
         [JsonIgnore]
@@ -233,19 +229,19 @@ namespace PoESkillTree.SkillTreeFiles
     public class BaseConstants
     {
         [JsonProperty("classes")]
-        public Dictionary<string, int> Classes { get; set; }
+        public Dictionary<string, int>? Classes { get; set; }
 
         [JsonProperty("characterAttributes")]
-        public Dictionary<string, int> CharacterAttributes { get; set; }
+        public Dictionary<string, int>? CharacterAttributes { get; set; }
 
         [JsonProperty("PSSCentreInnerRadius")]
         public int PSSCentreInnerRadius { get; set; }
 
         [JsonProperty("skillsPerOrbit")]
-        public int[] SkillsPerOrbit { get; set; }
+        public int[]? SkillsPerOrbit { get; set; }
 
         [JsonProperty("orbitRadii")]
-        public float[] OrbitRadii { get; set; }
+        public float[]? OrbitRadii { get; set; }
     }
 
     public class Art2D
@@ -266,25 +262,25 @@ namespace PoESkillTree.SkillTreeFiles
     public class SkillSprite
     {
         [JsonProperty("filename")]
-        public string FileName { get; set; }
+        public string FileName { get; set; } = default!;
 
         [JsonProperty("coords")]
-        public Dictionary<string, Art2D> Coords { get; set; }
+        public Dictionary<string, Art2D> Coords { get; set; } = default!;
     }
 
     public class OldSkillSprite
     {
         [JsonProperty("filename")]
-        public string FileName { get; set; }
+        public string FileName { get; set; } = default!;
 
         [JsonProperty("coords")]
-        public Dictionary<string, Art2D> Coords { get; set; }
+        public Dictionary<string, Art2D>? Coords { get; set; }
 
         [JsonProperty("notableCoords")]
-        public Dictionary<string, Art2D> NotableCoords { get; set; }
+        public Dictionary<string, Art2D>? NotableCoords { get; set; }
 
         [JsonProperty("keystoneCoords")]
-        public Dictionary<string, Art2D> KeystoneCoords { get; set; }
+        public Dictionary<string, Art2D>? KeystoneCoords { get; set; }
     }
 
     public class ExtraImage
@@ -296,31 +292,31 @@ namespace PoESkillTree.SkillTreeFiles
         public int Y { get; set; }
 
         [JsonProperty("image")]
-        public string Image { get; set; }
+        public string? Image { get; set; }
     }
 
     public class PoESkillTree
     {
         [JsonProperty("characterData")]
-        public Dictionary<int, BaseCharacterData> CharacterData { get; set; }
+        public Dictionary<int, BaseCharacterData> CharacterData { get; set; } = default!;
 
         [JsonProperty("groups")]
-        public Dictionary<int, SkillNodeGroup> Groups { get; set; }
+        public Dictionary<int, SkillNodeGroup> Groups { get; set; } = default!;
 
         [JsonProperty("root")]
-        public SkillNode Root { get; set; }
+        public SkillNode? Root { get; set; }
 
         [JsonProperty("nodes")]
-        public Dictionary<ushort, SkillNode> Nodes { get; set; }
+        public Dictionary<ushort, SkillNode> Nodes { get; set; } = default!;
 
         [JsonProperty("assets")]
-        public Dictionary<string, Dictionary<string, string>> Assets { get; set; }
+        public Dictionary<string, Dictionary<string, string>> Assets { get; set; } = default!;
 
         [JsonProperty("constants")]
-        public BaseConstants Constants { get; set; }
+        public BaseConstants Constants { get; set; } = default!;
 
         [JsonIgnore]
-        private string _imageRoot = null;
+        private string? _imageRoot;
 
         [JsonProperty("imageRoot")]
         public string ImageRoot
@@ -338,10 +334,10 @@ namespace PoESkillTree.SkillTreeFiles
         }
 
         [JsonProperty("skillSprites")]
-        public Dictionary<string, List<SkillSprite>> SkillSprites { get; set; }
+        public Dictionary<string, List<SkillSprite>> SkillSprites { get; set; } = default!;
 
         [JsonProperty("extraImages")]
-        public Dictionary<int, ExtraImage> ExtraImages { get; set; }
+        public Dictionary<int, ExtraImage>? ExtraImages { get; set; }
 
         [JsonProperty("min_x")]
         public int min_x { get; set; }
@@ -356,16 +352,16 @@ namespace PoESkillTree.SkillTreeFiles
         public int max_y { get; set; }
 
         [JsonProperty("imageZoomLevels")]
-        public double[] ImageZoomLevels { get; set; }
+        public double[] ImageZoomLevels { get; set; } = default!;
     }
 
     public class PoESkillTreeOptions
     {
         [JsonProperty("ascClasses")]
-        public Dictionary<int, CharacterToAscendancyOption> CharacterToAscendancy { get; set; }
+        public Dictionary<int, CharacterToAscendancyOption> CharacterToAscendancy { get; set; } = default!;
 
         [JsonProperty("zoomLevels")]
-        public double[] ZoomLevels { get; set; }
+        public double[]? ZoomLevels { get; set; }
 
         [JsonProperty("height")]
         public int Height { get; set; }
@@ -377,16 +373,16 @@ namespace PoESkillTree.SkillTreeFiles
         public bool FullScreen { get; set; }
 
         [JsonProperty("version")]
-        public string Version { get; set; }
+        public string? Version { get; set; }
 
         [JsonProperty("realm")]
-        public string Realm { get; set; }
+        public string? Realm { get; set; }
 
         [JsonProperty("build")]
-        public object Build { get; set; } //Model.Builds.GGGBuild?
+        public object? Build { get; set; } //Model.Builds.GGGBuild?
 
         [JsonProperty("circles")]
-        public Dictionary<string, List<CircleOption>> Circles { get; set; }
+        public Dictionary<string, List<CircleOption>>? Circles { get; set; }
 
     }
 
@@ -402,27 +398,27 @@ namespace PoESkillTree.SkillTreeFiles
     public class CharacterToAscendancyOption
     {
         [JsonProperty("name")]
-        public string CharacterName { get; set; }
+        public string CharacterName { get; set; } = default!;
 
         [JsonProperty("classes")]
-        public Dictionary<int, AscendancyClassOption> AscendancyClasses { get; set; }
+        public Dictionary<int, AscendancyClassOption> AscendancyClasses { get; set; } = default!;
     }
 
     public class AscendancyClassOption
     {
         [JsonProperty("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         [JsonProperty("displayName")]
-        public string DisplayName { get; set; }
+        public string DisplayName { get; set; } = default!;
 
         [JsonProperty("flavourText")]
-        public string FlavourText { get; set; }
+        public string FlavourText { get; set; } = default!;
 
         [JsonProperty("flavourTextRect")]
-        public string FlavourTextRect { get; set; }
+        public string FlavourTextRect { get; set; } = default!;
 
         [JsonProperty("flavourTextColour")]
-        public string FlavourTextColour { get; set; }
+        public string FlavourTextColour { get; set; } = default!;
     }
 }

@@ -42,7 +42,7 @@ namespace PoESkillTree.SkillTreeFiles
         public static Vector2D operator /(Vector2D lhs, double f)
             => new Vector2D(lhs.X/f, lhs.Y/f);
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => obj is Vector2D other && Equals(other);
 
         private bool Equals(Vector2D other)
