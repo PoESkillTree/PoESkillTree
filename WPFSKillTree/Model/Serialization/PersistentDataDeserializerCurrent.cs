@@ -18,8 +18,8 @@ namespace PoESkillTree.Model.Serialization
     {
         private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
-        private string _currentBuildPath;
-        private string _selectedBuildPath;
+        private string? _currentBuildPath;
+        private string? _selectedBuildPath;
 
         // 2.3.0 was released as 2.3.0.1052, this is for everything after that version
         public PersistentDataDeserializerCurrent()
@@ -119,13 +119,13 @@ namespace PoESkillTree.Model.Serialization
         /// Imports the build given as a xml string. <see cref="IPersistentData.SaveBuild"/> may be
         /// called by this method.
         /// </summary>
-        public Task<PoEBuild> ImportBuildFromStringAsync(string buildXml)
+        public Task<PoEBuild?> ImportBuildFromStringAsync(string buildXml)
         {
             return ImportBuildAsync(
                 () => Task.FromResult(XmlSerializationUtils.DeserializeString<XmlBuild>(buildXml)));
         }
 
-        private async Task<PoEBuild> ImportBuildAsync(Func<Task<XmlBuild>> supplier)
+        private async Task<PoEBuild?> ImportBuildAsync(Func<Task<XmlBuild>> supplier)
         {
             try
             {
@@ -172,7 +172,7 @@ namespace PoESkillTree.Model.Serialization
 
         private static async Task DeserializeBuildsAsync(string buildFolderPath, BuildFolder folder, IEnumerable<string> buildNames)
         {
-            var buildTasks = new List<Task<IBuild>>();
+            var buildTasks = new List<Task<IBuild?>>();
             foreach (var directoryPath in Directory.EnumerateDirectories(buildFolderPath))
             {
                 var fileName = Path.GetFileName(directoryPath);
@@ -210,10 +210,10 @@ namespace PoESkillTree.Model.Serialization
             }
         }
 
-        private static async Task<IBuild> DeserializeFolderAsync(string path, BuildFolder folder)
+        private static async Task<IBuild?> DeserializeFolderAsync(string path, BuildFolder folder)
         {
             var fullPath = Path.Combine(path, SerializationConstants.BuildFolderFileName);
-            XmlBuildFolder xmlFolder;
+            XmlBuildFolder? xmlFolder;
             if (File.Exists(fullPath))
             {
                 xmlFolder = await DeserializeAsync<XmlBuildFolder>(fullPath);
@@ -235,11 +235,11 @@ namespace PoESkillTree.Model.Serialization
             return folder;
         }
 
-        private static async Task<IBuild> DeserializeBuildAsync(string path)
+        private static async Task<IBuild?> DeserializeBuildAsync(string path)
         {
             var xmlBuild = await DeserializeAsync<XmlBuild>(path).ConfigureAwait(false);
             var build = ConvertFromXmlBuild(xmlBuild);
-            if (build != null && CheckVersion(xmlBuild.Version))
+            if (build != null && CheckVersion(xmlBuild!.Version))
             {
                 build.KeepChanges();
                 return build;
@@ -270,7 +270,8 @@ namespace PoESkillTree.Model.Serialization
             return true;
         }
 
-        private static async Task<T> DeserializeAsync<T>(string path)
+        private static async Task<T?> DeserializeAsync<T>(string path)
+            where T: class
         {
             try
             {
@@ -279,11 +280,11 @@ namespace PoESkillTree.Model.Serialization
             catch (Exception e)
             {
                 Log.Error(e, $"Could not deserialize file from {path} as type {typeof(T)}");
-                return default(T);
+                return default;
             }
         }
 
-        private IBuild BuildForPath(string path)
+        private IBuild? BuildForPath(string? path)
         {
             if (path == null)
                 return null;

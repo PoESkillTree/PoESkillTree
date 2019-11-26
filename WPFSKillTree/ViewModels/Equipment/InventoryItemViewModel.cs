@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using GongSolutions.Wpf.DragDrop;
-using JetBrains.Annotations;
 using PoESkillTree.Common.ViewModels;
 using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Model.Items;
@@ -14,7 +13,7 @@ namespace PoESkillTree.ViewModels.Equipment
     /// <summary>
     /// View model for draggable items in the inventory. This is also a drop target.
     /// </summary>
-    public class InventoryItemViewModel : DraggableItemViewModel, IDropTarget, IDisposable
+    public sealed class InventoryItemViewModel : DraggableItemViewModel, IDropTarget, IDisposable
     {
         private readonly IExtendedDialogCoordinator _dialogCoordinator;
         private readonly ItemAttributes _itemAttributes;
@@ -23,8 +22,7 @@ namespace PoESkillTree.ViewModels.Equipment
         public ushort? Socket { get; }
 
         // the item is delegated to this view model's slot in ItemAttributes
-        [CanBeNull]
-        public override Item Item
+        public override Item? Item
         {
             get => _itemAttributes.GetItemInSlot(_slot, Socket);
             set => _itemAttributes.SetItemInSlot(value, _slot, Socket);

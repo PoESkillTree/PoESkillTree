@@ -102,10 +102,9 @@ namespace PoESkillTree.Model.Items
     {
         private readonly string _metadataId;
         private readonly JToken _json;
+        private readonly HashSet<string> _unknownTags = new HashSet<string>();
 
-        private ItemBaseDto _xml;
-
-        public IReadOnlyCollection<string> UnknownTags { get; private set; }
+        public IReadOnlyCollection<string> UnknownTags => _unknownTags;
 
         public ItemBaseJsonToXmlConverter(string metadataId, JToken json)
         {
@@ -115,88 +114,85 @@ namespace PoESkillTree.Model.Items
 
         public ItemBaseDto Parse()
         {
-            _xml = new ItemBaseDto();
-            ParseSimpleFields();
-            ParseItemClass();
-            ParseImplicits();
-            ParseRequirements();
-            ParseTags();
-            ParseProperties();
-            return _xml;
+            var xml = new ItemBaseDto();
+            ParseSimpleFields(xml);
+            ParseItemClass(xml);
+            ParseImplicits(xml);
+            ParseRequirements(xml);
+            ParseTags(xml);
+            ParseProperties(xml);
+            return xml;
         }
 
-        private void ParseSimpleFields()
+        private void ParseSimpleFields(ItemBaseDto xml)
         {
-            _xml.Name = _json.Value<string>("name");
-            _xml.DropDisabled = _json.Value<string>("release_state") != "released";
-            _xml.InventoryHeight = _json.Value<int>("inventory_height");
-            _xml.InventoryWidth = _json.Value<int>("inventory_width");
-            _xml.MetadataId = _metadataId;
+            xml.Name = _json.Value<string>("name");
+            xml.DropDisabled = _json.Value<string>("release_state") != "released";
+            xml.InventoryHeight = _json.Value<int>("inventory_height");
+            xml.InventoryWidth = _json.Value<int>("inventory_width");
+            xml.MetadataId = _metadataId;
         }
 
-        private void ParseItemClass()
+        private void ParseItemClass(ItemBaseDto xml)
         {
             ItemClassEx.TryParse(_json.Value<string>("item_class"), out var itemClass);
-            _xml.ItemClass = itemClass;
+            xml.ItemClass = itemClass;
         }
 
-        private void ParseImplicits()
+        private void ParseImplicits(ItemBaseDto xml)
         {
-            _xml.Implicit = _json["implicits"].Values<string>().ToArray();
+            xml.Implicit = _json["implicits"]!.Values<string>().ToArray();
         }
 
-        private void ParseRequirements()
+        private void ParseRequirements(ItemBaseDto xml)
         {
-            var requirements = _json["requirements"];
+            var requirements = _json["requirements"]!;
             if (requirements.HasValues)
             {
-                _xml.Dexterity = requirements.Value<int>("dexterity");
-                _xml.Strength = requirements.Value<int>("strength");
-                _xml.Intelligence = requirements.Value<int>("intelligence");
-                _xml.Level = requirements.Value<int>("level");
+                xml.Dexterity = requirements.Value<int>("dexterity");
+                xml.Strength = requirements.Value<int>("strength");
+                xml.Intelligence = requirements.Value<int>("intelligence");
+                xml.Level = requirements.Value<int>("level");
             }
             else
             {
-                _xml.Level = 1;
+                xml.Level = 1;
             }
         }
 
-        private void ParseTags()
+        private void ParseTags(ItemBaseDto xml)
         {
-            var unknownTags = new HashSet<string>();
-            foreach (var s in _json["tags"].Values<string>())
+            foreach (var s in _json["tags"]!.Values<string>())
             {
                 if (TagsExtensions.TryParse(s, out var tag))
                 {
-                    _xml.Tags |= tag;
+                    xml.Tags |= tag;
                 }
                 else
                 {
-                    unknownTags.Add(s);
+                    _unknownTags.Add(s);
                 }
             }
-
-            UnknownTags = unknownTags.ToList();
         }
 
-        private void ParseProperties()
+        private void ParseProperties(ItemBaseDto xml)
         {
-            var properties = _json["properties"];
-            if (_xml.Tags.HasFlag(Tags.Weapon))
+            var properties = _json["properties"]!;
+            if (xml.Tags.HasFlag(Tags.Weapon))
             {
-                _xml.Properties = FormatToArray(ParseWeaponProperties(properties));
+                xml.Properties = FormatToArray(ParseWeaponProperties(properties));
             }
-            else if (_xml.Tags.HasFlag(Tags.Armour))
+            else if (xml.Tags.HasFlag(Tags.Armour))
             {
-                _xml.Properties = FormatToArray(ParseArmourProperties(properties));
+                xml.Properties = FormatToArray(ParseArmourProperties(properties));
             }
-            else if (_xml.Tags.HasFlag(Tags.Flask))
+            else if (xml.Tags.HasFlag(Tags.Flask))
             {
-                _xml.Properties = FormatToArray(ParseFlaskProperties(properties));
+                xml.Properties = FormatToArray(ParseFlaskProperties(properties));
             }
             else
             {
-                _xml.Properties = new string[0];
+                xml.Properties = new string[0];
             }
         }
 

@@ -94,7 +94,9 @@ namespace PoESkillTree.Model.Serialization
             private readonly string _importedBuildPath;
             private readonly PersistentDataDeserializerCurrent _currentDeserializer;
 
+#pragma warning disable CS8618 // _serializer is set in initialization
             public PersistentData(IPersistentDataDeserializer deserializer, string importedBuildPath)
+#pragma warning restore
             {
                 _deserializer = deserializer;
                 _deserializer.PersistentData = this;
@@ -150,7 +152,7 @@ namespace PoESkillTree.Model.Serialization
                 _serializer = new PersistentDataSerializer(this);
             }
 
-            public override Task<PoEBuild> ImportBuildAsync(string buildXml)
+            public override Task<PoEBuild?> ImportBuildAsync(string buildXml)
             {
                 return _currentDeserializer.ImportBuildFromStringAsync(buildXml);
             }

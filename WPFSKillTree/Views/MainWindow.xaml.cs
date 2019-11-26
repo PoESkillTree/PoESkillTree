@@ -1970,7 +1970,6 @@ namespace PoESkillTree.Views
             }
 
             var item = viewModel.Item;
-            item.SetJsonBase();
             if (StashViewModel.Items.Count > 0)
             {
                 item.Y = StashViewModel.LastOccupiedRow + 1;

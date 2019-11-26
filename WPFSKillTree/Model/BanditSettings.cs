@@ -48,8 +48,8 @@ namespace PoESkillTree.Model
         
         public Bandit Choice
         {
-            get { return _choice; }
-            set { SetProperty(ref _choice, value); }
+            get => _choice;
+            set => SetProperty(ref _choice, value);
         }
 
         [XmlIgnore]

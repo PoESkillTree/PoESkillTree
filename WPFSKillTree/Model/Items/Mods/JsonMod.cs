@@ -16,23 +16,23 @@ namespace PoESkillTree.Model.Items.Mods
         // "grants_buff": not used
         // "grants_effect": not used
         [JsonProperty("group")]
-        public string Group { get; set; }
+        public string Group { get; set; } = default!;
         [JsonProperty("is_essence_only")]
         public bool IsEssenceOnly { get; set; }
         [JsonProperty("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
         [JsonProperty("required_level")]
         public int RequiredLevel { get; set; }
         [JsonProperty("spawn_weights")]
-        public JsonSpawnWeight[] SpawnWeights { get; set; }
+        public JsonSpawnWeight[] SpawnWeights { get; set; } = default!;
         [JsonProperty("stats")]
-        public JsonStat[] Stats { get; set; }
+        public JsonStat[] Stats { get; set; } = default!;
     }
 
     public class JsonSpawnWeight
     {
         [JsonProperty("tag")]
-        public string Tag { get; set; }
+        public string Tag { get; set; } = default!;
         [JsonProperty("weight")]
         public int Weight { get; set; }
         [JsonIgnore]
@@ -42,7 +42,7 @@ namespace PoESkillTree.Model.Items.Mods
     public class JsonStat
     {
         [JsonProperty("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
         [JsonProperty("max")]
         public int Max { get; set; }
         [JsonProperty("min")]

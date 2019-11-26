@@ -16,7 +16,7 @@ namespace PoESkillTree.ViewModels.Equipment
         /// <summary>
         /// Gets or sets the item this view models shows.
         /// </summary>
-        public abstract Item Item { get; set; }
+        public abstract Item? Item { get; set; }
 
         private bool _isDragged;
         /// <summary>

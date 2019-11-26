@@ -158,13 +158,6 @@
                                             <l:Catalog Message="New Folder" />
                                         </MenuItem.Header>
                                     </MenuItem>
-                                    <Separator />
-                                    <MenuItem Command="{Binding Data.ExportGGGBuildFile, Source={StaticResource VmProxy}}"
-                                              CommandParameter="{Binding}">
-                                        <MenuItem.Header>
-                                            <l:Catalog Message="Export to .build" />
-                                        </MenuItem.Header>
-                                    </MenuItem>
                                 </ContextMenu>
                             </TextBlock.ContextMenu>
                         </TextBlock>

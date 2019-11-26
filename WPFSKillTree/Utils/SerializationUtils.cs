@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Reflection;
 
@@ -32,7 +33,8 @@ namespace PoESkillTree.Utils
         /// <summary>
         /// Encodes the given file name so that it contains no characters that are invalid as file names.
         /// </summary>
-        public static string EncodeFileName(string fileName)
+        [return: NotNullIfNotNull("fileName")]
+        public static string? EncodeFileName(string? fileName)
         {
             // * (asterisk) is not encoded but is not allowed in Windows file names
             // . (full stop) is silently removed at the end of folder names

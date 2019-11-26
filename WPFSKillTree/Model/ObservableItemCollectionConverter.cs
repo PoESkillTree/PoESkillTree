@@ -13,8 +13,8 @@ namespace PoESkillTree.Model
 {
     public class ObservableItemCollectionConverter
     {
-        private ObservableSet<OldItem> _itemAttributesEquip;
-        private ObservableSet<IReadOnlyList<Skill>> _itemAttributesSkills;
+        private ObservableSet<OldItem>? _itemAttributesEquip;
+        private ObservableSet<IReadOnlyList<Skill>>? _itemAttributesSkills;
 
         private readonly Dictionary<(ItemSlot, ushort?), OldItem> _oldItems =
             new Dictionary<(ItemSlot, ushort?), OldItem>();
@@ -35,8 +35,8 @@ namespace PoESkillTree.Model
             _itemAttributesEquip = itemAttributes.Equip;
             _itemAttributesSkills = itemAttributes.Skills;
 
-            ResetItems();
-            ResetSkills();
+            ChangeItems(_oldItems.Values.ToList(), _itemAttributesEquip);
+            Skills.ExceptAndUnionWith(Skills.ToList(), _itemAttributesSkills);
 
             _itemAttributesEquip.CollectionChanged += ItemAttributesEquipOnCollectionChanged;
             _itemAttributesSkills.CollectionChanged += ItemAttributesSkillsOnCollectionChanged;
@@ -48,12 +48,6 @@ namespace PoESkillTree.Model
         private void ItemAttributesSkillsOnCollectionChanged(
             object sender, CollectionChangedEventArgs<IReadOnlyList<Skill>> args)
             => Skills.ExceptAndUnionWith(args.RemovedItems, args.AddedItems);
-
-        private void ResetItems()
-            => ChangeItems(_oldItems.Values.ToList(), _itemAttributesEquip);
-
-        private void ResetSkills()
-            => Skills.ExceptAndUnionWith(Skills.ToList(), _itemAttributesSkills);
 
         private void ChangeItems(IEnumerable<OldItem> oldToRemove, IEnumerable<OldItem> oldToAdd)
         {

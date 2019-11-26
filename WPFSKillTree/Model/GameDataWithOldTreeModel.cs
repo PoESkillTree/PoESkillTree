@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using PoESkillTree.Engine.GameModel;
 using PoESkillTree.Engine.GameModel.PassiveTree;
@@ -15,7 +16,8 @@ namespace PoESkillTree.Model
 
         public GameData Data { get; }
 
-        public IEnumerable<SkillNode> PassiveNodes { private get; set; }
+        [DisallowNull]
+        public IEnumerable<SkillNode>? PassiveNodes { private get; set; }
 
         private class LazyPassiveNodeEnumerable : IEnumerable<PassiveNodeDefinition>
         {

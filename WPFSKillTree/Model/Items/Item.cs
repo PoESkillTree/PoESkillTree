@@ -15,7 +15,6 @@ using PoESkillTree.Engine.GameModel.Skills;
 using PoESkillTree.Engine.Utils.Extensions;
 using PoESkillTree.Model.Items.Mods;
 using PoESkillTree.Utils;
-using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Model.Items
 {
@@ -34,14 +33,7 @@ namespace PoESkillTree.Model.Items
         public ushort? Socket
         {
             get => _socket;
-            set => SetProperty(ref _socket, value, () =>
-            {
-                if (JsonBase != null)
-                {
-                    JsonBase["socket"] = value;
-                    OnPropertyChanged(nameof(JsonBase));
-                }
-            });
+            set => SetProperty(ref _socket, value);
         }
 
         public ItemClass ItemClass { get; }
@@ -53,17 +45,7 @@ namespace PoESkillTree.Model.Items
         public bool IsEnabled
         {
             get => _isEnabled;
-            set
-            {
-                SetProperty(ref _isEnabled, value, () =>
-                {
-                    if (JsonBase != null)
-                    {
-                        JsonBase["isEnabled"] = value;
-                        OnPropertyChanged(nameof(JsonBase));
-                    }
-                });
-            }
+            set => SetProperty(ref _isEnabled, value);
         }
 
         private FrameType _frame;
@@ -120,11 +102,11 @@ namespace PoESkillTree.Model.Items
             set => SetProperty(ref _craftedMods, value);
         }
 
-        private string _flavourText;
-        public string FlavourText
+        private string? _flavourText;
+        public string? FlavourText
         {
             get => _flavourText;
-            set => SetProperty(ref _flavourText, value, () => OnPropertyChanged("HaveFlavourText"));
+            set => SetProperty(ref _flavourText, value, () => OnPropertyChanged(nameof(HaveFlavourText)));
         }
         public bool HaveFlavourText
             => !string.IsNullOrEmpty(_flavourText);
@@ -133,17 +115,17 @@ namespace PoESkillTree.Model.Items
             => ImplicitMods.Union(ExplicitMods).Union(CraftedMods);
 
         public string Name
-            => string.IsNullOrEmpty(_nameLine) ? TypeLine : NameLine;
+            => string.IsNullOrEmpty(NameLine) ? TypeLine : NameLine;
 
-        private string _nameLine;
+        private string _nameLine = "";
         public string NameLine
         {
             get => _nameLine;
-            set => SetProperty(ref _nameLine, value, () => OnPropertyChanged("HaveName"));
+            set => SetProperty(ref _nameLine, value, () => OnPropertyChanged(nameof(HaveName)));
         }
         public bool HaveName => !string.IsNullOrEmpty(NameLine);
 
-        private string _typeLine;
+        private string _typeLine = "";
         public string TypeLine
         {
             get => _typeLine;
@@ -152,43 +134,22 @@ namespace PoESkillTree.Model.Items
 
         public IItemBase BaseType { get; }
 
-        private readonly string _iconUrl;
+        private readonly string? _iconUrl;
 
         public ItemImage Image { get; }
-
-        private JObject _jsonBase;
-        public JObject JsonBase
-        {
-            get => _jsonBase;
-            private set => SetProperty(ref _jsonBase, value);
-        }
 
         private int _x;
         public int X
         {
             get => _x;
-            set
-            {
-                SetProperty(ref _x, value, () =>
-                {
-                    if (JsonBase != null)
-                        JsonBase["x"] = value;
-                });
-            }
+            set => SetProperty(ref _x, value);
         }
 
         private int _y;
         public int Y
         {
             get => _y;
-            set
-            {
-                SetProperty(ref _y, value, () =>
-                {
-                    if (JsonBase != null)
-                        JsonBase["y"] = value;
-                });
-            }
+            set => SetProperty(ref _y, value);
         }
 
         public int Width { get; }
@@ -235,7 +196,6 @@ namespace PoESkillTree.Model.Items
             _iconUrl = source._iconUrl;
             Image = source.Image;
 
-            JsonBase = new JObject(source.JsonBase);
             _x = source._x;
             _y = source._y;
             Width = source.Width;
@@ -244,19 +204,16 @@ namespace PoESkillTree.Model.Items
 
         public Item(EquipmentData equipmentData, JObject val, ItemSlot itemSlot = ItemSlot.Unequipable)
         {
-            JsonBase = val;
             Slot = itemSlot;
             Socket = val["socket"]?.Value<ushort?>();
 
-            Width = val["w"].Value<int>();
-            Height = val["h"].Value<int>();
-            if (val["x"] != null)
-                X = val["x"].Value<int>();
-            if (val["y"] != null)
-                Y = val["y"].Value<int>();
+            Width = val["w"]?.Value<int?>() ?? 1;
+            Height = val["h"]?.Value<int?>() ?? 1;
+            X = val["x"]?.Value<int?>() ?? 0;
+            Y = val["y"]?.Value<int?>() ?? 0;
 
-            if (val["name"] != null)
-                NameLine = FilterJsonString(val["name"].Value<string>());
+            if (val.TryGetValue("name", out var nameToken))
+                NameLine = FilterJsonString(nameToken.Value<string>());
 
             if (val.TryGetValue("icon", out var iconToken))
                 _iconUrl = iconToken.Value<string>();
@@ -264,35 +221,31 @@ namespace PoESkillTree.Model.Items
             if (val.TryGetValue("isEnabled", out var enabledToken))
                 IsEnabled = enabledToken.Value<bool>();
 
-            Frame = (FrameType)val["frameType"].Value<int>();
-            TypeLine = FilterJsonString(val["typeLine"].Value<string>());
+            Frame = (FrameType) val["frameType"]!.Value<int>();
+            TypeLine = FilterJsonString(val["typeLine"]!.Value<string>());
 
+            IItemBase? baseType = null;
             if (Frame == FrameType.Magic)
             {
-                BaseType = equipmentData.ItemBaseFromTypeline(TypeLine);
+                baseType = equipmentData.ItemBaseFromTypeline(TypeLine);
             }
             else if ((Frame == FrameType.Unique || Frame == FrameType.Foil)
-                     && equipmentData.UniqueBaseDictionary.ContainsKey(NameLine))
+                     && equipmentData.UniqueBaseDictionary.TryGetValue(NameLine, out var uBase))
             {
-                BaseType = equipmentData.UniqueBaseDictionary[NameLine];
+                baseType = uBase;
             }
-            else
+            else if (equipmentData.ItemBaseDictionary.TryGetValue(TypeLine, out var iBase))
             {
                 // item is not unique or the unique is unknown
-                equipmentData.ItemBaseDictionary.TryGetValue(TypeLine, out var iBase);
-                BaseType = iBase;
+                baseType = iBase;
             }
             // For known bases, images are only downloaded if the item is unique or foil. All other items should
             // always have the same image. (except alt art non-uniques that are rare enough to be ignored)
-            var loadImageFromIconUrl = _iconUrl != null
-                                       && (BaseType == null || Frame == FrameType.Unique || Frame == FrameType.Foil);
-            if (BaseType == null)
-            {
-                BaseType = new ItemBase(equipmentData.ItemImageService, itemSlot, TypeLine, Frame);
-            }
+            var loadImageFromIconUrl = baseType == null || Frame == FrameType.Unique || Frame == FrameType.Foil;
+            BaseType = baseType ?? new ItemBase(equipmentData.ItemImageService, itemSlot, TypeLine, Frame);
             ItemClass = BaseType.ItemClass;
             Tags = BaseType.Tags;
-            if (loadImageFromIconUrl)
+            if (_iconUrl != null && loadImageFromIconUrl)
             {
                 Image = BaseType.Image.AsDefaultForImageFromUrl(
                     equipmentData.ItemImageService, _iconUrl);
@@ -302,17 +255,17 @@ namespace PoESkillTree.Model.Items
                 Image = BaseType.Image;
             }
 
-            if (val["properties"] != null)
+            if (val.TryGetValue("properties", out var propertiesToken))
             {
-                foreach (var obj in val["properties"])
+                foreach (var obj in propertiesToken)
                 {
                     Properties.Add(ItemModFromJson(obj, false));
                 }
             }
 
-            if (val["requirements"] != null)
+            if (val.TryGetValue("requirements", out var requirementsToken))
             {
-                var mods = val["requirements"].Select(t => ItemModFromJson(t, true)).ToList();
+                var mods = requirementsToken.Select(t => ItemModFromJson(t, true)).ToList();
                 if (!mods.Any(m => m.Attribute.StartsWith("Requires ")))
                 {
                     var modsToMerge = new []
@@ -334,42 +287,42 @@ namespace PoESkillTree.Model.Items
             }
 
 
-            if (val["implicitMods"] != null)
-                foreach (var s in val["implicitMods"].Values<string>())
+            if (val.TryGetValue("implicitMods", out var implicitModsToken))
+                foreach (var s in implicitModsToken.Values<string>())
                 {
                     _implicitMods.Add(ItemModFromString(s));
                 }
-            if (val["fracturedMods"] != null)
-                foreach (var s in val["fracturedMods"].Values<string>())
+            if (val.TryGetValue("fracturedMods", out var fracturedModsToken))
+                foreach (var s in fracturedModsToken.Values<string>())
                 {
                     ExplicitMods.Add(ItemModFromString(s));
                 }
-            if (val["explicitMods"] != null)
-                foreach (var s in val["explicitMods"].Values<string>())
+            if (val.TryGetValue("explicitMods", out var explicitModsToken))
+                foreach (var s in explicitModsToken.Values<string>())
                 {
                     ExplicitMods.Add(ItemModFromString(s));
                 }
-            if (val["craftedMods"] != null)
-                foreach (var s in val["craftedMods"].Values<string>())
+            if (val.TryGetValue("craftedMods", out var craftedModsToken))
+                foreach (var s in craftedModsToken.Values<string>())
                 {
                     CraftedMods.Add(ItemModFromString(s));
                 }
 
-            if (val["flavourText"] != null && val["flavourText"].HasValues)
-                FlavourText = string.Join("\r\n", val["flavourText"].Values<string>().Select(s => s.Replace("\r", "")));
+            if (val.TryGetValue("flavourText", out var flavourTextToken) && flavourTextToken.HasValues)
+                FlavourText = string.Join("\r\n", flavourTextToken.Values<string>().Select(s => s.Replace("\r", "")));
         }
 
-        public IReadOnlyList<Skill> DeserializeSocketedSkills(SkillDefinitions skillDefinitions)
+        public IReadOnlyList<Skill> DeserializeSocketedSkills(SkillDefinitions skillDefinitions, JObject itemJson)
         {
-            if (!JsonBase.TryGetValue("socketedItems", out var skillJson))
+            if (!itemJson.TryGetValue("socketedItems", out var skillJson))
                 return new Skill[0];
 
             var sockets = new List<int>();
-            if (JsonBase.TryGetValue("sockets", out var socketsJson))
+            if (itemJson.TryGetValue("sockets", out var socketsJson))
             {
                 foreach (var obj in (JArray) socketsJson)
                 {
-                    sockets.Add(obj["group"].Value<int>());
+                    sockets.Add(obj["group"]!.Value<int>());
                 }
             }
 
@@ -391,10 +344,11 @@ namespace PoESkillTree.Model.Items
         }
 
         private bool TryDeserializeSocketedSkill(
-            SkillDefinitions skillDefinitions, JObject jObject, int socketIndex, int socketGroup, out Skill skill)
+            SkillDefinitions skillDefinitions, JObject jObject, int socketIndex, int socketGroup, [NotNullWhen(true)] out Skill? skill)
         {
-            var baseItemSkills = skillDefinitions.Skills.Where(d => d.BaseItem != null)
-                .Where(d => d.BaseItem.ReleaseState == ReleaseState.Released
+            var baseItemSkills = skillDefinitions.Skills
+                .Where(d => d.BaseItem != null)
+                .Where(d => d.BaseItem!.ReleaseState == ReleaseState.Released
                             || d.BaseItem.ReleaseState == ReleaseState.Legacy)
                 .ToList();
             var name = jObject.Value<string>("typeLine");
@@ -417,7 +371,7 @@ namespace PoESkillTree.Model.Items
             return true;
         }
 
-        private ItemMod ItemModFromString(string attribute, IEnumerable<ValueColoring> valueColor = null)
+        private ItemMod ItemModFromString(string attribute, IEnumerable<ValueColoring>? valueColor = null)
         {
             var isLocal = ModifierLocalityTester.IsLocal(attribute, Tags);
             var itemMod = new ItemMod(attribute, isLocal);
@@ -431,8 +385,8 @@ namespace PoESkillTree.Model.Items
         private ItemMod ItemModFromJson(JToken jsonMod, bool isRequirement)
         {
             var valuePairs = (from a in jsonMod["values"]
-                              let vc = (ValueColoring)a[1].Value<int>()
-                              select new { Value = a[0].Value<string>(), ValueColor = vc }).ToList();
+                              let vc = (ValueColoring)a[1]!.Value<int>()
+                              select new { Value = a[0]!.Value<string>(), ValueColor = vc }).ToList();
             var values = valuePairs.Select(p => p.Value).ToList();
             var valueColors = (from p in valuePairs
                                let valueCount = ItemMod.Numberfilter.Matches(p.Value).Count
@@ -445,12 +399,12 @@ namespace PoESkillTree.Model.Items
              * - 2: experience bar for gems, not applicable
              * - 3: `attribute = name.Replace(%i with values[i])`
              */
-            var name = jsonMod["name"].Value<string>();
+            var name = jsonMod["name"]!.Value<string>();
             var mode0Separator = isRequirement ? " " : ": ";
             string attribute;
             if (values.Any() && !string.IsNullOrEmpty(name))
             {
-                switch (int.Parse(jsonMod["displayMode"].Value<string>(), CultureInfo.InvariantCulture))
+                switch (int.Parse(jsonMod["displayMode"]!.Value<string>(), CultureInfo.InvariantCulture))
                 {
                     case 0:
                         attribute = name + mode0Separator + string.Join(", ", values);
@@ -465,7 +419,7 @@ namespace PoESkillTree.Model.Items
                         break;
                     default:
                         throw new NotSupportedException("Unsupported display mode: " +
-                                                        jsonMod["displayMode"].Value<string>());
+                                                        jsonMod["displayMode"]!.Value<string>());
                 }
             }
             else if (string.IsNullOrEmpty(name))
@@ -531,12 +485,7 @@ namespace PoESkillTree.Model.Items
             RequirementsFromBase(minRequiredLevel, attrRequirementsMultiplier);
         }
 
-        public void SetJsonBase()
-        {
-            JsonBase = GenerateJson();
-        }
-
-        private JObject GenerateJson()
+        public JObject GenerateJson()
         {
             var j = new JObject(
                 new JProperty("w", Width),
@@ -584,7 +533,7 @@ namespace PoESkillTree.Model.Items
             }
 
             if (HaveFlavourText)
-                j.Add("flavourText", new JArray(FlavourText));
+                j.Add("flavourText", new JArray(FlavourText!));
 
             return j;
         }
@@ -630,7 +579,7 @@ namespace PoESkillTree.Model.Items
                     || name.Contains("armour", StringComparison.InvariantCultureIgnoreCase)
                     || name.Contains("energy shield", StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    dict[mod].Add(qIncMod);
+                    dict[mod].Add(qIncMod!);
                 }
             }
             return dict;

@@ -11,13 +11,11 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using JetBrains.Annotations;
 using PoESkillTree.Common;
 using PoESkillTree.Controls.Dialogs;
 using PoESkillTree.Engine.GameModel;
 using PoESkillTree.Engine.GameModel.PassiveTree;
 using PoESkillTree.Engine.Utils;
-using PoESkillTree.Engine.Utils.Extensions;
 using PoESkillTree.Localization;
 using PoESkillTree.Model;
 using PoESkillTree.Utils.UrlProcessing;
@@ -179,7 +177,7 @@ namespace PoESkillTree.SkillTreeFiles
             Serializer = new SkillTreeSerializer(this);
         }
 
-        private async Task InitializeAsync(string treestring, string opsstring, [CanBeNull] ProgressDialogController controller,
+        private async Task InitializeAsync(string treestring, string opsstring, ProgressDialogController? controller,
             AssetLoader assetLoader)
         {
             if (!_initialized)

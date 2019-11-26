@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using MoreLinq;
@@ -22,7 +23,7 @@ namespace PoESkillTree.Model.Serialization
 
         private readonly IPersistentData _persistentData;
 
-        private readonly Dictionary<IBuild, BuildFolder> _parents = new Dictionary<IBuild, BuildFolder>();
+        private readonly Dictionary<IBuild, BuildFolder?> _parents = new Dictionary<IBuild, BuildFolder?>();
         private readonly Dictionary<IBuild, string> _names = new Dictionary<IBuild, string>();
         private readonly Dictionary<IBuild, string> _markedForDeletion = new Dictionary<IBuild, string>();
 
@@ -46,7 +47,7 @@ namespace PoESkillTree.Model.Serialization
             TreeTraverse(b => _names[b] = b.Name, _persistentData.RootBuild);
         }
 
-        private static void TreeTraverse(Action<IBuild, BuildFolder> action, IBuild current, BuildFolder parent)
+        private static void TreeTraverse(Action<IBuild, BuildFolder?> action, IBuild current, BuildFolder? parent)
         {
             action(current, parent);
             var folder = current as BuildFolder;
@@ -80,22 +81,21 @@ namespace PoESkillTree.Model.Serialization
             SerializeStash();
         }
 
-        private string PathFor(IBuild build, bool asFilePath)
+        [return: NotNullIfNotNull("build")]
+        private string? PathFor(IBuild? build, bool asFilePath)
         {
             if (build == null)
                 return null;
             // Happens for current/selected builds that are not saved when Serialize is called
-            if (!_names.ContainsKey(build))
-                return null;
-            if (build == _persistentData.RootBuild)
+            if (!_names.ContainsKey(build) || build == _persistentData.RootBuild)
                 return asFilePath ? _persistentData.Options.BuildsSavePath : "";
 
             var path = SerializationUtils.EncodeFileName(_names[build]);
             var parent = _parents[build];
             while (parent != _persistentData.RootBuild)
             {
-                path = Path.Combine(SerializationUtils.EncodeFileName(_names[parent]), path);
-                parent = _parents[parent];
+                path = Path.Combine(SerializationUtils.EncodeFileName(_names[parent!]), path);
+                parent = _parents[parent!];
             }
             return asFilePath ? Path.Combine(_persistentData.Options.BuildsSavePath, path) : path;
         }
@@ -107,7 +107,7 @@ namespace PoESkillTree.Model.Serialization
                 var arr = new JArray();
                 foreach (var item in _persistentData.StashItems)
                 {
-                    arr.Add(item.JsonBase);
+                    arr.Add(item.GenerateJson());
                 }
 
                 File.WriteAllText(Path.Combine(AppData.GetFolder(), "stash.json"), arr.ToString());
@@ -143,16 +143,14 @@ namespace PoESkillTree.Model.Serialization
         /// </remarks>
         public void SerializeBuild(IBuild build)
         {
-            string oldName;
-            _names.TryGetValue(build, out oldName);
+            _names.TryGetValue(build, out var oldName);
             var name = build.Name;
             _names[build] = name;
 
             var path = PathFor(build, true);
             var oldPath = path.Remove(path.Length - SerializationUtils.EncodeFileName(name).Length)
                 + SerializationUtils.EncodeFileName(oldName);
-            var poeBuild = build as PoEBuild;
-            if (poeBuild != null)
+            if (build is PoEBuild poeBuild)
             {
                 SerializeBuild(path, poeBuild);
                 if (oldName != null && oldName != name)
@@ -172,8 +170,7 @@ namespace PoESkillTree.Model.Serialization
                 // from their old folder to this one.
                 foreach (var b in folder.Builds)
                 {
-                    BuildFolder parent;
-                    _parents.TryGetValue(b, out parent);
+                    _parents.TryGetValue(b, out var parent);
                     if (_markedForDeletion.ContainsKey(b) || (parent != null && parent != folder))
                     {
                         var isBuild = b is PoEBuild;
@@ -236,8 +233,7 @@ namespace PoESkillTree.Model.Serialization
             // Return if build was not yet saved to the filesystem.
             if (!_names.ContainsKey(build))
                 return;
-            string path;
-            if (!_markedForDeletion.TryGetValue(build, out path))
+            if (!_markedForDeletion.TryGetValue(build, out var path))
             {
                 throw new ArgumentException(
                     "The build must have been removed from its parent folder and its parent folder must have been saved",

@@ -23,8 +23,8 @@ namespace PoESkillTree.Utils
         /// <param name="propertyName">Name of the changed property</param>
         protected void SetProperty<T>(
             ref T backingStore, T value,
-            Action onChanged = null,
-            Action<T> onChanging = null,
+            Action? onChanged = null,
+            Action<T>? onChanging = null,
             [CallerMemberName] string propertyName = null)
         {
             if (EqualityComparer<T>.Default.Equals(backingStore, value)) return;

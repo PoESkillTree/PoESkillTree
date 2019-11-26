@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using JetBrains.Annotations;
 using PoESkillTree.Engine.Computation.Common;
 using PoESkillTree.Engine.Computation.Common.Builders;
 using PoESkillTree.Engine.Computation.Common.Builders.Stats;
@@ -67,6 +67,7 @@ namespace PoESkillTree.Computation.ViewModels
         public ObservableCollection<MainSkillViewModel> AvailableSkills { get; } =
             new ObservableCollection<MainSkillViewModel>();
 
+        [AllowNull]
         public MainSkillViewModel SelectedSkill
         {
             get => _selectedSkill;
@@ -80,8 +81,7 @@ namespace PoESkillTree.Computation.ViewModels
             }
         }
 
-        [CanBeNull]
-        private MainSkillViewModel GetSelectedAndAvailableSkill()
+        private MainSkillViewModel? GetSelectedAndAvailableSkill()
             => AvailableSkills.FirstOrDefault(
                 s => s.Skill.ItemSlot == (ItemSlot?) _selectedSkillItemSlot.NumericValue &&
                      s.Skill.SocketIndex == (int?) _selectedSkillSocketIndex.NumericValue);
