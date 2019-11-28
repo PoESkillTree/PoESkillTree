@@ -33,8 +33,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm.SteinerReductions
             uint maxEdgeDistance;
             using (var mst = new MinimalSpanningTree(NodeStates.FixedTargetNodeIndices.ToList(), DistanceLookup))
             {
-                mst.Span(StartNodeIndex);
-                maxEdgeDistance = mst.SpanningEdges.Max(e => DistanceLookup[e.Inside, e.Outside]);
+                maxEdgeDistance = mst.Span(StartNodeIndex).Max(e => DistanceLookup[e.Inside, e.Outside]);
             }
 
             for (var i = 0; i < SearchSpaceSize; i++)

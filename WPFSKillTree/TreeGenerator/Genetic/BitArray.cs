@@ -37,7 +37,7 @@ namespace PoESkillTree.TreeGenerator.Genetic
             {
                 if (index < 0 || index >= Length)
                 {
-                    throw new ArgumentOutOfRangeException("index", index, "Must be >= 0 and < Length");
+                    throw new ArgumentOutOfRangeException(nameof(index), index, "Must be >= 0 and < Length");
                 }
 
                 return (_array[index / BitsPerInt] & (1 << (index % BitsPerInt))) != 0;
@@ -46,7 +46,7 @@ namespace PoESkillTree.TreeGenerator.Genetic
             {
                 if (index < 0 || index >= Length)
                 {
-                    throw new ArgumentOutOfRangeException("index", index, "Must be >= 0 and < Length");
+                    throw new ArgumentOutOfRangeException(nameof(index), index, "Must be >= 0 and < Length");
                 }
                 if (_hash.HasValue)
                 {
@@ -67,7 +67,7 @@ namespace PoESkillTree.TreeGenerator.Genetic
         /// <summary>
         /// Gets the number of bits stored in this BitArray (constant for each instance).
         /// </summary>
-        public int Length { get; private set; }
+        public int Length { get; }
 
         /// <summary>
         /// Creates an instance that can hold length bit values. All bits are initialized
@@ -107,10 +107,9 @@ namespace PoESkillTree.TreeGenerator.Genetic
             }
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            var other = obj as BitArray;
-            return other != null && Equals(other);
+            return obj is BitArray other && Equals(other);
         }
 
         public bool Equals(BitArray other)

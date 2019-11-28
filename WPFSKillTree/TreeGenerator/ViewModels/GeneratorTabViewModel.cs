@@ -16,15 +16,7 @@ namespace PoESkillTree.TreeGenerator.ViewModels
     /// </summary>
     public abstract class GeneratorTabViewModel : AbstractCompositeSetting
     {
-        private string _displayName;
-        /// <summary>
-        /// Returns the user-friendly name of this object.
-        /// </summary>
-        public string DisplayName
-        {
-            get { return _displayName; }
-            protected set { SetProperty(ref _displayName, value); }
-        }
+        public abstract string DisplayName { get; }
 
         /// <summary>
         /// Gets the <see cref="IDialogCoordinator"/> used to display dialogs.
@@ -82,7 +74,7 @@ namespace PoESkillTree.TreeGenerator.ViewModels
             RunCommand = new RelayCommand(() => runCallback(this));
         }
 
-        public Task<ISolver> CreateSolverAsync()
+        public Task<ISolver?> CreateSolverAsync()
         {
             var @checked = IncludeChecked.Value ? Tree.GetCheckedNodes() : null;
             var crossed = ExcludeCrossed.Value ? Tree.GetCrossedNodes() : null;
@@ -95,6 +87,6 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         /// Creates a solver that uses the settings defined by the user in this ViewModel.
         /// </summary>
         /// <param name="settings">(not null) Base settings specified in GeneratorTabViewModel.</param>
-        protected abstract Task<ISolver> CreateSolverAsync(SolverSettings settings);
+        protected abstract Task<ISolver?> CreateSolverAsync(SolverSettings settings);
     }
 }

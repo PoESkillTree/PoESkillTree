@@ -19,7 +19,7 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         private readonly ISettingsDialogCoordinator _dialogCoordinator;
         private SkillTree _skillTree;
         private SettingsViewModel _treeGeneratorViewModel;
-        private SettingsWindow _treeGeneratorWindow;
+        private SettingsWindow? _treeGeneratorWindow;
 
         public ICommand OpenTreeGeneratorCommand { get; }
         public ICommand RunTaggedNodesCommand { get; }
@@ -41,8 +41,10 @@ namespace PoESkillTree.TreeGenerator.ViewModels
             }
         }
 
+#pragma warning disable CS8618 // _skillTree and _treeGeneratorViewModel are initialized set_SkillTree
         public TreeGeneratorInteraction(ISettingsDialogCoordinator dialogCoordinator, IPersistentData persistentData,
             SkillTree skillTree)
+#pragma warning restore
         {
             _persistentData = persistentData;
             _dialogCoordinator = dialogCoordinator;
@@ -53,7 +55,7 @@ namespace PoESkillTree.TreeGenerator.ViewModels
             RunAdvancedCommand = new AsyncRelayCommand(RunAdvanced);
         }
 
-        private void ViewModelRunFinished(object sender, EventArgs args)
+        private void ViewModelRunFinished(object? sender, EventArgs args)
         {
             RunFinished?.Invoke(this, EventArgs.Empty);
         }
@@ -114,6 +116,6 @@ namespace PoESkillTree.TreeGenerator.ViewModels
             _treeGeneratorViewModel.LoadFrom(_persistentData.CurrentBuild.AdditionalData);
         }
 
-        public event EventHandler RunFinished;
+        public event EventHandler? RunFinished;
     }
 }

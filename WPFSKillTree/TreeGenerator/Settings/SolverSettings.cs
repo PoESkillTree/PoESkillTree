@@ -38,7 +38,7 @@ namespace PoESkillTree.TreeGenerator.Settings
         /// <param name="checked">Set of Nodes that must be included in the result tree.</param>
         /// <param name="crossed">Set of Nodes that must not be included in the result tree.</param>
         /// <param name="iterations">The number of iterations the solver should run. (>= 1)</param>
-        public SolverSettings(ISet<SkillNode> @checked, ISet<SkillNode> crossed,
+        public SolverSettings(ISet<SkillNode>? @checked, ISet<SkillNode>? crossed,
             int iterations)
         {
             if (iterations < 1) throw new ArgumentOutOfRangeException(nameof(iterations), iterations, "must be >= 1");

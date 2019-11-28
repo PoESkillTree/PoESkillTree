@@ -32,8 +32,6 @@ namespace PoESkillTree.TreeGenerator.Algorithm.SteinerReductions
     {
         private readonly DistanceLookup _distances;
 
-        private List<int> _fixedTargetNodes;
-
         public BottleneckSteinerDistanceCalculator(DistanceLookup distances)
         {
             _distances = distances;
@@ -44,22 +42,20 @@ namespace PoESkillTree.TreeGenerator.Algorithm.SteinerReductions
         /// to the given target nodes.
         /// </summary>
         /// <returns>Lookup for the calculated distances between all nodes.</returns>
-        public DistanceLookup CalcBottleneckSteinerDistances(IEnumerable<int> fixedTargetNodes)
+        public DistanceLookup CalcBottleneckSteinerDistances(IReadOnlyCollection<int> fixedTargetNodes)
         {
-            _fixedTargetNodes = fixedTargetNodes.ToList();
-
             var nodeCount = _distances.CacheSize;
             var smatrix = new uint[nodeCount][];
             var searchSpaceIndices = Enumerable.Range(0, nodeCount).ToList();
             // Calculate values for each node.
             for (var i = 0; i < nodeCount; i++)
             {
-                smatrix[i] = CalcBottleneckSteinerDistancesTo(i, searchSpaceIndices);
+                smatrix[i] = CalcBottleneckSteinerDistancesTo(i, searchSpaceIndices, fixedTargetNodes);
             }
             return new DistanceLookup(nodeCount, smatrix);
         }
 
-        private uint[] CalcBottleneckSteinerDistancesTo(int i, IEnumerable<int> searchSpaceIndices)
+        private uint[] CalcBottleneckSteinerDistancesTo(int i, IEnumerable<int> searchSpaceIndices, IEnumerable<int> fixedTargetNodes)
         {
             // Dijkstra like algorithm that uses the fully connected distance graph but only
             // pathes through target nodes (only paths over target nodes are relevant by definition).
@@ -67,7 +63,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm.SteinerReductions
             // the minimum bottleneck length over all considered paths.
 
             // All unvisited target nodes.
-            var unvisitedTargets = new HashSet<int>(_fixedTargetNodes);
+            var unvisitedTargets = new HashSet<int>(fixedTargetNodes);
             unvisitedTargets.Remove(i);
             // All unvisited nodes.
             var unvisited = new HashSet<int>(searchSpaceIndices);

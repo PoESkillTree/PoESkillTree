@@ -14,16 +14,17 @@ namespace PoESkillTree.TreeGenerator.ViewModels
     {
         protected override string Key { get; } = "AutomatedTab";
 
+        public override string DisplayName { get; } = L10n.Message("Automated");
+
         protected override IReadOnlyList<ISetting> SubSettings { get; } = new ISetting[0];
 
         public AutomatedTabViewModel(SkillTree tree, IDialogCoordinator dialogCoordinator, object dialogContext,
             Action<GeneratorTabViewModel> runCallback)
             : base(tree, dialogCoordinator, dialogContext, 1, runCallback)
         {
-            DisplayName = L10n.Message("Automated");
         }
 
-        protected override Task<ISolver> CreateSolverAsync(SolverSettings settings)
+        protected override Task<ISolver?> CreateSolverAsync(SolverSettings settings)
         {
             throw new NotImplementedException();
         }

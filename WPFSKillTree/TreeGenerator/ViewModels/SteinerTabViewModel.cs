@@ -19,6 +19,8 @@ namespace PoESkillTree.TreeGenerator.ViewModels
     {
         protected override string Key { get; } = "SteinerTab";
 
+        public override string DisplayName { get; } = L10n.Message("Tagged Nodes");
+
         protected override IReadOnlyList<ISetting> SubSettings { get; }
 
         /// <summary>
@@ -32,11 +34,10 @@ namespace PoESkillTree.TreeGenerator.ViewModels
             Action<GeneratorTabViewModel> runCallback)
             : base(tree, dialogCoordinator, dialogContext, 1, runCallback)
         {
-            DisplayName = L10n.Message("Tagged Nodes");
             SubSettings = new[] {ExcludeCrossed};
         }
 
-        protected override async Task<ISolver> CreateSolverAsync(SolverSettings settings)
+        protected override async Task<ISolver?> CreateSolverAsync(SolverSettings settings)
         {
             if (!settings.Checked.Any())
             {

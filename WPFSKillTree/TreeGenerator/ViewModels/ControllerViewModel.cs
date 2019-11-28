@@ -33,9 +33,9 @@ namespace PoESkillTree.TreeGenerator.ViewModels
 
         private readonly IDialogCoordinator _dialogCoordinator;
 
-        private HashSet<ushort> _bestSoFar;
+        private HashSet<ushort>? _bestSoFar;
 
-        private readonly TaskCompletionSource<IEnumerable<ushort>> _solverTcs = new TaskCompletionSource<IEnumerable<ushort>>();
+        private readonly TaskCompletionSource<IEnumerable<ushort>?> _solverTcs = new TaskCompletionSource<IEnumerable<ushort>?>();
 
         private bool _isSolving;
 
@@ -48,7 +48,7 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         /// <summary>
         /// Token source for cancelling the solver.
         /// </summary>
-        private CancellationTokenSource _cts;
+        private CancellationTokenSource? _cts;
 
         /// <summary>
         /// Used to report progress from the solver running thread to the UI thread.
@@ -63,8 +63,8 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         /// </summary>
         public double ProgressbarMax
         {
-            get { return _progressbarMax; }
-            private set { SetProperty(ref _progressbarMax, value); }
+            get => _progressbarMax;
+            private set => SetProperty(ref _progressbarMax, value);
         }
 
         private double _progressbarCurrent = 1;
@@ -73,8 +73,8 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         /// </summary>
         public double ProgressbarCurrent
         {
-            get { return _progressbarCurrent; }
-            private set { SetProperty(ref _progressbarCurrent, value); }
+            get => _progressbarCurrent;
+            private set => SetProperty(ref _progressbarCurrent, value);
         }
 
         private string _progressbarText = L10n.Message("Initializing...");
@@ -83,8 +83,8 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         /// </summary>
         public string ProgressbarText
         {
-            get { return _progressbarText; }
-            private set { SetProperty(ref _progressbarText, value); }
+            get => _progressbarText;
+            private set => SetProperty(ref _progressbarText, value);
         }
 
         private bool _progressbarEnabled = true;
@@ -93,19 +93,19 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         /// </summary>
         public bool ProgressbarEnabled
         {
-            get { return _progressbarEnabled; }
-            private set { SetProperty(ref _progressbarEnabled, value); }
+            get => _progressbarEnabled;
+            private set => SetProperty(ref _progressbarEnabled, value);
         }
 
-        private string _iterationText;
+        private string? _iterationText;
         /// <summary>
         /// Gets the text that should be displayed to indicate in which iteration
         /// the solver currently is.
         /// </summary>
-        public string IterationText
+        public string? IterationText
         {
-            get { return _iterationText; }
-            private set { SetProperty(ref _iterationText, value); }
+            get => _iterationText;
+            private set => SetProperty(ref _iterationText, value);
         }
 
         private bool _cancelCloseEnabled;
@@ -114,8 +114,8 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         /// </summary>
         public bool CancelCloseEnabled
         {
-            get { return _cancelCloseEnabled; }
-            private set { SetProperty(ref _cancelCloseEnabled, value); }
+            get => _cancelCloseEnabled;
+            private set => SetProperty(ref _cancelCloseEnabled, value);
         }
 
         private string _cancelCloseText = L10n.Message("Cancel");
@@ -124,8 +124,8 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         /// </summary>
         public string CancelCloseText
         {
-            get { return _cancelCloseText; }
-            private set { SetProperty(ref _cancelCloseText, value); }
+            get => _cancelCloseText;
+            private set => SetProperty(ref _cancelCloseText, value);
         }
 
         private bool _pauseResumeEnabled;
@@ -134,8 +134,8 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         /// </summary>
         public bool PauseResumeEnabled
         {
-            get { return _pauseResumeEnabled; }
-            private set { SetProperty(ref _pauseResumeEnabled, value); }
+            get => _pauseResumeEnabled;
+            private set => SetProperty(ref _pauseResumeEnabled, value);
         }
 
         private string _pauseResumeText = L10n.Message("Pause");
@@ -144,34 +144,31 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         /// </summary>
         public string PauseResumeText
         {
-            get { return _pauseResumeText; }
-            private set { SetProperty(ref _pauseResumeText, value); }
+            get => _pauseResumeText;
+            private set => SetProperty(ref _pauseResumeText, value);
         }
 
-        private string _bestResultText;
+        private string? _bestResultText;
         /// <summary>
         /// Gets a string describing the currently best result calculated by the solver.
         /// </summary>
-        public string BestResultText
+        public string? BestResultText
         {
-            get { return _bestResultText; }
-            private set { SetProperty(ref _bestResultText, value); }
+            get => _bestResultText;
+            private set => SetProperty(ref _bestResultText, value);
         }
 
 #endregion
 
 #region Commands
 
-        private RelayCommand _pauseResumeCommand;
+        private RelayCommand? _pauseResumeCommand;
         /// <summary>
         /// Gets a command that pauses or resumes execution of the solver.
         /// </summary>
-        public ICommand PauseResumeCommand
-        {
-            get { return _pauseResumeCommand ?? (_pauseResumeCommand = new RelayCommand(PauseResume)); }
-        }
+        public ICommand PauseResumeCommand => _pauseResumeCommand ??= new RelayCommand(PauseResume);
 
-#endregion
+        #endregion
 
         /// <summary>
         /// Instantiates a new ControllerViewModel.
@@ -182,12 +179,9 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         /// <param name="dialogCoordinator"></param>
         public ControllerViewModel(ISolver solver, string generatorName, SkillTree tree, IDialogCoordinator dialogCoordinator)
         {
-            if (solver == null) throw new ArgumentNullException("solver");
-            if (tree == null) throw new ArgumentNullException("tree");
-
-            _solver = solver;
+            _solver = solver ?? throw new ArgumentNullException(nameof(solver));
             DisplayName = L10n.Message("Skill tree generator") + " - " + generatorName;
-            _tree = tree;
+            _tree = tree ?? throw new ArgumentNullException(nameof(tree));
             _dialogCoordinator = dialogCoordinator;
             
             if (_solver.Iterations > 1)
@@ -200,7 +194,7 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         /// <summary>
         /// Starts executing the solver asynchronously.
         /// </summary>
-        public async Task<IEnumerable<ushort>> RunSolverAsync()
+        public async Task<IEnumerable<ushort>?> RunSolverAsync()
         {
             if (await InitializeAsync())
             {
@@ -216,7 +210,6 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         /// <returns>Whether the initialization was successful.</returns>
         private async Task<bool> InitializeAsync()
         {
-            var success = true;
             try
             {
                 await Task.Run(() =>
@@ -231,11 +224,6 @@ namespace PoESkillTree.TreeGenerator.ViewModels
 
             }
             catch (GraphNotConnectedException)
-            {
-                // No await in catch
-                success = false;
-            }
-            if (!success)
             {
                 // Show a dialog and close this if the omitted nodes disconnect the tree.
                 await _dialogCoordinator.ShowWarningAsync(this,
@@ -255,7 +243,7 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         }
 
         /// <summary>
-        /// Executes the solver asyncronously.
+        /// Executes the solver asynchronously.
         /// </summary>
         private async Task SolveAsync()
         {
@@ -346,8 +334,8 @@ namespace PoESkillTree.TreeGenerator.ViewModels
             if (_solverTcs.Task.IsCompleted)
                 return;
             _solverTcs.TrySetResult(_isSolving ? null : _bestSoFar);
-            if (_isSolving && _cts != null)
-                _cts.Cancel();
+            if (_isSolving)
+                _cts?.Cancel();
         }
 
         /// <summary>
@@ -369,7 +357,7 @@ namespace PoESkillTree.TreeGenerator.ViewModels
                 // Disable the button until the worker has actually finished.
                 PauseResumeEnabled = false;
                 ProgressbarEnabled = false;
-                _cts.Cancel();
+                _cts?.Cancel();
             }
         }
     }

@@ -5,39 +5,18 @@ using System.Linq;
 namespace PoESkillTree.TreeGenerator.Algorithm.Model
 {
     /// <summary>
-    /// A readonly set of <see cref="GraphEdge"/>s.
-    /// </summary>
-    public interface IReadOnlyGraphEdgeSet : IReadOnlyCollection<GraphEdge>
-    {
-        /// <summary>
-        /// Returns the stored edge between the two nodes.
-        /// </summary>
-        /// <exception cref="KeyNotFoundException">If no edge between them
-        /// is stored.</exception>
-        GraphEdge this[int n1, int n2] { get; }
-
-        /// <summary>
-        /// Returns all adjacent nodes of the given node.
-        /// </summary>
-        IReadOnlyList<int> NeighborsOf(int node);
-    }
-
-    /// <summary>
     /// A set of <see cref="GraphEdge"/>s.
     /// </summary>
-    public class GraphEdgeSet : IReadOnlyGraphEdgeSet
+    public class GraphEdgeSet : IReadOnlyCollection<GraphEdge>
     {
         // Dictionary to enable constant time access of the stored edges. Not possible with HashSets.
         private readonly Dictionary<GraphEdge, GraphEdge> _edgeDict = new Dictionary<GraphEdge, GraphEdge>();
         
         private readonly HashSet<int>[] _adjacencyMatrix;
 
-        public int Count { get { return _edgeDict.Count; } }
+        public int Count => _edgeDict.Count;
 
-        public GraphEdge this[int n1, int n2]
-        {
-            get { return _edgeDict[CreateTmpEdge(n1, n2)]; }
-        }
+        public GraphEdge this[int n1, int n2] => _edgeDict[CreateTmpEdge(n1, n2)];
 
         /// <summary>
         /// Creates a new GraphEdgeSet with nodes from 0 to <paramref name="nodeCount"/> (exclusive).

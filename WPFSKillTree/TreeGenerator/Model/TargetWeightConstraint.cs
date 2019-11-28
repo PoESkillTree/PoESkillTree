@@ -12,18 +12,12 @@ namespace PoESkillTree.TreeGenerator.Model
         /// <summary>
         /// Minimum allowed weight (inclusive).
         /// </summary>
-        public static int MinWeight
-        {
-            get { return 1; }
-        }
+        public static int MinWeight => 1;
 
         /// <summary>
-        /// Maximim allowed weight (inclusive).
+        /// Maximum allowed weight (inclusive).
         /// </summary>
-        public static int MaxWeight
-        {
-            get { return 100; }
-        }
+        public static int MaxWeight => 100;
 
         private const int DefaultWeight = 100;
         private const float DefaultTargetValue = 1;
@@ -32,34 +26,34 @@ namespace PoESkillTree.TreeGenerator.Model
 
         public T Data
         {
-            get { return _data; }
-            set { SetProperty(ref _data, value); }
+            get => _data;
+            set => SetProperty(ref _data, value);
         }
 
         private float _targetValue = DefaultTargetValue;
 
         public float TargetValue
         {
-            get { return _targetValue; }
-            set { SetProperty(ref _targetValue, value); }
+            get => _targetValue;
+            set => SetProperty(ref _targetValue, value);
         }
 
         private int _weight = DefaultWeight;
 
         public int Weight
         {
-            get { return _weight; }
+            get => _weight;
             set
             {
                 if (value < MinWeight || value > MaxWeight)
-                    throw new ArgumentOutOfRangeException("value", value, "must be between MinWeight and MaxWeight");
+                    throw new ArgumentOutOfRangeException(nameof(value), value, "must be between MinWeight and MaxWeight");
                 SetProperty(ref _weight, value);
             }
         }
         
-        public TargetWeightConstraint(T data = default(T))
+        public TargetWeightConstraint(T data = default)
         {
-            Data = data;
+            _data = data;
         }
 
         private TargetWeightConstraint(TargetWeightConstraint<T> toClone)

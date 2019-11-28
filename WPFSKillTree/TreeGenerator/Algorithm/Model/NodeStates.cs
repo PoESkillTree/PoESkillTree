@@ -18,7 +18,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm.Model
         /// <summary>
         /// Gets the node indices currently marked as fixed target nodes.
         /// </summary>
-        IEnumerable<int> FixedTargetNodeIndices { get; }
+        IReadOnlyCollection<int> FixedTargetNodeIndices { get; }
 
         /// <summary>
         /// Gets the number of nodes currently marked as fixed target nodes.
@@ -74,7 +74,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm.Model
         /// </summary>
         public IReadOnlyList<GraphNode> SearchSpace
         {
-            get { return _searchSpace; }
+            get => _searchSpace;
             set
             {
                 _searchSpace = new List<GraphNode>(value);
@@ -85,7 +85,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm.Model
         /// <summary>
         /// Gets the number of nodes currently contained in <see cref="SearchSpace"/>.
         /// </summary>
-        public int SearchSpaceSize { get { return _searchSpace.Count; } }
+        public int SearchSpaceSize => _searchSpace.Count;
 
         private readonly HashSet<GraphNode> _fixedTargetNodes;
 
@@ -93,22 +93,13 @@ namespace PoESkillTree.TreeGenerator.Algorithm.Model
         /// Gets the set of GraphNodes of the search space which must be included in every solution to the problem
         /// instance. These are the nodes for which the minimum Steiner tree has to be found.
         /// </summary>
-        public IEnumerable<GraphNode> FixedTargetNodes
-        {
-            get { return _fixedTargetNodes; }
-        }
+        public IEnumerable<GraphNode> FixedTargetNodes => _fixedTargetNodes;
 
         private HashSet<int> _fixedTargetNodeIndexIndices;
         
-        public IEnumerable<int> FixedTargetNodeIndices
-        {
-            get { return _fixedTargetNodeIndexIndices; }
-        }
-        
-        public int FixedTargetNodeCount
-        {
-            get { return _fixedTargetNodes.Count; }
-        }
+        public IReadOnlyCollection<int> FixedTargetNodeIndices => _fixedTargetNodeIndexIndices;
+
+        public int FixedTargetNodeCount => _fixedTargetNodes.Count;
 
         /// <summary>
         /// The set of GraphNodes of the search space which may be set as included in solutions. Finding the subset of
@@ -119,20 +110,14 @@ namespace PoESkillTree.TreeGenerator.Algorithm.Model
         /// </summary>
         private readonly HashSet<GraphNode> _variableTargetNodes;
 
-        public int VariableTargetNodeCount
-        {
-            get { return _variableTargetNodes.Count; }
-        }
+        public int VariableTargetNodeCount => _variableTargetNodes.Count;
 
         /// <summary>
         /// The set of GraphNode either in _fixedTargetNodes or in _variableTargetNodes.
         /// </summary>
         private readonly HashSet<GraphNode> _allTargetNodes;
 
-        public int TargetNodeCount
-        {
-            get { return _allTargetNodes.Count; }
-        }
+        public int TargetNodeCount => _allTargetNodes.Count;
 
         private bool[] _isFixedTarget;
 
@@ -145,7 +130,9 @@ namespace PoESkillTree.TreeGenerator.Algorithm.Model
         /// <summary>
         /// Creates a new instance. The parameters are copied.
         /// </summary>
+#pragma warning disable CS8618 // Initialized in ComputeFields
         public NodeStates(IEnumerable<GraphNode> searchSpace, IEnumerable<GraphNode> fixedTargetNodes, IEnumerable<GraphNode> variableTargetNodes)
+#pragma warning restore
         {
             _searchSpace = new List<GraphNode>(searchSpace);
             _fixedTargetNodes = new HashSet<GraphNode>(fixedTargetNodes);

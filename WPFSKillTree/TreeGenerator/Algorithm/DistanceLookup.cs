@@ -244,7 +244,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm
         {
             if (start == null) throw new ArgumentNullException("start");
 
-            AddEdge(start, start, -1, null);
+            AddEdge(start, start, -1, null!);
 
             // The last newly found nodes.
             var front = new HashSet<GraphNode>() { start };

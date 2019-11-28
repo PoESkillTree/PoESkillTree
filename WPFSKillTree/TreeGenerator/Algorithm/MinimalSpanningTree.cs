@@ -8,13 +8,13 @@ namespace PoESkillTree.TreeGenerator.Algorithm
     ///     Provides algorithms for building the minimal spanning distance tree between a set of nodes
     ///     while saving the spanning edges.
     /// </summary>
-    public class MinimalSpanningTree : IDisposable
+    public sealed class MinimalSpanningTree : IDisposable
     {
         private readonly DistanceLookup _distances;
 
         private readonly IReadOnlyList<int> _mstNodes;
 
-        private PooledList<DirectedGraphEdge> _spanningEdges;
+        private PooledList<DirectedGraphEdge>? _spanningEdges;
 
         /// <summary>
         ///     Instantiates a new MinimalSpanningTree.
@@ -28,17 +28,11 @@ namespace PoESkillTree.TreeGenerator.Algorithm
         }
 
         /// <summary>
-        ///     Gets the edges which span this tree as a list of <see cref="DirectedGraphEdge" />s.
-        ///     Only set after a Span-method has been called.
-        /// </summary>
-        public IReadOnlyList<DirectedGraphEdge> SpanningEdges => _spanningEdges;
-
-        /// <summary>
         ///     Uses Prim's algorithm to build an MST spanning the mstNodes.
         ///     O(|mstNodes|^2) runtime.
         /// </summary>
         /// <param name="startIndex">The node index to start from.</param>
-        public void Span(int startIndex)
+        public IReadOnlyList<DirectedGraphEdge> Span(int startIndex)
         {
             var notIncluded = ArrayPool<int>.Shared.Rent(_mstNodes.Count);
             var notIncludedCount = 0;
@@ -76,6 +70,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm
 
             ArrayPool<bool>.Shared.Return(isIncluded);
             ArrayPool<int>.Shared.Return(notIncluded);
+            return _spanningEdges;
         }
 
         private void InitializeDataStructures(
@@ -140,7 +135,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm
         ///     considered nodes) so if the mst nodes are generally only a very small
         ///     portion of all nodes, use the other Span method, if not, use this one.
         /// </remarks>
-        public void Span(IEnumerable<DirectedGraphEdge> orderedEdges)
+        public IReadOnlyList<DirectedGraphEdge> Span(IEnumerable<DirectedGraphEdge> orderedEdges)
         {
             _spanningEdges = new PooledList<DirectedGraphEdge>(_mstNodes.Count);
             var set = new DisjointSet(_distances.CacheSize);
@@ -162,6 +157,8 @@ namespace PoESkillTree.TreeGenerator.Algorithm
                 set.Union(inside, outside);
                 if (--toAddCount == 0) break;
             }
+
+            return _spanningEdges;
         }
 
         public void Dispose()
