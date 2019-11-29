@@ -108,7 +108,7 @@ namespace PoESkillTree.Utils.UrlProcessing
             var sut = data.CreateNormalizer();
             string? message = null;
 
-            Task LoadingWrapper(string msg, Task task)
+            Task<HttpResponseMessage> LoadingWrapper(string msg, Task<HttpResponseMessage> task)
             {
                 message = msg;
                 return task;

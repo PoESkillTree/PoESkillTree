@@ -30,7 +30,7 @@ namespace PoESkillTree.Utils.Wpf
             behavior.AssociatedObject.ScrollToVerticalOffset(offset);
         }
 
-        private ScrollBar _verticalScrollBar;
+        private ScrollBar? _verticalScrollBar;
 
         protected override void OnAttached()
         {

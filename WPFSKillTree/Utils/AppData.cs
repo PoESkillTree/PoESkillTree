@@ -15,11 +15,11 @@ namespace PoESkillTree.Utils
         public static string ProductName => VersionInfo.ProductName;
 
         // The absolute path of application data folder.
-        private static string _applicationData;
+        private static string? _applicationData;
 
         // The flag indicating whether application data are portable.
         public static bool IsPortable { get; }
-        // The name of INI file whose existance indicates that application is running in portable mode (must be same as defined in release.iss script).
+        // The name of INI file whose existence indicates that application is running in portable mode (must be same as defined in release.iss script).
         private const string PortableIniFileName = "Portable.ini";
 
         // Static constructor.
@@ -28,7 +28,7 @@ namespace PoESkillTree.Utils
             IsPortable = File.Exists(Path.Combine(ProgramDirectory, PortableIniFileName));
         }
 
-        // Returns abolute path to appliation data folder (i.e. system folder + AppDataFolderName).
+        // Returns absolute path to application data folder (i.e. system folder + AppDataFolderName).
         // If folder doesn't exist, it will be created.
         // If trailingSlash is true, directory separator will be appended to path returned.
         public static string GetFolder(bool trailingSlash = false)
@@ -43,7 +43,7 @@ namespace PoESkillTree.Utils
                 }
                 else
                 {
-                    // Use roaming profile to store appliation data.
+                    // Use roaming profile to store application data.
                     _applicationData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ProductName);
                     if (!Directory.Exists(_applicationData))
                         Directory.CreateDirectory(_applicationData);
@@ -53,7 +53,7 @@ namespace PoESkillTree.Utils
             return trailingSlash ? _applicationData + Path.DirectorySeparatorChar : _applicationData;
         }
 
-        // Returns absolute path of subfolder of appliation data folder.
+        // Returns absolute path of subfolder of application data folder.
         // If subfolder doesn't exist, it will be created.
         // If trailingSlash is true, directory separator will be appended to path returned.
         public static string GetFolder(string folderName, bool trailingSlash = false)
@@ -68,7 +68,7 @@ namespace PoESkillTree.Utils
 
         // Returns value of PortableIniFileName INI file.
         // Returns null if not running in portable mode or key was not found.
-        public static string GetIniValue(string section, string key)
+        public static string? GetIniValue(string section, string key)
         {
             if (!IsPortable) return null;
 
@@ -95,13 +95,8 @@ namespace PoESkillTree.Utils
         }
 
         // Returns directory of running executable.
-        public static string ProgramDirectory
-        {
-            get
-            {
-                return Path.GetDirectoryName(Uri.UnescapeDataString((new UriBuilder(Assembly.GetExecutingAssembly().CodeBase)).Path));
-            }
-        }
+        public static string ProgramDirectory =>
+            Path.GetDirectoryName(Uri.UnescapeDataString(new UriBuilder(Assembly.GetExecutingAssembly().CodeBase!).Path))!;
 
         /// <summary>
         /// Converts the given path to a path relative to the program executable.
@@ -116,13 +111,6 @@ namespace PoESkillTree.Utils
             }    
             var referenceUri = new Uri(ProgramDirectory + Path.DirectorySeparatorChar);
             return referenceUri.MakeRelativeUri(new Uri(path)).ToString();
-        }
-
-        // Sets ApplicationData path.
-        // Use within UnitTest project only!
-        public static void SetApplicationData(string path)
-        {
-            _applicationData = path;
         }
     }
 }

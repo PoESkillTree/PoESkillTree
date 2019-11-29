@@ -228,7 +228,7 @@ namespace PoESkillTree.Utils
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
         }
 
-        public event CollectionChangedEventHandler<T> CollectionChanged;
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event CollectionChangedEventHandler<T>? CollectionChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
     }
 }

@@ -175,7 +175,7 @@ namespace PoESkillTree.SkillTreeFiles
         {
             _persistentData = persistentData;
 
-            Serializer = new SkillTreeSerializer(this);
+            Serializer = new SkillTreeToUrlSerializer(this);
         }
 
         private async Task InitializeAsync(string treestring, string opsstring, ProgressDialogController? controller,
@@ -248,12 +248,10 @@ namespace PoESkillTree.SkillTreeFiles
 
                 AscendancyClasses = new AscendancyClasses(PoESkillTreeOptions.CharacterToAscendancy);
 
-                BuildConverter = new BuildConverter(AscendancyClasses);
-                BuildConverter.RegisterDefaultDeserializer(url => new NaivePoEUrlDeserializer(url, AscendancyClasses));
-                BuildConverter.RegisterDeserializersFactories(
+                BuildConverter = new BuildConverter(AscendancyClasses,
+                    url => new NaivePoEUrlDeserializer(url, AscendancyClasses),
                     PoeplannerUrlDeserializer.TryCreate,
-                    PathofexileUrlDeserializer.TryCreate
-                );
+                    PathofexileUrlDeserializer.TryCreate);
 
                 CharBaseAttributes = new Dictionary<CharacterClass, IReadOnlyList<(string stat, float value)>>();
                 foreach (var (key, value) in PoESkillTree.CharacterData)

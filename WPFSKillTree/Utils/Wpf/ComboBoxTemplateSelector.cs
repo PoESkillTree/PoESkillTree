@@ -14,12 +14,12 @@ namespace PoESkillTree.Utils.Wpf
     /// </summary>
     public class ComboBoxTemplateSelector : DataTemplateSelector
     {
-        public DataTemplate SelectedItemTemplate { get; set; }
-        public DataTemplateSelector SelectedItemTemplateSelector { get; set; }
-        public DataTemplate DropdownItemsTemplate { get; set; }
-        public DataTemplateSelector DropdownItemsTemplateSelector { get; set; }
+        public DataTemplate? SelectedItemTemplate { get; set; }
+        public DataTemplateSelector? SelectedItemTemplateSelector { get; set; }
+        public DataTemplate? DropdownItemsTemplate { get; set; }
+        public DataTemplateSelector? DropdownItemsTemplateSelector { get; set; }
 
-        public override DataTemplate SelectTemplate(object item, DependencyObject container)
+        public override DataTemplate? SelectTemplate(object? item, DependencyObject container)
         {
             var parent = container;
 
@@ -36,10 +36,10 @@ namespace PoESkillTree.Utils.Wpf
 
     public class ComboBoxTemplateSelectorExtension : MarkupExtension
     {
-        public DataTemplate SelectedItemTemplate { get; set; }
-        public DataTemplateSelector SelectedItemTemplateSelector { get; set; }
-        public DataTemplate DropdownItemsTemplate { get; set; }
-        public DataTemplateSelector DropdownItemsTemplateSelector { get; set; }
+        public DataTemplate? SelectedItemTemplate { get; set; }
+        public DataTemplateSelector? SelectedItemTemplateSelector { get; set; }
+        public DataTemplate? DropdownItemsTemplate { get; set; }
+        public DataTemplateSelector? DropdownItemsTemplateSelector { get; set; }
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {

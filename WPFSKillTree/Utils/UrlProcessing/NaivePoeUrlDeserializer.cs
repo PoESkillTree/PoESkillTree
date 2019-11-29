@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 using PoESkillTree.Engine.GameModel;
 using PoESkillTree.Localization;
@@ -13,7 +14,7 @@ namespace PoESkillTree.Utils.UrlProcessing
     public class NaivePoEUrlDeserializer : BuildUrlDeserializer
     {
         private readonly Regex _urlRegex = new Regex(@".*\/(?<build>[\w-=]+)");
-        private byte[] _rawData;
+        private byte[]? _rawData;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NaivePoEUrlDeserializer"/> class.
@@ -25,7 +26,7 @@ namespace PoESkillTree.Utils.UrlProcessing
         {
         }
 
-        public override bool ValidateBuildUrl(out Exception exception)
+        public override bool ValidateBuildUrl([NotNullWhen(true)] out Exception? exception)
         {
             try
             {
@@ -95,7 +96,7 @@ namespace PoESkillTree.Utils.UrlProcessing
         /// <summary>
         /// Converts build data from the specified url to an array of bytes.
         /// </summary>
-        protected virtual byte[] GetRawData()
+        private byte[] GetRawData()
         {
             if (_rawData != null)
                 return _rawData;

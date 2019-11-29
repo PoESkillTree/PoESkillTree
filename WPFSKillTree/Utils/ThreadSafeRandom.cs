@@ -27,27 +27,27 @@ namespace PoESkillTree.Utils
 
         public override int Next()
         {
-            return _local.Value.Next();
+            return _local.Value!.Next();
         }
 
         public override int Next(int maxValue)
         {
-            return _local.Value.Next(maxValue);
+            return _local.Value!.Next(maxValue);
         }
 
         public override int Next(int minValue, int maxValue)
         {
-            return _local.Value.Next(minValue, maxValue);
+            return _local.Value!.Next(minValue, maxValue);
         }
 
         public override double NextDouble()
         {
-            return _local.Value.NextDouble();
+            return _local.Value!.NextDouble();
         }
 
         public override void NextBytes(byte[] buffer)
         {
-            _local.Value.NextBytes(buffer);
+            _local.Value!.NextBytes(buffer);
         }
     }
 }

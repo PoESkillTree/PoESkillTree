@@ -5,23 +5,23 @@ namespace PoESkillTree.Utils.UrlProcessing
     [TestFixture]
     public class BuildConverterTest
     {
-#pragma warning disable 8618 // Initialized in TestInitialize
-        private IBuildConverter _buildConverter;
-#pragma warning restore
+        private IBuildConverter _buildConverter = default!;
 
         [SetUp]
         public void TestInitialize()
         {
-            _buildConverter = new BuildConverter(null!);
-            RegisterFactories();
+            _buildConverter = new BuildConverter(null!,
+                url => new NaivePoEUrlDeserializer(url, null!),
+                PathofexileUrlDeserializer.TryCreate,
+                PoeplannerUrlDeserializer.TryCreate);
         }
 
         [Test]
         public void GetUrlDeserializerReturnsNullWhenNoFactories()
         {
-            UnregisterAllFactories();
+            var sut = new BuildConverter(null!, _ => null!);
 
-            var deserializer = _buildConverter.GetUrlDeserializer("some.url");
+            var deserializer = sut.GetUrlDeserializer("some.url");
 
             Assert.IsNull(deserializer);
         }
@@ -41,24 +41,5 @@ namespace PoESkillTree.Utils.UrlProcessing
 
             Assert.AreEqual(typeof(NaivePoEUrlDeserializer), deserializer.GetType());
         }
-
-        #region Helpers
-
-        private void RegisterFactories()
-        {
-            _buildConverter.RegisterDeserializersFactories(
-                PathofexileUrlDeserializer.TryCreate,
-                PoeplannerUrlDeserializer.TryCreate);
-
-            _buildConverter.RegisterDefaultDeserializer(url => new NaivePoEUrlDeserializer(url, null!));
-        }
-
-        private void UnregisterAllFactories()
-        {
-            _buildConverter.RegisterDefaultDeserializer(url => null!);
-            _buildConverter.RegisterDeserializersFactories();
-        }
-
-        #endregion
     }
 }

@@ -16,9 +16,9 @@ namespace PoESkillTree.Utils.Converter
 
         public double Constant { private get; set; }
 
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object?[] values, Type targetType, object? parameter, CultureInfo culture)
         {
-            double sum = values.Sum(value => System.Convert.ToDouble(value));
+            double sum = values.Sum(System.Convert.ToDouble);
             if (parameter != null)
             {
                 sum += System.Convert.ToDouble(parameter);
@@ -26,17 +26,17 @@ namespace PoESkillTree.Utils.Converter
             return Math.Max(sum + Constant, Minimum);
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object? value, Type[] targetTypes, object? parameter, CultureInfo culture)
         {
             throw new NotSupportedException();
         }
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             return Convert(new[] { value }, targetType, parameter, culture);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             double sum = System.Convert.ToDouble(value);
             if (parameter != null)
@@ -56,7 +56,7 @@ namespace PoESkillTree.Utils.Converter
     {
         public double Constant { private get; set; } = 1;
 
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object?[] values, Type targetType, object? parameter, CultureInfo culture)
         {
             double product = Constant;
             foreach (var value in values)
@@ -70,17 +70,17 @@ namespace PoESkillTree.Utils.Converter
             return product;
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object? value, Type[] targetTypes, object? parameter, CultureInfo culture)
         {
             throw new NotSupportedException();
         }
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             return Convert(new[] { value }, targetType, parameter, culture);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             double product = System.Convert.ToDouble(value);
             if (parameter != null)

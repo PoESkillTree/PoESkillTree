@@ -13,9 +13,9 @@ namespace PoESkillTree.Utils.Extensions
             for (var i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
             {
                 var child = VisualTreeHelper.GetChild(depObj, i);
-                if (child is T)
+                if (child is T dependencyObject)
                 {
-                    yield return (T)child;
+                    yield return dependencyObject;
                 }
 
                 foreach (var childOfChild in child.FindVisualChildren<T>())
