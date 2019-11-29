@@ -11,7 +11,7 @@ using Attribute = PoESkillTree.ViewModels.Attribute;
 
 namespace PoESkillTree.Utils.Converter
 {
-    [ValueConversion(typeof (string), typeof (string))]
+    [ValueConversion(typeof (string), typeof (AttributeGroup))]
     //list view sorter here
     public class GroupStringConverter : IValueConverter, IComparer
     {

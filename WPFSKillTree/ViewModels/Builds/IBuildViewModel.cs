@@ -15,7 +15,7 @@ namespace PoESkillTree.ViewModels.Builds
         /// <summary>
         /// Gets or sets this view models parent folder.
         /// </summary>
-        IBuildFolderViewModel Parent { get; set; }
+        IBuildFolderViewModel? Parent { get; set; }
 
         /// <summary>
         /// Gets or sets whether this view model is currently selected by the user.
@@ -31,7 +31,7 @@ namespace PoESkillTree.ViewModels.Builds
         /// Sets the skill tree necessary to update <see cref="PoEBuild.TreeUrl"/> based properties.
         /// Will also set the property on all child nodes.
         /// </summary>
-        ISkillTree SkillTree { set; }
+        ISkillTree? SkillTree { set; }
 
         /// <summary>
         /// Applies the filter function to this view model and any children.

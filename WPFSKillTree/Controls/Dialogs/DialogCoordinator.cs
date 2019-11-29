@@ -89,7 +89,7 @@ namespace PoESkillTree.Controls.Dialogs
         }
 
         public Task<string?> ShowValidatingInputDialogAsync(object context, string title, string message,
-            string defaultText, Func<string, string> inputValidationFunc)
+            string defaultText, Func<string, string?> inputValidationFunc)
         {
             return ShowDialogAsync(context,
                 new ValidatingInputDialogViewModel(title, message, defaultText, inputValidationFunc),

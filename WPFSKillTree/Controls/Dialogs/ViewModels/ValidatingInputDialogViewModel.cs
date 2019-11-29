@@ -10,7 +10,7 @@ namespace PoESkillTree.Controls.Dialogs.ViewModels
     /// </summary>
     public class ValidatingInputDialogViewModel : ErrorInfoViewModel<string?>
     {
-        private readonly Func<string, string> _inputValidationFunc;
+        private readonly Func<string, string?> _inputValidationFunc;
         private string _input;
 
         public string Message { get; }
@@ -22,7 +22,7 @@ namespace PoESkillTree.Controls.Dialogs.ViewModels
         }
 
 #pragma warning disable CS8618 // _input is set through Input
-        public ValidatingInputDialogViewModel(string title, string message, string defaultText, Func<string, string> inputValidationFunc)
+        public ValidatingInputDialogViewModel(string title, string message, string defaultText, Func<string, string?> inputValidationFunc)
 #pragma warning restore
         {
             _inputValidationFunc = inputValidationFunc;
@@ -31,9 +31,9 @@ namespace PoESkillTree.Controls.Dialogs.ViewModels
             Input = defaultText;
         }
         
-        protected override IEnumerable<string> ValidateProperty(string propertyName)
+        protected override IEnumerable<string?> ValidateProperty(string propertyName)
         {
-            return propertyName != nameof(Input) ? Enumerable.Empty<string>() : new[] {_inputValidationFunc(Input)};
+            return propertyName != nameof(Input) ? Enumerable.Empty<string?>() : new[] {_inputValidationFunc(Input)};
         }
     }
 }

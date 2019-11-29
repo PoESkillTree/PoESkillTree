@@ -30,11 +30,11 @@ namespace PoESkillTree.ViewModels.Crafting
 
         private bool _changingBase;
 
-        private string _nameLine;
-        public string NameLine
+        private string? _nameLine;
+        public string? NameLine
         {
-            get { return _nameLine; }
-            set { SetProperty(ref _nameLine, value, UpdateItemNameLine); }
+            get => _nameLine;
+            set => SetProperty(ref _nameLine, value, UpdateItemNameLine);
         }
 
         public CraftingViewModel(EquipmentData equipmentData)

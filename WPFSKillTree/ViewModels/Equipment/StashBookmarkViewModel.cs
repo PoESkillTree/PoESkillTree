@@ -16,8 +16,8 @@ namespace PoESkillTree.ViewModels.Equipment
         private bool _isDragged;
         public bool IsDragged
         {
-            get { return _isDragged; }
-            private set { SetProperty(ref _isDragged, value); }
+            get => _isDragged;
+            private set => SetProperty(ref _isDragged, value);
         }
 
         public StashBookmarkViewModel(StashBookmark bookmark)

@@ -10,6 +10,7 @@ using PoESkillTree.Common.ViewModels;
 using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Engine.GameModel.Modifiers;
 using PoESkillTree.Engine.GameModel.StatTranslation;
+using PoESkillTree.Engine.Utils.Extensions;
 using PoESkillTree.Model.Items;
 using PoESkillTree.Model.Items.Mods;
 using PoESkillTree.Utils;
@@ -28,8 +29,8 @@ namespace PoESkillTree.ViewModels.Crafting
         private bool _showDropDisabledItems;
         public bool ShowDropDisabledItems
         {
-            get { return _showDropDisabledItems; }
-            set { SetProperty(ref _showDropDisabledItems, value, UpdateSecondLevel); }
+            get => _showDropDisabledItems;
+            set => SetProperty(ref _showDropDisabledItems, value, UpdateSecondLevel);
         }
 
         // Bases are filtered in three levels:
@@ -44,18 +45,18 @@ namespace PoESkillTree.ViewModels.Crafting
         private IEnumerable<TBase> EligibleBases
             => _bases.Where(b => ShowDropDisabledItems || !b.DropDisabled);
 
-        private IReadOnlyList<TBase> _baseList;
-        public IReadOnlyList<TBase> BaseList
+        private IReadOnlyList<TBase>? _baseList;
+        public IReadOnlyList<TBase>? BaseList
         {
-            get { return _baseList; }
-            private set { SetProperty(ref _baseList, value); }
+            get => _baseList;
+            private set => SetProperty(ref _baseList, value);
         }
 
         private TBase _selectedBase;
         public TBase SelectedBase
         {
-            get { return _selectedBase; }
-            set { SetProperty(ref _selectedBase, value, UpdateBase); }
+            get => _selectedBase;
+            set => SetProperty(ref _selectedBase, value, UpdateBase);
         }
 
         // First level
@@ -65,8 +66,8 @@ namespace PoESkillTree.ViewModels.Crafting
         private BaseGroup _selectedFirstLevel;
         public BaseGroup SelectedFirstLevel
         {
-            get { return _selectedFirstLevel; }
-            set { SetProperty(ref _selectedFirstLevel, value, UpdateSecondLevel); }
+            get => _selectedFirstLevel;
+            set => SetProperty(ref _selectedFirstLevel, value, UpdateSecondLevel);
         }
 
         // Second level
@@ -74,15 +75,15 @@ namespace PoESkillTree.ViewModels.Crafting
         private IReadOnlyList<ItemClass> _secondLevelList;
         public IReadOnlyList<ItemClass> SecondLevelList
         {
-            get { return _secondLevelList; }
-            private set { SetProperty(ref _secondLevelList, value); }
+            get => _secondLevelList;
+            private set => SetProperty(ref _secondLevelList, value);
         }
 
         private ItemClass _selectedSecondLevel;
         public ItemClass SelectedSecondLevel
         {
-            get { return _selectedSecondLevel; }
-            set { SetProperty(ref _selectedSecondLevel, value, UpdateThirdLevel); }
+            get => _selectedSecondLevel;
+            set => SetProperty(ref _selectedSecondLevel, value, UpdateThirdLevel);
         }
 
         // Third level
@@ -98,15 +99,15 @@ namespace PoESkillTree.ViewModels.Crafting
         private IReadOnlyList<Tags> _thirdLevelList;
         public IReadOnlyList<Tags> ThirdLevelList
         {
-            get { return _thirdLevelList; }
-            private set { SetProperty(ref _thirdLevelList, value); }
+            get => _thirdLevelList;
+            private set => SetProperty(ref _thirdLevelList, value);
         }
 
         private Tags _selectedThirdLevel;
         public Tags SelectedThirdLevel
         {
-            get { return _selectedThirdLevel; }
-            set { SetProperty(ref _selectedThirdLevel, value, UpdateBaseList); }
+            get => _selectedThirdLevel;
+            set => SetProperty(ref _selectedThirdLevel, value, UpdateBaseList);
         }
 
 
@@ -114,15 +115,15 @@ namespace PoESkillTree.ViewModels.Crafting
 
         public Item Item
         {
-            get { return _item; }
-            private set { SetProperty(ref _item, value); }
+            get => _item;
+            private set => SetProperty(ref _item, value);
         }
 
         private IReadOnlyList<ModSelectorViewModel> _msImplicits = new ModSelectorViewModel[0];
         public IReadOnlyList<ModSelectorViewModel> MsImplicits
         {
-            get { return _msImplicits; }
-            private set { SetProperty(ref _msImplicits, value); }
+            get => _msImplicits;
+            private set => SetProperty(ref _msImplicits, value);
         }
 
         private readonly SliderViewModel _qualitySlider;
@@ -131,15 +132,17 @@ namespace PoESkillTree.ViewModels.Crafting
         private bool _showQualitySlider;
         public bool ShowQualitySlider
         {
-            get { return _showQualitySlider; }
-            private set { SetProperty(ref _showQualitySlider, value); }
+            get => _showQualitySlider;
+            private set => SetProperty(ref _showQualitySlider, value);
         }
 
         protected SimpleMonitor Monitor { get; } = new SimpleMonitor();
 
         protected EquipmentData EquipmentData { get; }
 
+#pragma warning disable CS8618 // All levels are initialized in Init
         protected AbstractCraftingViewModel(EquipmentData equipmentData, IEnumerable<TBase> bases)
+#pragma warning restore
         {
             EquipmentData = equipmentData;
             _bases = bases.ToList();
@@ -385,7 +388,7 @@ namespace PoESkillTree.ViewModels.Crafting
 
             var lines = EquipmentData.StatTranslator.GetTranslations(statIds)
                 .Select(t => t.Translate(merged))
-                .Where(l => l != null);
+                .WhereNotNull();
             foreach (var line in lines)
             {
                 var attr = ItemMod.Numberfilter.Replace(line, "#");
@@ -510,7 +513,7 @@ namespace PoESkillTree.ViewModels.Crafting
             }
         }
 
-        private void QualitySliderOnValueChanged(object sender, SliderValueChangedEventArgs e)
+        private void QualitySliderOnValueChanged(object? sender, SliderValueChangedEventArgs e)
         {
             RecalculateItem();
         }

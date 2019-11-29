@@ -1,27 +1,19 @@
-using System;
-
 namespace PoESkillTree.ViewModels
 {
     public class AttributeGroup
     {
         public string GroupName { get; set; }
-        private bool _isExpanded = true;
-        public bool IsExpanded
-        {
-            get { return _isExpanded; }
-            set { _isExpanded = value; }
-        }
+
+        // Used in MainWindow's ContainerStyleIsExpanded via GroupStringConverter
+        public bool IsExpanded { get; set; } = true;
 
         public AttributeGroup(string groupGroupName)
         {
             GroupName = groupGroupName;
-            IsExpanded = true;
         }
 
-        public override bool Equals(Object obj)
+        public override bool Equals(object? obj)
         {
-            if (obj == null) return false;
-
             var other = obj as AttributeGroup;
             if (other == null) return false;
 

@@ -26,7 +26,7 @@ namespace PoESkillTree.Utils.UrlProcessing
         {
         }
 
-        public override bool ValidateBuildUrl([NotNullWhen(true)] out Exception? exception)
+        public override bool ValidateBuildUrl([NotNullWhen(false)] out Exception? exception)
         {
             try
             {

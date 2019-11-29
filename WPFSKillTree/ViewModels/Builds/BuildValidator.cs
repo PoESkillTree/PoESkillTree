@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using PoESkillTree.Utils;
 using PoESkillTree.Localization;
@@ -102,16 +103,16 @@ namespace PoESkillTree.ViewModels.Builds
         /// Returns an string that contains an error message if it is not null or empty that describes
         /// why <paramref name="name"/> is not allowed as a name for <paramref name="folder"/>.
         /// </summary>
-        public string ValidateExistingFolderName(string name, IBuildViewModel folder)
+        public string? ValidateExistingFolderName(string name, IBuildViewModel folder)
         {
-            return ValidateName(name, PathForFolder(name, folder.Parent), folder, folder.Parent);
+            return ValidateName(name, PathForFolder(name, folder.Parent!), folder, folder.Parent!);
         }
 
         /// <summary>
         /// Returns an string that contains an error message if it is not null or empty that describes
         /// why <paramref name="name"/> is not allowed as a name for a new subfolder of <paramref name="parent"/>.
         /// </summary>
-        public string ValidateNewFolderName(string name, IBuildFolderViewModel parent)
+        public string? ValidateNewFolderName(string name, IBuildFolderViewModel parent)
         {
             return ValidateName(name, PathForFolder(name, parent), null, parent);
         }
@@ -120,44 +121,43 @@ namespace PoESkillTree.ViewModels.Builds
         /// Returns an string that contains an error message if it is not null or empty that describes
         /// why <paramref name="name"/> is not allowed as a name for <paramref name="build"/>.
         /// </summary>
-        public string ValidateExistingFileName(string name, IBuildViewModel build)
+        public string? ValidateExistingFileName(string name, IBuildViewModel build)
         {
-            return ValidateName(name, PathForBuild(name, build.Parent), build, build.Parent);
+            return ValidateName(name, PathForBuild(name, build.Parent!), build, build.Parent!);
         }
 
         /// <summary>
         /// Returns an string that contains an error message if it is not null or empty that describes
         /// why <paramref name="name"/> is not allowed as a name for a new build located in <paramref name="parent"/>.
         /// </summary>
-        public string ValidateNewBuildName(string name, IBuildFolderViewModel parent)
+        public string? ValidateNewBuildName(string name, IBuildFolderViewModel parent)
         {
             return ValidateName(name, PathForBuild(name, parent), null, parent);
         }
 
-        private static string ValidateName(string name, string fullPath, IBuildViewModel build,
+        private static string? ValidateName(string name, string fullPath, IBuildViewModel? build,
             IBuildFolderViewModel parent)
         {
             if (!IsNameUnique(name, build, parent))
             {
                 return L10n.Message("A build or folder with this name already exists.");
             }
-            string message;
-            IsNameValid(name, fullPath, out message);
+
+            IsNameValid(name, fullPath, out var message);
             return message;
         }
 
-        private static bool IsNameUnique(string name, IBuildViewModel build, IBuildFolderViewModel parent)
+        private static bool IsNameUnique(string name, IBuildViewModel? build, IBuildFolderViewModel parent)
         {
             return parent.Children.All(b => b == build || b.Build.Name != name);
         }
 
         private static bool IsNameValid(string name, string fullPath)
         {
-            string dummy;
-            return IsNameValid(name, fullPath, out dummy);
+            return IsNameValid(name, fullPath, out _);
         }
 
-        private static bool IsNameValid(string name, string fullPath, out string errorMessage)
+        private static bool IsNameValid(string name, string fullPath, [NotNullWhen(false)] out string? errorMessage)
         {
             if (string.IsNullOrWhiteSpace(name))
             {

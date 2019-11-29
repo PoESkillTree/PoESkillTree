@@ -8,8 +8,8 @@ namespace PoESkillTree.ViewModels.Equipment
     /// </summary>
     public class StashItemViewModel : DraggableItemViewModel
     {
-        private Item _item;
-        public sealed override Item Item
+        private Item? _item;
+        public sealed override Item? Item
         {
             get => _item;
             set => SetProperty(ref _item, value);

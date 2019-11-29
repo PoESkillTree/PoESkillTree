@@ -11,31 +11,31 @@ namespace PoESkillTree.ViewModels.Builds
     public abstract class AbstractBuildViewModel<T> : Notifier, IBuildViewModel<T>
         where T : IBuild
     {
-        private IBuildFolderViewModel _parent;
+        private IBuildFolderViewModel? _parent;
         private bool _isSelected;
-        private ISkillTree _skillTree;
+        private ISkillTree? _skillTree;
 
-        public IBuildFolderViewModel Parent
+        public IBuildFolderViewModel? Parent
         {
-            get { return _parent; }
-            set { SetProperty(ref _parent, value); }
+            get => _parent;
+            set => SetProperty(ref _parent, value);
         }
 
         public bool IsSelected
         {
-            get { return _isSelected; }
-            set { SetProperty(ref _isSelected, value); }
+            get => _isSelected;
+            set => SetProperty(ref _isSelected, value);
         }
 
         public T Build { get; }
 
-        public ISkillTree SkillTree
+        public ISkillTree? SkillTree
         {
             protected get { return _skillTree; }
             set { SetProperty(ref _skillTree, value); }
         }
 
-        IBuild IBuildViewModel.Build { get { return Build; } }
+        IBuild IBuildViewModel.Build => Build;
 
         /// <summary>
         /// Gets a predicate that returns whether the given <see cref="IBuildViewModel"/> should be filtered or not.

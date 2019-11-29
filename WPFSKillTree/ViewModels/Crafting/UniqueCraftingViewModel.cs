@@ -26,8 +26,8 @@ namespace PoESkillTree.ViewModels.Crafting
         private IReadOnlyList<ModSelectorViewModel> _msExplicits = new ModSelectorViewModel[0];
         public IReadOnlyList<ModSelectorViewModel> MsExplicits
         {
-            get { return _msExplicits; }
-            private set { SetProperty(ref _msExplicits, value); }
+            get => _msExplicits;
+            private set => SetProperty(ref _msExplicits, value);
         }
 
         public UniqueCraftingViewModel(EquipmentData equipmentData)

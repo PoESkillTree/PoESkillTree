@@ -12,8 +12,7 @@ namespace PoESkillTree.ViewModels.Equipment
         public void DragOver(IDropInfo dropInfo)
         {
             // only DraggableItemViewModels can be dropped, they can always be dropped
-            var draggedItem = dropInfo.Data as DraggableItemViewModel;
-            if (draggedItem != null)
+            if (dropInfo.Data is DraggableItemViewModel draggedItem)
             {
                 dropInfo.Effects = draggedItem.DropOnBinEffect;
                 dropInfo.DropTargetAdorner = typeof(BinDropTargetAdorner);

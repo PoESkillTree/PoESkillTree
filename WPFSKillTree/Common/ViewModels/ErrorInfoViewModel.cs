@@ -46,16 +46,16 @@ namespace PoESkillTree.Common.ViewModels
         /// </summary>
         /// <returns>All current error messages of the given property. Null or an empty enumerable means that
         /// there are no errors.</returns>
-        protected abstract IEnumerable<string> ValidateProperty(string propertyName);
+        protected abstract IEnumerable<string?> ValidateProperty(string propertyName);
 
         /// <summary>
         /// Sets the errors for the given property.
         /// If <paramref name="errors"/> is null or empty, the errors of <paramref name="propertyName"/> are cleared.
         /// If an entry of <paramref name="errors"/> is null or empty, it is ignored.
         /// </summary>
-        private void SetErrors(string propertyName, IEnumerable<string> errors)
+        private void SetErrors(string propertyName, IEnumerable<string?> errors)
         {
-            var errorList = errors.Where(s => !string.IsNullOrEmpty(s)).ToList();
+            var errorList = errors.WhereNotNull().Where(s => !string.IsNullOrEmpty(s)).ToList();
             if (!errorList.Any())
             {
                 ClearErrors(propertyName);

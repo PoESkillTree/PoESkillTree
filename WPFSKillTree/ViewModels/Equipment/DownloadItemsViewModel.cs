@@ -9,36 +9,24 @@ namespace PoESkillTree.ViewModels.Equipment
 {
     public class DownloadItemsViewModel : CloseableViewModel
     {
-        private PoEBuild _build;
-        public PoEBuild Build
-        {
-            get { return _build; }
-            private set { SetProperty(ref _build, value); }
-        }
+        public PoEBuild Build { get; }
 
         private string _itemsLink;
         public string ItemsLink
         {
-            get { return _itemsLink; }
-            private set { SetProperty(ref _itemsLink, value);}
+            get => _itemsLink;
+            private set => SetProperty(ref _itemsLink, value);
         }
 
-        private RelayCommand _openInBrowserCommand;
-        public ICommand OpenInBrowserCommand
-        {
-            get
-            {
-                return _openInBrowserCommand ??
-                       (_openInBrowserCommand = new RelayCommand(() => Process.Start(ItemsLink)));
-            }
-        }
+        private RelayCommand? _openInBrowserCommand;
+        public ICommand OpenInBrowserCommand => _openInBrowserCommand ??= new RelayCommand(() => Process.Start(ItemsLink));
 
         public DownloadItemsViewModel(PoEBuild build)
         {
             DisplayName = L10n.Message("Download & Import Items");
             Build = build;
             Build.PropertyChanged += BuildOnPropertyChanged;
-            BuildOnPropertyChanged(this, null);
+            _itemsLink = CreateItemsLink();
         }
 
         protected override void OnClose()
@@ -48,10 +36,11 @@ namespace PoESkillTree.ViewModels.Equipment
 
         private void BuildOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            ItemsLink =
-                string.Format("https://www.pathofexile.com/character-window/get-items?character={0}&accountName={1}",
-                    Build.CharacterName, Build.AccountName);
+            ItemsLink = CreateItemsLink();
             // Jewel data: http://www.pathofexile.com/character-window/get-passive-skills?reqData=0&character={0}&accountName={1}
         }
+
+        private string CreateItemsLink() =>
+            $"https://www.pathofexile.com/character-window/get-items?character={Build.CharacterName}&accountName={Build.AccountName}";
     }
 }

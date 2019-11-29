@@ -16,7 +16,7 @@ namespace PoESkillTree.ViewModels.Builds
         private bool _currentlyOpen;
         private bool _isVisible;
         private CharacterClass _characterClass;
-        private string _ascendancyClass;
+        private string? _ascendancyClass;
         private uint _pointsUsed;
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace PoESkillTree.ViewModels.Builds
         /// </summary>
         public bool CurrentlyOpen
         {
-            get { return _currentlyOpen; }
+            get => _currentlyOpen;
             set { SetProperty(ref _currentlyOpen, value, () => OnPropertyChanged(nameof(Image))); }
         }
 
@@ -33,8 +33,8 @@ namespace PoESkillTree.ViewModels.Builds
         /// </summary>
         public bool IsVisible
         {
-            get { return _isVisible; }
-            private set { SetProperty(ref _isVisible, value); }
+            get => _isVisible;
+            private set => SetProperty(ref _isVisible, value);
         }
 
         /// <summary>
@@ -42,17 +42,17 @@ namespace PoESkillTree.ViewModels.Builds
         /// </summary>
         public CharacterClass CharacterClass
         {
-            get { return _characterClass; }
-            private set { SetProperty(ref _characterClass, value); }
+            get => _characterClass;
+            private set => SetProperty(ref _characterClass, value);
         }
 
         /// <summary>
         /// Gets the ascendancy class of the represented tree.
         /// </summary>
-        public string AscendancyClass
+        public string? AscendancyClass
         {
-            get { return _ascendancyClass; }
-            private set { SetProperty(ref _ascendancyClass, value); }
+            get => _ascendancyClass;
+            private set => SetProperty(ref _ascendancyClass, value);
         }
 
         /// <summary>
@@ -60,8 +60,8 @@ namespace PoESkillTree.ViewModels.Builds
         /// </summary>
         private uint PointsUsed
         {
-            get { return _pointsUsed; }
-            set { SetProperty(ref _pointsUsed, value); }
+            get => _pointsUsed;
+            set => SetProperty(ref _pointsUsed, value);
         }
 
         private string ClassName => AscendancyClass ?? CharacterClass.ToString();
@@ -83,14 +83,9 @@ namespace PoESkillTree.ViewModels.Builds
         /// <summary>
         /// Gets a description of this build.
         /// </summary>
-        public string Description
-        {
-            get
-            {
-                return string.Format(L10n.Plural("{0}, {1} point used", "{0}, {1} points used", PointsUsed),
-                    ClassName, PointsUsed);
-            }
-        }
+        public string Description =>
+            string.Format(L10n.Plural("{0}, {1} point used", "{0}, {1} points used", PointsUsed),
+                ClassName, PointsUsed);
 
         /// <param name="poEBuild">The wrapped build.</param>
         /// <param name="filterPredicate">A predicate that returns whether the given <see cref="IBuildViewModel"/>
@@ -139,8 +134,7 @@ namespace PoESkillTree.ViewModels.Builds
 
             var deserializer = SkillTree.BuildConverter.GetUrlDeserializer(Build.TreeUrl);
 
-            Exception e;
-            if (deserializer.ValidateBuildUrl(out e))
+            if (deserializer.ValidateBuildUrl(out var e))
             {
                 PointsUsed = (uint) deserializer.GetPointsCount();
                 CharacterClass = deserializer.GetCharacterClass();

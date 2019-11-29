@@ -51,6 +51,6 @@ namespace PoESkillTree.Controls.Dialogs
         /// Returns null or an empty string if there are no errors with the input.</param>
         /// <returns>The text entered by the user or null if the dialog was canceled</returns>
         Task<string?> ShowValidatingInputDialogAsync(object context, string title, string message,
-            string defaultText, Func<string, string> inputValidationFunc);
+            string defaultText, Func<string, string?> inputValidationFunc);
     }
 }

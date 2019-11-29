@@ -15,7 +15,7 @@ namespace PoESkillTree.ViewModels.Crafting
         private int _value;
         public int Value
         {
-            get { return _value; }
+            get => _value;
             set
             {
                 var oldValue = _value;
@@ -31,7 +31,7 @@ namespace PoESkillTree.ViewModels.Crafting
 
         public int ValueIndex { get; }
 
-        public event EventHandler<SliderValueChangedEventArgs> ValueChanged;
+        public event EventHandler<SliderValueChangedEventArgs>? ValueChanged;
 
         public SliderViewModel(int valueIndex, IEnumerable<int> ticks)
         {

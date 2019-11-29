@@ -47,15 +47,10 @@ namespace PoESkillTree.ViewModels.Equipment
             }
         }
 
-        private string _emptyBackgroundImagePath;
         /// <summary>
         /// Gets or sets the path to the image that should be shown if Item is null.
         /// </summary>
-        public string EmptyBackgroundImagePath
-        {
-            get => _emptyBackgroundImagePath;
-            set => SetProperty(ref _emptyBackgroundImagePath, value);
-        }
+        public string EmptyBackgroundImagePath { get; }
 
         public override DragDropEffects DropOnInventoryEffect => DragDropEffects.Link;
         public override DragDropEffects DropOnStashEffect => DragDropEffects.Copy;
@@ -63,12 +58,14 @@ namespace PoESkillTree.ViewModels.Equipment
         public ICommand EditSocketedGemsCommand { get; }
 
         public InventoryItemViewModel(
-            IExtendedDialogCoordinator dialogCoordinator, ItemAttributes itemAttributes, ItemSlot slot, ushort? socket)
+            IExtendedDialogCoordinator dialogCoordinator, ItemAttributes itemAttributes, ItemSlot slot, ushort? socket,
+            string emptyBackgroundImagePath)
         {
             _dialogCoordinator = dialogCoordinator;
             _itemAttributes = itemAttributes;
             _slot = slot;
             Socket = socket;
+            EmptyBackgroundImagePath = emptyBackgroundImagePath;
             _isEnabled = ItemIsEnabled;
 
             EditSocketedGemsCommand = new AsyncRelayCommand(EditSocketedGemsAsync, CanEditSocketedGems);
@@ -116,7 +113,7 @@ namespace PoESkillTree.ViewModels.Equipment
 
             var oldItem = Item;
             var newItem = dropEffects == DragDropEffects.Copy
-                ? new Item(draggedItem.Item) : draggedItem.Item;
+                ? new Item(draggedItem.Item!) : draggedItem.Item;
 
             if (dropEffects == DragDropEffects.Move || dropEffects == DragDropEffects.Link)
             {

@@ -7,6 +7,7 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon>logo.ico</ApplicationIcon>
     <Nullable>enable</Nullable>
+    <WarningsAsErrors>8600;8601;8602;8603;8604;8613;8619;8620;8625</WarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyName>PoESkillTree</AssemblyName>

@@ -16,22 +16,22 @@ namespace PoESkillTree.ViewModels.Equipment
         private bool _isDeletable = true;
         public bool IsDeletable
         {
-            get { return _isDeletable; }
-            set { SetProperty(ref _isDeletable, value); }
+            get => _isDeletable;
+            set => SetProperty(ref _isDeletable, value);
         }
 
         private string _name = "";
         public string Name
         {
-            get { return _name; }
-            set { SetProperty(ref _name, value); }
+            get => _name;
+            set => SetProperty(ref _name, value);
         }
 
         private Color _color = Color.FromRgb(98, 128, 0);
         public Color Color
         {
-            get { return _color; }
-            set { SetProperty(ref _color, value); }
+            get => _color;
+            set => SetProperty(ref _color, value);
         }
     }
 }

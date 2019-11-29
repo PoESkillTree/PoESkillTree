@@ -12,55 +12,39 @@ namespace PoESkillTree.ViewModels
     /// </summary>
     public class CommandCollectionViewModel : Notifier
     {
-        public class Item : Notifier
+        public class Item
         {
-            private string _title;
-            private ICommand _command;
+            public string Title { get; }
 
-            public string Title
-            {
-                get { return _title; }
-                set { SetProperty(ref _title, value); }
-            }
-
-            public ICommand Command
-            {
-                get { return _command; }
-                set { SetProperty(ref _command, value); }
-            }
+            public ICommand Command { get; }
 
             public Item(string title, ICommand command)
             {
-                _title = title;
-                _command = command;
+                Title = title;
+                Command = command;
             }
         }
 
 
-        private Item _selectedItem;
+        private Item? _selectedItem;
 
-        public Item SelectedItem
+        public Item? SelectedItem
         {
-            get { return _selectedItem; }
-            set { SetProperty(ref _selectedItem, value); }
+            get => _selectedItem;
+            set => SetProperty(ref _selectedItem, value);
         }
 
         public int SelectedIndex
         {
-            get { return SelectedItem == null ? 0 : Items.IndexOf(SelectedItem); }
-            set { SelectedItem = Items.Count > value ? Items[value] : null; }
+            get => SelectedItem == null ? 0 : Items.IndexOf(SelectedItem);
+            set => SelectedItem = Items.Count > value ? Items[value] : null;
         }
 
         public ObservableCollection<Item> Items { get; } = new ObservableCollection<Item>();
 
-        public void Add(string title, ICommand command)
+        public void Add(string title, Action action, Func<bool> canExecute)
         {
-            Items.Add(new Item(title, command));
-        }
-
-        public void Add(string title, Action action, Func<bool> canExeucte)
-        {
-            Items.Add(new Item(title, new RelayCommand(action, canExeucte)));
+            Items.Add(new Item(title, new RelayCommand(action, canExecute)));
         }
     }
 }

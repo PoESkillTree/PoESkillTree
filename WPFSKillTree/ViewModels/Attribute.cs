@@ -1,9 +1,11 @@
+using System;
+
 namespace PoESkillTree.ViewModels
 {
     public class Attribute
     {
-        public string Text { get; set; }
-        public float[] Deltas { get; set; }
+        public string Text { get; }
+        public float[] Deltas { get; set; } = Array.Empty<float>();
         public bool Missing { get; set; }
 
         public Attribute(string text)

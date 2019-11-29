@@ -41,7 +41,7 @@ namespace PoESkillTree.ViewModels.Crafting
 
         public IReadOnlyList<Affix> Affixes
         {
-            get { return _affixes; }
+            get => _affixes;
             set
             {
                 var v = (value ?? new Affix[0]).Prepend(EmptySelection).ToList();
@@ -82,22 +82,22 @@ namespace PoESkillTree.ViewModels.Crafting
             }
         }
 
-        private Affix _selectedAffix;
+        private Affix _selectedAffix = default!; // Initialized when setting Affixes for the first time
 
         public Affix SelectedAffix
         {
-            get { return _selectedAffix; }
-            set { SetProperty(ref _selectedAffix, value, OnSelectedAffixChanged); }
+            get => _selectedAffix;
+            set => SetProperty(ref _selectedAffix, value, OnSelectedAffixChanged);
         }
 
         public bool IsEmptySelection => _selectedAffix == EmptySelection;
 
-        private string _affixText;
+        private string? _affixText;
 
-        public string AffixText
+        public string? AffixText
         {
-            get { return _affixText; }
-            private set { SetProperty(ref _affixText, value); }
+            get => _affixText;
+            private set => SetProperty(ref _affixText, value);
         }
 
         public IEnumerable<(int valueIndex, int value)> SelectedValues => _sliders.Select(s => (s.ValueIndex, s.Value));
@@ -175,9 +175,9 @@ namespace PoESkillTree.ViewModels.Crafting
             }
         }
 
-        private void SliderOnValueChanged(object sender, SliderValueChangedEventArgs e)
+        private void SliderOnValueChanged(object? sender, SliderValueChangedEventArgs e)
         {
-            if (_updatingSliders)
+            if (_updatingSliders || sender is null)
                 return;
 
             var slider = (SliderViewModel) sender;
@@ -237,7 +237,7 @@ namespace PoESkillTree.ViewModels.Crafting
                 _valueIndices = valueIndices.ToList();
             }
 
-            public string Translate(IReadOnlyList<int> values)
+            public string? Translate(IReadOnlyList<int> values)
             {
                 if (_valueIndices.Count != values.Count)
                 {

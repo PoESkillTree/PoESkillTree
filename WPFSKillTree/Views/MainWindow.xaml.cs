@@ -515,7 +515,7 @@ namespace PoESkillTree.Views
             _attributeContextMenu.Items.Add(cmRemoveFromGroup);
 
             _attributeCollection = new ListCollectionView(_attiblist);
-            _attributeCollection.GroupDescriptions?.Add(new PropertyGroupDescription("Text", _attributeGroups));
+            _attributeCollection.GroupDescriptions.Add(new PropertyGroupDescription(nameof(Attribute.Text), _attributeGroups));
             _attributeCollection.CustomSort = _attributeGroups;
             lbAttr.ItemsSource = _attributeCollection;
             lbAttr.SelectionMode = SelectionMode.Extended;
@@ -899,7 +899,7 @@ namespace PoESkillTree.Views
 
         private async void Menu_ImportStash(object sender, RoutedEventArgs e)
         {
-            var vm = new DownloadStashViewModel(DialogCoordinator.Instance, _gameData, PersistentData, StashViewModel);
+            var vm = new DownloadStashViewModel(DialogCoordinator.Instance, PersistentData, StashViewModel);
             await this.ShowDialogAsync(vm, new DownloadStashWindow(), () => vm.ViewLoaded());
         }
 

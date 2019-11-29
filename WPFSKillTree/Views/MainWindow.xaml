@@ -7,7 +7,6 @@
         xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
         xmlns:local="clr-namespace:PoESkillTree.Controls"
         xmlns:conv ="clr-namespace:PoESkillTree.ViewModels"
-        xmlns:items="clr-namespace:PoESkillTree.Model.Items"
         xmlns:dialogs="clr-namespace:PoESkillTree.Controls.Dialogs"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:builds="clr-namespace:PoESkillTree.Views.Builds"

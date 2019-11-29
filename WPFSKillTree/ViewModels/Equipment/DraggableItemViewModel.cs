@@ -68,7 +68,7 @@ namespace PoESkillTree.ViewModels.Equipment
         public void StartDrag(IDragInfo dragInfo)
         {
             dragInfo.Data = this;
-            var image = Item.Image.ImageSource.Result;
+            var image = Item!.Image.ImageSource.Result;
             DragMouseAnchorPoint = new Point(
                 dragInfo.PositionInDraggedItem.X / image.Width, 
                 dragInfo.PositionInDraggedItem.Y / image.Height
