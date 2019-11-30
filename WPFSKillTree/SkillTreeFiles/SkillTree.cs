@@ -1,5 +1,4 @@
-﻿#nullable disable
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using PoESkillTree.Utils;
 using System;
 using System.Collections.Generic;
@@ -17,6 +16,7 @@ using PoESkillTree.Controls.Dialogs;
 using PoESkillTree.Engine.GameModel;
 using PoESkillTree.Engine.GameModel.PassiveTree;
 using PoESkillTree.Engine.Utils;
+using PoESkillTree.Engine.Utils.Extensions;
 using PoESkillTree.Localization;
 using PoESkillTree.Model;
 using PoESkillTree.Utils.UrlProcessing;
@@ -35,6 +35,7 @@ namespace PoESkillTree.SkillTreeFiles
         /// </summary>
         private static readonly Regex AscendantClassStartRegex = new Regex(@"Can Allocate Passives from the .* starting point");
 
+#pragma warning disable CS8618 // Initialized in InitializeAsync or CreateAsync
         // The absolute path of Assets folder (contains trailing directory separator).
         private static string _assetsFolderPath;
 
@@ -70,7 +71,7 @@ namespace PoESkillTree.SkillTreeFiles
             }
         };
 
-        public static readonly Dictionary<string, string> RenameImplicitAttributes = new Dictionary<string, string>
+        private static readonly Dictionary<string, string> RenameImplicitAttributes = new Dictionary<string, string>
         {
             {
                 "#% increased Evasion Rating",
@@ -131,13 +132,13 @@ namespace PoESkillTree.SkillTreeFiles
         private static SkillIcons IconInActiveSkills { get; set; }
         public static Dictionary<ushort, SkillNode> Skillnodes => PoESkillTree.Nodes;
 
-        private static IEnumerable<string> _allAttributes;
+        private static IEnumerable<string>? _allAttributes;
         /// <summary>
         /// Gets an Array of all the attributes of SkillNodes.
         /// </summary>
         public static IEnumerable<string> AllAttributes
         {
-            get { return _allAttributes ?? (_allAttributes = Skillnodes.Values.SelectMany(n => n.Attributes.Keys).Distinct().ToArray()); }
+            get { return _allAttributes ??= Skillnodes.Values.SelectMany(n => n.Attributes.Keys).Distinct().ToArray(); }
         }
 
         public static Dictionary<CharacterClass, IReadOnlyList<(string stat, float value)>> CharBaseAttributes
@@ -166,12 +167,13 @@ namespace PoESkillTree.SkillTreeFiles
         public static int MaximumLevel => 100;
         private int _level = UndefinedLevel;
 
-        public static PoESkillTree PoESkillTree { get; set; } = null;
-        public static PoESkillTreeOptions PoESkillTreeOptions { get; set; } = null;
+        public static PoESkillTree PoESkillTree { get; private set; }
+        private static PoESkillTreeOptions PoESkillTreeOptions { get; set; }
 
         private static bool _initialized;
 
         private SkillTree(IPersistentData persistentData)
+#pragma warning restore
         {
             _persistentData = persistentData;
 
@@ -183,7 +185,7 @@ namespace PoESkillTree.SkillTreeFiles
         {
             if (!_initialized)
             {
-                PoESkillTree = JsonConvert.DeserializeObject<PoESkillTree>(treestring, new PoESkillTreeConverter());
+                PoESkillTree = JsonConvert.DeserializeObject<PoESkillTree>(treestring, new PoESkillTreeConverter())!;
                 PoESkillTreeOptions = JsonConvert.DeserializeObject<PoESkillTreeOptions>(opsstring);
 
                 controller?.SetProgress(0.25);
@@ -314,7 +316,7 @@ namespace PoESkillTree.SkillTreeFiles
                     {
                         var values = new List<float>();
 
-                        foreach (Match m in regexAttrib.Matches(s))
+                        foreach (var m in regexAttrib.Matches(s).WhereNotNull())
                         {
                             if (m.Value == "")
                                 values.Add(float.NaN);
@@ -490,8 +492,8 @@ namespace PoESkillTree.SkillTreeFiles
                         if (sn.AscendancyName != n.AscendancyName && n.IsAscendancyNode)
                             remove.Add(n);
                     }
+                    SkilledNodes.ExceptAndUnionWith(remove, new[] { sn });
                 }
-                SkilledNodes.ExceptAndUnionWith(remove, new[] { sn });
             }
 
             if (changedType)
@@ -511,10 +513,10 @@ namespace PoESkillTree.SkillTreeFiles
             _asctype = 0;
         }
 
-        public string AscendancyClassName
+        public string? AscendancyClassName
             => AscendancyClasses.GetAscendancyClassName(CharClass, AscType);
 
-        public Dictionary<string, List<float>> HighlightedAttributes;
+        public Dictionary<string, List<float>>? HighlightedAttributes { get; set; }
 
         public Dictionary<string, List<float>> SelectedAttributes
             => GetAttributes(SkilledNodes, CharClass, Level, _persistentData.CurrentBuild.Bandits);
@@ -616,7 +618,7 @@ namespace PoESkillTree.SkillTreeFiles
         /// <param name="assetLoader">Can optionally be provided if the caller wants to backup assets.</param>
         /// <returns></returns>
         public static async Task<SkillTree> CreateAsync(IPersistentData persistentData,
-            ProgressDialogController controller = null, AssetLoader assetLoader = null)
+            ProgressDialogController? controller = null, AssetLoader? assetLoader = null)
         {
             controller?.SetProgress(0);
 
@@ -661,13 +663,13 @@ namespace PoESkillTree.SkillTreeFiles
             var nodes =
               Skillnodes.Where(n => ((n.Value.Position - mousePointer).Length < range)).ToList();
             if (!DrawAscendancy || AscType <= 0) return nodes;
-            var asn = GetAscNode();
+            var asn = GetAscNode()!;
             var bitmap = Assets["Classes" + asn.AscendancyName];
             nodes = Skillnodes.Where(n => (n.Value.IsAscendancyNode || (Math.Pow(n.Value.Position.X - asn.Position.X, 2) + Math.Pow(n.Value.Position.Y - asn.Position.Y, 2)) > Math.Pow((bitmap.Height * 1.25 + bitmap.Width * 1.25) / 2, 2)) && ((n.Value.Position - mousePointer).Length < range)).ToList();
             return nodes;
         }
 
-        public SkillNode FindNodeInRange(Vector2D mousePointer, int range = 50)
+        public SkillNode? FindNodeInRange(Vector2D mousePointer, int range = 50)
         {
             var nodes = FindNodesInRange(mousePointer, range);
             var nodeList = nodes as IList<KeyValuePair<ushort, SkillNode>> ?? nodes.ToList();
@@ -705,7 +707,7 @@ namespace PoESkillTree.SkillTreeFiles
             foreach (var node in nodes)
             {
                 if (node.IsAscendancyStart)
-                    ascendancy = AscendancyClasses.GetAscendancyClassNumber(node.AscendancyName);
+                    ascendancy = AscendancyClasses.GetAscendancyClassNumber(node.AscendancyName!);
             }
             return ascendancy;
         }
@@ -1130,7 +1132,7 @@ namespace PoESkillTree.SkillTreeFiles
 
             if (ascType > 0)
             {
-                string ascendancyClass = skillTree.AscendancyClasses.GetAscendancyClassName(charClass, ascType);
+                var ascendancyClass = skillTree.AscendancyClasses.GetAscendancyClassName(charClass, ascType);
                 SkillNode ascNode = AscRootNodeList.First(nd => nd.AscendancyName == ascendancyClass);
                 skilledNodes.Add(ascNode);
             }
@@ -1226,7 +1228,7 @@ namespace PoESkillTree.SkillTreeFiles
         private ushort GetCharNodeId()
             => RootNodeClassDictionary[CharClass];
 
-        private SkillNode GetAscNode()
+        private SkillNode? GetAscNode()
         {
             var ascNodeId = GetAscNodeId();
             if (ascNodeId != 0)
@@ -1262,9 +1264,9 @@ namespace PoESkillTree.SkillTreeFiles
             return attributes.SelectMany(ExpandHybridAttributes);
         }
 
-        public static IEnumerable<KeyValuePair<string, IReadOnlyList<float>>> ExpandHybridAttributes(KeyValuePair<string, IReadOnlyList<float>> attribute)
+        private static IEnumerable<KeyValuePair<string, IReadOnlyList<float>>> ExpandHybridAttributes(KeyValuePair<string, IReadOnlyList<float>> attribute)
         {
-            if (HybridAttributes.TryGetValue(attribute.Key, out List<string> expandedAttributes))
+            if (HybridAttributes.TryGetValue(attribute.Key, out var expandedAttributes))
             {
                 foreach (var expandedAttribute in expandedAttributes)
                 {

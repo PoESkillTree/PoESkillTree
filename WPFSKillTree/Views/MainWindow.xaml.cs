@@ -1026,7 +1026,7 @@ namespace PoESkillTree.Views
                           L10n.Message(
                               "The new version of application will be installed side-by-side with earlier versions.");
 
-                    if (release.IsPrerelease)
+                    if (release.IsPreRelease)
                         message += "\n\n" +
                                    L10n.Message("Warning: This is a pre-release, meaning there could be some bugs!");
 
@@ -1036,7 +1036,7 @@ namespace PoESkillTree.Views
                                    : L10n.Message("Do you want to download and install the new version?"));
 
                     var download = await this.ShowQuestionAsync(message, title: L10n.Message("Continue installation?"),
-                        image: release.IsPrerelease ? MessageBoxImage.Warning : MessageBoxImage.Question);
+                        image: release.IsPreRelease ? MessageBoxImage.Warning : MessageBoxImage.Question);
                     if (download == MessageBoxResult.Yes)
                         await InstallUpdateAsync();
                     else
