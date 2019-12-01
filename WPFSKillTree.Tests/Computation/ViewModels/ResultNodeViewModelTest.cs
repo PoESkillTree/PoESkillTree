@@ -1,5 +1,7 @@
-﻿using System.Reactive.Concurrency;
+﻿using System.Globalization;
+using System.Reactive.Concurrency;
 using System.Reactive.Subjects;
+using System.Threading;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Model;
@@ -49,6 +51,7 @@ namespace PoESkillTree.Computation.ViewModels
         [TestCase(1.235, ExpectedResult = "1.24")]
         public string StringValueOfDoubleReturnsCorrectResult(double? value)
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             var sut = CreateSut<double>((NodeValue?) value);
 
             return sut.StringValue;

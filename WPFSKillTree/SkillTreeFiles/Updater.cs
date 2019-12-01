@@ -363,11 +363,7 @@ namespace PoESkillTree.SkillTreeFiles
             return SemanticVersion.Parse(AppData.ProductVersion);
         }
 
-        // Return latest release, or null if there is none or it wasn't checked for yet.
-        public static Release? GetLatestRelease()
-        {
-            return _latest;
-        }
+        public static bool LatestReleaseIsUpdate => _latest?.IsUpdate ?? false;
 
         // Returns PackageName according to ProductName.
         private static string GetPackageName(string productName)

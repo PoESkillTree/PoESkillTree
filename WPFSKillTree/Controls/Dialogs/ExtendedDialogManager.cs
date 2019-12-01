@@ -84,7 +84,7 @@ namespace PoESkillTree.Controls.Dialogs
         }
 
         public static async Task<ProgressDialogController> ShowProgressAsync(this MetroWindow window, string title,
-            string message, bool isCancelable = false)
+            string? message, bool isCancelable = false)
         {
             var settings = new MetroDialogSettings
             {

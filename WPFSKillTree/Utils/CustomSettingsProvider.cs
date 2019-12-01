@@ -32,7 +32,7 @@ namespace PoESkillTree.Utils
         /// <summary>
         /// Override.
         /// </summary>
-        public override void Initialize(string name, NameValueCollection config)
+        public override void Initialize(string? name, NameValueCollection? config)
         {
             base.Initialize(ApplicationName, config);
         }
