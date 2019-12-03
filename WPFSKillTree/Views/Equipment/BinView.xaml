@@ -9,7 +9,7 @@
              dd:DragDrop.IsDropTarget="True"
              dd:DragDrop.DropHandler="{Binding}"
              dd:DragDrop.DropTargetAdornerBrush="#50006400"
-             BorderThickness="2" BorderBrush="{DynamicResource AccentColorBrush}"
+             BorderThickness="2" BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
              Width="98" Height="98">
     <UserControl.DataContext>
         <viewModels:BinViewModel />
