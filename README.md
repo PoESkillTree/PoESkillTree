@@ -94,7 +94,7 @@ Note: Both these options require that you can access the official Path of Exile 
 ## Information for contributors
 
 * The code requires Visual Studio 2019 or higher to be compiled and run
-* It is compiled to .NET Core 3.0 using C# 8
+* It is compiled to .NET Core 3.1 using C# 8
 * https://github.com/PoESkillTree/PoESkillTree.Engine contains the GameModel and Computation engine and is included as a NuGet package
 
 ## Credits
