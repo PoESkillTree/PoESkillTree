@@ -28,17 +28,17 @@ namespace PoESkillTree.Model.Serialization
         public class XmlPersistentData
         {
             [XmlElement]
-            public Options Options { get; set; }
+            public Options? Options { get; set; }
 
             [XmlElement]
-            public XmlBuild CurrentBuild { get; set; }
+            public XmlBuild? CurrentBuild { get; set; }
 
             [XmlArray]
-            public List<StashBookmark> StashBookmarks { get; set; }
+            public List<StashBookmark>? StashBookmarks { get; set; }
 
             [XmlArray]
             [XmlArrayItem("PoEBuild")]
-            public List<XmlBuild> Builds { get; set; }
+            public List<XmlBuild>? Builds { get; set; }
         }
 
         private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
@@ -51,10 +51,13 @@ namespace PoESkillTree.Model.Serialization
         public override void DeserializePersistentDataFile(string xmlString)
         {
             var obj = XmlSerializationUtils.DeserializeString<XmlPersistentData>(xmlString);
-            PersistentData.Options = obj.Options;
+            PersistentData.Options = obj.Options ?? new Options();
             PersistentData.CurrentBuild = ConvertFromXmlBuild(obj.CurrentBuild) ?? CreateDefaultCurrentBuild();
             obj.StashBookmarks?.ForEach(PersistentData.StashBookmarks.Add);
-            PersistentData.RootBuild.Builds.AddRange(obj.Builds.Select(ConvertFromXmlBuild));
+            if (obj.Builds != null)
+            {
+                PersistentData.RootBuild.Builds.AddRange(obj.Builds.Select(b => ConvertFromXmlBuild(b)));
+            }
 
             if (!SelectCurrentBuildByName(PersistentData.CurrentBuild.Name))
             {

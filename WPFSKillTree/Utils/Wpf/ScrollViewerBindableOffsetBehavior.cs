@@ -1,7 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Interactivity;
+using Microsoft.Xaml.Behaviors;
 
 namespace PoESkillTree.Utils.Wpf
 {
@@ -30,7 +30,7 @@ namespace PoESkillTree.Utils.Wpf
             behavior.AssociatedObject.ScrollToVerticalOffset(offset);
         }
 
-        private ScrollBar _verticalScrollBar;
+        private ScrollBar? _verticalScrollBar;
 
         protected override void OnAttached()
         {

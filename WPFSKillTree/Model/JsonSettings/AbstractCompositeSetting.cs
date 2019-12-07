@@ -24,8 +24,7 @@ namespace PoESkillTree.Model.JsonSettings
 
         public void LoadFrom(JObject jObject)
         {
-            JToken token;
-            if (!jObject.TryGetValue(Key, out token) || !(token is JObject))
+            if (!jObject.TryGetValue(Key, out var token) || !(token is JObject))
             {
                 Reset();
                 return;
@@ -35,8 +34,7 @@ namespace PoESkillTree.Model.JsonSettings
 
         public bool SaveTo(JObject jObject)
         {
-            JToken token;
-            if (!jObject.TryGetValue(Key, out token) || !(token is JObject))
+            if (!jObject.TryGetValue(Key, out var token) || !(token is JObject))
             {
                 jObject[Key] = token = new JObject();
             }

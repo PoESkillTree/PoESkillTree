@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using PoESkillTree.SkillTreeFiles;
 
 namespace PoESkillTree.Utils.UrlProcessing
 {
-    public delegate bool TryCreateDeserializer(string buildUrl, IAscendancyClasses ascendancyClasses, out BuildUrlDeserializer deserializer);
+    public delegate bool TryCreateDeserializer(
+        string buildUrl, IAscendancyClasses ascendancyClasses,
+        [NotNullWhen(true)] out BuildUrlDeserializer? deserializer);
 
     /// <summary>
     /// Creates instances of classes derived from the <see cref="BuildUrlDeserializer"/> class.
@@ -13,36 +16,30 @@ namespace PoESkillTree.Utils.UrlProcessing
     {
         private readonly IAscendancyClasses _ascendancyClasses;
 
-        private ISet<TryCreateDeserializer> _deserializersFactories = new HashSet<TryCreateDeserializer>();
-        private Func<string, BuildUrlDeserializer> _factory;
+        private readonly ISet<TryCreateDeserializer> _deserializersFactories;
+        private readonly Func<string, BuildUrlDeserializer> _factory;
 
-        public BuildConverter(IAscendancyClasses ascendancyClasses)
+        public BuildConverter(
+            IAscendancyClasses ascendancyClasses,
+            Func<string, BuildUrlDeserializer> factory,
+            params TryCreateDeserializer[] deserializersFactories)
         {
             _ascendancyClasses = ascendancyClasses;
-        }
-
-        public void RegisterDefaultDeserializer(Func<string, BuildUrlDeserializer> factory)
-        {
+            _deserializersFactories = new HashSet<TryCreateDeserializer>(deserializersFactories);
             _factory = factory;
-        }
-
-        public void RegisterDeserializersFactories(params TryCreateDeserializer[] factories)
-        {
-            _deserializersFactories = new HashSet<TryCreateDeserializer>(factories);
         }
 
         public BuildUrlDeserializer GetUrlDeserializer(string buildUrl)
         {
             foreach (var tryCreateDelegate in _deserializersFactories)
             {
-                BuildUrlDeserializer deserializer;
-                if (tryCreateDelegate(buildUrl, _ascendancyClasses, out deserializer))
+                if (tryCreateDelegate(buildUrl, _ascendancyClasses, out var deserializer))
                 {
                     return deserializer;
                 }
             }
 
-            return _factory?.Invoke(buildUrl);
+            return _factory.Invoke(buildUrl);
         }
     }
 }

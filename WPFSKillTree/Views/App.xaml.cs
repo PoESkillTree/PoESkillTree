@@ -25,13 +25,15 @@ namespace PoESkillTree.Views
         // The flag whether it is safe to exit application.
         private bool _isSafeToExit;
 
+#pragma warning disable CS8618 // Initialized in OnStartup
         // Single instance of persistent data.
         public static IPersistentData PersistentData { get; private set; }
 
         // The Mutex for detecting running application instance.
         private Mutex _runningInstanceMutex;
+#pragma warning restore
 
-        private static string RunningInstanceMutexName => PoESkillTree.Properties.Version.AppId;
+        private static string RunningInstanceMutexName => AppData.ProductName;
 
         // Invoked when application is about to exit.
         protected override void OnExit(ExitEventArgs e)

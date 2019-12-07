@@ -6,10 +6,12 @@ using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.ViewModels
 {
-    public class GainOnActionStatViewModel : Notifier, IDisposable
+    public sealed class GainOnActionStatViewModel : Notifier, IDisposable
     {
         public GainOnActionStatViewModel(ResultNodeViewModel node)
         {
+            if (node.Stat.ExplicitRegistrationType is null)
+                throw new ArgumentException($"{nameof(node)}.Stat must be explicitly registered");
             Node = node;
             Node.PropertyChanged += NodeOnPropertyChanged;
         }
@@ -17,7 +19,7 @@ namespace PoESkillTree.Computation.ViewModels
         public ResultNodeViewModel Node { get; }
 
         public ExplicitRegistrationType.GainOnAction GainOnActionType
-            => (ExplicitRegistrationType.GainOnAction) Node.Stat.ExplicitRegistrationType;
+            => (ExplicitRegistrationType.GainOnAction) Node.Stat.ExplicitRegistrationType!;
 
         public bool IsVisible
             => Node.HasValue && GainOnActionType.GainedStat.Entity == Entity.Character;

@@ -14,7 +14,6 @@
     MaxContentWidth="500"
     Title="{Binding DisplayName}">
     <ContentControl.Resources>
-        <converter:InvertBoolConverter x:Key="InvertBoolConverter" />
         <converter:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
         <converter:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
     </ContentControl.Resources>
@@ -37,7 +36,7 @@
                 <TextBlock Margin="0 5 0 0"
                            Text="{Binding Message}"
                            TextWrapping="Wrap"
-                           FontSize="{DynamicResource DialogMessageFontSize}" />
+                           FontSize="{DynamicResource MahApps.Sizes.Font.DialogMessage}" />
             </ScrollViewer>
             <GroupBox Visibility="{Binding Details, Converter={StaticResource StringToVisibilityConverter}}"
                       Margin="0 5 0 0">

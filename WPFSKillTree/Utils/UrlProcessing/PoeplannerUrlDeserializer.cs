@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.RegularExpressions;
 using PoESkillTree.Engine.GameModel;
@@ -12,7 +13,7 @@ namespace PoESkillTree.Utils.UrlProcessing
     public class PoeplannerUrlDeserializer : BuildUrlDeserializer
     {
         private static readonly Regex UrlRegex = new Regex(@"(http(|s):\/\/|)(\w*\.|)poeplanner\.com\/(?<build>[\w-=]+)");
-        private byte[] _rawData;
+        private byte[]? _rawData;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PoeplannerUrlDeserializer"/> class.
@@ -30,7 +31,9 @@ namespace PoESkillTree.Utils.UrlProcessing
         /// <param name="buildUrl">A string containing a build url.</param>
         /// <param name="deserializer">When this method returns, contains the deserializer instance or null, if url conversion is impossible.</param>
         /// <returns>true if deserializer was created successfully; otherwise, false.</returns>
-        public static bool TryCreate(string buildUrl, IAscendancyClasses ascendancyClasses, out BuildUrlDeserializer deserializer)
+        public static bool TryCreate(
+            string buildUrl, IAscendancyClasses ascendancyClasses,
+            [NotNullWhen(true)] out BuildUrlDeserializer? deserializer)
         {
             if (!UrlRegex.IsMatch(buildUrl))
             {
@@ -42,7 +45,7 @@ namespace PoESkillTree.Utils.UrlProcessing
             return true;
         }
 
-        public override bool ValidateBuildUrl(out Exception exception)
+        public override bool ValidateBuildUrl([NotNullWhen(false)] out Exception? exception)
         {
             try
             {
@@ -184,13 +187,13 @@ namespace PoESkillTree.Utils.UrlProcessing
         /// <summary>
         /// Represents preprocessed raw data.
         /// </summary>
-        protected class PoeplannerData
+        private class PoeplannerData
         {
             public int Version { get; set; }
             public byte ActiveTab { get; set; }
-            public byte[] NodesData { get; set; }
-            internal byte[] AurasData { get; set; }
-            internal byte[] EquipmentData { get; set; }
+            public byte[] NodesData { get; set; } = default!;
+            internal byte[] AurasData { get; set; } = default!;
+            internal byte[] EquipmentData { get; set; } = default!;
         }
 
         #endregion

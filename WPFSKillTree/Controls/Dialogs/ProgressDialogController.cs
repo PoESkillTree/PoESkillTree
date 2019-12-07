@@ -71,10 +71,10 @@ namespace PoESkillTree.Controls.Dialogs
         /// <summary>
         /// This event is raised when the associated <see cref="T:MahApps.Metro.Controls.Dialogs.ProgressDialog" /> was closed programmatically.
         /// </summary>
-        public event EventHandler Closed;
+        public event EventHandler? Closed;
         /// <summary>
         /// This event is raised when the associated <see cref="T:MahApps.Metro.Controls.Dialogs.ProgressDialog" /> was cancelled by the user.
         /// </summary>
-        public event EventHandler Canceled;
+        public event EventHandler? Canceled;
     }
 }

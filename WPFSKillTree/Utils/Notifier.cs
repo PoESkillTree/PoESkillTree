@@ -23,9 +23,9 @@ namespace PoESkillTree.Utils
         /// <param name="propertyName">Name of the changed property</param>
         protected void SetProperty<T>(
             ref T backingStore, T value,
-            Action onChanged = null,
-            Action<T> onChanging = null,
-            [CallerMemberName] string propertyName = null)
+            Action? onChanged = null,
+            Action<T>? onChanging = null,
+            [CallerMemberName] string propertyName = "Unspecified")
         {
             if (EqualityComparer<T>.Default.Equals(backingStore, value)) return;
 
@@ -41,7 +41,7 @@ namespace PoESkillTree.Utils
         /// <summary>
         /// INotifyPropertyChanged event that is called right before a property is changed.
         /// </summary>
-        public event PropertyChangingEventHandler PropertyChanging;
+        public event PropertyChangingEventHandler? PropertyChanging;
 
         private void OnPropertyChanging(string propertyName)
         {
@@ -51,7 +51,7 @@ namespace PoESkillTree.Utils
         /// <summary>
         /// INotifyPropertyChanged event that is called right after a property is changed.
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)
         {

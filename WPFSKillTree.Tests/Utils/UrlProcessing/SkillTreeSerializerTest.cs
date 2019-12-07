@@ -31,14 +31,15 @@ namespace PoESkillTree.Utils.UrlProcessing
 
         private static SkillTreeSerializer CreateSut(string url)
         {
-            var buildConverter = new BuildConverter(null);
-            buildConverter.RegisterDeserializersFactories(
+            var buildConverter = new BuildConverter(null!,
+                u => new NaivePoEUrlDeserializer(u, null!),
                 PathofexileUrlDeserializer.TryCreate,
                 PoeplannerUrlDeserializer.TryCreate);
-            buildConverter.RegisterDefaultDeserializer(u => new NaivePoEUrlDeserializer(u, null));
             var buildData = buildConverter.GetUrlDeserializer(url).GetBuildData();
-            var allNodes = Mock.Of<ICollection<ushort>>(c => c.Contains(It.IsAny<ushort>()));
-            return new SkillTreeSerializer(buildData, allNodes);
+            var allNodesMock = new Mock<IReadOnlyCollection<ushort>>();
+            allNodesMock.As<ICollection<ushort>>()
+                .Setup(c => c.Contains(It.IsAny<ushort>())).Returns(true);
+            return new BuildUrlDataToUrlSerializer(buildData, allNodesMock.Object);
         }
     }
 }

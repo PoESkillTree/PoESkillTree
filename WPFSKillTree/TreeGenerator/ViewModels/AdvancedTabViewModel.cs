@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,10 +25,6 @@ using PoESkillTree.Utils.Converter;
 
 namespace PoESkillTree.TreeGenerator.ViewModels
 {
-    // Some aliases to make things clearer without the need of extra classes.
-    using AttributeConstraint = TargetWeightConstraint<string>;
-    using PseudoAttributeConstraint = TargetWeightConstraint<PseudoAttribute>;
-
     /// <summary>
     /// GeneratorTabViewModel that uses user specified constraints based
     /// on attributes to generate skill trees.
@@ -45,15 +42,17 @@ namespace PoESkillTree.TreeGenerator.ViewModels
 
             private readonly Dictionary<string, string> _attributeToGroupDictionary = new Dictionary<string, string>();
 
-            public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+            public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
             {
-                return Convert(value.ToString());
+                return Convert(value?.ToString());
             }
 
-            public string Convert(string attrName)
+            [return: NotNullIfNotNull("attrName")]
+            public string? Convert(string? attrName)
             {
-                string groupName;
-                if (!_attributeToGroupDictionary.TryGetValue(attrName, out groupName))
+                if (attrName is null)
+                    return null;
+                if (!_attributeToGroupDictionary.TryGetValue(attrName, out var groupName))
                 {
                     groupName = PopularAttributes.Contains(attrName)
                         ? PopularGroupName
@@ -63,7 +62,7 @@ namespace PoESkillTree.TreeGenerator.ViewModels
                 return groupName;
             }
 
-            public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
             {
                 throw new NotSupportedException();
             }
@@ -88,24 +87,22 @@ namespace PoESkillTree.TreeGenerator.ViewModels
 
             public void LoadFrom(JObject jObject)
             {
-                JToken token;
                 _vm.ClearAttributeConstraints();
-                if (jObject.TryGetValue(nameof(AttributeConstraints), out token) && token.Any())
+                if (jObject.TryGetValue(nameof(AttributeConstraints), out var token) && token.Any())
                 {
-                    var newConstraints = new List<AttributeConstraint>();
+                    var newConstraints = new List<TargetWeightConstraint<string>>();
                     foreach (var element in token)
                     {
                         var obj = element as JObject;
                         if (obj == null)
                             continue;
-                        JToken attrToken, targetToken, weightToken;
-                        if (!obj.TryGetValue(AttributeKey, out attrToken)
-                            || !obj.TryGetValue(TargetValueKey, out targetToken)
-                            || !obj.TryGetValue(WeightKey, out weightToken))
+                        if (!obj.TryGetValue(AttributeKey, out var attrToken)
+                            || !obj.TryGetValue(TargetValueKey, out var targetToken)
+                            || !obj.TryGetValue(WeightKey, out var weightToken))
                             continue;
 
-                        var attr = attrToken.ToObject<string>();
-                        newConstraints.Add(new AttributeConstraint(attr)
+                        var attr = attrToken.ToObject<string>()!;
+                        newConstraints.Add(new TargetWeightConstraint<string>(attr)
                         {
                             TargetValue = targetToken.ToObject<float>(),
                             Weight = weightToken.ToObject<int>()
@@ -124,22 +121,20 @@ namespace PoESkillTree.TreeGenerator.ViewModels
                 {
                     var pseudoDict = _vm._pseudoAttributes.ToDictionary(p => p.Name);
 
-                    var newConstraints = new List<PseudoAttributeConstraint>();
+                    var newConstraints = new List<TargetWeightConstraint<PseudoAttribute>>();
                     foreach (var element in token)
                     {
                         var obj = element as JObject;
                         if (obj == null)
                             continue;
-                        JToken attrToken, targetToken, weightToken;
-                        if (!obj.TryGetValue(AttributeKey, out attrToken)
-                            || !obj.TryGetValue(TargetValueKey, out targetToken)
-                            || !obj.TryGetValue(WeightKey, out weightToken))
+                        if (!obj.TryGetValue(AttributeKey, out var attrToken)
+                            || !obj.TryGetValue(TargetValueKey, out var targetToken)
+                            || !obj.TryGetValue(WeightKey, out var weightToken))
                             continue;
 
-                        PseudoAttribute attr;
-                        if (!pseudoDict.TryGetValue(attrToken.ToObject<string>(), out attr))
+                        if (!pseudoDict.TryGetValue(attrToken.ToObject<string>()!, out var attr))
                             continue;
-                        newConstraints.Add(new PseudoAttributeConstraint(attr)
+                        newConstraints.Add(new TargetWeightConstraint<PseudoAttribute>(attr)
                         {
                             TargetValue = targetToken.ToObject<float>(),
                             Weight = weightToken.ToObject<int>()
@@ -159,8 +154,7 @@ namespace PoESkillTree.TreeGenerator.ViewModels
                 var changed = false;
                 var attrArray = new JArray();
                 _vm.AttributeConstraints.ForEach(c => AddTo(attrArray, c.Data, c.TargetValue, c.Weight));
-                JToken oldToken;
-                if (jObject.TryGetValue(nameof(AttributeConstraints), out oldToken))
+                if (jObject.TryGetValue(nameof(AttributeConstraints), out var oldToken))
                 {
                     changed = !JToken.DeepEquals(attrArray, oldToken);
                 }
@@ -272,10 +266,9 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         /// <summary>
         /// Gets all values of the WeaponClass Enum.
         /// </summary>
-        public static IEnumerable<WeaponClass> WeaponClassValues
-        {
-            get { return Enum.GetValues(typeof(WeaponClass)).Cast<WeaponClass>(); }
-        }
+        public static IEnumerable<WeaponClass> WeaponClassValues => Enum.GetValues(typeof(WeaponClass)).Cast<WeaponClass>();
+
+        public override string DisplayName { get; } = L10n.Message("Advanced");
 
         protected override string Key { get; } = "AdvancedTab";
 
@@ -297,8 +290,8 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         /// </summary>
         public int TotalPoints
         {
-            get { return _totalPoints; }
-            private set { SetProperty(ref _totalPoints, value); }
+            get => _totalPoints;
+            private set => SetProperty(ref _totalPoints, value);
         }
 
         private readonly HashSet<string> _addedAttributes = new HashSet<string>();
@@ -316,16 +309,16 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         /// <summary>
         /// Gets the collection of AttributeConstraints the user specified.
         /// </summary>
-        public ObservableCollection<AttributeConstraint> AttributeConstraints { get; }
+        public ObservableCollection<TargetWeightConstraint<string>> AttributeConstraints { get; }
 
-        private AttributeConstraint _newAttributeConstraint;
+        private TargetWeightConstraint<string?> _newAttributeConstraint;
         /// <summary>
         /// Gets the AttributeConstraint used for creating new AttributeConstraints by the user.
         /// </summary>
-        public AttributeConstraint NewAttributeConstraint
+        public TargetWeightConstraint<string?> NewAttributeConstraint
         {
-            get { return _newAttributeConstraint; }
-            private set { SetProperty(ref _newAttributeConstraint, value); }
+            get => _newAttributeConstraint;
+            private set => SetProperty(ref _newAttributeConstraint, value);
         }
 
         /// <summary>
@@ -346,20 +339,20 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         /// <summary>
         /// Gets the collection of PseudoAttributeConstraints the user specified.
         /// </summary>
-        public ObservableCollection<PseudoAttributeConstraint> PseudoAttributeConstraints { get; }
+        public ObservableCollection<TargetWeightConstraint<PseudoAttribute>> PseudoAttributeConstraints { get; }
 
         /// <summary>
         /// Placeholder for the PseudoAttributeConstraint the user is editing that can be added.
         /// </summary>
-        private PseudoAttributeConstraint _newPseudoAttributeConstraint;
+        private TargetWeightConstraint<PseudoAttribute?> _newPseudoAttributeConstraint = default!;
 
         /// <summary>
         /// Gets the PseudoAttributeConstraint used for creating new ones by the user.
         /// </summary>
-        public PseudoAttributeConstraint NewPseudoAttributeConstraint
+        public TargetWeightConstraint<PseudoAttribute?> NewPseudoAttributeConstraint
         {
-            get { return _newPseudoAttributeConstraint; }
-            private set { SetProperty(ref _newPseudoAttributeConstraint, value); }
+            get => _newPseudoAttributeConstraint;
+            private set => SetProperty(ref _newPseudoAttributeConstraint, value);
         }
 
         /// <summary>
@@ -379,7 +372,7 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         /// </summary>
         public bool WeaponClassIsTwoHanded
         {
-            get { return _weaponClassIsTwoHanded; }
+            get => _weaponClassIsTwoHanded;
             private set
             {
                 SetProperty(ref _weaponClassIsTwoHanded, value,
@@ -401,17 +394,14 @@ namespace PoESkillTree.TreeGenerator.ViewModels
 
         #region Commands
 
-        private RelayCommand _resetCommand;
+        private RelayCommand? _resetCommand;
         /// <summary>
         /// Resets all Properties to the values they had on construction.
         /// Calls <see cref="GeneratorTabViewModel.Reset"/> on all tabs.
         /// </summary>
-        public ICommand ResetCommand
-        {
-            get { return _resetCommand ?? (_resetCommand = new RelayCommand(Reset)); }
-        }
+        public ICommand ResetCommand => _resetCommand ??= new RelayCommand(Reset);
 
-        private RelayCommand _addAttributeConstraintCommand;
+        private RelayCommand? _addAttributeConstraintCommand;
         /// <summary>
         /// Gets the command to add an AttributeConstraint to the collection.
         /// </summary>
@@ -419,10 +409,10 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         {
             get
             {
-                return _addAttributeConstraintCommand ?? (_addAttributeConstraintCommand = new RelayCommand(
+                return _addAttributeConstraintCommand ??= new RelayCommand(
                     () =>
                     {
-                        var newConstraint = (AttributeConstraint)NewAttributeConstraint.Clone();
+                        var newConstraint = (TargetWeightConstraint<string>)NewAttributeConstraint.Clone();
                         _addedAttributes.Add(newConstraint.Data);
                         AttributesView.Refresh();
 
@@ -430,11 +420,11 @@ namespace PoESkillTree.TreeGenerator.ViewModels
                         NewAttributeConstraint.Data = AttributesView.CurrentItem as string;
                         AttributeConstraints.Add(newConstraint);
                     },
-                    () => _addedAttributes.Count < _attributes.Count));
+                    () => _addedAttributes.Count < _attributes.Count);
             }
         }
 
-        private ICommand _removeAttributeConstraintCommand;
+        private ICommand? _removeAttributeConstraintCommand;
         /// <summary>
         /// Gets the command to remove an AttributeConstraint from the collection.
         /// </summary>
@@ -442,33 +432,29 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         {
             get
             {
-                return _removeAttributeConstraintCommand ?? (_removeAttributeConstraintCommand = new RelayCommand<AttributeConstraint>(
+                return _removeAttributeConstraintCommand ??= new RelayCommand<TargetWeightConstraint<string>>(
                     param =>
                     {
                         var oldConstraint = param;
                         _addedAttributes.Remove(oldConstraint.Data);
                         AttributesView.Refresh();
 
-                        NewAttributeConstraint = oldConstraint;
+                        NewAttributeConstraint.Data = oldConstraint.Data;
+                        NewAttributeConstraint.TargetValue = oldConstraint.TargetValue;
+                        NewAttributeConstraint.Weight = oldConstraint.Weight;
                         AttributeConstraints.Remove(oldConstraint);
-                    }));
+                    });
             }
         }
 
-        private RelayCommand _loadAttributesFromTreeCommand;
+        private RelayCommand? _loadAttributesFromTreeCommand;
         /// <summary>
         /// Gets the command to load the attributes from the current tree as AttributeConstraints.
         /// </summary>
-        public ICommand LoadAttributesFromTreeCommand
-        {
-            get
-            {
-                return _loadAttributesFromTreeCommand ??
-                       (_loadAttributesFromTreeCommand = new RelayCommand(LoadAttributesFromTree));
-            }
-        }
+        public ICommand LoadAttributesFromTreeCommand =>
+            _loadAttributesFromTreeCommand ??= new RelayCommand(LoadAttributesFromTree);
 
-        private RelayCommand _addPseudoConstraintCommand;
+        private RelayCommand? _addPseudoConstraintCommand;
         /// <summary>
         /// Gets the command to add a PseudoAttributeConstraint to the collection.
         /// </summary>
@@ -476,10 +462,10 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         {
             get
             {
-                return _addPseudoConstraintCommand ?? (_addPseudoConstraintCommand = new RelayCommand(
+                return _addPseudoConstraintCommand ??= new RelayCommand(
                     () =>
                     {
-                        var newConstraint = (PseudoAttributeConstraint) NewPseudoAttributeConstraint.Clone();
+                        var newConstraint = (TargetWeightConstraint<PseudoAttribute>) NewPseudoAttributeConstraint.Clone();
                         _addedPseudoAttributes.Add(newConstraint.Data);
                         PseudoAttributesView.Refresh();
 
@@ -487,11 +473,11 @@ namespace PoESkillTree.TreeGenerator.ViewModels
                         NewPseudoAttributeConstraint.Data = PseudoAttributesView.CurrentItem as PseudoAttribute;
                         PseudoAttributeConstraints.Add(newConstraint);
                     },
-                    () => _addedPseudoAttributes.Count < _pseudoAttributes.Count));
+                    () => _addedPseudoAttributes.Count < _pseudoAttributes.Count);
             }
         }
 
-        private ICommand _removePseudoConstraintCommand;
+        private ICommand? _removePseudoConstraintCommand;
         /// <summary>
         /// Gets the command to remove a PseudoAttributeConstraint from the collection.
         /// </summary>
@@ -499,34 +485,30 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         {
             get
             {
-                return _removePseudoConstraintCommand ?? (_removePseudoConstraintCommand = new RelayCommand<PseudoAttributeConstraint>(
+                return _removePseudoConstraintCommand ??= new RelayCommand<TargetWeightConstraint<PseudoAttribute>>(
                     param =>
                     {
                         var oldConstraint = param;
                         _addedPseudoAttributes.Remove(oldConstraint.Data);
                         PseudoAttributesView.Refresh();
 
-                        NewPseudoAttributeConstraint = oldConstraint;
+                        NewPseudoAttributeConstraint.Data = oldConstraint.Data;
+                        NewPseudoAttributeConstraint.TargetValue = oldConstraint.TargetValue;
+                        NewPseudoAttributeConstraint.Weight = oldConstraint.Weight;
                         PseudoAttributeConstraints.Remove(oldConstraint);
-                    }));
+                    });
             }
         }
 
-        private RelayCommand _reloadPseudoAttributesCommand;
+        private RelayCommand? _reloadPseudoAttributesCommand;
         /// <summary>
         /// Gets the command to reload the possible PseudoAttributes from the filesystem.
         /// Removes all user specified PseudoAttributeConstraints.
         /// </summary>
-        public ICommand ReloadPseudoAttributesCommand
-        {
-            get
-            {
-                return _reloadPseudoAttributesCommand ??
-                       (_reloadPseudoAttributesCommand = new RelayCommand(ReloadPseudoAttributes));
-            }
-        }
+        public ICommand ReloadPseudoAttributesCommand =>
+            _reloadPseudoAttributesCommand ??= new RelayCommand(ReloadPseudoAttributes);
 
-        private RelayCommand _convertAttributeToPseudoConstraintsCommand;
+        private RelayCommand? _convertAttributeToPseudoConstraintsCommand;
         /// <summary>
         /// Gets the command to converts attribute constraints to pseudo attribute constraints where possible.
         /// </summary>
@@ -534,10 +516,9 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         {
             get
             {
-                return _convertAttributeToPseudoConstraintsCommand ??
-                       (_convertAttributeToPseudoConstraintsCommand = new RelayCommand(
-                           ConverteAttributeToPseudoAttributeConstraints,
-                           () => AttributeConstraints.Count > 0));
+                return _convertAttributeToPseudoConstraintsCommand ??= new RelayCommand(
+                    ConvertAttributeToPseudoAttributeConstraints,
+                    () => AttributeConstraints.Count > 0);
             }
         }
 
@@ -587,8 +568,8 @@ namespace PoESkillTree.TreeGenerator.ViewModels
             };
             AttributesView.GroupDescriptions.Add(new PropertyGroupDescription(".", AttrToGroupConverter));
             AttributesView.MoveCurrentToFirst();
-            AttributeConstraints = new ObservableCollection<AttributeConstraint>();
-            NewAttributeConstraint = new AttributeConstraint(AttributesView.CurrentItem as string);
+            AttributeConstraints = new ObservableCollection<TargetWeightConstraint<string>>();
+            _newAttributeConstraint = new TargetWeightConstraint<string?>(AttributesView.CurrentItem as string);
 
             PseudoAttributesView = new ListCollectionView(_pseudoAttributes)
             {
@@ -597,11 +578,9 @@ namespace PoESkillTree.TreeGenerator.ViewModels
             PseudoAttributesView.SortDescriptions.Add(new SortDescription(nameof(PseudoAttribute.Group), ListSortDirection.Ascending));
             PseudoAttributesView.SortDescriptions.Add(new SortDescription(nameof(PseudoAttribute.Name), ListSortDirection.Ascending));
             PseudoAttributesView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(PseudoAttribute.Group)));
-            PseudoAttributeConstraints = new ObservableCollection<PseudoAttributeConstraint>();
+            PseudoAttributeConstraints = new ObservableCollection<TargetWeightConstraint<PseudoAttribute>>();
 
             ReloadPseudoAttributes();
-
-            DisplayName = L10n.Message("Advanced");
 
             SubSettings = new ISetting[]
             {
@@ -617,7 +596,7 @@ namespace PoESkillTree.TreeGenerator.ViewModels
             AttributeConstraints.Clear();
             AttributesView.Refresh();
             AttributesView.MoveCurrentToFirst();
-            NewAttributeConstraint = new AttributeConstraint(AttributesView.CurrentItem as string);
+            NewAttributeConstraint = new TargetWeightConstraint<string?>(AttributesView.CurrentItem as string);
         }
 
         private void ClearPseudoAttributeConstraints()
@@ -627,7 +606,7 @@ namespace PoESkillTree.TreeGenerator.ViewModels
             PseudoAttributesView.Refresh();
             PseudoAttributesView.MoveCurrentToFirst();
             NewPseudoAttributeConstraint =
-                new PseudoAttributeConstraint(PseudoAttributesView.CurrentItem as PseudoAttribute);
+                new TargetWeightConstraint<PseudoAttribute?>(PseudoAttributesView.CurrentItem as PseudoAttribute);
         }
 
         /// <summary>
@@ -661,7 +640,7 @@ namespace PoESkillTree.TreeGenerator.ViewModels
             }
             PseudoAttributeConstraints.Clear();
             PseudoAttributesView.MoveCurrentToFirst();
-            NewPseudoAttributeConstraint = new PseudoAttributeConstraint(PseudoAttributesView.CurrentItem as PseudoAttribute);
+            NewPseudoAttributeConstraint = new TargetWeightConstraint<PseudoAttribute?>(PseudoAttributesView.CurrentItem as PseudoAttribute);
         }
 
         /// <summary>
@@ -720,7 +699,7 @@ namespace PoESkillTree.TreeGenerator.ViewModels
             AttributeConstraints.Clear();
             foreach (var attribute in attributes)
             {
-                AttributeConstraints.Add(new AttributeConstraint(attribute.Key) {TargetValue = attribute.Value});
+                AttributeConstraints.Add(new TargetWeightConstraint<string>(attribute.Key) {TargetValue = attribute.Value});
             }
         }
 
@@ -729,13 +708,13 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         /// OffHand and check-tagged keystones where possible.
         /// Str, Int and Dex are not removed from the attribute constraint list but still converted.
         /// </summary>
-        private void ConverteAttributeToPseudoAttributeConstraints()
+        private void ConvertAttributeToPseudoAttributeConstraints()
         {
             var keystones = from node in Tree.GetCheckedNodes()
                             where node.Type == PassiveNodeType.Keystone
                             select node.Name;
             var conditionSettings = new ConditionSettings(Tags.Value, OffHand.Value, keystones.ToArray(), WeaponClass.Value);
-            var convertedConstraints = new List<AttributeConstraint>();
+            var convertedConstraints = new List<TargetWeightConstraint<string>>();
             foreach (var attributeConstraint in AttributeConstraints)
             {
                 var attrName = attributeConstraint.Data;
@@ -767,7 +746,7 @@ namespace PoESkillTree.TreeGenerator.ViewModels
                     else
                     {
                         _addedPseudoAttributes.Add(pseudoAttribute);
-                        PseudoAttributeConstraints.Add(new PseudoAttributeConstraint(pseudoAttribute)
+                        PseudoAttributeConstraints.Add(new TargetWeightConstraint<PseudoAttribute>(pseudoAttribute)
                         {
                             TargetValue = attributeConstraint.TargetValue * pseudo.Multiplier
                         });
@@ -790,14 +769,14 @@ namespace PoESkillTree.TreeGenerator.ViewModels
             if (convertedConstraints.Count > 0)
             {
                 AttributesView.Refresh();
-                NewAttributeConstraint = convertedConstraints[0];
+                NewAttributeConstraint.Data = convertedConstraints[0].Data;
                 PseudoAttributesView.Refresh();
                 PseudoAttributesView.MoveCurrentToFirst();
                 NewPseudoAttributeConstraint.Data = PseudoAttributesView.CurrentItem as PseudoAttribute;
             }
         }
 
-        protected override Task<ISolver> CreateSolverAsync(SolverSettings settings)
+        protected override Task<ISolver?> CreateSolverAsync(SolverSettings settings)
         {
             var attributeConstraints = AttributeConstraints.ToDictionary(
                 constraint => constraint.Data,
@@ -808,7 +787,7 @@ namespace PoESkillTree.TreeGenerator.ViewModels
             var solver = new AdvancedSolver(Tree, new AdvancedSolverSettings(settings, TotalPoints,
                 CreateInitialAttributes(), attributeConstraints,
                 pseudoConstraints, WeaponClass.Value, Tags.Value, OffHand.Value));
-            return Task.FromResult<ISolver>(solver);
+            return Task.FromResult<ISolver?>(solver);
         }
 
         /// <summary>

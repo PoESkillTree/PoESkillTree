@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using PoESkillTree.Engine.GameModel;
 using PoESkillTree.SkillTreeFiles;
@@ -46,7 +47,7 @@ namespace PoESkillTree.Utils.UrlProcessing
         /// <param name="exception">The exception that was thrown on deserializing the build url. Null if true is
         /// returned.</param>
         /// <returns>True iff the build url can be deserialized without exceptions</returns>
-        public abstract bool ValidateBuildUrl(out Exception exception);
+        public abstract bool ValidateBuildUrl([NotNullWhen(false)] out Exception? exception);
 
         /// <summary>
         /// Returns the number of non-ascendancy points the given tree url uses.
@@ -66,7 +67,7 @@ namespace PoESkillTree.Utils.UrlProcessing
         /// Returns the ascendancy class of the given build url.
         /// Returns null if the tree has no ascendancy class selected.
         /// </summary>
-        public string GetAscendancyClass()
+        public string? GetAscendancyClass()
         {
             var ascendancyId = GetAscendancyClassId();
 

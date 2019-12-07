@@ -52,12 +52,12 @@ namespace PoESkillTree.TreeGenerator.ViewModels
 
             SelectedTabIndex = new LeafSetting<int>(nameof(SelectedTabIndex), 0);
 
-            Action<GeneratorTabViewModel> runCallback = async g => await RunAsync(g);
+            async void RunCallback(GeneratorTabViewModel g) => await RunAsync(g);
             Tabs = new ObservableCollection<GeneratorTabViewModel>
             {
-                new SteinerTabViewModel(Tree, _dialogCoordinator, _dialogContext, runCallback),
-                new AdvancedTabViewModel(Tree, _dialogCoordinator, _dialogContext, runCallback),
-                new AutomatedTabViewModel(Tree, _dialogCoordinator, _dialogContext, runCallback)
+                new SteinerTabViewModel(Tree, _dialogCoordinator, _dialogContext, RunCallback),
+                new AdvancedTabViewModel(Tree, _dialogCoordinator, _dialogContext, RunCallback),
+                new AutomatedTabViewModel(Tree, _dialogCoordinator, _dialogContext, RunCallback)
             };
             SubSettings = new ISetting[] {SelectedTabIndex}.Union(Tabs).ToArray();
         }
@@ -87,6 +87,6 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         /// Event raised when <see cref="RunAsync"/> execution is finished
         /// and the skill tree may have changed.
         /// </summary>
-        public event EventHandler RunFinished;
+        public event EventHandler? RunFinished;
     }
 }

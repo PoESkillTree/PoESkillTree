@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 using PoESkillTree.SkillTreeFiles;
 
@@ -27,7 +28,9 @@ namespace PoESkillTree.Utils.UrlProcessing
         /// <param name="buildUrl">The string containing a build url.</param>
         /// <param name="deserializer">When this method returns, contains the deserializer instance or null, if url conversion is impossible.</param>
         /// <returns>true if deserializer was created successfully; otherwise, false.</returns>
-        public static bool TryCreate(string buildUrl, IAscendancyClasses ascendancyClasses, out BuildUrlDeserializer deserializer)
+        public static bool TryCreate(
+            string buildUrl, IAscendancyClasses ascendancyClasses,
+            [NotNullWhen(true)] out BuildUrlDeserializer? deserializer)
         {
             if (!UrlRegex.IsMatch(buildUrl))
             {

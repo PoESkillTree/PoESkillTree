@@ -129,9 +129,9 @@ namespace PoESkillTree.TreeGenerator.Algorithm
             var distances = new DistanceCalculator(mstNodes);
 
             var mst = new MinimalSpanningTree(mstNodes.Select(n => n.DistancesIndex).ToList(), distances.DistanceLookup);
-            mst.Span(graphNodes[0].DistancesIndex);
+            var spanningEdges = mst.Span(graphNodes[0].DistancesIndex);
 
-            Assert.AreEqual(3, mst.SpanningEdges.Count, "Wrong amount of spanning edges");
+            Assert.AreEqual(3, spanningEdges.Count, "Wrong amount of spanning edges");
             var goalEdges = new[]
             {
                 new[] { 0, 5 }, new[] { 5, 3 }, new[] { 5, 7 }
@@ -139,7 +139,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm
             foreach (var edge in goalEdges)
             {
                 Assert.AreEqual(1,
-                    mst.SpanningEdges.Select(
+                    spanningEdges.Select(
                         e => new Tuple<ushort, ushort>(distances.IndexToNode(e.Inside).Id,
                             distances.IndexToNode(e.Outside).Id)).Count(
                         t =>

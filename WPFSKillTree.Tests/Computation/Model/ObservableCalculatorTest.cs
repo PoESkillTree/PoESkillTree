@@ -82,7 +82,7 @@ namespace PoESkillTree.Computation.Model
             var expected = new[]
             {
                 new CalculatorUpdate(
-                    new[] { new Modifier(new[] { new Stat("") }, default, null, null), },
+                    new[] { new Modifier(new[] { new Stat("") }, default, new Constant(true), new ModifierSource.Global()), },
                     new Modifier[0]),
                 CalculatorUpdate.Empty,
             };

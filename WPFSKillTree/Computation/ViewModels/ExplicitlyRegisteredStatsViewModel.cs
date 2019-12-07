@@ -29,7 +29,7 @@ namespace PoESkillTree.Computation.ViewModels
                 action();
         }
 
-        protected void Add(ICalculationNode node, IStat stat)
+        protected void Add(ICalculationNode? node, IStat stat)
         {
             if (TryGetStatViewModel(stat, out _))
                 return;
@@ -55,7 +55,7 @@ namespace PoESkillTree.Computation.ViewModels
 
         protected abstract bool IsResponsibleFor(IStat stat);
 
-        protected abstract T CreateViewModel(ICalculationNode node, IStat stat);
+        protected abstract T CreateViewModel(ICalculationNode? node, IStat stat);
 
         protected abstract IStat SelectStat(T statVm);
     }

@@ -44,11 +44,11 @@ namespace PoESkillTree.TreeGenerator.Genetic
             double temperature = 6, double annealingFactor = 1, int maxMutateClusterSize = 1)
         {
             if (populationSize < 0)
-                throw new ArgumentOutOfRangeException("populationSize", populationSize, "must be <= 0");
+                throw new ArgumentOutOfRangeException(nameof(populationSize), populationSize, "must be <= 0");
             if (dnaLength < 0)
-                throw new ArgumentOutOfRangeException("dnaLength", dnaLength, "must be >= 0");
+                throw new ArgumentOutOfRangeException(nameof(dnaLength), dnaLength, "must be >= 0");
             if (maxMutateClusterSize < 1)
-                throw new ArgumentOutOfRangeException("maxMutateClusterSize", maxMutateClusterSize, "must be > 0");
+                throw new ArgumentOutOfRangeException(nameof(maxMutateClusterSize), maxMutateClusterSize, "must be > 0");
             
             PopulationSize = populationSize;
             DnaLength = dnaLength;
@@ -201,7 +201,9 @@ namespace PoESkillTree.TreeGenerator.Genetic
         /// </summary>
         /// <param name="solutionFitness">A delegate to the fitness function.
         /// Because of parallelization the fitness function must be thread safe</param>
+#pragma warning disable CS8618 // Initialized in InitializeEvolution
         public GeneticAlgorithm(SolutionFitnessFunction solutionFitness)
+#pragma warning restore
         {
             // Save the fitness function
             _solutionFitness = solutionFitness;
@@ -212,7 +214,7 @@ namespace PoESkillTree.TreeGenerator.Genetic
         /// </summary>
         /// <param name="parameters">The parameters to initialize the algorithm with</param>
         /// <param name="initialSolution">The solution to initialize the population with</param>
-        public void InitializeEvolution(GeneticAlgorithmParameters parameters, BitArray initialSolution = null)
+        public void InitializeEvolution(GeneticAlgorithmParameters parameters, BitArray? initialSolution = null)
         {
             _populationSize = parameters.PopulationSize;
             _dnaLength = parameters.DnaLength;

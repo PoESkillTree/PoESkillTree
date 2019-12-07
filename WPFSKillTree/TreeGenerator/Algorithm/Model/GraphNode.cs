@@ -24,7 +24,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm.Model
 #endif
 
         /// <summary>
-        /// Gets or sets the index of the node by which it is represented in <see cref="IDistanceLookup"/>
+        /// Gets or sets the index of the node by which it is represented in <see cref="DistanceLookup"/>
         /// and other classes.
         /// </summary>
         public int DistancesIndex { get; set; }

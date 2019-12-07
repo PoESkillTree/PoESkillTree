@@ -13,8 +13,8 @@ namespace PoESkillTree.Model.JsonSettings
     {
         private T _value;
         private readonly string _key;
-        private readonly Action _onChanged;
-        private readonly Action<T> _onChanging;
+        private readonly Action? _onChanged;
+        private readonly Action<T>? _onChanging;
         private readonly T _defaultValue;
 
         /// <summary>
@@ -22,8 +22,8 @@ namespace PoESkillTree.Model.JsonSettings
         /// </summary>
         public T Value
         {
-            get { return _value; }
-            set { SetProperty(ref _value, value, _onChanged, _onChanging); }
+            get => _value;
+            set => SetProperty(ref _value, value, _onChanged, _onChanging);
         }
 
         /// <param name="key">The key of this setting.</param>
@@ -33,26 +33,24 @@ namespace PoESkillTree.Model.JsonSettings
         /// (see <see cref="Notifier.SetProperty{T}"/>'s onChanged parameter)</param>
         /// <param name="onChanging">An action that will be called when <see cref="Value"/> is changing.
         /// (see <see cref="Notifier.SetProperty{T}"/>'s onChanging parameter)</param>
-        public LeafSetting(string key, T defaultValue, Action onChanged = null, Action<T> onChanging = null)
+        public LeafSetting(string key, T defaultValue, Action? onChanged = null, Action<T>? onChanging = null)
         {
             _key = key;
-            _defaultValue = Value = defaultValue;
+            _defaultValue = _value = defaultValue;
             _onChanged = onChanged;
             _onChanging = onChanging;
         }
 
         public void LoadFrom(JObject jObject)
         {
-            JToken token;
-            Value = jObject.TryGetValue(_key, out token) ? token.ToObject<T>() : _defaultValue;
+            Value = jObject.TryGetValue(_key, out var token) ? token.ToObject<T>() : _defaultValue;
         }
 
         public bool SaveTo(JObject jObject)
         {
             var newToken = new JValue(Value);
             var changed = !Equals(Value, _defaultValue);
-            JToken oldToken;
-            if (jObject.TryGetValue(_key, out oldToken))
+            if (jObject.TryGetValue(_key, out var oldToken))
             {
                 changed = !JToken.DeepEquals(newToken, oldToken);
             }

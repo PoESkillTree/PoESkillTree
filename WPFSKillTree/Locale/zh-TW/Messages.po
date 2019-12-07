@@ -73,7 +73,7 @@ msgid "Browse..."
 msgstr "瀏覽..."
 
 #: Controls\Dialogs\Views\FileSelectorView.xaml:49
-#: Controls\Dialogs\Views\MetroMessageBoxView.xaml:71
+#: Controls\Dialogs\Views\MetroMessageBoxView.xaml:70
 #: Controls\Dialogs\Views\ValidatingInputDialogView.xaml:41
 #: Views\Builds\EditBuildWindow.xaml:59 Views\Equipment\TabPicker.xaml:122
 #: Controls\Dialogs\ExtendedDialogManager.cs:80
@@ -81,9 +81,8 @@ msgid "OK"
 msgstr ""
 
 #: Controls\Dialogs\Views\FileSelectorView.xaml:55
-#: Controls\Dialogs\Views\MetroMessageBoxView.xaml:77
+#: Controls\Dialogs\Views\MetroMessageBoxView.xaml:76
 #: Controls\Dialogs\Views\ValidatingInputDialogView.xaml:48
-#: ItemFilter\Views\ItemFilterEditWindow.xaml:138
 #: Views\Builds\EditBuildWindow.xaml:64 Views\Crafting\CraftingView.xaml:155
 #: Views\Crafting\UniqueCraftingView.xaml:62
 #: Views\Equipment\SocketedGemsEditingView.xaml:181
@@ -95,95 +94,23 @@ msgstr ""
 msgid "Cancel"
 msgstr "取消"
 
-#: Controls\Dialogs\Views\MetroMessageBoxView.xaml:45
+#: Controls\Dialogs\Views\MetroMessageBoxView.xaml:44
 msgid "Details"
 msgstr "詳細"
 
-#: Controls\Dialogs\Views\MetroMessageBoxView.xaml:57
+#: Controls\Dialogs\Views\MetroMessageBoxView.xaml:56
 msgid "Yes"
 msgstr ""
 
-#: Controls\Dialogs\Views\MetroMessageBoxView.xaml:64
+#: Controls\Dialogs\Views\MetroMessageBoxView.xaml:63
 msgid "No"
 msgstr ""
 
-#: ItemFilter\Views\ColorButtonDialog.xaml:12
-msgid "Choose colors"
-msgstr "選擇顏色"
-
-#: ItemFilter\Views\ColorButtonDialog.xaml:35
-msgid "Choose color of background, text or border."
-msgstr ""
-
-#: ItemFilter\Views\ColorButtonDialog.xaml:39
-msgid "To preserve original in-game color, choose Default color."
-msgstr ""
-
-#: ItemFilter\Views\ColorButtonDialog.xaml:44
-msgid "Background"
-msgstr "背景"
-
-#: ItemFilter\Views\ColorButtonDialog.xaml:50
-msgid "Text"
-msgstr "文字"
-
-#: ItemFilter\Views\ColorButtonDialog.xaml:56
-msgid "Border"
-msgstr "邊框"
-
-#: ItemFilter\Views\ColorButtonDialog.xaml:62
-#: ItemFilter\Views\ItemFilterOpenWindow.xaml:93 Themes\BaseDialog.xaml:57
+#: Themes\BaseDialog.xaml:67
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:300
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:368
 msgid "Close"
 msgstr "關閉"
-
-#: ItemFilter\Views\ItemFilterEditWindow.xaml:15
-msgid "Item Filter"
-msgstr "物品過濾"
-
-#: ItemFilter\Views\ItemFilterEditWindow.xaml:98
-msgid "Check or uncheck rules to either show or hide specific types of items."
-msgstr ""
-
-#: ItemFilter\Views\ItemFilterEditWindow.xaml:102
-msgid "Choose colors of item labels shown for each rule or group of rules."
-msgstr ""
-
-#: ItemFilter\Views\ItemFilterEditWindow.xaml:133
-#: Views\Builds\BuildsControl.xaml:236 Views\Builds\BuildsControl.xaml:340
-msgid "Save"
-msgstr "儲存"
-
-#: ItemFilter\Views\ItemFilterOpenWindow.xaml:13
-msgid "Item Filter Editor"
-msgstr "物品過濾編輯器"
-
-#: ItemFilter\Views\ItemFilterOpenWindow.xaml:38
-msgid "Enter a name for filter you want to create."
-msgstr ""
-
-#: ItemFilter\Views\ItemFilterOpenWindow.xaml:53
-msgid "New Filter"
-msgstr ""
-
-#: ItemFilter\Views\ItemFilterOpenWindow.xaml:58
-msgid "Create Copy"
-msgstr ""
-
-#: ItemFilter\Views\ItemFilterOpenWindow.xaml:64
-msgid "Select a filter you want to edit or create copy of."
-msgstr ""
-
-#: ItemFilter\Views\ItemFilterOpenWindow.xaml:82
-#: Views\Builds\BuildsControl.xaml:123 Views\Builds\BuildsControl.xaml:207
-msgid "Edit"
-msgstr "編輯"
-
-#: ItemFilter\Views\ItemFilterOpenWindow.xaml:87
-#: Views\Builds\BuildsControl.xaml:130 Views\Builds\BuildsControl.xaml:214
-msgid "Delete"
-msgstr "刪除"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:99
 msgid "Level:"
@@ -227,7 +154,7 @@ msgstr ""
 msgid "Reset settings"
 msgstr "重置設定"
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:177 Views\MainWindow.xaml:768
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:177 Views\MainWindow.xaml:762
 msgid "Attributes"
 msgstr "屬性"
 
@@ -270,7 +197,7 @@ msgstr ""
 msgid "Pseudo attribute"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:387 Views\MainWindow.xaml:205
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:387 Views\MainWindow.xaml:207
 #: ViewModels\SettingsMenuViewModel.cs:30
 msgid "Settings"
 msgstr "設定"
@@ -343,6 +270,14 @@ msgstr ""
 msgid "Right click to edit"
 msgstr ""
 
+#: Views\Builds\BuildsControl.xaml:123 Views\Builds\BuildsControl.xaml:207
+msgid "Edit"
+msgstr "編輯"
+
+#: Views\Builds\BuildsControl.xaml:130 Views\Builds\BuildsControl.xaml:214
+msgid "Delete"
+msgstr "刪除"
+
 #: Views\Builds\BuildsControl.xaml:138 Views\Builds\BuildsControl.xaml:222
 msgid "Cut"
 msgstr "剪下"
@@ -356,7 +291,7 @@ msgid "New Build"
 msgstr ""
 
 #: Views\Builds\BuildsControl.xaml:158
-#: ViewModels\Builds\BuildsControlViewModel.cs:422
+#: ViewModels\Builds\BuildsControlViewModel.cs:421
 msgid "New Folder"
 msgstr ""
 
@@ -371,6 +306,10 @@ msgstr "開啟"
 #: Views\Builds\BuildsControl.xaml:229
 msgid "Copy"
 msgstr "拷貝"
+
+#: Views\Builds\BuildsControl.xaml:236 Views\Builds\BuildsControl.xaml:340
+msgid "Save"
+msgstr "儲存"
 
 #: Views\Builds\BuildsControl.xaml:242
 msgid "Discard changes"
@@ -651,7 +590,7 @@ msgstr ""
 msgid "Search"
 msgstr "搜尋"
 
-#: Views\HotkeysWindow.xaml:143 Views\MainWindow.xaml:438
+#: Views\HotkeysWindow.xaml:143 Views\MainWindow.xaml:440
 msgid "Show summary of changes"
 msgstr ""
 
@@ -688,369 +627,353 @@ msgstr ""
 msgid "(Skill node) Highlight similar skill nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml:104
+#: Views\MainWindow.xaml:106
 msgid "_File"
 msgstr "檔案(_F)"
 
-#: Views\MainWindow.xaml:110
+#: Views\MainWindow.xaml:112
 msgid "_New"
 msgstr "新增(_N)"
 
-#: Views\MainWindow.xaml:148
+#: Views\MainWindow.xaml:150
 msgid "Save A_ll"
 msgstr "儲存全部"
 
-#: Views\MainWindow.xaml:157
+#: Views\MainWindow.xaml:159
 #, csharp-format
 msgid "Export {0} to clipboard"
 msgstr ""
 
-#: Views\MainWindow.xaml:165
+#: Views\MainWindow.xaml:167
 msgid "Import build from clipboard"
 msgstr ""
 
-#: Views\MainWindow.xaml:171
+#: Views\MainWindow.xaml:173
 msgid "Reload builds from filesystem"
 msgstr ""
 
-#: Views\MainWindow.xaml:182
+#: Views\MainWindow.xaml:184
 msgid ""
 "Opens the directory your builds are saved to so you can share those builds.\n"
 "The directory can be changed in the settings."
 msgstr ""
 
-#: Views\MainWindow.xaml:192
+#: Views\MainWindow.xaml:194
 msgid "E_xit"
 msgstr "離開(_x)"
 
-#: Views\MainWindow.xaml:201
+#: Views\MainWindow.xaml:203
 msgid "_Edit"
 msgstr "編輯(_E)"
 
-#: Views\MainWindow.xaml:213
+#: Views\MainWindow.xaml:215
 msgid "_Undo"
 msgstr "復原(_U)"
 
-#: Views\MainWindow.xaml:221
+#: Views\MainWindow.xaml:223
 msgid "_Redo"
 msgstr "重複(_R)"
 
-#: Views\MainWindow.xaml:229
+#: Views\MainWindow.xaml:231
 msgid "Reset Skill _Tree"
 msgstr "重置天賦樹(_T)"
 
-#: Views\MainWindow.xaml:238
+#: Views\MainWindow.xaml:240
 msgid "Copy _Passive Attributes to Clipboard"
 msgstr "拷貝天賦屬性到剪貼簿(_P)"
 
-#: Views\MainWindow.xaml:246
+#: Views\MainWindow.xaml:248
 msgid "Copy Po_EUrl of Skill tree to Clipboard"
 msgstr "拷貝PoEUrl網址到剪貼簿(_E)"
 
-#: Views\MainWindow.xaml:255
+#: Views\MainWindow.xaml:257
 msgid "_View"
 msgstr "瀏覽(_V)"
 
-#: Views\MainWindow.xaml:259
+#: Views\MainWindow.xaml:261
 msgid "_Theme"
 msgstr "佈景(_T)"
 
-#: Views\MainWindow.xaml:266
+#: Views\MainWindow.xaml:268
 msgctxt "color"
 msgid "Light"
 msgstr "明亮"
 
-#: Views\MainWindow.xaml:271
+#: Views\MainWindow.xaml:273
 msgctxt "color"
 msgid "Dark"
 msgstr "灰暗"
 
-#: Views\MainWindow.xaml:277
+#: Views\MainWindow.xaml:279
 msgid "Acce_nt"
 msgstr ""
 
-#: Views\MainWindow.xaml:284
+#: Views\MainWindow.xaml:286
 msgctxt "color"
 msgid "Amber"
 msgstr ""
 
-#: Views\MainWindow.xaml:289
+#: Views\MainWindow.xaml:291
 msgctxt "color"
 msgid "Blue"
 msgstr ""
 
-#: Views\MainWindow.xaml:294
+#: Views\MainWindow.xaml:296
 msgctxt "color"
 msgid "Brown"
 msgstr ""
 
-#: Views\MainWindow.xaml:299
+#: Views\MainWindow.xaml:301
 msgctxt "color"
 msgid "Cobalt"
 msgstr ""
 
-#: Views\MainWindow.xaml:304
+#: Views\MainWindow.xaml:306
 msgctxt "color"
 msgid "Crimson"
 msgstr ""
 
-#: Views\MainWindow.xaml:309
+#: Views\MainWindow.xaml:311
 msgctxt "color"
 msgid "Cyan"
 msgstr ""
 
-#: Views\MainWindow.xaml:314
+#: Views\MainWindow.xaml:316
 msgctxt "color"
 msgid "Emerald"
 msgstr ""
 
-#: Views\MainWindow.xaml:319
+#: Views\MainWindow.xaml:321
 msgctxt "color"
 msgid "Green"
 msgstr ""
 
-#: Views\MainWindow.xaml:324
+#: Views\MainWindow.xaml:326
 msgctxt "color"
 msgid "Indigo"
 msgstr ""
 
-#: Views\MainWindow.xaml:329
+#: Views\MainWindow.xaml:331
 msgctxt "color"
 msgid "Lime"
 msgstr ""
 
-#: Views\MainWindow.xaml:334
+#: Views\MainWindow.xaml:336
 msgctxt "color"
 msgid "Magenta"
 msgstr ""
 
-#: Views\MainWindow.xaml:339
+#: Views\MainWindow.xaml:341
 msgctxt "color"
 msgid "Mauve"
 msgstr ""
 
-#: Views\MainWindow.xaml:344
+#: Views\MainWindow.xaml:346
 msgctxt "color"
 msgid "Olive"
 msgstr ""
 
-#: Views\MainWindow.xaml:349
+#: Views\MainWindow.xaml:351
 msgctxt "color"
 msgid "Orange"
 msgstr ""
 
-#: Views\MainWindow.xaml:354
+#: Views\MainWindow.xaml:356
 msgctxt "color"
 msgid "Pink"
 msgstr ""
 
-#: Views\MainWindow.xaml:359
+#: Views\MainWindow.xaml:361
 msgctxt "color"
 msgid "Purple"
 msgstr ""
 
-#: Views\MainWindow.xaml:364
+#: Views\MainWindow.xaml:366
 msgctxt "color"
 msgid "Red"
 msgstr ""
 
-#: Views\MainWindow.xaml:369
+#: Views\MainWindow.xaml:371
 msgctxt "color"
 msgid "Sienna"
 msgstr ""
 
-#: Views\MainWindow.xaml:374
+#: Views\MainWindow.xaml:376
 msgctxt "color"
 msgid "Steel"
 msgstr ""
 
-#: Views\MainWindow.xaml:379
+#: Views\MainWindow.xaml:381
 msgctxt "color"
 msgid "Taupe"
 msgstr ""
 
-#: Views\MainWindow.xaml:384
+#: Views\MainWindow.xaml:386
 msgctxt "color"
 msgid "Teal"
 msgstr ""
 
-#: Views\MainWindow.xaml:389
+#: Views\MainWindow.xaml:391
 msgctxt "color"
 msgid "Violet"
 msgstr ""
 
-#: Views\MainWindow.xaml:394
+#: Views\MainWindow.xaml:396
 msgctxt "color"
 msgid "Yellow"
 msgstr ""
 
-#: Views\MainWindow.xaml:401
+#: Views\MainWindow.xaml:403
 msgid "Saved _Builds"
 msgstr ""
 
-#: Views\MainWindow.xaml:407
+#: Views\MainWindow.xaml:409
 msgid "_Attributes"
 msgstr "屬性(_A)"
 
-#: Views\MainWindow.xaml:413
+#: Views\MainWindow.xaml:415
 msgid "Skill _Tree Comparison"
 msgstr "天賦樹比較(_T)"
 
-#: Views\MainWindow.xaml:447
+#: Views\MainWindow.xaml:449
 msgid "_Tools"
 msgstr "工具(_T)"
 
-#: Views\MainWindow.xaml:451
+#: Views\MainWindow.xaml:453
 msgid "Take _Screenshot of Skilled Nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml:460
+#: Views\MainWindow.xaml:462
 msgid "_Download & Import Items"
 msgstr ""
 
-#: Views\MainWindow.xaml:468
+#: Views\MainWindow.xaml:470
 msgid "_Download & Import Stash"
 msgstr ""
 
-#: Views\MainWindow.xaml:477
+#: Views\MainWindow.xaml:479
 msgid "_Redownload Live Skill Tree Data"
 msgstr ""
 
-#: Views\MainWindow.xaml:485
-msgid "Item _Filter Editor"
-msgstr "物品過濾編輯器(_F)"
-
-#: Views\MainWindow.xaml:494
+#: Views\MainWindow.xaml:488
 msgid "_Nodes"
 msgstr "節點(_N)"
 
-#: Views\MainWindow.xaml:499
+#: Views\MainWindow.xaml:493
 msgid "_Skill Tree Generator"
 msgstr ""
 
-#: Views\MainWindow.xaml:506
+#: Views\MainWindow.xaml:500
 msgid "Run 'Tagged _Nodes' generator"
 msgstr ""
 
-#: Views\MainWindow.xaml:516
+#: Views\MainWindow.xaml:510
 msgid "Run '_Advanced' generator"
 msgstr ""
 
-#: Views\MainWindow.xaml:526
+#: Views\MainWindow.xaml:520
 msgid "Un_tag All Nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml:531
+#: Views\MainWindow.xaml:525
 msgid "_Unhighlight All Nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml:536
+#: Views\MainWindow.xaml:530
 msgid "_Check-tag highlighted Nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml:541
+#: Views\MainWindow.xaml:535
 msgid "C_ross-tag highlighted Nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml:547
+#: Views\MainWindow.xaml:541
 msgid "_Help"
 msgstr "幫助(_H)"
 
-#: Views\MainWindow.xaml:551
+#: Views\MainWindow.xaml:545
 msgid "_Links"
 msgstr "連結(_L)"
 
-#: Views\MainWindow.xaml:558
+#: Views\MainWindow.xaml:552
 msgid "_Path of Exile Website"
 msgstr "流亡黯道網站(_P)"
 
-#: Views\MainWindow.xaml:563
+#: Views\MainWindow.xaml:557
 msgid "Path of Exile _Wiki"
 msgstr "流亡黯道維基(_W)"
 
-#: Views\MainWindow.xaml:569
+#: Views\MainWindow.xaml:563
 msgid "View _Help"
 msgstr "瀏覽幫助(_H)"
 
-#: Views\MainWindow.xaml:577
+#: Views\MainWindow.xaml:571
 msgid "Hot_keys"
 msgstr "熱鍵(_k)"
 
-#: Views\MainWindow.xaml:585
+#: Views\MainWindow.xaml:579
 msgid "Check for _Updates"
 msgstr "檢查更新(_U)"
 
-#: Views\MainWindow.xaml:593
+#: Views\MainWindow.xaml:587
 msgid "_About PoESkillTree"
 msgstr "關於PoESkillTree(_A)"
 
-#: Views\MainWindow.xaml:606
+#: Views\MainWindow.xaml:600
 msgid "Skill Tree"
 msgstr "天賦樹"
 
-#: Views\MainWindow.xaml:612
+#: Views\MainWindow.xaml:606
 msgid "Equipment"
 msgstr "裝備"
 
-#: Views\MainWindow.xaml:618
+#: Views\MainWindow.xaml:612
 #, fuzzy
 msgid "Computation"
 msgstr "資訊"
 
-#: Views\MainWindow.xaml:634
+#: Views\MainWindow.xaml:628
 #, fuzzy
 msgid "Bandit"
 msgstr "盜賊"
 
-#: Views\MainWindow.xaml:648
+#: Views\MainWindow.xaml:642
 msgid "Level"
 msgstr "等級"
 
-#: Views\MainWindow.xaml:655
+#: Views\MainWindow.xaml:649
 msgid "Used Passive Skill Points"
 msgstr "已使用天賦點數"
 
-#: Views\MainWindow.xaml:660
+#: Views\MainWindow.xaml:654
 msgid "Used Ascendancy Skill Points"
 msgstr "已使用昇華點數"
 
-#: Views\MainWindow.xaml:667
+#: Views\MainWindow.xaml:661
 msgid "Total Passive Skill Points"
 msgstr "全部天賦點數"
 
-#: Views\MainWindow.xaml:672
+#: Views\MainWindow.xaml:666
 msgid "Total Ascendancy Skill Points"
 msgstr "全部昇華點數"
 
-#: Views\MainWindow.xaml:727
+#: Views\MainWindow.xaml:721
 msgid "Craft new unique"
 msgstr "創造新傳奇"
 
-#: Views\MainWindow.xaml:731
+#: Views\MainWindow.xaml:725
 msgid "Craft new item"
 msgstr "創造新物品"
 
-#: Views\MainWindow.xaml:757
+#: Views\MainWindow.xaml:751
 msgid "Saved Builds"
 msgstr "已儲存流派"
 
-#: Views\MainWindow.xaml:791
+#: Views\MainWindow.xaml:785
 msgid "Passive Attributes"
 msgstr "天賦屬性"
 
-#: Views\MainWindow.xaml:808
-msgid "Item Attributes"
-msgstr "物品屬性"
-
-#: Views\MainWindow.xaml:827
-msgid "Total Attributes"
-msgstr "全部屬性"
-
-#: Views\MainWindow.xaml:844
-msgid "ItemList"
-msgstr "物品清單"
-
-#: Views\MainWindow.xaml:888 Views\MainWindow.xaml:891
+#: Views\MainWindow.xaml:829 Views\MainWindow.xaml:832
 msgid "Skill tree link"
 msgstr "天賦樹連結"
 
@@ -1168,32 +1091,32 @@ msgstr ""
 msgid "Some nodes ({unknownNodes}) are unknown and have been omitted."
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:125 SkillTreeFiles\Updater.cs:246
+#: SkillTreeFiles\Updater.cs:104 SkillTreeFiles\Updater.cs:225
 msgid "Download already in progress"
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:127
+#: SkillTreeFiles\Updater.cs:106
 msgid "Download already completed"
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:169 SkillTreeFiles\Updater.cs:362
-#: SkillTreeFiles\Updater.cs:436
+#: SkillTreeFiles\Updater.cs:148 SkillTreeFiles\Updater.cs:334
+#: SkillTreeFiles\Updater.cs:406
 msgid "Download still in progress"
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:172 SkillTreeFiles\Updater.cs:438
+#: SkillTreeFiles\Updater.cs:151 SkillTreeFiles\Updater.cs:408
 msgid "No package downloaded"
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:270
+#: SkillTreeFiles\Updater.cs:247
 msgid "No release found"
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:378
+#: SkillTreeFiles\Updater.cs:348
 msgid "Download completed or still in progress"
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:418
+#: SkillTreeFiles\Updater.cs:388
 msgid "The application is not correctly installed"
 msgstr ""
 
@@ -1306,7 +1229,6 @@ msgstr "圖騰"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:232
 #: Utils\Converter\GroupStringConverter.cs:33
-#: ItemFilter\Model\FilterManager.cs:674
 msgid "Flasks"
 msgstr "藥劑"
 
@@ -1435,180 +1357,114 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:47
-msgid "Currency"
-msgstr "通貨"
-
-#: ItemFilter\Model\FilterManager.cs:493
-msgid "Recipes"
-msgstr "配方"
-
-#: ItemFilter\Model\FilterManager.cs:500
-msgid "Any Normal item which vendor trades for Scroll Fragment."
-msgstr ""
-
-#: ItemFilter\Model\FilterManager.cs:511
-msgid "Any Magic item which vendor trades for Transmutation Shard, Alteration Shard or Alchemy Shard."
-msgstr ""
-
-#: ItemFilter\Model\FilterManager.cs:523
-msgid ""
-"A single Normal weapon with 20% quality.\n"
-"Weapons with a total of at least 40% quality."
-msgstr ""
-
-#: ItemFilter\Model\FilterManager.cs:571
-msgid ""
-"1 Stone Hammer, Rock Breaker or Gavel with 20% quality\n"
-"1 Any Map"
-msgstr ""
-
-#: ItemFilter\Model\FilterManager.cs:644
-msgid "Gems"
-msgstr "寶石"
-
-#: ItemFilter\Model\FilterManager.cs:867
-msgid "Miscellaneous"
-msgstr ""
-
-#: ItemFilter\Model\FilterManager.cs:1007
-msgid "Crafting"
-msgstr ""
-
-#: ItemFilter\Model\FilterManager.cs:1125
-msgid "Chancing"
-msgstr ""
-
-#: ItemFilter\Views\ColorButtonDialog.xaml.cs:38
-msgid "Original color"
-msgstr ""
-
-#: ItemFilter\Views\ColorButtonDialog.xaml.cs:40
-msgid "Standard colors"
-msgstr ""
-
-#: ItemFilter\Views\ColorButtonDialog.xaml.cs:42
-msgid "Recent colors"
-msgstr ""
-
-#: ItemFilter\Views\ColorButtonDialog.xaml.cs:44
-msgctxt "color"
-msgid "Custom"
-msgstr ""
-
-#: ItemFilter\Views\ColorButtonDialog.xaml.cs:45
-msgctxt "color"
-msgid "Standard"
-msgstr ""
-
 #: ViewModels\Builds\BuildsControlViewModel.cs:61
 msgid "All"
 msgstr "全部"
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:311
+#: ViewModels\Builds\BuildsControlViewModel.cs:310
 msgid "Select save directory"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:312
+#: ViewModels\Builds\BuildsControlViewModel.cs:311
 msgid "Select the directory where you want to export this build structure."
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:399
+#: ViewModels\Builds\BuildsControlViewModel.cs:398
 msgid ""
 "Files in your build save directory have been changed.\n"
 "Do you want to reload all builds from the file system?"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:403
+#: ViewModels\Builds\BuildsControlViewModel.cs:402
 msgid ""
 "\n"
 "All unsaved changes will be lost."
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:405
+#: ViewModels\Builds\BuildsControlViewModel.cs:404
 msgid ""
 "\n"
 "\n"
 "You can also reload through the 'File' menu."
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:407
+#: ViewModels\Builds\BuildsControlViewModel.cs:406
 msgid "Builds changed"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:423
+#: ViewModels\Builds\BuildsControlViewModel.cs:422
 msgid "Enter the name of the new folder."
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:449
+#: ViewModels\Builds\BuildsControlViewModel.cs:448
 msgid "The currently opened build can not be deleted."
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:455
+#: ViewModels\Builds\BuildsControlViewModel.cs:454
 #, csharp-format
 msgid "This will delete the build folder \"{0}\" and all its contents.\n"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:456
-#: Views\MainWindow.xaml.cs:963
+#: ViewModels\Builds\BuildsControlViewModel.cs:455
+#: Views\MainWindow.xaml.cs:928
 msgid "Do you want to continue?"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:477
+#: ViewModels\Builds\BuildsControlViewModel.cs:476
 msgid "This build is currently opened but has unsaved changes.\n"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:478
+#: ViewModels\Builds\BuildsControlViewModel.cs:477
 msgid "Do you want to discard all changes made to it since your last save?"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:479
+#: ViewModels\Builds\BuildsControlViewModel.cs:478
 msgid "Discard changes?"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:494
+#: ViewModels\Builds\BuildsControlViewModel.cs:493
 msgid "Saving new Build"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:495
+#: ViewModels\Builds\BuildsControlViewModel.cs:494
 msgid "Enter the name of the build."
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:511
+#: ViewModels\Builds\BuildsControlViewModel.cs:510
 msgid "Save as"
 msgstr "另存為"
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:512
+#: ViewModels\Builds\BuildsControlViewModel.cs:511
 msgid "Enter the new name of the build"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:645
+#: ViewModels\Builds\BuildsControlViewModel.cs:644
 msgid "Edit Folder"
 msgstr "編輯資料夾"
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:646
+#: ViewModels\Builds\BuildsControlViewModel.cs:645
 msgid "Enter the new name for this folder below."
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:670
+#: ViewModels\Builds\BuildsControlViewModel.cs:669
 msgid ""
 "Any unsaved changes will be lost.\n"
 "Are you sure?"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:824
+#: ViewModels\Builds\BuildsControlViewModel.cs:823
 msgid "An error occurred during a save operation."
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:841
+#: ViewModels\Builds\BuildsControlViewModel.cs:840
 msgid "An error occurred during a delete operation."
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:858
+#: ViewModels\Builds\BuildsControlViewModel.cs:857
 msgid "Unsaved Builds"
 msgstr "未儲存流派"
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:859
+#: ViewModels\Builds\BuildsControlViewModel.cs:858
 msgid "These builds are not saved:\n"
 msgstr "這些流派未儲存:\n"
 
@@ -1693,187 +1549,226 @@ msgstr ""
 msgid "Help file not found"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:358
+#: Views\MainWindow.xaml.cs:338
 msgid "Create New Attribute Group"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:358
+#: Views\MainWindow.xaml.cs:338
 msgid "Group name"
 msgstr "群組名稱"
 
-#: Views\MainWindow.xaml.cs:363
+#: Views\MainWindow.xaml.cs:343
 msgid "A group with that name already exists."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:456
+#: Views\MainWindow.xaml.cs:430
 msgid "Initialization"
 msgstr "初始化"
 
-#: Views\MainWindow.xaml.cs:457 Views\MainWindow.xaml.cs:477
+#: Views\MainWindow.xaml.cs:431 Views\MainWindow.xaml.cs:451
 #, fuzzy
 msgid "Initializing window ..."
 msgstr "初始化視窗 ..."
 
-#: Views\MainWindow.xaml.cs:472
+#: Views\MainWindow.xaml.cs:446
 msgid "Loading skill tree assets ..."
 msgstr "讀取天賦樹元件"
 
-#: Views\MainWindow.xaml.cs:507
+#: Views\MainWindow.xaml.cs:485
 msgid "Highlight nodes by attribute"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:512
+#: Views\MainWindow.xaml.cs:490
 msgid "Remove highlights by attribute"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:592
+#: Views\MainWindow.xaml.cs:563
 msgid "Load Tree"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:598
+#: Views\MainWindow.xaml.cs:569
 msgid "Load as new build"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:780
+#: Views\MainWindow.xaml.cs:751
 msgid ""
 "There are unsaved builds. Do you want to save them before closing?\n"
 "\n"
 "Canceling stops the program from closing and does not save any builds."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:810
+#: Views\MainWindow.xaml.cs:781
 msgid "Are you sure?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:811
+#: Views\MainWindow.xaml.cs:782
 msgid "Untag All Skill Nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:884
+#: Views\MainWindow.xaml.cs:855
 #, csharp-format
 msgid "{0} point"
 msgid_plural "{0} points"
 msgstr[0] ""
 msgstr[1] ""
 
-#: Views\MainWindow.xaml.cs:918
+#: Views\MainWindow.xaml.cs:889
 msgid "Your build must use at least one node to generate a screenshot"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:954 Views\MainWindow.xaml.cs:1977
+#: Views\MainWindow.xaml.cs:919 Views\MainWindow.xaml.cs:1893
 msgid "An error occurred while copying to Clipboard."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:960
+#: Views\MainWindow.xaml.cs:925
 msgid "The existing skill tree data will be deleted. The data will be downloaded from the official online skill tree and is from the latest released version of the game."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:969
+#: Views\MainWindow.xaml.cs:934
 msgid "Downloading skill tree assets ..."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:990
+#: Views\MainWindow.xaml.cs:955
 msgid "An error occurred while downloading assets."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1045
+#: Views\MainWindow.xaml.cs:1010
 msgid "Checking for updates"
 msgstr "檢查更新"
 
-#: Views\MainWindow.xaml.cs:1050
+#: Views\MainWindow.xaml.cs:1015
 msgid "You have the latest version!"
 msgstr "你的版本是最新版!"
 
-#: Views\MainWindow.xaml.cs:1055
+#: Views\MainWindow.xaml.cs:1020
 #, csharp-format
 msgid "An update for {0} ({1}) is available!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1058
+#: Views\MainWindow.xaml.cs:1023
 msgid "The application will be closed when download completes to proceed with the update."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1059
+#: Views\MainWindow.xaml.cs:1024
 #, csharp-format
 msgid "A new version {0} is available!"
 msgstr "新版本 {0} 可下載!"
 
-#: Views\MainWindow.xaml.cs:1062
+#: Views\MainWindow.xaml.cs:1027
 msgid "The new version of application will be installed side-by-side with earlier versions."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1066
+#: Views\MainWindow.xaml.cs:1031
 msgid "Warning: This is a pre-release, meaning there could be some bugs!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1070
+#: Views\MainWindow.xaml.cs:1035
 msgid "Do you want to download and install the update?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1071
+#: Views\MainWindow.xaml.cs:1036
 msgid "Do you want to download and install the new version?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1073
+#: Views\MainWindow.xaml.cs:1038
 msgid "Continue installation?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1084
+#: Views\MainWindow.xaml.cs:1049
 msgid "An error occurred while attempting to contact the update location."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1092
+#: Views\MainWindow.xaml.cs:1057
 msgid "Downloading latest version"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1107 Views\MainWindow.xaml.cs:1122
+#: Views\MainWindow.xaml.cs:1072 Views\MainWindow.xaml.cs:1087
 msgid "An error occurred during the download operation."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1135
+#: Views\MainWindow.xaml.cs:1100
 msgid "An error occurred while attempting to start the installation."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1713
+#: Views\MainWindow.xaml.cs:1624
 msgid "An error occurred while attempting to load item data."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1802 Views\MainWindow.xaml.cs:1845
+#: Views\MainWindow.xaml.cs:1718 Views\MainWindow.xaml.cs:1761
 msgid "An error occurred while attempting to load Skill tree from URL."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1824
+#: Views\MainWindow.xaml.cs:1740
 msgid "The build you are loading contains information about selected bandits."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1825
+#: Views\MainWindow.xaml.cs:1741
 msgid "Do you want to use it and overwrite current settings?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1826
+#: Views\MainWindow.xaml.cs:1742
 msgid "Replace Bandits settings"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1852
+#: Views\MainWindow.xaml.cs:1768
 #, fuzzy
 msgid "Current: "
 msgstr "通貨"
 
-#: Views\MainWindow.xaml.cs:1853
+#: Views\MainWindow.xaml.cs:1769
 msgid "Loaded: "
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1957
+#: Views\MainWindow.xaml.cs:1873
 msgid "Generating PoEUrl of Skill tree"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1963
+#: Views\MainWindow.xaml.cs:1879
 msgid "An error occurred while attempting to contact the PoEUrl location."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1973
+#: Views\MainWindow.xaml.cs:1889
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr ""
+
+#~ msgid "Choose colors"
+#~ msgstr "選擇顏色"
+
+#~ msgid "Background"
+#~ msgstr "背景"
+
+#~ msgid "Text"
+#~ msgstr "文字"
+
+#~ msgid "Border"
+#~ msgstr "邊框"
+
+#~ msgid "Item Filter"
+#~ msgstr "物品過濾"
+
+#~ msgid "Item Filter Editor"
+#~ msgstr "物品過濾編輯器"
+
+#~ msgid "Item _Filter Editor"
+#~ msgstr "物品過濾編輯器(_F)"
+
+#~ msgid "Item Attributes"
+#~ msgstr "物品屬性"
+
+#~ msgid "Total Attributes"
+#~ msgstr "全部屬性"
+
+#~ msgid "ItemList"
+#~ msgstr "物品清單"
+
+#~ msgid "Currency"
+#~ msgstr "通貨"
+
+#~ msgid "Recipes"
+#~ msgstr "配方"
+
+#~ msgid "Gems"
+#~ msgstr "寶石"
 
 #~ msgid "_Character Sheet"
 #~ msgstr "角色清單(_C)"

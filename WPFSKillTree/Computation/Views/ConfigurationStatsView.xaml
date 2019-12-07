@@ -54,14 +54,14 @@
         <DataGrid.Columns>
             <DataGridTextColumn IsReadOnly="True"
                                 Width="250"
-                                HeaderStyle="{StaticResource MetroDataGridColumnHeader}"
+                                HeaderStyle="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                 Binding="{Binding Node}">
                 <DataGridTextColumn.Header>
                     <l:Catalog>Stat</l:Catalog>
                 </DataGridTextColumn.Header>
             </DataGridTextColumn>
             <DataGridTemplateColumn Width="120"
-                                    HeaderStyle="{StaticResource MetroDataGridColumnHeader}">
+                                    HeaderStyle="{StaticResource MahApps.Styles.DataGridColumnHeader}">
                 <DataGridTemplateColumn.Header>
                     <l:Catalog>Value</l:Catalog>
                 </DataGridTemplateColumn.Header>

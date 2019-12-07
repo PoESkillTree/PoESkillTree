@@ -12,7 +12,7 @@ namespace PoESkillTree.ViewModels.Equipment
     /// <summary>
     /// View model for the inventory. Only a collection of the the InventoryItemViewModels for the slots.
     /// </summary>
-    public class InventoryViewModel : Notifier, IDisposable
+    public sealed class InventoryViewModel : Notifier, IDisposable
     {
         private readonly IExtendedDialogCoordinator _dialogCoordinator;
         private readonly ItemAttributes _itemAttributes;
@@ -71,10 +71,8 @@ namespace PoESkillTree.ViewModels.Equipment
         private InventoryItemViewModel CreateSlotVm(ItemSlot slot, ushort? socket = null)
         {
             var imageName = SlotToImageName(slot, socket.HasValue);
-            return new InventoryItemViewModel(_dialogCoordinator, _itemAttributes, slot, socket)
-            {
-                EmptyBackgroundImagePath = $"/PoESkillTree;component/Images/EquipmentUI/ItemDefaults/{imageName}.png"
-            };
+            return new InventoryItemViewModel(_dialogCoordinator, _itemAttributes, slot, socket,
+                $"/PoESkillTree;component/Images/EquipmentUI/ItemDefaults/{imageName}.png");
         }
 
         private static string SlotToImageName(ItemSlot slot, bool isSocketed)

@@ -32,7 +32,7 @@ namespace PoESkillTree.Computation.ViewModels
             => !_pinnedStats.Contains(stat) &&
                (stat.ExplicitRegistrationType is ExplicitRegistrationType.UserSpecifiedValue);
 
-        protected override ConfigurationStatViewModel CreateViewModel(ICalculationNode node, IStat stat)
+        protected override ConfigurationStatViewModel CreateViewModel(ICalculationNode? node, IStat stat)
             => ConfigurationStatViewModel.Create(_nodeFactory, stat);
 
         protected override IStat SelectStat(ConfigurationStatViewModel statVm)

@@ -4,11 +4,11 @@ using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.ViewModels
 {
-    public class ConfigurationStatViewModel : Notifier, IDisposable
+    public sealed class ConfigurationStatViewModel : Notifier, IDisposable
     {
         public ConfigurationStatViewModel(
             ConfigurationNodeViewModel node,
-            ResultNodeViewModel minimumNode = null, ResultNodeViewModel maximumNode = null)
+            ResultNodeViewModel? minimumNode = null, ResultNodeViewModel? maximumNode = null)
         {
             Node = node;
             MinimumNode = minimumNode;
@@ -22,8 +22,8 @@ namespace PoESkillTree.Computation.ViewModels
                 stat.Maximum is null ? null : nodeFactory.CreateResult(stat.Maximum));
 
         public ConfigurationNodeViewModel Node { get; }
-        public ResultNodeViewModel MinimumNode { get; }
-        public ResultNodeViewModel MaximumNode { get; }
+        public ResultNodeViewModel? MinimumNode { get; }
+        public ResultNodeViewModel? MaximumNode { get; }
 
         public IStat Stat => Node.Stat;
 

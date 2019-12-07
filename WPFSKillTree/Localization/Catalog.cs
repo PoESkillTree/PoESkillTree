@@ -3,43 +3,20 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
-using ExpressionEvaluator;
+using DynamicExpresso;
 
 namespace PoESkillTree.Localization
 {
     // @see http://www.gnu.org/software/gettext/manual/html_node/PO-Files.html#PO-Files
     public class Catalog
     {
-        // Plural 'n' expression.
-        internal class NExpression : CompiledExpression<int>
-        {
-            // The scoped lambda function.
-            private Func<NExpression, int> fn;
-
-            // The value of 'n' in expression for evaluation.
-            public int n { get; set; }
-
-            // Compiles expression.
-            public NExpression(string expr)
-                : base(expr)
-            {
-                fn = ScopeCompile<NExpression>();
-            }
-
-            // Evaluates expression.
-            public uint Eval(uint num)
-            {
-                n = (int) num;
-
-                return (uint) fn(this);
-            }
-        }
-
         // PO format parser.
         private class Parser
         {
             // The keyword types.
             private enum KeywordType { None, MsgCtxt, MsgId, MsgIdPlural, MsgStr }
+
+            private readonly Interpreter _interpreter = new Interpreter();
 
             // The flag whether Parser processed header entry.
             private bool HasHeader = false;
@@ -79,20 +56,20 @@ namespace PoESkillTree.Localization
             // The current keyword being processed.
             private KeywordType Keyword;
             // The current string being parsed.
-            private string Str;
+            private string? Str;
 
             // The message context.
-            public string Context;
+            public string? Context;
             // The plural 'n' expression.
-            public NExpression Plural = null;
+            public Func<uint, uint>? Plural;
             // The message identifier.
-            public string Id;
+            public string? Id;
             // The message plural identifier.
-            public string IdPlural;
+            public string? IdPlural;
             // The number of plural forms.
-            public uint NPlurals = 0;
+            public uint NPlurals;
             // The translated string(s).
-            public string[] Strings;
+            public string[]? Strings;
 
             public Parser()
             {
@@ -142,7 +119,7 @@ namespace PoESkillTree.Localization
 
                 HasHeader = true;
 
-                string[] fields = Strings[0].TrimEnd().Split('\n');
+                string[] fields = Strings![0].TrimEnd().Split('\n');
                 foreach (string field in fields)
                 {
                     if (field.StartsWith("Plural-Forms:"))
@@ -167,7 +144,7 @@ namespace PoESkillTree.Localization
                             {
                                 try
                                 {
-                                    Plural = new NExpression(assignment.Substring(7));
+                                    Plural = _interpreter.ParseAsDelegate<Func<uint, uint>>(assignment.Substring(7), "n");
                                 }
                                 catch
                                 {
@@ -205,7 +182,7 @@ namespace PoESkillTree.Localization
                         break;
 
                     case KeywordType.MsgStr:
-                        Strings[Index] = Str;
+                        Strings![Index] = Str!;
                         break;
                 }
 
@@ -390,11 +367,11 @@ namespace PoESkillTree.Localization
         // The context separator for message key.
         private const char CONTEXT_SEPARATOR = '\x04';
         // The plural 'n' expression.
-        private NExpression Expr;
+        private Func<uint, uint>? Expr;
         // The display language name.
         public string LanguageName;
         // The translated strings.
-        private Dictionary<string, string[]> Messages;
+        private Dictionary<string, string[]>? Messages;
         // The file name of language catalog messages.
         public static readonly string MessagesFilename = "Messages.po";
         // The language (culture name).
@@ -405,22 +382,24 @@ namespace PoESkillTree.Localization
         private string Path;
 
         // Private constructor.
-        private Catalog(string path)
+        private Catalog(string path, string languageName, string name)
         {
             Path = path;
+            LanguageName = languageName;
+            Name = name;
         }
 
         // Adds translated message according to parser state.
         private void AddMessage(Parser parser)
         {
             // Messages with context have key in form of concatenated context and message identifier using \0x04 character as separator.
-            Messages.Add(parser.Context == null ? parser.Id : parser.Context + CONTEXT_SEPARATOR + parser.Id, parser.Strings);
+            Messages!.Add(parser.Context == null ? parser.Id! : parser.Context + CONTEXT_SEPARATOR + parser.Id, parser.Strings!);
         }
 
         // Creates catalog.
-        public static Catalog Create(string path, CultureInfo culture)
+        public static Catalog? Create(string path, CultureInfo culture)
         {
-            Catalog catalog = null;
+            Catalog? catalog = null;
 
             // Check if file exists and is readable.
             try
@@ -428,10 +407,7 @@ namespace PoESkillTree.Localization
                 string file = System.IO.Path.Combine(path, MessagesFilename);
                 using (FileStream stream = File.Open(file, FileMode.Open, FileAccess.Read))
                 {
-                    catalog = new Catalog(path);
-
-                    catalog.LanguageName = culture.TextInfo.ToTitleCase(culture.NativeName);
-                    catalog.Name = culture.Name;
+                    catalog = new Catalog(path, culture.TextInfo.ToTitleCase(culture.NativeName), culture.Name);
                 }
             }
             catch { }
@@ -442,12 +418,7 @@ namespace PoESkillTree.Localization
         // Creates default catalog.
         public static Catalog CreateDefault(string path, string defaultLanguage, string defaultLanguageName)
         {
-            Catalog catalog = new Catalog(path);
-
-            catalog.LanguageName = defaultLanguageName;
-            catalog.Name = defaultLanguage;
-
-            return catalog;
+            return new Catalog(path, defaultLanguageName, defaultLanguage);
         }
 
         // Loads translations into catalog.
@@ -466,7 +437,7 @@ namespace PoESkillTree.Localization
                 {
                     Messages = new Dictionary<string, string[]>();
 
-                    string line;
+                    string? line;
                     while ((line = reader.ReadLine()) != null)
                     {
                         if (parser.ParseLine(line))
@@ -492,28 +463,34 @@ namespace PoESkillTree.Localization
         
         // Translates message.
         // Returns null if no translation was found.
-        public string Message(string message, string context = null)
+        public string? Message(string message, string? context = null)
         {
             // Form new key based on context.
             if (context != null) message = context + CONTEXT_SEPARATOR + message;
 
-            return Messages.ContainsKey(message) ? Messages[message][0] : null;
+            if (Messages is null)
+                return null;
+            if (Messages.TryGetValue(message, out var translations))
+                return translations[0];
+            return null;
         }
         
         // Translates plural message.
         // Returns null if no translation was found.
-        public string Plural(string message, uint n, string context = null)
+        public string? Plural(string message, uint n, string? context = null)
         {
             // Form new key based on context.
             if (context != null) message = context + CONTEXT_SEPARATOR + message;
 
             // No plurals, no translation.
-            if (NPlurals == 0 || !Messages.ContainsKey(message)) return null;
+            if (NPlurals == 0 || Messages is null || !Messages.ContainsKey(message)) return null;
 
             string[] translations = Messages[message];
 
             // Evaluate 'n' into translation index.
-            uint index = Expr.Eval(n);
+            if (Expr is null)
+                return translations[0];
+            uint index = Expr(n);
             if (index >= translations.Length) index = 0;
 
             return translations[index];
@@ -521,7 +498,7 @@ namespace PoESkillTree.Localization
 
         // Reads all text from localized file.
         // Returns null if error occurs.
-        public string ReadAllText(string filename)
+        public string? ReadAllText(string filename)
         {
             try
             {

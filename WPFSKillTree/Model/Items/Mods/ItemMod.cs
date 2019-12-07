@@ -49,21 +49,6 @@ namespace PoESkillTree.Model.Items.Mods
             ValueColors = valueColors?.ToList() ?? new List<ValueColoring>();
         }
 
-        private ItemMod(ItemMod other)
-        {
-            IsLocal = other.IsLocal;
-            Attribute = other.Attribute;
-            ValueColors = other.ValueColors.ToList();
-        }
-
-        public ItemMod Sum(ItemMod m)
-        {
-            return new ItemMod(m)
-            {
-                Values = Values.Zip(m.Values, (f1, f2) => f1 + f2).ToList()
-            };
-        }
-
         public string ToModifierString()
         {
             var index = 0;

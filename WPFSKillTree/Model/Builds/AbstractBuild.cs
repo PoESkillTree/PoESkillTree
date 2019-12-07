@@ -10,12 +10,12 @@ namespace PoESkillTree.Model.Builds
     public abstract class AbstractBuild<T> : Notifier, IBuild
         where T : IBuild
     {
-        private string _name;
+        private string _name = "";
 
         public string Name
         {
-            get { return _name; }
-            set { SetProperty(ref _name, value); }
+            get => _name;
+            set => SetProperty(ref _name, value);
         }
 
         /// <summary>

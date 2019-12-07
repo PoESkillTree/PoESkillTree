@@ -31,7 +31,9 @@ namespace PoESkillTree.Model.Items
 
         private WordSetTreeNode _root;
 
+#pragma warning disable CS8618 // Initialization takes place in InitializeAsync
         private EquipmentData(Options options)
+#pragma warning restore
         {
             _itemImageService = new ItemImageService(options);
         }
@@ -74,7 +76,7 @@ namespace PoESkillTree.Model.Items
                 x => new UniqueBase(_itemImageService, ModDatabase, metadataToBase[x.BaseMetadataId], x)).ToList();
         }
 
-        public ItemBase ItemBaseFromTypeline(string typeline)
+        public ItemBase? ItemBaseFromTypeline(string typeline)
         {
             var wlist = typeline.Split(' ');
             var ms = new List<WordSetTreeNode>();
@@ -98,9 +100,9 @@ namespace PoESkillTree.Model.Items
         {
             public int Level { get; private set; }
 
-            private string _word;
+            private string? _word;
 
-            private WordSetTreeNode _parent;
+            private WordSetTreeNode? _parent;
 
             private bool _isLeaf;
 
@@ -123,8 +125,7 @@ namespace PoESkillTree.Model.Items
 
                 var word = enumerated.First();
 
-                WordSetTreeNode nod;
-                if (!_children.TryGetValue(word, out nod))
+                if (!_children.TryGetValue(word, out var nod))
                 {
                     nod = new WordSetTreeNode { _word = word, _parent = this, Level = Level + 1 };
                     _children.Add(word, nod);
@@ -138,7 +139,7 @@ namespace PoESkillTree.Model.Items
 
             public IEnumerable<WordSetTreeNode> Match(IEnumerable<string> enumerable)
             {
-                var nod = this;
+                WordSetTreeNode? nod = this;
                 foreach (var w in enumerable)
                 {
                     if (nod._isLeaf)
@@ -154,7 +155,7 @@ namespace PoESkillTree.Model.Items
 
             public override string ToString()
             {
-                var lst = new Stack<string>();
+                var lst = new Stack<string?>();
                 var nod = this;
                 while (nod._parent != null)
                 {

@@ -7,7 +7,7 @@ namespace PoESkillTree.Views
     /// </summary>
     public partial class HelpWindow
     {
-        public string Document { get; set; }
+        public string? Document { get; set; }
 
         public HelpWindow()
         {

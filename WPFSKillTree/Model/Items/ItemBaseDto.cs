@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Engine.GameModel.Items;
+﻿using System.Collections.Generic;
+using PoESkillTree.Engine.GameModel.Items;
 
 namespace PoESkillTree.Model.Items
 {
@@ -6,9 +7,11 @@ namespace PoESkillTree.Model.Items
     // RePoE's base_items JSON and the ItemBase class.
     public class ItemBaseDto
     {
-        public string[] Implicit { get; set; }
+#pragma warning disable CS8618 // These properties are initialized once used
 
-        public string[] Properties { get; set; }
+        public IReadOnlyList<string> Implicit { get; set; }
+
+        public IReadOnlyList<string> Properties { get; set; }
 
         public ItemClass ItemClass { get; set; }
 

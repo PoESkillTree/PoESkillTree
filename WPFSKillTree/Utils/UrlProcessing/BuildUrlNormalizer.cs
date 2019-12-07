@@ -42,7 +42,7 @@ namespace PoESkillTree.Utils.UrlProcessing
         /// Creates link to official pathofexile.com builder.
         /// Extracts build url from google link if needed, resolves shortened urls and removes unused query parameters.
         /// </summary>
-        public async Task<string> NormalizeAsync(string buildUrl, Func<string, Task, Task> loadingWrapper)
+        public async Task<string> NormalizeAsync(string buildUrl, Func<string, Task<HttpResponseMessage>, Task<HttpResponseMessage>> loadingWrapper)
         {
             buildUrl = Regex.Replace(buildUrl, @"\s", "");
 
@@ -77,7 +77,7 @@ namespace PoESkillTree.Utils.UrlProcessing
             return match.Groups["urlParam"].Value;
         }
 
-        private async Task<string> ResolveShortenedUrl(string buildUrl, Func<string, Task, Task> loadingWrapper)
+        private async Task<string> ResolveShortenedUrl(string buildUrl, Func<string, Task<HttpResponseMessage>, Task<HttpResponseMessage>> loadingWrapper)
         {
             buildUrl = EnsureProtocol(buildUrl);
 
@@ -90,14 +90,8 @@ namespace PoESkillTree.Utils.UrlProcessing
                 }
             }
 
-            HttpResponseMessage response = null;
-
-            // This lambda is used to skip GetAsync() result value in loadingWrapper parameter
-            // and thereby unify it by using Task instead of Task<HttpResponseMessage> in signature
-            async Task RequestAsync()
-                => response = await _getResponseAsync(buildUrl, HttpCompletionOption.ResponseHeadersRead);
-
-            await loadingWrapper(L10n.Message("Resolving shortened tree address"), RequestAsync());
+            var response = await loadingWrapper(L10n.Message("Resolving shortened tree address"),
+                _getResponseAsync(buildUrl, HttpCompletionOption.ResponseHeadersRead));
 
             response.EnsureSuccessStatusCode();
 

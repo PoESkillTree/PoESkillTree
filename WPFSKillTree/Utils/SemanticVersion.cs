@@ -5,7 +5,7 @@ namespace PoESkillTree.Utils
 {
     public class SemanticVersion : IComparable<SemanticVersion>, IEquatable<SemanticVersion>
     {
-        private SemanticVersion(int major, int minor, int patch, string preReleaseType, int preReleaseNumber)
+        private SemanticVersion(int major, int minor, int patch, string? preReleaseType, int preReleaseNumber)
             => (Major, Minor, Patch, PreReleaseType, PreReleaseNumber) =
                 (major, minor, patch, preReleaseType, preReleaseNumber);
 
@@ -13,7 +13,7 @@ namespace PoESkillTree.Utils
         public int Minor { get; }
         public int Patch { get; }
 
-        public string PreReleaseType { get; }
+        public string? PreReleaseType { get; }
         public int PreReleaseNumber { get; }
 
         public static SemanticVersion Parse(string version)
@@ -47,10 +47,10 @@ namespace PoESkillTree.Utils
             return PreReleaseNumber.CompareTo(other.PreReleaseNumber);
         }
 
-        public override bool Equals(object obj)
-            => Equals((SemanticVersion) obj);
+        public override bool Equals(object? obj)
+            => Equals((SemanticVersion?) obj);
 
-        public bool Equals(SemanticVersion other)
+        public bool Equals(SemanticVersion? other)
             => other != null && Major == other.Major && Minor == other.Minor && Patch == other.Patch &&
                PreReleaseType == other.PreReleaseType && PreReleaseNumber == other.PreReleaseNumber;
 

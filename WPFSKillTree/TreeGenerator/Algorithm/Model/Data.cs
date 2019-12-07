@@ -32,8 +32,8 @@
     /// </summary>
     public class Data : IData
     {
-        public GraphEdgeSet EdgeSet { get; set; }
-        public DistanceCalculator DistanceCalculator { get; set; }
+        public GraphEdgeSet EdgeSet { get; set; } = default!;
+        public DistanceCalculator DistanceCalculator { get; set; } = default!;
         public DistanceLookup SMatrix { get; set; }
 
         /// <summary>
@@ -43,8 +43,8 @@
 
         public int StartNodeIndex
         {
-            get { return StartNode.DistancesIndex; }
-            set { StartNode = DistanceCalculator.IndexToNode(value); }
+            get => StartNode.DistancesIndex;
+            set => StartNode = DistanceCalculator.IndexToNode(value);
         }
 
         public Data(GraphNode startNode)

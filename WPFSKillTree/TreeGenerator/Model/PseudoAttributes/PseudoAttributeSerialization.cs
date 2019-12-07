@@ -13,42 +13,42 @@ namespace PoESkillTree.TreeGenerator.Model.PseudoAttributes
     public class XmlPseudoAttributes
     {
         [XmlElement("PseudoAttribute")]
-        public XmlPseudoAttribute[] PseudoAttributes { get; set; }
+        public XmlPseudoAttribute[] PseudoAttributes { get; set; } = default!;
     }
 
     [XmlType(AnonymousType = true)]
     public class XmlPseudoAttribute
     {
         [XmlElement("PseudoAttribute")]
-        public XmlNestedPseudoAttribute[] PseudoAttributes { get; set; }
+        public XmlNestedPseudoAttribute[]? PseudoAttributes { get; set; }
 
         [XmlElement("Attribute")]
-        public XmlNestedAttribute[] Attributes { get; set; }
+        public XmlNestedAttribute[]? Attributes { get; set; }
 
         [XmlAttribute]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         [XmlAttribute]
-        public string Hidden { get; set; }
+        public string? Hidden { get; set; }
 
         [XmlAttribute]
-        public string Group { get; set; }
+        public string Group { get; set; } = default!;
     }
 
     [XmlType(AnonymousType = true)]
     public class XmlNestedPseudoAttribute
     {
         [XmlAttribute]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
     }
 
     [XmlType(AnonymousType = true)]
     public class XmlNestedAttribute
     {
-        public XmlAttributeConditions Conditions { get; set; }
+        public XmlAttributeConditions? Conditions { get; set; }
 
         [XmlAttribute]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         [XmlAttribute]
         public decimal ConversionMultiplier { get; set; }
@@ -67,38 +67,38 @@ namespace PoESkillTree.TreeGenerator.Model.PseudoAttributes
         [XmlElement("WeaponClass", typeof(string))]
         [XmlElement("Keystone", typeof(string))]
         [XmlChoiceIdentifier("ItemsElementName")]
-        public object[] Items { get; set; }
+        public object[] Items { get; set; } = default!;
 
         [XmlElement("ItemsElementName")]
         [XmlIgnore]
-        public XmlItemsChoiceType[] ItemsElementName { get; set; }
+        public XmlItemsChoiceType[] ItemsElementName { get; set; } = default!;
     }
 
     [XmlType(AnonymousType = true)]
     public class XmlAndComposition
     {
-        public string WeaponClass { get; set; }
+        public string? WeaponClass { get; set; }
 
-        public string Keystone { get; set; }
+        public string? Keystone { get; set; }
 
-        public string OffHand { get; set; }
+        public string? OffHand { get; set; }
 
-        public string Tag { get; set; }
+        public string? Tag { get; set; }
 
         [XmlElement("Not")]
-        public XmlNotCondition NotCondition { get; set; }
+        public XmlNotCondition? NotCondition { get; set; }
     }
 
     [XmlType(AnonymousType = true)]
     public class XmlNotCondition
     {
-        public string WeaponClass { get; set; }
+        public string? WeaponClass { get; set; }
 
-        public string Keystone { get; set; }
+        public string? Keystone { get; set; }
 
-        public string OffHand { get; set; }
+        public string? OffHand { get; set; }
 
-        public string Tag { get; set; }
+        public string? Tag { get; set; }
     }
 
     [XmlType(IncludeInSchema = false)]

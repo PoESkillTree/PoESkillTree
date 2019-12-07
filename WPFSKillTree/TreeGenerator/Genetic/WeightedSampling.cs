@@ -18,15 +18,15 @@ namespace PoESkillTree.TreeGenerator.Genetic
         /// 
         /// Note that removing elements is not implemented!
         
-        private SortedDictionary<double, T> entries;
-        private double totalWeight;
+        private readonly SortedDictionary<double, T> _entries;
+        private double _totalWeight;
 
-        private Random random;
+        private readonly Random _random;
 
         /// <summary>
-        /// The entries SortedDictonary as Array. Enables index access and therefore binary search.
+        /// The entries SortedDictionary as Array. Enables index access and therefore binary search.
         /// </summary>
-        private KeyValuePair<double, T>[] _indexedEntries;
+        private KeyValuePair<double, T>[]? _indexedEntries;
         /// <summary>
         /// If RandomSample uses indexed entries. Gets disabled if AddEntry is called after RandomSample.
         /// </summary>
@@ -35,26 +35,19 @@ namespace PoESkillTree.TreeGenerator.Genetic
         /// <summary>
         ///  Indicates whether any entries are present to sample from.
         /// </summary>
-        public bool CanSample
-        { get { return totalWeight > 0; } }
+        public bool CanSample => _totalWeight > 0;
 
         /// <summary>
-        ///  The number of entries in the sampler.
-        /// </summary>
-        public int EntryCount
-        { get { return entries.Count; } }
-
-        /// <summary>
-        ///  A new instance of the WeigtedSampler class.
+        ///  A new instance of the WeightedSampler class.
         /// </summary>
         /// <param name="random">A random number generator. If nothing is passed, a
         /// new one is created.</param>
-        public WeightedSampler(Random random = null)
+        public WeightedSampler(Random? random = null)
         {
-            entries = new SortedDictionary<double, T>();
-            totalWeight = 0;
+            _entries = new SortedDictionary<double, T>();
+            _totalWeight = 0;
 
-            this.random = random ?? new Random();
+            _random = random ?? new Random();
         }
 
         /// <summary>
@@ -66,17 +59,17 @@ namespace PoESkillTree.TreeGenerator.Genetic
         public void AddEntry(T entry, double weight)
         {
             if (double.IsInfinity(weight))
-                throw new ArgumentException("Infinite weights are not allowed!", "weight");
+                throw new ArgumentException("Infinite weights are not allowed!", nameof(weight));
             if (weight < 0)
-                throw new ArgumentException("Negative weights are not allowed!", "weight");
+                throw new ArgumentException("Negative weights are not allowed!", nameof(weight));
 
             // No need to sample 0 weight individuals;
-            if (weight == 0) return;
+            if (weight <= 0) return;
 
-            totalWeight += weight;
+            _totalWeight += weight;
 
             // This is where the CDF comes from.
-            entries.Add(totalWeight, entry);
+            _entries.Add(_totalWeight, entry);
 
             if (_indexedEntries != null && _indexingEnabled)
             {
@@ -96,11 +89,11 @@ namespace PoESkillTree.TreeGenerator.Genetic
         {
             if (_indexedEntries == null && _indexingEnabled)
             {
-                _indexedEntries = entries.ToArray();
+                _indexedEntries = _entries.ToArray();
             }
 
             // Randomly sample the CDF.
-            double r = random.NextDouble() * totalWeight;
+            double r = _random.NextDouble() * _totalWeight;
 
             // We want to find the first entry with key >= r.
             if (_indexedEntries != null)
@@ -124,20 +117,10 @@ namespace PoESkillTree.TreeGenerator.Genetic
             {
                 // If AddEntry() is called between RandomSample()-calls, indexing is slower than
                 // a simple linear search. (O(n))
-                var entry = entries.First(kvp => kvp.Key >= r);
+                var entry = _entries.First(kvp => kvp.Key >= r);
 
                 return entry.Value;
             }
-        }
-
-        /// <summary>
-        ///  Resets the sampler.
-        /// </summary>
-        public void Clear()
-        {
-            _indexedEntries = null;
-            entries.Clear();
-            totalWeight = 0;
         }
     }
 }

@@ -37,11 +37,11 @@ namespace PoESkillTree.Utils
         /// <summary>
         /// Event that is invoked every time <see cref="Enter"/> is called when <see cref="IsBusy"/> is false.
         /// </summary>
-        public event EventHandler Entered;
+        public event EventHandler? Entered;
 
         /// <summary>
         /// Event that is invoked every time all <see cref="Enter"/> calls are disposed.
         /// </summary>
-        public event EventHandler Freed;
+        public event EventHandler? Freed;
     }
 }

@@ -9,11 +9,11 @@
              xmlns:wpf="clr-namespace:PoESkillTree.Utils.Wpf"
              xmlns:wpfRangeControls="clr-namespace:WpfRangeControls"
              xmlns:dd="urn:gong-wpf-dragdrop"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:converter="clr-namespace:PoESkillTree.Utils.Converter"
              xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
-             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
              xmlns:dialogs="clr-namespace:PoESkillTree.Controls.Dialogs"
              mc:Ignorable="d" 
              d:DesignHeight="300"
@@ -23,7 +23,6 @@
         <converter:ProductConverter x:Key="CellSizeMultiplicationConverter"
                                     Constant="{x:Static viewModels:StashViewModel.CellSize}" />
         <converter:SumConverter x:Key="SumConverter" />
-        <local:ScrollBarPositionConverter x:Key="ScrollBarPositionConverter" />
 
         <viewModels:StashViewModelProxy x:Key="VmProxy" Data="{Binding}" />
     </UserControl.Resources>
@@ -42,7 +41,7 @@
             <ItemsControl.ItemsSource>
                 <CompositeCollection>
                     <CollectionContainer Collection="{Binding Data.Bookmarks, Source={StaticResource VmProxy}}" />
-                    <Button Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}"
+                    <Button Style="{DynamicResource MahApps.Styles.Button.Circle}"
                             Width="18" Height="18"
                             Command="{Binding AddStashTabCommand}">
                         <iconPacks:PackIconModern Kind="Add" Height="10" Width="10" />
@@ -205,28 +204,32 @@
             </ItemsControl>
         </ScrollViewer>
 
-        <wpfRangeControls:RangeScrollbar Grid.Row="0" Grid.Column="2"
-                                         Minimum="0"
-                                         Maximum="{Binding LastOccupiedRow}"
-                                         Value="{Binding ScrollBarValue}"
-                                         SmallChange="1" LargeChange="{Binding VisibleRows}"
-                                         ViewportSize="{Binding VisibleRows}">
-            <wpfRangeControls:RangeScrollbar.ItemsSource>
+        <ScrollBar Grid.Row="0" Grid.Column="2"
+                   Minimum="0"
+                   Maximum="{Binding LastOccupiedRow}"
+                   Value="{Binding ScrollBarValue}"
+                   SmallChange="1" LargeChange="{Binding VisibleRows}"
+                   ViewportSize="{Binding VisibleRows}" />
+        <ItemsControl Grid.Row="0" Grid.Column="2"
+                      IsHitTestVisible="False"
+                      Margin="0 16">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <wpfRangeControls:RangePanel Minimum="0" 
+                                                 Maximum="{Binding Rows}"
+                                                 Orientation="Vertical" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemsSource>
                 <CompositeCollection>
                     <CollectionContainer Collection="{Binding Data.Bookmarks, Source={StaticResource VmProxy}}" />
                     <CollectionContainer Collection="{Binding Data.SearchMatches, Source={StaticResource VmProxy}}" />
                 </CompositeCollection>
-            </wpfRangeControls:RangeScrollbar.ItemsSource>
-            <wpfRangeControls:RangeScrollbar.Resources>
+            </ItemsControl.ItemsSource>
+            <ItemsControl.Resources>
                 <DataTemplate DataType="{x:Type viewModels:StashBookmarkViewModel}">
-                    <Rectangle Height="2" HorizontalAlignment="Stretch">
-                        <wpfRangeControls:RangePanel.Position>
-                            <MultiBinding Converter="{StaticResource ScrollBarPositionConverter}">
-                                <Binding Path="Bookmark.Position" />
-                                <Binding Path="Data.Rows" Source="{StaticResource VmProxy}" />
-                                <Binding Path="Data.VisibleRows" Source="{StaticResource VmProxy}" />
-                            </MultiBinding>
-                        </wpfRangeControls:RangePanel.Position>
+                    <Rectangle Height="2" HorizontalAlignment="Stretch"
+                               wpfRangeControls:RangePanel.Position="{Binding Bookmark.Position}">
                         <Rectangle.Fill>
                             <SolidColorBrush Color="{Binding Bookmark.Color}" />
                         </Rectangle.Fill>
@@ -234,18 +237,11 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type system:Double}">
                     <Rectangle Height="2" Width="4"
-                               Fill="#8043D9E8">
-                        <wpfRangeControls:RangePanel.Position>
-                            <MultiBinding Converter="{StaticResource ScrollBarPositionConverter}">
-                                <Binding />
-                                <Binding Path="Data.Rows" Source="{StaticResource VmProxy}" />
-                                <Binding Path="Data.VisibleRows" Source="{StaticResource VmProxy}" />
-                            </MultiBinding>
-                        </wpfRangeControls:RangePanel.Position>
-                    </Rectangle>
+                               Fill="#43D9E8"
+                               wpfRangeControls:RangePanel.Position="{Binding}" />
                 </DataTemplate>
-            </wpfRangeControls:RangeScrollbar.Resources>
-        </wpfRangeControls:RangeScrollbar>
+            </ItemsControl.Resources>
+        </ItemsControl>
 
         <TextBox Grid.Row="1" 
                  Grid.Column="0" Grid.ColumnSpan="3"

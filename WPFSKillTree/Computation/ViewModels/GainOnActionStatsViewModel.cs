@@ -23,8 +23,8 @@ namespace PoESkillTree.Computation.ViewModels
         protected override bool IsResponsibleFor(IStat stat)
             => stat.ExplicitRegistrationType is ExplicitRegistrationType.GainOnAction;
 
-        protected override GainOnActionStatViewModel CreateViewModel(ICalculationNode node, IStat stat)
-            => new GainOnActionStatViewModel(_nodeFactory.CreateResult(stat, node));
+        protected override GainOnActionStatViewModel CreateViewModel(ICalculationNode? node, IStat stat)
+            => new GainOnActionStatViewModel(_nodeFactory.CreateResult(stat, node!));
 
         protected override IStat SelectStat(GainOnActionStatViewModel statVm)
             => statVm.Node.Stat;

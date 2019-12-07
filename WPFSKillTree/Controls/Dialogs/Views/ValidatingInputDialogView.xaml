@@ -6,7 +6,6 @@
                     xmlns:dialogs="clr-namespace:PoESkillTree.Controls.Dialogs"
                     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
-                    xmlns:wpf="clr-namespace:PoESkillTree.Utils.Wpf"
                     xmlns:viewModels="clr-namespace:PoESkillTree.Controls.Dialogs.ViewModels"
                     mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:ValidatingInputDialogViewModel}">
     <!-- Based on https://github.com/MahApps/MahApps.Metro/blob/1.2.4/MahApps.Metro/Themes/Dialogs/InputDialog.xaml
@@ -20,13 +19,13 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0"
                    Margin="0 5 0 0"
-                   FontSize="{DynamicResource DialogMessageFontSize}"
+                   FontSize="{DynamicResource MahApps.Sizes.Font.DialogMessage}"
                    Text="{Binding Message}"
                    TextWrapping="Wrap" />
         <TextBox Grid.Row="1"
                  Margin="0 5 0 0"
-                 FontSize="{DynamicResource DialogMessageFontSize}"
-                 controls:ControlsHelper.FocusBorderBrush="{DynamicResource AccentColorBrush}"
+                 FontSize="{DynamicResource MahApps.Sizes.Font.DialogMessage}"
+                 controls:ControlsHelper.FocusBorderBrush="{DynamicResource MahApps.Brushes.Accent}"
                  controls:TextBoxHelper.SelectAllOnFocus="True"
                  Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
                  TextWrapping="Wrap" />

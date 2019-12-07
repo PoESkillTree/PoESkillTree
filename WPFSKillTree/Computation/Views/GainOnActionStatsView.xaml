@@ -44,7 +44,7 @@
                 </DataGridTextColumn.Header>
                 <DataGridTextColumn.CellStyle>
                     <Style TargetType="DataGridCell"
-                           BasedOn="{StaticResource MetroDataGridCell}">
+                           BasedOn="{StaticResource MahApps.Styles.DataGridCell}">
                         <Setter Property="ToolTip">
                             <Setter.Value>
                                 <ToolTip

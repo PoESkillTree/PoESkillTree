@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PoESkillTree.Engine.GameModel.Items;
@@ -12,21 +11,18 @@ using PoESkillTree.Utils;
 
 namespace PoESkillTree.Model.Items
 {
-    public class ItemAttributes : IDisposable
+    public sealed class ItemAttributes : IDisposable
     {
         #region slotted items
 
-        [CanBeNull]
-        private Item MainHand => GetItemInSlot(ItemSlot.MainHand, null);
+        private Item? MainHand => GetItemInSlot(ItemSlot.MainHand, null);
 
-        [CanBeNull]
-        private Item OffHand => GetItemInSlot(ItemSlot.OffHand, null);
+        private Item? OffHand => GetItemInSlot(ItemSlot.OffHand, null);
 
-        [CanBeNull]
-        public Item GetItemInSlot(ItemSlot slot, ushort? socket)
+        public Item? GetItemInSlot(ItemSlot slot, ushort? socket)
             => Equip.FirstOrDefault(i => i.Slot == slot && i.Socket == socket);
 
-        public void SetItemInSlot(Item value, ItemSlot slot, ushort? socket)
+        public void SetItemInSlot(Item? value, ItemSlot slot, ushort? socket)
         {
             if (!CanEquip(value, slot, socket))
                 return;
@@ -57,7 +53,7 @@ namespace PoESkillTree.Model.Items
             OnItemChanged(slot, socket);
         }
 
-        public bool CanEquip(Item item, ItemSlot slot, ushort? socket)
+        public bool CanEquip(Item? item, ItemSlot slot, ushort? socket)
         {
             if (item == null)
                 return true;
@@ -136,10 +132,10 @@ namespace PoESkillTree.Model.Items
         private readonly EquipmentData _equipmentData;
         private readonly SkillDefinitions _skillDefinitions;
 
-        public event EventHandler ItemDataChanged;
-        public event Action<(ItemSlot, ushort?)> ItemChanged;
+        public event EventHandler? ItemDataChanged;
+        public event Action<(ItemSlot, ushort?)>? ItemChanged;
 
-        public ItemAttributes(EquipmentData equipmentData, SkillDefinitions skillDefinitions, string itemData = null)
+        public ItemAttributes(EquipmentData equipmentData, SkillDefinitions skillDefinitions, string? itemData = null)
         {
             _equipmentData = equipmentData;
             _skillDefinitions = skillDefinitions;
@@ -179,8 +175,7 @@ namespace PoESkillTree.Model.Items
                 if (EnumsNET.Enums.TryParse(inventoryId, out ItemSlot slot))
                 {
                     var item = AddItem(jobj, slot);
-                    AddSkillsToSlot(item.DeserializeSocketedSkills(_skillDefinitions), slot);
-                    item.SetJsonBase();
+                    AddSkillsToSlot(item.DeserializeSocketedSkills(_skillDefinitions, jobj), slot);
                 }
             }
         }
@@ -202,7 +197,7 @@ namespace PoESkillTree.Model.Items
             var items = new JArray();
             foreach (var item in Equip)
             {
-                var jItem = item.JsonBase;
+                var jItem = item.GenerateJson();
                 jItem["inventoryId"] = item.Slot.ToString();
                 items.Add(jItem);
             }
@@ -234,7 +229,7 @@ namespace PoESkillTree.Model.Items
 
         private void SlottedItemOnPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
-            if (args.PropertyName == nameof(Item.JsonBase))
+            if (args.PropertyName == nameof(Item.Socket) || args.PropertyName == nameof(Item.IsEnabled))
             {
                 OnItemDataChanged();
             }

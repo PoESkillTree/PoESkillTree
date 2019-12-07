@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Globalization;
-using System.Linq;
 
 namespace MB.Algodat
 {
@@ -9,21 +7,11 @@ namespace MB.Algodat
     /// Both values must be of the same type and comparable.
     /// </summary>
     /// <typeparam name="T">Type of the values.</typeparam>
-    public struct Range<T> : IComparable<Range<T>>
+    public readonly struct Range<T> : IComparable<Range<T>>
         where T : IComparable<T>
     {
-        public T From;
-        public T To;
-
-        /// <summary>
-        /// Initializes a new <see cref="Range&lt;T&gt;"/> instance.
-        /// </summary>
-        public Range(T value)
-            : this()
-        {
-            From = value;
-            To = value;
-        }
+        public readonly T From;
+        public readonly T To;
 
         /// <summary>
         /// Initializes a new <see cref="Range&lt;T&gt;"/> instance.
@@ -42,31 +30,6 @@ namespace MB.Algodat
         public bool Contains(T value)
         {
             return value.CompareTo(From) >= 0 && value.CompareTo(To) <= 0;
-        }
-
-        /// <summary>
-        /// Whether the value is contained in the range. 
-        /// Border values are considered outside.
-        /// </summary>
-        public bool ContainsExclusive(T value)
-        {
-            return value.CompareTo(From) > 0 && value.CompareTo(To) < 0;
-        }
-
-        /// <summary>
-        /// Whether two ranges intersect each other.
-        /// </summary>
-        public bool Intersects(Range<T> other)
-        {
-            return other.To.CompareTo(From) >= 0 && other.From.CompareTo(To) <= 0;
-        }
-
-        /// <summary>
-        /// Whether two ranges intersect each other.
-        /// </summary>
-        public bool IntersectsExclusive(Range<T> other)
-        {
-            return other.To.CompareTo(From) > 0 && other.From.CompareTo(To) < 0;
         }
 
         /// <summary>
@@ -112,45 +75,6 @@ namespace MB.Algodat
         }
 
         #endregion
-
-
-        public static Range<T> Parse(string p, IFormatProvider provider = null)
-        {
-
-            provider = provider ?? CultureInfo.CurrentCulture;
-            var parts = p
-                .Split(new[] { " to " }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(pp => (T)Convert.ChangeType(pp, typeof(T), provider))
-                .ToArray();
-
-            if (parts.Length < 1 || parts.Length > 2)
-                throw new ArgumentException(string.Format("cannot parse given range ({0}), it doesn't have one or two parts", p));
-
-            if (parts.Length == 1)
-            {
-                return new Range<T>(parts[0]);
-            }
-            else
-            {
-                return new Range<T>(parts[0], parts[1]);
-            }
-
-        }
-    }
-
-    /// <summary>
-    /// Static helper class to create Range instances.
-    /// </summary>
-    public static class Range
-    {
-        /// <summary>
-        /// Creates and returns a new <see cref="Range&lt;T&gt;"/> instance.
-        /// </summary>
-        public static Range<T> Create<T>(T from, T to)
-            where T : IComparable<T>
-        {
-            return new Range<T>(from, to);
-        }
     }
 
     /// <summary>

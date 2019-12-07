@@ -21,7 +21,7 @@ namespace PoESkillTree.ViewModels.Equipment
         private int _level;
         private int _quality;
         private int? _group;
-        private GemBaseViewModel _gemBase;
+        private GemBaseViewModel _gemBase = default!;
         private bool _isEnabled;
 
         /// <summary>
@@ -149,11 +149,11 @@ namespace PoESkillTree.ViewModels.Equipment
             _slot = slot;
             AvailableGems = skillDefinitions.Skills
                 .Where(d => d.BaseItem != null)
-                .Where(d => d.BaseItem.ReleaseState == ReleaseState.Released ||
+                .Where(d => d.BaseItem!.ReleaseState == ReleaseState.Released ||
                             d.BaseItem.ReleaseState == ReleaseState.Legacy)
-                .OrderBy(d => d.BaseItem.DisplayName)
+                .OrderBy(d => d.BaseItem!.DisplayName)
                 .Select(d => new GemBaseViewModel(itemImageService, d)).ToList();
-            NewSocketedGem = new SocketedGemViewModel
+            _newSocketedGem = new SocketedGemViewModel
             {
                 GemBase = AvailableGems[0],
                 Level = 20,
@@ -233,7 +233,6 @@ namespace PoESkillTree.ViewModels.Equipment
                 }
                 _itemAttributes.SetSkillsInSlot(skills, _slot);
             }
-            base.OnClose(param);
         }
     }
 }

@@ -7,9 +7,9 @@ namespace PoESkillTree.Model.Serialization
     public class XmlLeagueStash
     {
         [XmlAttribute]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
         [XmlElement]
-        public List<StashBookmark> Bookmarks { get; set; }
+        public List<StashBookmark> Bookmarks { get; set; } = default!;
     }
 
     /// <summary>
@@ -19,21 +19,21 @@ namespace PoESkillTree.Model.Serialization
     public class XmlPersistentData
     {
         [XmlElement]
-        public string AppVersion { get; set; }
+        public string AppVersion { get; set; } = default!;
 
         [XmlElement]
-        public Options Options { get; set; }
+        public Options Options { get; set; } = default!;
 
         [XmlElement]
-        public string CurrentBuildPath { get; set; }
+        public string? CurrentBuildPath { get; set; }
 
         [XmlElement]
-        public string SelectedBuildPath { get; set; }
+        public string? SelectedBuildPath { get; set; }
 
         [XmlArray]
-        public List<StashBookmark> StashBookmarks { get; set; }
+        public List<StashBookmark>? StashBookmarks { get; set; }
 
         [XmlArray]
-        public List<XmlLeagueStash> LeagueStashes { get; set; }
+        public List<XmlLeagueStash>? LeagueStashes { get; set; }
     }
 }

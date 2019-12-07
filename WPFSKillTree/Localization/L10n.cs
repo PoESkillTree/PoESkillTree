@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using PoESkillTree.Utils;
@@ -75,7 +76,7 @@ namespace PoESkillTree.Localization
         {
             ScanLocaleDirectory();
 
-            string language = null;
+            string? language = null;
             if (!string.IsNullOrEmpty(optionsLanguage))
                 language = optionsLanguage;
 
@@ -95,7 +96,7 @@ namespace PoESkillTree.Localization
         }
 
         // Find most suitable translation catalog for specified language.
-        private static string MatchLanguage(string match)
+        private static string? MatchLanguage(string match)
         {
             // Null or empty, no match.
             if (string.IsNullOrEmpty(match)) return null;
@@ -109,9 +110,9 @@ namespace PoESkillTree.Localization
             // language | language-* | language-*-*
             string matchLanguage = subtags[0];
             // *-variant | *-variant-*
-            string matchVariant = subtags.Length > 1 && subtags[1].Length >= 3 ? subtags[1] : null;
+            string? matchVariant = subtags.Length > 1 && subtags[1].Length >= 3 ? subtags[1] : null;
             // *-region | *-*-region
-            string matchRegion = subtags.Length > 2 && subtags[2].Length == 2 ? subtags[2] : (subtags.Length > 1 && subtags[1].Length == 2 ? subtags[1] : null);
+            string? matchRegion = subtags.Length > 2 && subtags[2].Length == 2 ? subtags[2] : (subtags.Length > 1 && subtags[1].Length == 2 ? subtags[1] : null);
 
             List<string> matches = new List<string>();
 
@@ -131,7 +132,7 @@ namespace PoESkillTree.Localization
                 foreach (string tag in matches.ToArray())
                 {
                     subtags = tag.Split('-');
-                    string variant = subtags.Length > 1 && subtags[1].Length >= 3 ? subtags[1] : null;
+                    string? variant = subtags.Length > 1 && subtags[1].Length >= 3 ? subtags[1] : null;
                     // Catalog language has variant and it doesn't match, remove it.
                     if (variant != null && variant != matchVariant)
                         matches.Remove(tag);
@@ -146,7 +147,7 @@ namespace PoESkillTree.Localization
                 foreach (string tag in matches)
                 {
                     subtags = tag.Split('-');
-                    string region = subtags.Length > 2 && subtags[2].Length == 2 ? subtags[2] : (subtags.Length > 1 && subtags[1].Length == 2 ? subtags[1] : null);
+                    string? region = subtags.Length > 2 && subtags[2].Length == 2 ? subtags[2] : (subtags.Length > 1 && subtags[1].Length == 2 ? subtags[1] : null);
                     // Catalog language has region and it matches, return it.
                     if (region != null && region == matchRegion)
                         return tag;
@@ -158,7 +159,7 @@ namespace PoESkillTree.Localization
         }
 
         // Find most suitable translation catalog for specified culture.
-        private static string MatchLanguage(CultureInfo culture)
+        private static string? MatchLanguage(CultureInfo culture)
         {
             return MatchLanguage(culture.Name);
         }
@@ -166,7 +167,8 @@ namespace PoESkillTree.Localization
         // Translates message.
         // NULL message is translated to NULL.
         // Message without existing translation will be returned untranslated.
-        public static string Message(string message, string context = null)
+        [return: NotNullIfNotNull("message")]
+        public static string? Message(string? message, string? context = null)
         {
             return IsDefault || message == null ? message : (Catalog.Message(message, context) ?? message);
         }
@@ -174,7 +176,8 @@ namespace PoESkillTree.Localization
         // Translates plural message.
         // NULL message is translated to NULL.
         // Message without existing translation will be returned untranslated.
-        public static string Plural(string message, string plural, uint n, string context = null)
+        [return: NotNullIfNotNull("message")]
+        public static string? Plural(string? message, string plural, uint n, string? context = null)
         {
             if (IsDefault)
                 return n == 1 || message == null ? message : plural;
@@ -183,9 +186,9 @@ namespace PoESkillTree.Localization
         }
 
         // Reads all text from localized file.
-        public static string ReadAllText(string filename)
+        public static string? ReadAllText(string filename)
         {
-            string text = Catalog.ReadAllText(filename);
+            string? text = Catalog.ReadAllText(filename);
             if (text == null)
             {
                 // Try to fallback to default language.
@@ -214,7 +217,7 @@ namespace PoESkillTree.Localization
                     if (dirLanguage.Name == DefaultLanguage) continue;
 
                     // Check whether directory name corresponds to supported culture name.
-                    CultureInfo culture = null;
+                    CultureInfo? culture = null;
                     try
                     {
                         culture = CultureInfo.GetCultureInfo(dirLanguage.Name);
@@ -222,7 +225,7 @@ namespace PoESkillTree.Localization
                     catch { }
                     if (culture == null) continue; // Not supported language.
 
-                    Catalog catalog = Catalog.Create(dirLanguage.FullName, culture);
+                    Catalog? catalog = Catalog.Create(dirLanguage.FullName, culture);
                     if (catalog != null)
                         Catalogs.Add(catalog.Name, catalog);
                 }

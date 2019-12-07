@@ -36,7 +36,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm.Model
             return N1 == other.N1 && N2 == other.N2;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;

@@ -66,7 +66,7 @@ namespace PoESkillTree.Computation.ViewModels
         }
 
         private void AddStat()
-            => AddStat(NewStat.Stat, NewStat.NodeType);
+            => AddStat(NewStat.Stat!, NewStat.NodeType);
 
         public void AddStat(IStat stat, NodeType nodeType = NodeType.Total)
         {

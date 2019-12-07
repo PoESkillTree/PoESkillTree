@@ -9,6 +9,6 @@ namespace PoESkillTree.Model.Serialization
     public class XmlPersistentDataVersion
     {
         [XmlElement]
-        public string AppVersion { get; set; }
+        public string? AppVersion { get; set; }
     }
 }

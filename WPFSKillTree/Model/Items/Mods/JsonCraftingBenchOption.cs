@@ -6,9 +6,9 @@ namespace PoESkillTree.Model.Items.Mods
     public class JsonCraftingBenchOption
     {
         [JsonProperty("mod_id")]
-        public string ModId { get; set; }
+        public string ModId { get; set; } = default!;
 
         [JsonProperty("item_classes")]
-        public string[] ItemClasses { get; set; }
+        public string[] ItemClasses { get; set; } = default!;
     }
 }

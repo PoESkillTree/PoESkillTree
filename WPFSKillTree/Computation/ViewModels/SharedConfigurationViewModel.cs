@@ -9,21 +9,23 @@ namespace PoESkillTree.Computation.ViewModels
     {
         private readonly CalculationNodeViewModelFactory _nodeFactory;
 
+#pragma warning disable CS8618 // Instances can only be created via Create, which initializes all instance variables
         private SharedConfigurationViewModel(CalculationNodeViewModelFactory nodeFactory)
+#pragma warning restore
             => _nodeFactory = nodeFactory;
 
-        private ConfigurationStatViewModel LevelStat { get; set; }
-        private ConfigurationStatViewModel CharacterClassStat { get; set; }
-        private ConfigurationStatViewModel BanditStat { get; set; }
+        private ConfigurationStatViewModel _levelStat;
+        private ConfigurationStatViewModel _characterClassStat;
+        private ConfigurationStatViewModel _banditStat;
 
         public void SetLevel(int level)
-            => LevelStat.Node.NumericValue = level;
+            => _levelStat.Node.NumericValue = level;
 
         public void SetCharacterClass(CharacterClass characterClass)
-            => CharacterClassStat.Node.NumericValue = (int) characterClass;
+            => _characterClassStat.Node.NumericValue = (int) characterClass;
 
         public void SetBandit(Bandit bandit)
-            => BanditStat.Node.NumericValue = (int) bandit;
+            => _banditStat.Node.NumericValue = (int) bandit;
 
         public static SharedConfigurationViewModel Create(
             CalculationNodeViewModelFactory nodeFactory, IBuilderFactories builderFactories)
@@ -35,9 +37,9 @@ namespace PoESkillTree.Computation.ViewModels
 
         private void Initialize(IBuilderFactories f)
         {
-            LevelStat = CreateConfigurationStat(f.StatBuilders.Level);
-            CharacterClassStat = CreateConfigurationStat(f.StatBuilders.CharacterClass);
-            BanditStat = CreateConfigurationStat(f.MetaStatBuilders.SelectedBandit);
+            _levelStat = CreateConfigurationStat(f.StatBuilders.Level);
+            _characterClassStat = CreateConfigurationStat(f.StatBuilders.CharacterClass);
+            _banditStat = CreateConfigurationStat(f.MetaStatBuilders.SelectedBandit);
         }
 
         private ConfigurationStatViewModel CreateConfigurationStat(

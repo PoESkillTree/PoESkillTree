@@ -45,12 +45,12 @@ namespace PoESkillTree.TreeGenerator.Algorithm
         /// Current set of nodes that build the tree.
         /// These can be swapped out (if not in <see cref="_fixedNodes"/>).
         /// </summary>
-        private HashSet<ushort> _current;
+        private HashSet<ushort> _current = default!;
         /// <summary>
         /// Set of nodes in <see cref="_allNodes"/> but not in <see cref="_current"/>.
         /// These can be swapped in.
         /// </summary>
-        private HashSet<ushort> _notCurrent;
+        private HashSet<ushort> _notCurrent = default!;
         /// <summary>
         /// If the current iteration over all nodes improved the solution.
         /// If not, there won't be another iteration as the solution did not change.

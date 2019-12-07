@@ -22,8 +22,8 @@ namespace PoESkillTree.ViewModels.Equipment
         private readonly IStat _abyssalSocketsStat;
         private readonly IScheduler _observeScheduler;
 
-        private IReadOnlyDictionary<ItemSlot, IReadOnlyList<InventoryItemViewModel>> _jewels;
-        private IDisposable _subscription;
+        private IReadOnlyDictionary<ItemSlot, IReadOnlyList<InventoryItemViewModel>>? _jewels;
+        private IDisposable? _subscription;
 
         private AbyssalSocketObserver(
             ObservableCalculator observableCalculator, IScheduler observeScheduler, IStat abyssalSocketsStat)

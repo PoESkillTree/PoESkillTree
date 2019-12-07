@@ -13,27 +13,29 @@ namespace PoESkillTree.Model.Serialization
     /// </summary>
     public abstract class AbstractPersistentData : Notifier, IPersistentData
     {
+#pragma warning disable CS8618 // _currentBuild and _equipmentData can't be null after initalization
         private Options _options = new Options();
         private PoEBuild _currentBuild;
-        private IBuild _selectedBuild;
+        private IBuild? _selectedBuild;
         private EquipmentData _equipmentData;
+#pragma warning restore
 
         public Options Options
         {
-            get { return _options; }
-            set { SetProperty(ref _options, value); }
+            get => _options;
+            set => SetProperty(ref _options, value);
         }
 
         public PoEBuild CurrentBuild
         {
-            get { return _currentBuild; }
-            set { SetProperty(ref _currentBuild, value); }
+            get => _currentBuild;
+            set => SetProperty(ref _currentBuild, value);
         }
 
-        public IBuild SelectedBuild
+        public IBuild? SelectedBuild
         {
-            get { return _selectedBuild; }
-            set { SetProperty(ref _selectedBuild, value); }
+            get => _selectedBuild;
+            set => SetProperty(ref _selectedBuild, value);
         }
 
         public List<StashBookmark> StashBookmarks { get; } = new List<StashBookmark>();
@@ -47,8 +49,8 @@ namespace PoESkillTree.Model.Serialization
 
         public EquipmentData EquipmentData
         {
-            get { return _equipmentData; }
-            set { SetProperty(ref _equipmentData, value); }
+            get => _equipmentData;
+            set => SetProperty(ref _equipmentData, value);
         }
 
         public abstract Task InitializeAsync(IDialogCoordinator dialogCoordinator);
@@ -63,7 +65,7 @@ namespace PoESkillTree.Model.Serialization
 
         public abstract Task ReloadBuildsAsync();
 
-        public abstract Task<PoEBuild> ImportBuildAsync(string buildXml);
+        public abstract Task<PoEBuild?> ImportBuildAsync(string buildXml);
 
         public abstract string ExportBuild(PoEBuild build);
     }

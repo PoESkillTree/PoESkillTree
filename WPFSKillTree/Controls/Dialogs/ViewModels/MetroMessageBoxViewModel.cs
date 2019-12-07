@@ -6,7 +6,7 @@ namespace PoESkillTree.Controls.Dialogs.ViewModels
 {
     public class MetroMessageBoxViewModel : CloseableViewModel<MessageBoxResult>
     {
-        public MetroMessageBoxViewModel(string message, string details, string title, MessageBoxButton buttons,
+        public MetroMessageBoxViewModel(string message, string? details, string title, MessageBoxButton buttons,
             PackIconModernKind? imageKind)
         {
             Message = message;
@@ -33,7 +33,7 @@ namespace PoESkillTree.Controls.Dialogs.ViewModels
         #region elements content
         public string Message { get; }
 
-        public string Details { get; }
+        public string? Details { get; }
 
         public PackIconModernKind? ImageKind { get; }
         #endregion

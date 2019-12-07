@@ -47,8 +47,7 @@ namespace PoESkillTree.Model.Items
             var explicits = new List<IMod>();
             foreach (var id in xmlUnique.Explicit)
             {
-                Mod mod;
-                if (!modDatabase.Mods.TryGetValue(id, out mod))
+                if (!modDatabase.Mods.TryGetValue(id, out var mod))
                 {
                     Log.Error($"Unknown mod id {id} on unique {UniqueName}");
                     continue;

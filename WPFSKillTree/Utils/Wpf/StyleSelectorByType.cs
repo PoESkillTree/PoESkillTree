@@ -12,21 +12,21 @@ namespace PoESkillTree.Utils.Wpf
         /// <summary>
         /// <see cref="Type"/> used to select between <see cref="Style"/> and <see cref="DefaultStyle"/>.
         /// </summary>
-        public Type Type { get; set; }
+        public Type? Type { get; set; }
 
         /// <summary>
         /// <see cref="Style"/> used if the item is an instance of <see cref="Type"/>.
         /// </summary>
-        public Style Style { get; set; }
+        public Style? Style { get; set; }
 
         /// <summary>
         /// <see cref="Style"/> used if the item is not an instance of <see cref="Type"/>.
         /// </summary>
-        public Style DefaultStyle { get; set; }
+        public Style? DefaultStyle { get; set; }
 
-        public override Style SelectStyle(object item, DependencyObject container)
+        public override Style? SelectStyle(object? item, DependencyObject container)
         {
-            return Type.IsInstanceOfType(item) ? Style : DefaultStyle;
+            return Type?.IsInstanceOfType(item) == true ? Style : DefaultStyle;
         }
     }
 }

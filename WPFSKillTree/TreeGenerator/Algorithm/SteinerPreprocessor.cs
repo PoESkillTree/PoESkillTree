@@ -49,7 +49,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm
         /// not involving them.
         /// </remarks>
         public SteinerPreprocessor(IEnumerable<GraphNode> searchSpace, IEnumerable<GraphNode> fixedTargetNodes,
-            GraphNode startNode = null, IEnumerable<GraphNode> variableTargetNodes = null)
+            GraphNode? startNode = null, IEnumerable<GraphNode>? variableTargetNodes = null)
         {
             var fixedTargetNodesSet = new HashSet<GraphNode>(fixedTargetNodes);
             if (!fixedTargetNodesSet.Any())

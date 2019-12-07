@@ -38,7 +38,7 @@ namespace PoESkillTree.Model.Items
             var textBlock = d as TextBlock;
             if (textBlock == null)
                 return;
-            SetTextBlockInlines(textBlock, e.NewValue as IEnumerable<Inline>);
+            SetTextBlockInlines(textBlock, (IEnumerable<Inline>) e.NewValue);
         }
     }
 
@@ -53,7 +53,7 @@ namespace PoESkillTree.Model.Items
 
         private static readonly Regex BackReplace = new Regex("#");
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object? value, Type targetType, object parameter, CultureInfo culture)
         {
             var mod = value as ItemMod;
             if (mod == null)

@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -10,72 +9,55 @@ using Microsoft.Win32;
 using PoESkillTree.Localization;
 using Newtonsoft.Json.Linq;
 using PoESkillTree.Utils;
-using Version = PoESkillTree.Properties.Version;
 
 namespace PoESkillTree.SkillTreeFiles
 {
     /* Update manager.
      * Provides API for semi-synchronous update process (downloading is asynchronous, while checking for updates and installation are synchronous tasks).
      */ 
-    public class Updater
+    public static class Updater
     {
-        // Use stronger cryptographic standards (https://githubengineering.com/crypto-removal-notice/)
-        static Updater()
-        {
-            ServicePointManager.SecurityProtocol =
-                                           SecurityProtocolType.Tls12
-                                         | SecurityProtocolType.Tls11
-                                         | SecurityProtocolType.Tls
-                                         | SecurityProtocolType.Ssl3;
-        }
         // Git API URL to fetch releases (the first one is latest one).
-        private static readonly string GitAPILatestReleaseURL = "https://api.github.com/repos/PoESkillTree/PoESkillTree/releases";
+        private const string GitApiLatestReleaseUrl = "https://api.github.com/repos/PoESkillTree/PoESkillTree/releases";
+
         // The language value name of Uninstall registry key.
         private const string InnoSetupUninstallLanguageValue = "Inno Setup: Language";
         // The suffix added to AppId to form Uninstall registry key for an application.
         private const string InnoSetupUninstallAppIdSuffix = "_is1";
-        // The flag whether check for updates was done and was successful.
-        public static bool IsChecked = false;
-        // The flag whether download is complete.
-        public static bool IsDownloaded { get { return Latest != null && Latest.IsDownloaded; } }
-        // The flag whether download is in progress.
-        public static bool IsDownloading { get { return Latest != null && Latest.IsDownloading; } }
         // Latest release.
-        private static Release Latest;
+        private static Release? _latest;
         // Asset content type of package.
         private const string PackageContentType = "application/x-msdownload";
         // Regular expression for a released package file name.
         private static readonly Regex RePackage = new Regex(@".*\.exe$", RegexOptions.IgnoreCase);
         // HTTP request timeout for release checks and downloads (in seconds).
-        private const int REQUEST_TIMEOUT = 15;
+        private const int RequestTimeout = 15;
 
         // Release informations.
         public class Release
         {
             // The web client instance of current download process.
-            private WebClient Client;
-            // The name.
-            public string Name;
-            // The description.
-            public string Description;
+            private WebClient? _client;
             // The destination file for package download.
-            private string DownloadFile;
+            private string? _downloadFile;
             // The flag whether release was downloaded.
-            public bool IsDownloaded { get { return Client == null && DownloadFile != null; } }
+            public bool IsDownloaded => _client == null && _downloadFile != null;
+
             // The flag whether download is still in progress.
-            public bool IsDownloading { get { return Client != null; } }
+            public bool IsDownloading => _client != null;
+
             // The flag whether installation was successfuly started.
             public bool IsInstalled;
             // The flag whether release is a pre-release.
-            public bool IsPrerelease;
+            public bool IsPreRelease;
             // The flag whether release is an update of this product.
             public bool IsUpdate;
             // The file name of package.
-            public string PackageFileName;
+            public string PackageFileName = default!;
             // The URI of release package.
-            public Uri URI;
+            public Uri Uri = default!;
             // The version string.
-            public string Version;
+            public string Version = default!;
 
             ~Release()
             {
@@ -90,27 +72,27 @@ namespace PoESkillTree.SkillTreeFiles
             public void Cancel()
             {
                 // Cancel download in progress.
-                if (Client.IsBusy)
-                    Client.CancelAsync();
+                if (_client != null && _client.IsBusy)
+                    _client.CancelAsync();
             }
 
             // Dispose of all resources.
             public void Dispose()
             {
                 // Dispose web client.
-                if (Client != null)
+                if (_client != null)
                 {
-                    Client.Dispose();
-                    Client = null;
+                    _client.Dispose();
+                    _client = null;
                 }
 
                 // Delete download file.
-                if (DownloadFile != null)
+                if (_downloadFile != null)
                 {
                     try
                     {
-                        File.Delete(DownloadFile);
-                        DownloadFile = null;
+                        File.Delete(_downloadFile);
+                        _downloadFile = null;
                     }
                     catch (Exception) { } // File won't be deleted while setup is running.
                 }
@@ -119,28 +101,28 @@ namespace PoESkillTree.SkillTreeFiles
             /* Downloads release.
              * Throws UpdaterException if error occurs.
              */
-            public void Download(AsyncCompletedEventHandler completedHandler, DownloadProgressChangedEventHandler progressHandler)
+            public void Download(AsyncCompletedEventHandler? completedHandler, DownloadProgressChangedEventHandler? progressHandler)
             {
-                if (Client != null)
+                if (_client != null)
                     throw new UpdaterException(L10n.Message("Download already in progress"));
-                if (DownloadFile != null)
+                if (_downloadFile != null)
                     throw new UpdaterException(L10n.Message("Download already completed"));
 
                 try
                 {
                     // Initialize web client.
-                    Client = new UpdaterWebClient();
-                    Client.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadCompleted);
+                    _client = new UpdaterWebClient();
+                    _client.DownloadFileCompleted += DownloadCompleted;
                     if (completedHandler != null)
-                        Client.DownloadFileCompleted += new AsyncCompletedEventHandler(completedHandler);
+                        _client.DownloadFileCompleted += completedHandler;
                     if (progressHandler != null)
-                        Client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(progressHandler);
+                        _client.DownloadProgressChanged += progressHandler;
 
                     // Create download file.
-                    DownloadFile = Path.Combine(Path.GetTempPath(), PackageFileName);
+                    _downloadFile = Path.Combine(Path.GetTempPath(), PackageFileName);
 
                     // Start download.
-                    Client.DownloadFileAsync(URI, DownloadFile);
+                    _client.DownloadFileAsync(Uri, _downloadFile);
                 }
                 catch (Exception e)
                 {
@@ -150,11 +132,11 @@ namespace PoESkillTree.SkillTreeFiles
             }
 
             // Invoked when download completes, aborts or fails.
-            private void DownloadCompleted(Object sender, AsyncCompletedEventArgs e)
+            private void DownloadCompleted(object sender, AsyncCompletedEventArgs e)
             {
                 // Dispose web client.
-                Client.Dispose();
-                Client = null;
+                _client?.Dispose();
+                _client = null;
 
                 // Dispose of resources so download can be retried.
                 if (e.Cancelled || e.Error != null) Dispose();
@@ -165,19 +147,24 @@ namespace PoESkillTree.SkillTreeFiles
              */
             public void Install()
             {
-                if (Client != null)
+                if (_client != null)
                     throw new UpdaterException(L10n.Message("Download still in progress"));
 
-                if (DownloadFile == null)
+                if (_downloadFile == null)
                     throw new UpdaterException(L10n.Message("No package downloaded"));
 
                 try
                 {
-                    Process setup = new Process();
-                    setup.StartInfo.FileName = DownloadFile;
-                    setup.StartInfo.WorkingDirectory = Path.GetDirectoryName(DownloadFile);
-                    setup.StartInfo.CreateNoWindow = true;
-                    setup.StartInfo.UseShellExecute = false;
+                    Process setup = new Process
+                    {
+                        StartInfo =
+                        {
+                            FileName = _downloadFile,
+                            WorkingDirectory = Path.GetDirectoryName(_downloadFile),
+                            CreateNoWindow = true,
+                            UseShellExecute = false
+                        }
+                    };
 
                     // Perform silent setup if release is an update.
                     if (IsUpdate)
@@ -213,12 +200,11 @@ namespace PoESkillTree.SkillTreeFiles
             {
                 WebRequest request = base.GetWebRequest(address);
 
-                if (request is HttpWebRequest)
+                if (request is HttpWebRequest httpRequest)
                 {
-                    HttpWebRequest httpRequest = (HttpWebRequest)request;
                     httpRequest.UserAgent = "PoESkillTree";
                     httpRequest.KeepAlive = false;
-                    httpRequest.Timeout = REQUEST_TIMEOUT * 1000;
+                    httpRequest.Timeout = RequestTimeout * 1000;
                 }
 
                 return request;
@@ -228,25 +214,25 @@ namespace PoESkillTree.SkillTreeFiles
         // Cancels download.
         public static void Cancel()
         {
-            if (Latest != null && Latest.IsDownloading)
-                Latest.Cancel();
+            if (_latest != null && _latest.IsDownloading)
+                _latest.Cancel();
         }
 
         /* Checks for updates and returns release informations when there is newer one.
          * Returns null if there is no newer release.
-         * If Prerelease argument is true, it will return also Pre-release, otherwise Pre-releases are ignored.
+         * If includePreReleases argument is true, it will return also Pre-release, otherwise Pre-releases are ignored.
          * An existing last checked release will be discarded.
          * Throws UpdaterException if error occurs.
          */
-        public static Release CheckForUpdates(bool Prerelease = true)
+        public static Release? CheckForUpdates(bool includePreReleases = true)
         {
-            if (Latest != null)
+            if (_latest != null)
             {
-                if (Latest.IsDownloading)
+                if (_latest.IsDownloading)
                     throw new UpdaterException(L10n.Message("Download already in progress"));
 
                 // If release was installed, report no update.
-                if (Latest.IsInstalled) return null;
+                if (_latest.IsInstalled) return null;
 
                 Dispose();
             }
@@ -254,17 +240,14 @@ namespace PoESkillTree.SkillTreeFiles
             if (IsNewerProductInstalled())
             {
                 // Newer product is installed, there is no update.
-                IsChecked = true;
-
                 return null;
             }
 
-            var webClient = new UpdaterWebClient();
-            webClient.Encoding = Encoding.UTF8;
+            var webClient = new UpdaterWebClient {Encoding = Encoding.UTF8};
 
             try
             {
-                string json = webClient.DownloadString(GitAPILatestReleaseURL);
+                string json = webClient.DownloadString(GitApiLatestReleaseUrl);
                 JArray releases = JArray.Parse(json);
                 if (releases.Count < 1)
                     throw new UpdaterException(L10n.Message("No release found"));
@@ -272,44 +255,42 @@ namespace PoESkillTree.SkillTreeFiles
                 var current = GetCurrentVersion(); // Current version (tag).
 
                 // Iterate thru avialable releases.
-                foreach (JObject release in (JArray)releases)
+                foreach (JObject release in releases)
                 {
                     // Drafts are not returned by API, but just in case...
-                    bool draft = release["draft"].Value<bool>();
+                    bool draft = release["draft"]!.Value<bool>();
                     if (draft) continue; // Ignore drafts.
 
                     // Check if there are assets attached.
-                    JArray assets = (JArray)release["assets"];
+                    JArray assets = (JArray)release["assets"]!;
                     if (assets.Count < 1) continue; // No assets, ignore it.
 
                     // Compare release tag with our version (tag).
-                    string tag = release["tag_name"].Value<string>();
+                    string tag = release["tag_name"]!.Value<string>();
                     var version = SemanticVersion.Parse(tag);
                     if (version.CompareTo(current) <= 0)
                     {
                         // Same or older version.
-                        IsChecked = true;
-
                         return null;
                     }
 
                     // Check if it is pre-release and we want to update to it.
-                    bool prerelease = release["prerelease"].Value<bool>();
-                    if (prerelease && !Prerelease) continue; // Found unwanted pre-release, ignore it.
+                    bool isPreRelease = release["prerelease"]!.Value<bool>();
+                    if (isPreRelease && !includePreReleases) continue; // Found unwanted pre-release, ignore it.
 
                     // Find release package.
-                    string fileName = null;
-                    JObject pkgAsset = null;
+                    string? fileName = null;
+                    JObject? pkgAsset = null;
                     foreach (JObject asset in assets)
                     {
                         // Check if asset upload completed.
-                        if (asset["state"].Value<string>() != "uploaded")
+                        if (asset["state"]!.Value<string>() != "uploaded")
                             continue;
 
-                        string content_type = asset["content_type"].Value<string>();
+                        string content_type = asset["content_type"]!.Value<string>();
                         if (content_type != PackageContentType) continue; // Not a package, ignore it.
 
-                        fileName = asset["name"].Value<string>();
+                        fileName = asset["name"]!.Value<string>();
                         Match m = RePackage.Match(fileName);
                         if (m.Success)
                         {
@@ -321,17 +302,14 @@ namespace PoESkillTree.SkillTreeFiles
                     if (pkgAsset == null) continue; // No package found.
 
                     // This is newer release.
-                    IsChecked = true;
-                    Latest = new Release
+                    _latest = new Release
                     {
-                        Name = release["name"].Value<string>(),
-                        Description = release["body"].Value<string>(),
-                        IsPrerelease = prerelease,
+                        IsPreRelease = isPreRelease,
                         // A release is an update, if file name starts with our PackageName.
-                        IsUpdate = fileName.StartsWith(GetPackageName(Version.ProductName) + "-"),
+                        IsUpdate = fileName!.StartsWith(GetPackageName(AppData.ProductName) + "-"),
                         PackageFileName = fileName,
                         Version = tag,
-                        URI = new Uri(pkgAsset["browser_download_url"].Value<string>())
+                        Uri = new Uri(pkgAsset["browser_download_url"]!.Value<string>())
                     };
 
                     // We are done, exit loop.
@@ -350,51 +328,45 @@ namespace PoESkillTree.SkillTreeFiles
                 throw new UpdaterException(e.Message, e);
             }
 
-            return Latest;
+            return _latest;
         }
 
         // Dispose of current update process.
         public static void Dispose()
         {
-            if (Latest != null)
+            if (_latest != null)
             {
-                if (Latest.IsDownloading)
+                if (_latest.IsDownloading)
                     throw new UpdaterException(L10n.Message("Download still in progress"));
-                Latest.Dispose();
-                Latest = null;
+                _latest.Dispose();
+                _latest = null;
             }
-
-            IsChecked = false;
         }
 
         /* Downloads latest release.
          * Throws UpdaterException if error occurs.
          */
-        public static void Download(AsyncCompletedEventHandler completedHandler = null, DownloadProgressChangedEventHandler progressHandler = null)
+        public static void Download(AsyncCompletedEventHandler? completedHandler = null, DownloadProgressChangedEventHandler? progressHandler = null)
         {
-            if (Latest != null)
+            if (_latest != null)
             {
-                if (Latest.IsDownloaded || Latest.IsDownloading)
+                if (_latest.IsDownloaded || _latest.IsDownloading)
                     throw new UpdaterException(L10n.Message("Download completed or still in progress"));
 
-                Latest.Download(completedHandler, progressHandler);
+                _latest.Download(completedHandler, progressHandler);
             }
         }
 
         // Returns current version.
         private static SemanticVersion GetCurrentVersion()
         {
-            return SemanticVersion.Parse(Version.ProductVersion);
+            return SemanticVersion.Parse(AppData.ProductVersion);
         }
 
-        // Return latest release, or null if there is none or it wasn't checked for yet.
-        public static Release GetLatestRelease()
-        {
-            return Latest;
-        }
+        public static bool LatestReleaseIsUpdate => _latest?.IsUpdate ?? false;
 
         // Returns PackageName according to ProductName.
-        public static string GetPackageName(string productName)
+        private static string GetPackageName(string productName)
         {
             foreach (char invalid in Path.GetInvalidFileNameChars())
                 if (productName.Contains(invalid))
@@ -405,19 +377,19 @@ namespace PoESkillTree.SkillTreeFiles
         }
 
         // Returns language chosen at last setup.
-        public static string GetSetupLanguage()
+        private static string? GetSetupLanguage()
         {
             if (AppData.IsPortable)
             {
                 return AppData.GetIniValue("Setup", "Language");
             }
             else
-                using (RegistryKey uninstallKey = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall\" + Version.AppId + InnoSetupUninstallAppIdSuffix))
+                using (RegistryKey uninstallKey = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall\" + AppData.ProductName + InnoSetupUninstallAppIdSuffix))
                 {
                     if (uninstallKey == null)
                         throw new Exception(L10n.Message("The application is not correctly installed"));
 
-                    string language = uninstallKey.GetValue(InnoSetupUninstallLanguageValue) as string;
+                    var language = uninstallKey.GetValue(InnoSetupUninstallLanguageValue) as string;
                     if (!string.IsNullOrEmpty(language))
                         return language;
                 }
@@ -430,15 +402,15 @@ namespace PoESkillTree.SkillTreeFiles
          */
         public static void Install()
         {
-            if (Latest != null)
+            if (_latest != null)
             {
-                if (Latest.IsDownloading)
+                if (_latest.IsDownloading)
                     throw new UpdaterException(L10n.Message("Download still in progress"));
-                if (!Latest.IsDownloaded)
+                if (!_latest.IsDownloaded)
                     throw new UpdaterException(L10n.Message("No package downloaded"));
 
                 // If installation fails (exception will be thrown), latest release will be in ready to re-download state.
-                Latest.Install();
+                _latest.Install();
             }
         }
 
@@ -453,12 +425,12 @@ namespace PoESkillTree.SkillTreeFiles
                 {
                     using (RegistryKey key = uninstallKey.OpenSubKey(name))
                     {
-                        string productName = key.GetValue("DisplayName") as string;
+                        var productName = key.GetValue("DisplayName") as string;
                         if (string.IsNullOrEmpty(productName)) continue; // Missing DisplayName value.
 
                         if (!productName.ToLowerInvariant().Contains("PoESkillTree")) continue; // Not our application.
 
-                        if (productName != Version.ProductName)
+                        if (productName != AppData.ProductName)
                         {
                             var version = SemanticVersion.Parse((string) key.GetValue("DisplayVersion"));
                             if (version.CompareTo(current) > 0)
@@ -472,14 +444,8 @@ namespace PoESkillTree.SkillTreeFiles
         }
     }
 
-    // Updater exception.
     public class UpdaterException : Exception
     {
-        public UpdaterException()
-            : base()
-        {
-        }
-
         public UpdaterException(string message)
             : base(message)
         {

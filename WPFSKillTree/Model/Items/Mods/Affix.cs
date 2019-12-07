@@ -35,13 +35,11 @@ namespace PoESkillTree.Model.Items.Mods
         public Affix()
             : this(new IMod[0])
         {
-            Name = "";
         }
 
         public Affix(IMod mod)
             : this(new[] { mod })
         {
-            Name = "";
         }
 
         public Affix(IReadOnlyList<IMod> mods, string name)
@@ -56,18 +54,20 @@ namespace PoESkillTree.Model.Items.Mods
 
         private Affix(IReadOnlyList<IMod> mods)
         {
+            Name = "";
             if (!mods.Any())
             {
                 StatIds = new string[0];
                 _ranges = new IReadOnlyList<Range<int>>[0];
                 _trees = new IRangeTree<int, ModWrapper>[0];
+                _allMods = Enumerable.Empty<IMod>();
                 return;
             }
 
             StatIds = mods.SelectMany(m => m.Stats).Select(s => s.Id).Distinct().ToList();
             var valueCount = StatIds.Count;
 
-            var comparer = new ModWrapperComparer();
+            var comparer = Comparer<ModWrapper>.Create((x, y) => x.Range.CompareTo(y.Range));
             _trees = new IRangeTree<int, ModWrapper>[valueCount];
             _ranges = new IReadOnlyList<Range<int>>[valueCount];
             for (int i = 0; i < valueCount; i++)
@@ -119,14 +119,6 @@ namespace PoESkillTree.Model.Items.Mods
             {
                 Mod = mod;
                 Range = range;
-            }
-        }
-
-        private class ModWrapperComparer : IComparer<ModWrapper>
-        {
-            public int Compare(ModWrapper x, ModWrapper y)
-            {
-                return x.Range.CompareTo(y.Range);
             }
         }
     }

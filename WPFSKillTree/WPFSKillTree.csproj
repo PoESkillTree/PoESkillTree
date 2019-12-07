@@ -1,317 +1,61 @@
-﻿<Project Sdk="MSBuild.Sdk.Extras">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <ProductVersion>8.0.30703</ProductVersion>
     <OutputType>WinExe</OutputType>
     <RootNamespace>PoESkillTree</RootNamespace>
-    <AssemblyName>PoESkillTree</AssemblyName>
-    <TargetFramework>net462</TargetFramework>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <MapFileExtensions>true</MapFileExtensions>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <LangVersion>latest</LangVersion>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>8</LangVersion>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>8600;8601;8602;8603;8604;8613;8619;8620;8625</WarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetZone>LocalIntranet</TargetZone>
-    <GenerateManifests>false</GenerateManifests>
-    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
-    <ApplicationIcon>logo.ico</ApplicationIcon>
-    <StartupObject>PoESkillTree.SkillTreeFiles.Bootstrap</StartupObject>
+    <AssemblyName>PoESkillTree</AssemblyName>
+    <Company>PoESkillTree Team</Company>
+    <Copyright>Copyright © 2012-2019 PoESkillTree Team</Copyright>
+    <Description>Passive skill tree planner for Path of Exile®</Description>
+    <Product>PoESkillTree 3</Product>
+    <ProductUrl>https://github.com/PoESkillTree/PoESkillTree/</ProductUrl>
+    <VersionPrefix>3.0.0</VersionPrefix>
+    <VersionSuffix>alpha.7</VersionSuffix>
   </PropertyGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="$(Configuration) == Release">
-    <Exec Command="$(ProjectDir)build-locale.bat $(TargetDir)" />
+    <Exec Command="$(ProjectDir)build-locale.bat" />
   </Target>
   <ItemGroup>
-    <None Remove="Images\EquipmentUI\ItemDefaults\RuneDagger.png" />
-    <None Remove="Images\EquipmentUI\ItemDefaults\Warstaff.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="NLog" Version="4.6.7" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="ControlzEx" Version="3.0.2.4" />
-    <PackageReference Include="Enums.NET" Version="2.3.2" />
-    <PackageReference Include="gong-wpf-dragdrop" Version="2.0.6" />
-    <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
-    <PackageReference Include="MahApps.Metro" Version="1.6.5" />
-    <PackageReference Include="MahApps.Metro.IconPacks.Modern" Version="2.3.0" />
-    <PackageReference Include="MahApps.Metro.SimpleChildWindow" Version="1.5.0" />
-    <PackageReference Include="Microsoft.WindowsAPICodePack-Core" Version="1.1.0.2" />
-    <PackageReference Include="Microsoft.WindowsAPICodePack-Shell" Version="1.1.0.0" />
+    <PackageReference Include="ControlzEx" Version="4.2.0" />
+    <PackageReference Include="DynamicExpresso.Core" Version="2.3.1" />
+    <PackageReference Include="Enums.NET" Version="3.0.1" />
+    <PackageReference Include="gong-wpf-dragdrop" Version="2.2.0" />
+    <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0605" />
+    <PackageReference Include="MahApps.Metro.IconPacks.Modern" Version="3.0.0-alpha0270" />
+    <PackageReference Include="MahApps.Metro.SimpleChildWindow" Version="2.0.0-alpha0031" />
     <PackageReference Include="morelinq" Version="3.2.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="PoESkillTree.Engine" Version="0.1.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="NLog" Version="4.6.8" />
+    <PackageReference Include="PoESkillTree.Engine" Version="0.1.7" />
     <PackageReference Include="System.Buffers" Version="4.5.0" />
-    <PackageReference Include="System.Reactive" Version="4.1.6" />
-    <PackageReference Include="System.Threading.Tasks.Dataflow" Version="4.9.0" />
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    <PackageReference Include="System.Reactive" Version="4.3.1" />
+    <PackageReference Include="System.Threading.Tasks.Dataflow" Version="4.11.0" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Antlr3.Runtime">
-      <HintPath>.\Antlr3.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="ExpressionEvaluator">
-      <HintPath>.\ExpressionEvaluator.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Windows" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="Xceed.Wpf.Toolkit, Version=2.8.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>Libs\Xceed.Wpf.Toolkit.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Version.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Version.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <None Include="build-locale.bat" />
-    <None Include="Contrib\RangeTree\LICENSE" />
-    <None Include="Contrib\RangeTree\README.md" />
-    <None Include="Contrib\WpfRangeControls\LICENSE" />
-    <None Include="Contrib\WpfRangeControls\README.md" />
-    <None Include="dist-clean.bat" />
-    <None Include="dist-release.bat" />
-    <None Include="Locale\de-DE\Help.md" />
-    <None Include="Locale\de-DE\Messages.po" />
-    <None Include="Locale\en-US\Help.md" />
-    <None Include="Locale\ru\Help.md" />
-    <None Include="Locale\ru\Messages.po" />
-    <None Include="Locale\sk\Help.md" />
-    <None Include="Localization\Markdown\Readme.md" />
-    <None Include="Properties\app.manifest" />
-    <None Include="Tools\isetup\Default.isl" />
-    <None Include="Tools\isetup\Languages\BrazilianPortuguese.isl" />
-    <None Include="Tools\isetup\Languages\Catalan.isl" />
-    <None Include="Tools\isetup\Languages\Corsican.isl" />
-    <None Include="Tools\isetup\Languages\Czech.isl" />
-    <None Include="Tools\isetup\Languages\Danish.isl" />
-    <None Include="Tools\isetup\Languages\Dutch.isl" />
-    <None Include="Tools\isetup\Languages\Finnish.isl" />
-    <None Include="Tools\isetup\Languages\French.isl" />
-    <None Include="Tools\isetup\Languages\German.isl" />
-    <None Include="Tools\isetup\Languages\Greek.isl" />
-    <None Include="Tools\isetup\Languages\Hebrew.isl" />
-    <None Include="Tools\isetup\Languages\Hungarian.isl" />
-    <None Include="Tools\isetup\Languages\Italian.isl" />
-    <None Include="Tools\isetup\Languages\Japanese.isl" />
-    <None Include="Tools\isetup\Languages\Nepali.islu" />
-    <None Include="Tools\isetup\Languages\Norwegian.isl" />
-    <None Include="Tools\isetup\Languages\Polish.isl" />
-    <None Include="Tools\isetup\Languages\Portuguese.isl" />
-    <None Include="Tools\isetup\Languages\Russian.isl" />
-    <None Include="Tools\isetup\Languages\ScottishGaelic.isl" />
-    <None Include="Tools\isetup\Languages\SerbianCyrillic.isl" />
-    <None Include="Tools\isetup\Languages\SerbianLatin.isl" />
-    <None Include="Tools\isetup\Languages\Slovak.isl" />
-    <None Include="Tools\isetup\Languages\Slovenian.isl" />
-    <None Include="Tools\isetup\Languages\Spanish.isl" />
-    <None Include="Tools\isetup\Languages\Turkish.isl" />
-    <None Include="Tools\isetup\Languages\Ukrainian.isl" />
-    <None Include="Tools\isetup\Setup.e32" />
-    <None Include="Tools\isetup\SetupLdr.e32" />
-    <None Include="Tools\MSBuild.ExtensionPack.License.rtf" />
-    <None Include="Tools\MSBuild.ExtensionPack.README.md" />
-    <None Include="Tools\MSBuild.ExtensionPack.tasks" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Champion.jpg" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\RuneDagger.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Warstaff.png" />
-    <Resource Include="Images\Gladiator.jpg" />
-    <Resource Include="Images\Marauder.jpg" />
-    <Resource Include="Images\Duelist.jpg" />
-    <Resource Include="Images\Ranger.jpg" />
-    <Resource Include="Images\Scion.jpg" />
-    <Resource Include="Images\Shadow.jpg" />
-    <Resource Include="Images\Slayer.jpg" />
-    <Resource Include="Images\Templar.jpg" />
-    <Resource Include="Images\Witch.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Antlr3.Runtime.dll" />
-    <Resource Include="TreeGenerator\ideas_todos.txt" />
-    <Resource Include="Contrib\Monotone\LICENSE.txt" />
-    <Resource Include="Contrib\Monotone\README.txt" />
-    <Content Include="Data\PseudoAttributes\Crit.xml">
+    <Content Include="Data\PseudoAttributes\*.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\PseudoAttributes\Custom.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\PseudoAttributes\Damage.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\PseudoAttributes\Defense.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\PseudoAttributes\Other.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\PseudoAttributes\Speed.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ExpressionEvaluator.dll" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Amulet.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Belt.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Boots.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Gloves.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Ring.png" />
-    <Resource Include="Images\Witch_Highlighted.jpg" />
-    <Resource Include="Images\Templar_Highlighted.jpg" />
-    <Resource Include="Images\Shadow_Highlighted.jpg" />
-    <Resource Include="Images\Scion_Highlighted.jpg" />
-    <Resource Include="Images\Ranger_Highlighted.jpg" />
-    <Resource Include="Images\Marauder_Highlighted.jpg" />
-    <Resource Include="Images\Duelist_Highlighted.jpg" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\BodyArmour.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Helmet.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Shield.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Jewel.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Quiver.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Unknown.png" />
-    <Resource Include="Images\Slayer_Highlighted.jpg" />
-    <Resource Include="Images\Champion_Highlighted.jpg" />
-    <Resource Include="Images\Gladiator_Highlighted.jpg" />
-    <Resource Include="Images\Assassin.jpg" />
-    <Resource Include="Images\Assassin_Highlighted.jpg" />
-    <Resource Include="Images\Berserker.jpg" />
-    <Resource Include="Images\Berserker_Highlighted.jpg" />
-    <Resource Include="Images\Chieftain.jpg" />
-    <Resource Include="Images\Chieftain_Highlighted.jpg" />
-    <Resource Include="Images\Juggernaut.jpg" />
-    <Resource Include="Images\Juggernaut_Highlighted.jpg" />
-    <Resource Include="Images\Saboteur.jpg" />
-    <Resource Include="Images\Saboteur_Highlighted.jpg" />
-    <Resource Include="Images\Trickster.jpg" />
-    <Resource Include="Images\Trickster_Highlighted.jpg" />
-    <Resource Include="Images\Ascendant.jpg" />
-    <Resource Include="Images\Ascendant_Highlighted.jpg" />
-    <Resource Include="Images\Deadeye.jpg" />
-    <Resource Include="Images\Deadeye_Highlighted.jpg" />
-    <Resource Include="Images\Elementalist.jpg" />
-    <Resource Include="Images\Elementalist_Highlighted.jpg" />
-    <Resource Include="Images\Guardian.jpg" />
-    <Resource Include="Images\Guardian_Highlighted.jpg" />
-    <Resource Include="Images\Hierophant.jpg" />
-    <Resource Include="Images\Hierophant_Highlighted.jpg" />
-    <Resource Include="Images\Inquisitor.jpg" />
-    <Resource Include="Images\Inquisitor_Highlighted.jpg" />
-    <Resource Include="Images\Necromancer.jpg" />
-    <Resource Include="Images\Necromancer_Highlighted.jpg" />
-    <Resource Include="Images\Occultist.jpg" />
-    <Resource Include="Images\Occultist_Highlighted.jpg" />
-    <Resource Include="Images\Pathfinder.jpg" />
-    <Resource Include="Images\Pathfinder_Highlighted.jpg" />
-    <Resource Include="Images\Raider.jpg" />
-    <Resource Include="Images\Raider_Highlighted.jpg" />
-    <Resource Include="Libs\README.txt" />
-    <Resource Include="Images\EquipmentUI\Bin.png" />
-    <Resource Include="Images\EquipmentUI\ItemsHeaderCurrencyLeft.png" />
-    <Resource Include="Images\EquipmentUI\ItemsHeaderCurrencyMiddle.png" />
-    <Resource Include="Images\EquipmentUI\ItemsHeaderCurrencyRight.png" />
-    <Resource Include="Images\EquipmentUI\ItemsHeaderFoilLeft.png" />
-    <Resource Include="Images\EquipmentUI\ItemsHeaderFoilMiddle.png" />
-    <Resource Include="Images\EquipmentUI\ItemsHeaderFoilRight.png" />
-    <Resource Include="Images\EquipmentUI\ItemsHeaderGemLeft.png" />
-    <Resource Include="Images\EquipmentUI\ItemsHeaderGemMiddle.png" />
-    <Resource Include="Images\EquipmentUI\ItemsHeaderGemRight.png" />
-    <Resource Include="Images\EquipmentUI\ItemsHeaderMagicLeft.png" />
-    <Resource Include="Images\EquipmentUI\ItemsHeaderMagicMiddle.png" />
-    <Resource Include="Images\EquipmentUI\ItemsHeaderMagicRight.png" />
-    <Resource Include="Images\EquipmentUI\ItemsHeaderRareLeft.png" />
-    <Resource Include="Images\EquipmentUI\ItemsHeaderRareMiddle.png" />
-    <Resource Include="Images\EquipmentUI\ItemsHeaderRareRight.png" />
-    <Resource Include="Images\EquipmentUI\ItemsHeaderUniqueLeft.png" />
-    <Resource Include="Images\EquipmentUI\ItemsHeaderUniqueMiddle.png" />
-    <Resource Include="Images\EquipmentUI\ItemsHeaderUniqueRight.png" />
-    <Resource Include="Images\EquipmentUI\ItemsHeaderWhiteLeft.png" />
-    <Resource Include="Images\EquipmentUI\ItemsHeaderWhiteMiddle.png" />
-    <Resource Include="Images\EquipmentUI\ItemsHeaderWhiteRight.png" />
-    <Resource Include="Images\EquipmentUI\ItemsSeparatorCurrency.png" />
-    <Resource Include="Images\EquipmentUI\ItemsSeparatorFoil.png" />
-    <Resource Include="Images\EquipmentUI\ItemsSeparatorGem.png" />
-    <Resource Include="Images\EquipmentUI\ItemsSeparatorMagic.png" />
-    <Resource Include="Images\EquipmentUI\ItemsSeparatorRare.png" />
-    <Resource Include="Images\EquipmentUI\ItemsSeparatorUnique.png" />
-    <Resource Include="Images\EquipmentUI\ItemsSeparatorWhite.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\ActiveskillGem.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Bow.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Claw.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Dagger.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\FishingRod.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\HybridFlask.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\LifeFlask.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\ManaFlask.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\OneHandAxe.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\OneHandMace.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\OneHandSword.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Sceptre.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Staff.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\SupportSkillGem.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\ThrustingOneHandSword.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\TwoHandAxe.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\TwoHandMace.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\TwoHandSword.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\UtilityFlask.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Wand.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\UtilityFlaskCritical.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\AbyssJewel.png" />
-    <Content Include="Libs\Xceed.Wpf.Toolkit.dll" />
-    <Content Include="release.iss" />
-    <None Include="Tools\isetup\ISCC.exe" />
-    <None Include="Tools\isetup\ISCmplr.dll" />
-    <None Include="Tools\isetup\islzma.dll" />
-    <None Include="Tools\isetup\ISPP.dll" />
-    <None Include="Tools\isetup\ISPPBuiltins.iss" />
-    <None Include="Tools\isetup\license.txt" />
-    <None Include="Tools\isetup\WizModernImage-IS.bmp" />
-    <None Include="Tools\isetup\WizModernImage.bmp" />
-    <None Include="Tools\isetup\WizModernSmallImage-IS.bmp" />
-    <None Include="Tools\isetup\WizModernSmallImage.bmp" />
-    <None Include="Tools\DeBOM.exe" />
-    <None Include="Localization\Markdown\License.txt" />
-    <None Include="Locale\README.txt" />
-    <None Include="LICENSE.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Tools\Ionic.Zip.dll" />
-    <None Include="Tools\MSBuild.ExtensionPack.dll" />
-    <None Include="Tools\XAMLText.exe" />
-    <None Include="Locale\msginit.exe" />
-    <None Include="Tools\gettext\msgmerge.exe" />
-    <None Include="Tools\gettext\xgettext.exe" />
-    <None Include="Locale\sk\Messages.po" />
-    <Resource Include="release.xml">
-      <SubType>Designer</SubType>
-    </Resource>
-    <Resource Include="logo.ico" />
-    <None Include="Properties\app.manifest.i" />
-    <None Include="Locale\Messages.pot" />
-    <None Include="Tools\7z.dll" />
-    <None Include="Tools\7z.exe" />
-    <None Include="Tools\7z.LICENSE.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Properties\Version.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Version.resx</DependentUpon>
-    </Compile>
+    <Content Include="Locale\**"> 
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
+    </Content> 
   </ItemGroup>
   <ItemGroup>
     <None Update="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="LICENSE.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\**" />
+    <Resource Include="logo.ico" />
   </ItemGroup>
 </Project>

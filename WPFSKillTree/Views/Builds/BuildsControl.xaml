@@ -8,7 +8,7 @@
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:wpf="clr-namespace:PoESkillTree.Utils.Wpf"
              xmlns:converter="clr-namespace:PoESkillTree.Utils.Converter"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:viewModels="clr-namespace:PoESkillTree.ViewModels.Builds"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:controls1="clr-namespace:PoESkillTree.Controls"
@@ -34,13 +34,13 @@
                     <Style TargetType="TextBlock">
                         <Setter Property="Text" Value="{Binding AscendancyClass}" />
                         <Setter Property="Margin" Value="10 0 0 0" />
-                        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                        <Setter Property="Foreground" Value="{DynamicResource MahApps.Sizes.Font.DialogMessage}" />
                         <Style.Triggers>
                             <!-- AscendancyClass == null -->
                             <DataTrigger Binding="{Binding AscendancyClass}" Value="{x:Null}">
                                 <Setter Property="Text" Value="{Binding CharacterClass}" />
                                 <Setter Property="Margin" Value="0" />
-                                <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
+                                <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Accent}" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -52,7 +52,7 @@
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Text" Value="{Binding AscendancyClass}" />
-                        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Text}" />
                         <Style.Triggers>
                             <!-- AscendancyClass == null -->
                             <DataTrigger Binding="{Binding AscendancyClass}" Value="{x:Null}">
@@ -65,7 +65,7 @@
         </DataTemplate>
     </UserControl.Resources>
     <Grid Width="300"
-          Background="{DynamicResource WhiteColorBrush}">
+          Background="{DynamicResource MahApps.Brushes.WhiteColor}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -156,13 +156,6 @@
                                               CommandParameter="{Binding}">
                                         <MenuItem.Header>
                                             <l:Catalog Message="New Folder" />
-                                        </MenuItem.Header>
-                                    </MenuItem>
-                                    <Separator />
-                                    <MenuItem Command="{Binding Data.ExportGGGBuildFile, Source={StaticResource VmProxy}}"
-                                              CommandParameter="{Binding}">
-                                        <MenuItem.Header>
-                                            <l:Catalog Message="Export to .build" />
                                         </MenuItem.Header>
                                     </MenuItem>
                                 </ContextMenu>

@@ -23,8 +23,8 @@ namespace PoESkillTree.Controls.Dialogs
         /// Sets up the connection between view and viewModel, shows the view as a metro dialog,
         /// calls <paramref name="onShown"/> and waits for the dialog to be closed.
         /// </summary>
-        public static async Task<T> ShowDialogAsync<T>(this MetroWindow window, CloseableViewModel<T> viewModel,
-            BaseMetroDialog view, Action onShown = null)
+        public static async Task<T> ShowDialogAsync<T>(this MetroWindow window, CloseableViewModelBase<T> viewModel,
+            BaseMetroDialog view, Action? onShown = null)
         {
             view.DataContext = viewModel;
 
@@ -51,23 +51,23 @@ namespace PoESkillTree.Controls.Dialogs
         }
 
         public static Task<MessageBoxResult> ShowQuestionAsync(this MetroWindow window, string message,
-            string details = null, string title = null, MessageBoxButton buttons = MessageBoxButton.YesNo,
+            string? details = null, string? title = null, MessageBoxButton buttons = MessageBoxButton.YesNo,
             MessageBoxImage image = MessageBoxImage.Question)
         {
             return ShowAsync(window, message, details, title ?? L10n.Message("Confirmation"), buttons, image);
         }
 
-        public static Task ShowErrorAsync(this MetroWindow window, string message, string details = null, string title = null)
+        public static Task ShowErrorAsync(this MetroWindow window, string message, string? details = null, string? title = null)
         {
             return ShowAsync(window, message, details, title ?? L10n.Message("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
-        public static Task ShowWarningAsync(this MetroWindow window, string message, string details = null, string title = null)
+        public static Task ShowWarningAsync(this MetroWindow window, string message, string? details = null, string? title = null)
         {
             return ShowAsync(window, message, details, title ?? L10n.Message("Warning"), MessageBoxButton.OK, MessageBoxImage.Exclamation);
         }
 
-        public static Task ShowInfoAsync(this MetroWindow window, string message, string details = null, string title = null)
+        public static Task ShowInfoAsync(this MetroWindow window, string message, string? details = null, string? title = null)
         {
             return ShowAsync(window, message, details, title ?? L10n.Message("Information"), MessageBoxButton.OK, MessageBoxImage.Information);
         }
@@ -84,7 +84,7 @@ namespace PoESkillTree.Controls.Dialogs
         }
 
         public static async Task<ProgressDialogController> ShowProgressAsync(this MetroWindow window, string title,
-            string message, bool isCancelable = false)
+            string? message, bool isCancelable = false)
         {
             var settings = new MetroDialogSettings
             {
@@ -100,7 +100,7 @@ namespace PoESkillTree.Controls.Dialogs
             {
                 case MessageBoxImage.None:
                     return null;
-                case MessageBoxImage.Error: // also MessageBoxImage.Hand ans MessageBoxImage.Stop:
+                case MessageBoxImage.Error: // also MessageBoxImage.Hand and MessageBoxImage.Stop:
                     return PackIconModernKind.Stop;
                 case MessageBoxImage.Question:
                     return null;
@@ -117,7 +117,7 @@ namespace PoESkillTree.Controls.Dialogs
         {
             switch (image)
             {
-                case MessageBoxImage.Hand: // also MessageBoxImage.Error ans MessageBoxImage.Stop:
+                case MessageBoxImage.Hand: // also MessageBoxImage.Error and MessageBoxImage.Stop:
                     return SystemSounds.Hand;
                 case MessageBoxImage.Question:
                     return SystemSounds.Question;
@@ -130,7 +130,7 @@ namespace PoESkillTree.Controls.Dialogs
             }
         }
 
-        private static Task<MessageBoxResult> ShowAsync(this MetroWindow window, string message, string details = null,
+        private static Task<MessageBoxResult> ShowAsync(this MetroWindow window, string message, string? details = null,
             string title = "", MessageBoxButton buttons = MessageBoxButton.OK,
             MessageBoxImage image = MessageBoxImage.None)
         {

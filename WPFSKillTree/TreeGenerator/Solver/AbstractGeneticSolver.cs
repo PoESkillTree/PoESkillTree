@@ -26,9 +26,7 @@ namespace PoESkillTree.TreeGenerator.Solver
 
         public override int CurrentIteration => IsInitialized ? _ga.CurrentIteration : 0;
 
-        private HashSet<ushort> _bestSolution;
-
-        public override IEnumerable<ushort> BestSolution => _bestSolution;
+        public override IEnumerable<ushort> BestSolution { get; protected set; }
 
         /// <summary>
         /// The best dna calculated by the GA up to this point.
@@ -61,7 +59,7 @@ namespace PoESkillTree.TreeGenerator.Solver
         /// List of edges ordered by priority.
         /// (used for mst calculation if <see cref="PreFilledSpanThreshold"/> is satisfied)
         /// </summary>
-        private List<DirectedGraphEdge> _orderedEdges;
+        private List<DirectedGraphEdge>? _orderedEdges;
 
         /// <summary>
         /// Gets or sets whether this solver should try to improve the solution with simple HillClimbing
@@ -69,7 +67,9 @@ namespace PoESkillTree.TreeGenerator.Solver
         /// </summary>
         protected bool FinalHillClimbEnabled { private get; set; }
 
+#pragma warning disable CS8618 // Initialized in Initialize
         protected AbstractGeneticSolver(SkillTree tree, TS settings)
+#pragma warning restore
             : base(tree, settings)
         {
         }
@@ -143,7 +143,7 @@ namespace PoESkillTree.TreeGenerator.Solver
             }
             _ga.NewGeneration();
 
-            if (_bestDna == null || !_ga.GetBestDNA().Equals(_bestDna))
+            if (!_ga.GetBestDNA().Equals(_bestDna))
             {
                 SetBestDnaAndSolution();
             }
@@ -153,7 +153,7 @@ namespace PoESkillTree.TreeGenerator.Solver
         {
             _bestDna = _ga.GetBestDNA();
             var usedNodes = DnaToUsedNodes(_bestDna);
-            _bestSolution = Extend(usedNodes);
+            BestSolution = Extend(usedNodes);
             Return(usedNodes);
         }
 
@@ -178,12 +178,11 @@ namespace PoESkillTree.TreeGenerator.Solver
                     mstNodes.Add(TargetNodes[i].DistancesIndex);
                 }
 
-                if (_orderedEdges != null)
-                    mst.Span(_orderedEdges);
-                else
-                    mst.Span(StartNode.DistancesIndex);
+                var spanningEdges = _orderedEdges is null
+                    ? mst.Span(StartNode.DistancesIndex)
+                    : mst.Span(_orderedEdges);
 
-                return GetSkillNodeIds(mstNodes, searchSpaceNodeCount, mst.SpanningEdges);
+                return GetSkillNodeIds(mstNodes, searchSpaceNodeCount, spanningEdges);
             }
 
         }
@@ -226,8 +225,8 @@ namespace PoESkillTree.TreeGenerator.Solver
             if (FinalHillClimbEnabled)
             {
                 var hillClimber = new HillClimber(FitnessFunction, TargetNodes, AllNodes);
-                var usedNodes = DnaToUsedNodes(_bestDna);
-                _bestSolution = Extend(hillClimber.Improve(usedNodes));
+                var usedNodes = DnaToUsedNodes(_bestDna!);
+                BestSolution = Extend(hillClimber.Improve(usedNodes));
                 Return(usedNodes);
             }
         }

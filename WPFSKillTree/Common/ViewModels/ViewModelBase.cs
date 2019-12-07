@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Utils;
+﻿using System.Diagnostics.CodeAnalysis;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Common.ViewModels
 {
@@ -9,14 +10,15 @@ namespace PoESkillTree.Common.ViewModels
     /// </summary>
     public abstract class ViewModelBase : Notifier
     {
-        private string _displayName;
+        private string? _displayName;
         /// <summary>
         /// Returns the user-friendly name of this object.
         /// </summary>
-        public string DisplayName
+        [DisallowNull]
+        public string? DisplayName
         {
-            get { return _displayName; }
-            protected set { SetProperty(ref _displayName, value); }
+            get => _displayName;
+            protected set => SetProperty(ref _displayName, value);
         }
     }
 }

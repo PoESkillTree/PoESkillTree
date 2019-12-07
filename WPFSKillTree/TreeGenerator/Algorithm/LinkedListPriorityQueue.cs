@@ -41,7 +41,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm
     /// arbitrary time (until the next queue uses that array and at least the same amount of elements are enqueued).
     /// </remarks>
     /// <typeparam name="T">Type of the stored objects.</typeparam>
-    public class LinkedListPriorityQueue<T> : IDisposable
+    public sealed class LinkedListPriorityQueue<T> : IDisposable
     {
         // The large arrays (_elements and _links) are reused through an object pool because allocation of arrays of this size
         // (with easily a few 100k elements) is expensive and was bottlenecking the priority queue class.

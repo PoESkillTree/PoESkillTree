@@ -101,7 +101,7 @@
         <metroControls:NumericUpDown Grid.Row="0" Grid.Column="1"
                                      Margin="0 5"
                                      Minimum="{Binding Tree.UndefinedLevel}" Maximum="{Binding Tree.MaximumLevel}"
-                                     HasDecimals="False"
+                                     NumericInputMode="Numbers"
                                      Value="{Binding Tree.Level}" />
 
         <Label Grid.Row="1" Grid.Column="0"
@@ -110,7 +110,7 @@
         </Label>
         <metroControls:NumericUpDown Grid.Row="1" Grid.Column="1"
                                      Margin="0 5" Minimum="0"
-                                     HasDecimals="False"
+                                     NumericInputMode="Numbers"
                                      Value="{Binding AdditionalPoints.Value, ValidatesOnDataErrors=True}" />
 
         <Label Grid.Row="2" Grid.Column="0"
@@ -153,7 +153,7 @@
         </Label>
         <metroControls:NumericUpDown Grid.Row="2" Grid.Column="3"
                                      Margin="0 5" Minimum="1"
-                                     HasDecimals="False"
+                                     NumericInputMode="Numbers"
                                      Value="{Binding Iterations.Value, ValidatesOnDataErrors=True}" />
 
         <Button Grid.Row="1" Grid.Column="4"
@@ -171,7 +171,7 @@
         </Button>
 
         <TabControl Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5"
-                    metroControls:TabControlHelper.IsUnderlined="True" Style="{DynamicResource TabControlStyle1}">
+                    metroControls:TabControlHelper.Underlined="TabItems" Style="{DynamicResource TabControlStyle1}">
             <TabItem metroControls:ControlsHelper.HeaderFontSize="15">
                 <TabItem.Header>
                     <l:Catalog Message="Attributes"/>
@@ -209,7 +209,7 @@
                             <GroupStyle>
                                 <GroupStyle.HeaderTemplate>
                                     <DataTemplate DataType="CollectionViewGroup">
-                                        <TextBlock Foreground="{StaticResource AccentColorBrush}" Text="{Binding Name}"/>
+                                        <TextBlock Foreground="{StaticResource MahApps.Brushes.Accent}" Text="{Binding Name}"/>
                                     </DataTemplate>
                                 </GroupStyle.HeaderTemplate>
                             </GroupStyle>
@@ -266,9 +266,9 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Command="{Binding DataContext.RemoveAttributeConstraintCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
-                                                CommandParameter="{Binding}" Width="30" Height="30"
-                                                Style="{DynamicResource MetroCircleButtonStyle}">
-                                            <iconPacks:PackIconModern Kind="Close" Height="10" Width="10"/>
+                                                CommandParameter="{Binding}" Width="22" Height="22"
+                                                Style="{StaticResource MahApps.Styles.Button.Circle}">
+                                            <iconPacks:PackIconModern Kind="Close" Height="8" Width="8"/>
                                         </Button>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
@@ -302,7 +302,7 @@
                             <GroupStyle>
                                 <GroupStyle.HeaderTemplate>
                                     <DataTemplate>
-                                        <TextBlock d:DataContext="{d:DesignInstance CollectionViewGroup}" Foreground="{StaticResource AccentColorBrush}" Text="{Binding Name}"/>
+                                        <TextBlock d:DataContext="{d:DesignInstance CollectionViewGroup}" Foreground="{StaticResource MahApps.Brushes.Accent}" Text="{Binding Name}"/>
                                     </DataTemplate>
                                 </GroupStyle.HeaderTemplate>
                             </GroupStyle>
@@ -359,9 +359,9 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Command="{Binding DataContext.RemovePseudoConstraintCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
-                                                CommandParameter="{Binding}" Width="30" Height="30"
-                                                Style="{DynamicResource MetroCircleButtonStyle}">
-                                            <iconPacks:PackIconModern Kind="Close" Height="10" Width="10"/>
+                                                CommandParameter="{Binding}" Width="22" Height="22"
+                                                Style="{StaticResource MahApps.Styles.Button.Circle}">
+                                            <iconPacks:PackIconModern Kind="Close" Height="8" Width="8"/>
                                         </Button>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
@@ -402,7 +402,7 @@
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="5" TextWrapping="Wrap" MaxWidth="600" Margin="5"
-                               FontSize="{DynamicResource NormalFontSize}">
+                               FontSize="{DynamicResource MahApps.Sizes.Font.Normal}">
                         <Run>
                             <l:Catalog>These settings define which attributes influence pseudo attributes.</l:Catalog>
                         </Run>

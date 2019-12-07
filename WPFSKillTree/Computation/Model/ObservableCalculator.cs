@@ -52,7 +52,7 @@ namespace PoESkillTree.Computation.Model
             Action Subscribe(IObserver<NodeValue?> observer)
             {
                 var node = nodeFunc();
-                void ValueChanged(object _, EventArgs __) => observer.OnNext(node.Value);
+                void ValueChanged(object? _, EventArgs __) => observer.OnNext(node.Value);
                 node.ValueChanged += ValueChanged;
                 observer.OnNext(node.Value);
                 return () => node.ValueChanged -= ValueChanged;

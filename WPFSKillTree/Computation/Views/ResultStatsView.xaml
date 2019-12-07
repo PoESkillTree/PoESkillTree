@@ -20,7 +20,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn IsReadOnly="True"
                                     Width="250"
-                                    HeaderStyle="{StaticResource MetroDataGridColumnHeader}"
+                                    HeaderStyle="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                     Binding="{Binding Node}">
                     <DataGridTextColumn.Header>
                         <l:Catalog>Stat</l:Catalog>
@@ -28,14 +28,14 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn IsReadOnly="True"
                                     Width="60"
-                                    HeaderStyle="{StaticResource MetroDataGridColumnHeader}"
+                                    HeaderStyle="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                     Binding="{Binding Node.StringValue}">
                     <DataGridTextColumn.Header>
                         <l:Catalog>Value</l:Catalog>
                     </DataGridTextColumn.Header>
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell"
-                               BasedOn="{StaticResource MetroDataGridCell}">
+                               BasedOn="{StaticResource MahApps.Styles.DataGridCell}">
                             <Setter Property="ToolTip">
                                 <Setter.Value>
                                     <ToolTip DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
@@ -50,8 +50,8 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="viewModels:ResultStatViewModel">
-                            <Button Width="26" Height="26"
-                                    Style="{DynamicResource MetroCircleButtonStyle}"
+                            <Button Width="20" Height="20" Margin="0 4"
+                                    Style="{DynamicResource MahApps.Styles.Button.Circle}"
                                     Command="{Binding RemoveCommand}">
                                 <iconPacks:PackIconModern Kind="Close" Height="8" Width="8" />
                             </Button>

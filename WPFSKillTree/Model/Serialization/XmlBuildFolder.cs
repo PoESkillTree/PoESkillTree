@@ -11,12 +11,12 @@ namespace PoESkillTree.Model.Serialization
     public class XmlBuildFolder
     {
         [XmlElement]
-        public string Version { get; set; }
+        public string Version { get; set; } = default!;
 
         [XmlElement]
         public bool IsExpanded { get; set; }
 
         [XmlArray]
-        public List<string> Builds { get; set; }
+        public List<string> Builds { get; set; } = default!;
     }
 }

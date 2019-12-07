@@ -74,7 +74,7 @@ namespace PoESkillTree.ViewModels.Equipment
         /// </summary>
         public double ScrollBarValue
         {
-            get { return _scrollBarValue; }
+            get => _scrollBarValue;
             set
             {
                 var v = Math.Min(Math.Max(value, 0), LastOccupiedRow);
@@ -88,8 +88,8 @@ namespace PoESkillTree.ViewModels.Equipment
         /// </summary>
         public double VisibleRows
         {
-            get { return _visibleRows; }
-            set { SetProperty(ref _visibleRows, value, RowsChanged); }
+            get => _visibleRows;
+            set => SetProperty(ref _visibleRows, value, RowsChanged);
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace PoESkillTree.ViewModels.Equipment
             get
             {
                 return Math.Max(
-                    Items.Select(i => i.Item.Y + i.Item.Height - 1).DefaultIfEmpty().Max(),
+                    Items.Select(i => i.Item!.Y + i.Item.Height - 1).DefaultIfEmpty().Max(),
                     Bookmarks.Select(b => b.Bookmark.Position).DefaultIfEmpty().Max());
             }
         }
@@ -111,14 +111,14 @@ namespace PoESkillTree.ViewModels.Equipment
         /// </summary>
         public double Rows => LastOccupiedRow + VisibleRows;
 
-        private string _searchText;
+        private string? _searchText;
         /// <summary>
         /// Gets or sets the text by which items should be searched/highlight.
         /// </summary>
-        public string SearchText
+        public string? SearchText
         {
-            get { return _searchText; }
-            set { SetProperty(ref _searchText, value, OnSearchTextChanged); }
+            get => _searchText;
+            set => SetProperty(ref _searchText, value, OnSearchTextChanged);
         }
 
         public ICommand EditStashTabCommand { get; }
@@ -130,7 +130,9 @@ namespace PoESkillTree.ViewModels.Equipment
         /// </summary>
         public IDropTarget StashTabDropHandler { get; }
 
+#pragma warning disable CS8618 // _dialogCoordinator and _persistentData are initialized in Initialize
         public StashViewModel()
+#pragma warning restore
         {
             EditStashTabCommand = new AsyncRelayCommand<StashBookmarkViewModel>(EditStashTabAsync);
             AddStashTabCommand = new AsyncRelayCommand(AddStashTabAsync);
@@ -164,21 +166,21 @@ namespace PoESkillTree.ViewModels.Equipment
         {
             if (args.OldItems != null)
             {
-                foreach (StashItemViewModel i in args.OldItems)
+                foreach (var i in args.OldItems.Cast<StashItemViewModel>())
                 {
                     i.PropertyChanging -= ItemOnPropertyChanging;
                     i.PropertyChanged -= ItemOnPropertyChanged;
-                    _persistentData.StashItems.Remove(i.Item);
+                    _persistentData.StashItems.Remove(i.Item!);
                 }
             }
 
             if (args.NewItems != null)
             {
-                foreach (StashItemViewModel i in args.NewItems)
+                foreach (var i in args.NewItems.Cast<StashItemViewModel>())
                 {
                     i.PropertyChanging += ItemOnPropertyChanging;
                     i.PropertyChanged += ItemOnPropertyChanged;
-                    _persistentData.StashItems.Add(i.Item);
+                    _persistentData.StashItems.Add(i.Item!);
                 }
             }
 
@@ -223,20 +225,20 @@ namespace PoESkillTree.ViewModels.Equipment
 
             var matches = Items.Where(IsSearchMatch).ToList();
             matches.ForEach(i => i.Highlight = true);
-            SearchMatches.AddRange(matches.Select(i => i.Item.Y + i.Item.Height / 2.0).Distinct());
+            SearchMatches.AddRange(matches.Select(i => i.Item!.Y + i.Item.Height / 2.0).Distinct());
         }
 
         private bool IsSearchMatch(StashItemViewModel itemVm)
         {
             // search in base type name, flavour text, name, properties and mods
-            var i = itemVm.Item;
+            var i = itemVm.Item!;
             var modstrings = new[] {
                 i.BaseType.Name,
                 i.FlavourText,
                 i.Name
             }.Union(i.Properties.Select(p => p.Attribute)).Union(i.Mods.Select(m => m.Attribute));
             
-            return modstrings.Any(s => s != null && s.ToLower().Contains(SearchText));
+            return modstrings.Any(s => s != null && s.ToLower().Contains(SearchText!));
         }
 
         private void RowsChanged()
@@ -364,7 +366,7 @@ namespace PoESkillTree.ViewModels.Equipment
 
             foreach (var item in Items.ToList())
             {
-                var y = item.Item.Y;
+                var y = item.Item!.Y;
                 if (y >= from && y < to)
                 {
                     Items.Remove(item);
@@ -431,11 +433,11 @@ namespace PoESkillTree.ViewModels.Equipment
                 var x = NearestCell(pos.X);
                 var y = NearestCell(pos.Y + ScrollBarValue * CellSize);
 
-                var item = draggedItem.Item;
+                var item = draggedItem.Item!;
                 var hasOverlap = false;
                 foreach (var itemViewModel in Items)
                 {
-                    var i = itemViewModel.Item;
+                    var i = itemViewModel.Item!;
                     if (i == item)
                     {
                         continue;
@@ -480,7 +482,7 @@ namespace PoESkillTree.ViewModels.Equipment
 
                 if (effect == DragDropEffects.Move)
                 {
-                    var item = draggedItem.Item;
+                    var item = draggedItem.Item!;
                     item.X = x;
                     item.Y = y;
                     if (!Items.Contains(draggedItem))
@@ -491,7 +493,7 @@ namespace PoESkillTree.ViewModels.Equipment
                 }
                 else
                 {
-                    var item = new Item(draggedItem.Item)
+                    var item = new Item(draggedItem.Item!)
                     {
                         X = x,
                         Y = y
@@ -568,7 +570,7 @@ namespace PoESkillTree.ViewModels.Equipment
                 pos.X -= dragStart.X;
                 pos.Y -= dragStart.Y;
 
-                var item = ((DraggableItemViewModel) DropInfo.Data).Item;
+                var item = ((DraggableItemViewModel) DropInfo.Data).Item!;
                 var rect = new Rect
                 {
                     X = NearestCell(pos.X) * CellSize,

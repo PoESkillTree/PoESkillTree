@@ -43,13 +43,13 @@ namespace PoESkillTree.Localization.XAML
         }
 
         // The translation context.
-        public string Context { get; set; }
+        public string? Context { get; set; }
         // The message to translate.
-        public string Message { get; set; }
+        public string? Message { get; set; }
         // The 'n' value to dertermine plural form.
         public uint N { get; set; }
         // The plural message.
-        public string Plural { get; set; }
+        public string? Plural { get; set; }
 
         // Returns translated message.
         public override object ProvideValue(IServiceProvider serviceProvider)

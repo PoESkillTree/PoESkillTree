@@ -17,8 +17,8 @@ namespace PoESkillTree.Model.Builds
         /// </summary>
         public bool IsExpanded
         {
-            get { return _isExpanded; }
-            set { SetProperty(ref _isExpanded, value); }
+            get => _isExpanded;
+            set => SetProperty(ref _isExpanded, value);
         }
 
         /// <summary>
@@ -44,8 +44,7 @@ namespace PoESkillTree.Model.Builds
         {
             foreach (var build in Builds)
             {
-                var b = build as PoEBuild;
-                if (b != null)
+                if (build is PoEBuild b)
                 {
                     yield return b;
                 }

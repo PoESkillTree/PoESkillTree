@@ -18,14 +18,10 @@ using PoESkillTree.Model.Builds;
 using PoESkillTree.Model.Serialization;
 using PoESkillTree.SkillTreeFiles;
 using PoESkillTree.Utils.Wpf;
-using PoESkillTree.Controls.Dialogs;
-using Newtonsoft.Json;
-using System.Text;
 using EnumsNET;
 using NLog;
 using PoESkillTree.Engine.GameModel;
 using PoESkillTree.Utils;
-using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.ViewModels.Builds
 {
@@ -33,9 +29,9 @@ namespace PoESkillTree.ViewModels.Builds
     {
         public string CharacterClass { get; }
 
-        public string AscendancyClass { get; }
+        public string? AscendancyClass { get; }
 
-        public ClassFilterItem(string characterClass, string ascendancyClass)
+        public ClassFilterItem(string characterClass, string? ascendancyClass)
         {
             CharacterClass = characterClass;
             AscendancyClass = ascendancyClass;
@@ -65,7 +61,7 @@ namespace PoESkillTree.ViewModels.Builds
         private readonly BuildValidator _buildValidator;
 
         private readonly FileSystemWatcher _fileSystemWatcher;
-        private readonly SynchronizationContext _synchronizationContext = SynchronizationContext.Current;
+        private readonly SynchronizationContext _synchronizationContext = SynchronizationContext.Current!;
         private readonly SimpleMonitor _changingFileSystemMonitor = new SimpleMonitor();
         private int _changingFileSystemCounter;
 
@@ -118,9 +114,6 @@ namespace PoESkillTree.ViewModels.Builds
         public ICommand ExportCurrentToClipboardCommand { get; }
         public ICommand ImportCurrentFromClipboardCommand { get; }
 
-        public ICommand ExportGGGBuildFile { get; }
-        public ICommand ImportGGGBuildFile { get; }
-
         public IPersistentData PersistentData { get; }
 
         private BuildViewModel _currentBuild;
@@ -129,29 +122,27 @@ namespace PoESkillTree.ViewModels.Builds
         /// </summary>
         public BuildViewModel CurrentBuild
         {
-            get { return _currentBuild; }
+            get => _currentBuild;
             set
             {
                 SetProperty(ref _currentBuild, value, () =>
                 {
-                    if (CurrentBuild != null)
-                        CurrentBuild.CurrentlyOpen = true;
-                    PersistentData.CurrentBuild = CurrentBuild?.Build;
+                    CurrentBuild.CurrentlyOpen = true;
+                    PersistentData.CurrentBuild = CurrentBuild.Build;
                 }, b =>
                 {
-                    if (CurrentBuild != null)
-                        CurrentBuild.CurrentlyOpen = false;
+                    CurrentBuild.CurrentlyOpen = false;
                 });
             }
         }
 
-        private IBuildViewModel _selectedBuild;
+        private IBuildViewModel? _selectedBuild;
         /// <summary>
         /// Gets or sets the currently selected build.
         /// </summary>
-        public IBuildViewModel SelectedBuild
+        public IBuildViewModel? SelectedBuild
         {
-            get { return _selectedBuild; }
+            get => _selectedBuild;
             set
             {
                 SetProperty(ref _selectedBuild, value, () =>
@@ -174,21 +165,21 @@ namespace PoESkillTree.ViewModels.Builds
         /// </summary>
         public ClassFilterItem ClassFilter
         {
-            get { return _classFilter; }
+            get => _classFilter;
             set { SetProperty(ref _classFilter, value, () => BuildRoot.ApplyFilter()); }
         }
 
-        private string _textFilter;
+        private string? _textFilter;
         /// <summary>
         /// Gets or sets a string build names must contain to be visible.
         /// </summary>
-        public string TextFilter
+        public string? TextFilter
         {
-            get { return _textFilter; }
+            get => _textFilter;
             set { SetProperty(ref _textFilter, value, () => BuildRoot.ApplyFilter()); }
         }
 
-        private IBuildViewModel _buildClipboard;
+        private IBuildViewModel? _buildClipboard;
         private bool _clipboardIsCopy;
 
         private ISkillTree _skillTree;
@@ -236,8 +227,9 @@ namespace PoESkillTree.ViewModels.Builds
                 _changingFileSystemCounter--;
             };
 
-            CurrentBuild = TreeFindBuildViewModel(PersistentData.CurrentBuild);
-            SelectedBuild = TreeFindBuildViewModel(PersistentData.SelectedBuild);
+            _currentBuild = TreeFindBuildViewModel(PersistentData.CurrentBuild)!;
+            _currentBuild.CurrentlyOpen = true;
+            SelectedBuild = PersistentData.SelectedBuild is null ? null : TreeFindBuildViewModel(PersistentData.SelectedBuild);
             PersistentData.PropertyChanged += PersistentDataOnPropertyChanged;
             PersistentData.Options.PropertyChanged += OptionsOnPropertyChanged;
 
@@ -263,10 +255,10 @@ namespace PoESkillTree.ViewModels.Builds
                 b => b != null && b.Build.IsDirty && b.Build.CanRevert);
             MoveUpCommand = new RelayCommand<IBuildViewModel>(
                 MoveUp,
-                o => o != BuildRoot && o.Parent.Children.IndexOf(o) > 0);
+                o => o != BuildRoot && o.Parent!.Children.IndexOf(o) > 0);
             MoveDownCommand = new RelayCommand<IBuildViewModel>(
                 MoveDown,
-                o => o != BuildRoot && o.Parent.Children.IndexOf(o) < o.Parent.Children.Count - 1);
+                o => o != BuildRoot && o.Parent!.Children.IndexOf(o) < o.Parent.Children.Count - 1);
             EditCommand = new AsyncRelayCommand<IBuildViewModel>(Edit);
             CutCommand = new AsyncRelayCommand<IBuildViewModel>(
                 Cut,
@@ -280,53 +272,12 @@ namespace PoESkillTree.ViewModels.Builds
             ExportCurrentToClipboardCommand = new RelayCommand(() => CopyToClipboard(CurrentBuild.Build));
             ImportCurrentFromClipboardCommand = new AsyncRelayCommand(ImportCurrentFromClipboard, CanPasteFromClipboard);
 
-            ExportGGGBuildFile = new RelayCommand<IBuildFolderViewModel>(ExportGGGBuild);
-            ImportGGGBuildFile = new RelayCommand(() => ImportGGGBuild());
-
-            SkillTree = skillTree;
+            _skillTree = skillTree;
+            BuildRoot.SkillTree = skillTree;
             ClassFilterItems = GenerateAscendancyClassItems(SkillTree.AscendancyClasses).ToList();
-            ClassFilter = NoFilterItem;
+            _classFilter = NoFilterItem;
+            BuildRoot.ApplyFilter();
         }
-
-        #region GGG Builds File Export/Import
-        private async void ExportGGGBuild(IBuildFolderViewModel target)
-        {
-            var build = new GGGBuild()
-            {
-                Name = target.Build.Name,
-                Version = PoESkillTree.Properties.Version.GGGPatchVersion,
-                Parts = new List<GGGBuildPart>()
-            };
-
-            foreach (var c in target.Children)
-                if (!c.GetType().Equals(typeof(BuildFolderViewModel)))
-                    build.Parts.Add(new GGGBuildPart() { Label = c.Build.Name, Link = ((PoEBuild)c.Build).TreeUrl });
-
-            var dialogSettings = new FileSelectorDialogSettings
-            {
-                DefaultPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                IsFolderPicker = true,
-            };
-            var path = await _dialogCoordinator.ShowFileSelectorAsync(this,
-                L10n.Message("Select save directory"),
-                L10n.Message("Select the directory where you want to export this build structure."),
-                dialogSettings);
-            if (path == null)
-                return;
-            path = Path.Combine(path, $"{SerializationUtils.EncodeFileName(build.Name)}.build");
-
-            byte[] jsonEncodedText = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(build));
-            using (FileStream stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: jsonEncodedText.Length, useAsync: true))
-            {
-                await stream.WriteAsync(jsonEncodedText, 0, jsonEncodedText.Length);
-            }
-        }
-
-        private void ImportGGGBuild()
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
 
         private IEnumerable<ClassFilterItem> GenerateAscendancyClassItems(IAscendancyClasses ascendancyClasses)
         {
@@ -350,11 +301,9 @@ namespace PoESkillTree.ViewModels.Builds
             switch (args.PropertyName)
             {
                 case nameof(IPersistentData.CurrentBuild):
-                    if (CurrentBuild?.Build == PersistentData.CurrentBuild)
+                    if (CurrentBuild.Build == PersistentData.CurrentBuild)
                         return;
-                    CurrentBuild = PersistentData.CurrentBuild == null
-                        ? null
-                        : TreeFindBuildViewModel(PersistentData.CurrentBuild);
+                    CurrentBuild = TreeFindBuildViewModel(PersistentData.CurrentBuild)!;
                     break;
                 case nameof(IPersistentData.SelectedBuild):
                     if (SelectedBuild?.Build == PersistentData.SelectedBuild)
@@ -458,7 +407,7 @@ namespace PoESkillTree.ViewModels.Builds
                     return;
             }
             build.IsSelected = false;
-            build.Parent.IsSelected = true;
+            build.Parent!.IsSelected = true;
             build.Parent.Children.Remove(build);
             await DeleteBuildFile(build);
         }
@@ -502,21 +451,21 @@ namespace PoESkillTree.ViewModels.Builds
             poeBuild.LastUpdated = DateTime.Now;
             await SaveBuildToFile(build);
             // Save parent folder to retain ordering information when renaming
-            await SaveBuildToFile(build.Parent);
+            await SaveBuildToFile(build.Parent!);
         }
 
         private async Task SaveBuildAs(BuildViewModel vm)
         {
             var build = vm.Build;
             var name = await _dialogCoordinator.ShowValidatingInputDialogAsync(this, L10n.Message("Save as"),
-                L10n.Message("Enter the new name of the build"), build.Name, s => _buildValidator.ValidateNewBuildName(s, vm.Parent));
+                L10n.Message("Enter the new name of the build"), build.Name, s => _buildValidator.ValidateNewBuildName(s, vm.Parent!));
             if (string.IsNullOrWhiteSpace(name))
                 return;
             var newBuild = build.DeepClone();
             newBuild.Name = name;
             var newVm = new BuildViewModel(newBuild, Filter);
 
-            var builds = vm.Parent.Children;
+            var builds = vm.Parent!.Children;
             if (build.CanRevert)
             {
                 // The original build exists in the file system.
@@ -547,14 +496,14 @@ namespace PoESkillTree.ViewModels.Builds
 
         private void MoveUp(IBuildViewModel build)
         {
-            var list = build.Parent.Children;
+            var list = build.Parent!.Children;
             var i = list.IndexOf(build);
             list.Move(i, i - 1);
         }
 
         private void MoveDown(IBuildViewModel build)
         {
-            var list = build.Parent.Children;
+            var list = build.Parent!.Children;
             var i = list.IndexOf(build);
             list.Move(i, i + 1);
         }
@@ -562,14 +511,13 @@ namespace PoESkillTree.ViewModels.Builds
         private async Task Cut(IBuildViewModel build)
         {
             build.IsSelected = false;
-            build.Parent.IsSelected = true;
+            build.Parent!.IsSelected = true;
             build.Parent.Children.Remove(build);
             await DeleteBuildFile(build);
             _buildClipboard = build;
             _clipboardIsCopy = false;
 
-            var poeBuild = build.Build as PoEBuild;
-            if (poeBuild != null)
+            if (build.Build is PoEBuild poeBuild)
             {
                 CopyToClipboard(poeBuild);
             }
@@ -591,13 +539,13 @@ namespace PoESkillTree.ViewModels.Builds
         {
             if (target == null || _buildClipboard == null)
                 return false;
-            var targetFolder = target as IBuildFolderViewModel ?? target.Parent;
+            var targetFolder = target as IBuildFolderViewModel ?? target.Parent!;
             return _buildValidator.CanMoveTo(_buildClipboard, targetFolder);
         }
 
         private async Task Paste(IBuildViewModel target)
         {
-            var targetFolder = target as IBuildFolderViewModel ?? target.Parent;
+            var targetFolder = target as IBuildFolderViewModel ?? target.Parent!;
             IBuildViewModel pasted;
 
             if (CanPasteFromClipboard() && !CanPasteNonClipboard(target))
@@ -609,7 +557,7 @@ namespace PoESkillTree.ViewModels.Builds
             }
             else if (_clipboardIsCopy)
             {
-                if (!(_buildClipboard.Build is PoEBuild oldBuild))
+                if (!(_buildClipboard!.Build is PoEBuild oldBuild))
                     throw new InvalidOperationException("Can only copy builds, not folders.");
                 var newName = Util.FindDistinctName(oldBuild.Name, targetFolder.Children.Select(b => b.Build.Name));
                 var newBuild = PoEBuild.CreateNotRevertableCopy(oldBuild, newName);
@@ -617,7 +565,7 @@ namespace PoESkillTree.ViewModels.Builds
             }
             else
             {
-                pasted = _buildClipboard;
+                pasted = _buildClipboard!;
                 _buildClipboard = null;
             }
             targetFolder.Children.Add(pasted);
@@ -658,7 +606,7 @@ namespace PoESkillTree.ViewModels.Builds
             }
             if (build.Build.Name != nameBefore)
             {
-                await SaveBuildToFile(build.Parent);
+                await SaveBuildToFile(build.Parent!);
             }
         }
 
@@ -707,7 +655,7 @@ namespace PoESkillTree.ViewModels.Builds
             }
         }
 
-        private async Task<PoEBuild> PasteFromClipboard(IBuildFolderViewModel targetFolder)
+        private async Task<PoEBuild?> PasteFromClipboard(IBuildFolderViewModel targetFolder)
         {
             var str = Clipboard.GetText();
             var newBuild = await PersistentData.ImportBuildAsync(str);
@@ -752,21 +700,21 @@ namespace PoESkillTree.ViewModels.Builds
 
         #region Traverse helper methods
 
-        private BuildViewModel TreeFindBuildViewModel(PoEBuild build)
+        private BuildViewModel? TreeFindBuildViewModel(PoEBuild build)
         {
             return TreeFind<BuildViewModel>(b => b.Build == build, BuildRoot);
         }
 
-        private IBuildViewModel<T> TreeFindBuildViewModel<T>(T build)
+        private IBuildViewModel<T>? TreeFindBuildViewModel<T>(T build)
             where T : class, IBuild
         {
             return TreeFind<IBuildViewModel<T>>(b => b.Build == build, BuildRoot);
         }
 
-        private static T TreeFind<T>(Predicate<T> predicate, IBuildViewModel current) where T : class, IBuildViewModel
+        private static T? TreeFind<T>(Predicate<T> predicate, IBuildViewModel current)
+            where T : class, IBuildViewModel
         {
-            var t = current as T;
-            if (t != null && predicate(t))
+            if (current is T t && predicate(t))
             {
                 return t;
             }
@@ -776,11 +724,9 @@ namespace PoESkillTree.ViewModels.Builds
 
         private static async Task TreeTraverseAsync<T>(Func<T, Task> action, IBuildViewModel current) where T : class, IBuildViewModel
         {
-            var t = current as T;
-            if (t != null)
+            if (current is T t)
                 await action(t);
-            var folder = current as BuildFolderViewModel;
-            if (folder == null)
+            if (!(current is BuildFolderViewModel folder))
                 return;
             foreach (var build in folder.Children)
             {
@@ -790,8 +736,7 @@ namespace PoESkillTree.ViewModels.Builds
 
         private static void TreeTraverse<T>(Action<T> action, IBuildViewModel current) where T : class, IBuildViewModel
         {
-            var t = current as T;
-            if (t != null)
+            if (current is T t)
                 action(t);
             var folder = current as BuildFolderViewModel;
             folder?.Children.ForEach(b => TreeTraverse(action, b));
@@ -919,10 +864,9 @@ namespace PoESkillTree.ViewModels.Builds
                 }
 
                 // Ask BuildValidator if drop is possible
-                var source = dropInfo.Data as IBuildViewModel;
-                if (source == null)
+                if (!(dropInfo.Data is IBuildViewModel source))
                     return;
-                IBuildFolderViewModel target;
+                IBuildFolderViewModel? target;
                 if (isHighlight)
                 {
                     target = dropInfo.TargetItem as IBuildFolderViewModel;

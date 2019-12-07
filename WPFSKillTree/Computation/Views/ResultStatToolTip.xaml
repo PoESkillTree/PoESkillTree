@@ -15,7 +15,7 @@
               ItemsSource="{Binding ModifierNodes.Result}">
         <DataGrid.Resources>
             <Style TargetType="DataGridColumnHeader"
-                   BasedOn="{StaticResource MetroDataGridColumnHeader}">
+                   BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}">
                 <Setter Property="Padding" Value="5 0" />
             </Style>
         </DataGrid.Resources>

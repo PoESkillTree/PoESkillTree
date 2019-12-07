@@ -21,11 +21,11 @@ namespace PoESkillTree.Computation.Model
         }
 
         public bool TryGetValue(IStat stat, out NodeValue? value)
-            => _values.TryGetValue(stat.ToString(), out value);
+            => _values.TryGetValue(stat.ToString()!, out value);
 
         public void SetValue(IStat stat, NodeValue? value)
         {
-            _values[stat.ToString()] = value;
+            _values[stat.ToString()!] = value;
             OnValueChanged();
         }
 
@@ -35,6 +35,6 @@ namespace PoESkillTree.Computation.Model
         private void OnValueChanged()
             => ValueChanged?.Invoke(this, EventArgs.Empty);
 
-        public event EventHandler ValueChanged;
+        public event EventHandler? ValueChanged;
     }
 }

@@ -19,8 +19,8 @@ namespace PoESkillTree.Computation.ViewModels
             var stat = new Stat("");
             var calculatorMock = new Mock<IObservingCalculator>();
             var context = Mock.Of<IValueCalculationContext>(c =>
-                c.GetValue(stat.Minimum, NodeType.Total, PathDefinition.MainPath) == new NodeValue(1) &&
-                c.GetValue(stat.Maximum, NodeType.Total, PathDefinition.MainPath) == new NodeValue(3));
+                c.GetValue(stat.Minimum!, NodeType.Total, PathDefinition.MainPath) == new NodeValue(1) &&
+                c.GetValue(stat.Maximum!, NodeType.Total, PathDefinition.MainPath) == new NodeValue(3));
             var expectedValues = new (NodeValue? added, NodeValue? removed)[]
             {
                 ((NodeValue?) true, null),

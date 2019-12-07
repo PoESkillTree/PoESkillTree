@@ -9,7 +9,9 @@ namespace PoESkillTree.Utils
     [TestFixture]
     public class ObservableSetTest
     {
+#pragma warning disable 8618 // Initialized in Initialize
         private ObservableSet<string> _set;
+#pragma warning restore
         private int _collectionChangedInvocations;
         private int _propertyChangedInvocations;
 

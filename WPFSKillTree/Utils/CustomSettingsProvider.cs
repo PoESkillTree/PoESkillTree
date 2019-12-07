@@ -1,11 +1,9 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using PoESkillTree.Properties;
 
 namespace PoESkillTree.Utils
 {
@@ -14,39 +12,27 @@ namespace PoESkillTree.Utils
     // This allows for multiple files since this Provider is not able to combine multiple Settings into one file.
     public class CustomSettingsProvider : SettingsProvider
     {
-        const string NAME = "name";
-        const string SERIALIZE_AS = "serializeAs";
-        const string CONFIG = "configuration";
-        const string USER_SETTINGS = "userSettings";
-        const string SETTING = "setting";
+        private const string NameKey = "name";
+        private const string SerializeAsKey = "serializeAs";
+        private const string ConfigKey = "configuration";
+        private const string UserSettingsKey = "userSettings";
+        private const string SettingKey = "setting";
 
         private readonly string _settingsKey;
-        /// <summary>
-        /// Loads the file into memory.
-        /// </summary>
-        public CustomSettingsProvider()
-        {
-            SettingsDictionary = new Dictionary<string, SettingStruct>();
-            _settingsKey = Settings.Default.SettingsKey;
-        }
 
         /// <summary>
         /// Loads the file into memory.
         /// </summary>
-        public CustomSettingsProvider(string settingsKey = null)
+        public CustomSettingsProvider(string settingsKey)
         {
             SettingsDictionary = new Dictionary<string, SettingStruct>();
-            if (settingsKey == null)
-            {
-                settingsKey = Settings.Default.SettingsKey;
-            }
             _settingsKey = settingsKey;
         }
 
         /// <summary>
         /// Override.
         /// </summary>
-        public override void Initialize(string name, NameValueCollection config)
+        public override void Initialize(string? name, NameValueCollection? config)
         {
             base.Initialize(ApplicationName, config);
         }
@@ -56,10 +42,7 @@ namespace PoESkillTree.Utils
         /// </summary>
         public override string ApplicationName
         {
-            get
-            {
-                return System.Reflection.Assembly.GetExecutingAssembly().ManifestModule.Name;
-            }
+            get => System.Reflection.Assembly.GetExecutingAssembly().ManifestModule.Name;
             set
             {
                 //do nothing
@@ -84,11 +67,10 @@ namespace PoESkillTree.Utils
             //collection that will be returned.
             SettingsPropertyValueCollection values = new SettingsPropertyValueCollection();
 
-            //itterate thought the properties we get from the designer, checking to see if the setting is in the dictionary
-            foreach (SettingsProperty setting in collection)
+            //iterate thought the properties we get from the designer, checking to see if the setting is in the dictionary
+            foreach (var setting in collection.OfType<SettingsProperty>())
             {
-                SettingsPropertyValue value = new SettingsPropertyValue(setting);
-                value.IsDirty = false;
+                SettingsPropertyValue value = new SettingsPropertyValue(setting) {IsDirty = false};
 
                 if (SettingsDictionary.ContainsKey(setting.Name))
                 {
@@ -112,11 +94,11 @@ namespace PoESkillTree.Utils
         public override void SetPropertyValues(SettingsContext context, SettingsPropertyValueCollection collection)
         {
             //grab the values from the collection parameter and update the values in our dictionary.
-            foreach (SettingsPropertyValue value in collection)
+            foreach (var value in collection.OfType<SettingsPropertyValue>())
             {
-                var setting = new SettingStruct()
+                var setting = new SettingStruct
                 {
-                    value = (value.PropertyValue == null ? String.Empty : value.SerializedValue.ToString()),
+                    value = value.PropertyValue == null ? string.Empty : value.SerializedValue.ToString()!,
                     name = value.Name,
                     serializeAs = value.Property.SerializeAs.ToString()
                 };
@@ -152,8 +134,7 @@ namespace PoESkillTree.Utils
                 var configXml = XDocument.Load(UserConfigPath);
 
                 //get all of the <setting name="..." serializeAs="..."> elements.
-                var settingElements = configXml.Element(CONFIG).Element(USER_SETTINGS)
-                    .Element(typeof(Settings).FullName)?.Elements(SETTING);
+                var settingElements = configXml.Element(ConfigKey)?.Element(UserSettingsKey)?.Elements(SettingKey);
 
                 if (settingElements is null)
                 {
@@ -166,13 +147,13 @@ namespace PoESkillTree.Utils
                 //using "String" as default serializeAs...just in case, no real good reason.
                 foreach (var element in settingElements)
                 {
-                    var newSetting = new SettingStruct()
+                    var newSetting = new SettingStruct
                     {
-                        name = element.Attribute(NAME) == null ? String.Empty : element.Attribute(NAME).Value,
-                        serializeAs = element.Attribute(SERIALIZE_AS) == null ? "String" : element.Attribute(SERIALIZE_AS).Value,
-                        value = element.Value ?? String.Empty
+                        name = element.Attribute(NameKey) == null ? string.Empty : element.Attribute(NameKey).Value,
+                        serializeAs = element.Attribute(SerializeAsKey) == null ? "String" : element.Attribute(SerializeAsKey).Value,
+                        value = element.Value
                     };
-                    SettingsDictionary.Add(element.Attribute(NAME).Value, newSetting);
+                    SettingsDictionary.Add(element.Attribute(NameKey).Value, newSetting);
                 }
             }
             catch
@@ -190,10 +171,8 @@ namespace PoESkillTree.Utils
         {
             var doc = new XDocument();
             var declaration = new XDeclaration("1.0", "utf-8", "true");
-            var config = new XElement(CONFIG);
-            var userSettings = new XElement(USER_SETTINGS);
-            var group = new XElement(typeof(Settings).FullName);
-            userSettings.Add(group);
+            var config = new XElement(ConfigKey);
+            var userSettings = new XElement(UserSettingsKey);
             config.Add(userSettings);
             doc.Add(config);
             doc.Declaration = declaration;
@@ -215,52 +194,45 @@ namespace PoESkillTree.Utils
             var import = XDocument.Load(UserConfigPath);
 
             //get the settings group (e.g. <Company.Project.Desktop.Settings>)
-            var settingsSection = import.Element(CONFIG).Element(USER_SETTINGS).Element(typeof(Settings).FullName);
+            var settingsSection = import.Element(ConfigKey).Element(UserSettingsKey);
 
             //iterate though the dictionary, either updating the value or adding the new setting.
             foreach (var entry in SettingsDictionary)
             {
-                var setting = settingsSection.Elements().FirstOrDefault(e => e.Attribute(NAME).Value == entry.Key);
+                var setting = settingsSection.Elements().FirstOrDefault(e => e.Attribute(NameKey)?.Value == entry.Key);
                 if (setting == null) //this can happen if a new setting is added via the .settings designer.
                 {
-                    var newSetting = new XElement(SETTING);
-                    newSetting.Add(new XAttribute(NAME, entry.Value.name));
-                    newSetting.Add(new XAttribute(SERIALIZE_AS, entry.Value.serializeAs));
-                    newSetting.Value = (entry.Value.value ?? String.Empty);
+                    var newSetting = new XElement(SettingKey);
+                    newSetting.Add(new XAttribute(NameKey, entry.Value.name));
+                    newSetting.Add(new XAttribute(SerializeAsKey, entry.Value.serializeAs));
+                    newSetting.Value = (entry.Value.value ?? string.Empty);
                     settingsSection.Add(newSetting);
                 }
                 else //update the value if it exists.
                 {
-                    setting.Value = (entry.Value.value ?? String.Empty);
+                    setting.Value = (entry.Value.value ?? string.Empty);
                 }
             }
             import.Save(UserConfigPath);
         }
 
-        private string UserConfigPath
-        {
-            get
-            {
-                return Path.Combine(Settings.SettingsPath, _settingsKey) + ".config";
-            }
-
-        }
+        private string UserConfigPath => Path.Combine(AppData.GetFolder("Settings"), _settingsKey) + ".config";
 
         /// <summary>
         /// In memory storage of the settings values
         /// </summary>
-        private Dictionary<string, SettingStruct> SettingsDictionary { get; set; }
+        private Dictionary<string, SettingStruct> SettingsDictionary { get; }
 
         /// <summary>
         /// Helper struct.
         /// </summary>
-        internal struct SettingStruct
+        private struct SettingStruct
         {
             internal string name;
             internal string serializeAs;
             internal string value;
         }
 
-        bool _loaded;
+        private bool _loaded;
     }
 }

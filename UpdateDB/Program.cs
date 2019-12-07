@@ -24,12 +24,7 @@ namespace UpdateDB
         // Main entry point.
         public static async Task<int> Main(string[] arguments)
         {
-            var args = new Arguments
-            {
-                LoaderFlags = new List<string>(),
-                OutputDirectory = OutputDirectory.AppData
-            };
-            var loaderArguments = new List<string>();
+            var args = new Arguments();
 
             // Get options.
             var unrecognizedSwitches = new List<string>();
@@ -37,12 +32,6 @@ namespace UpdateDB
             {
                 if (!arg.StartsWith("/"))
                     continue;
-
-                if (arg.Contains("."))
-                {
-                    loaderArguments.Add(arg.Substring(1));
-                    continue;
-                }
 
                 if (arg.StartsWith("/specifieddir:", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -71,7 +60,7 @@ namespace UpdateDB
                 }
             }
 
-            var exec = new DataLoaderExecutor(args);
+            using var exec = new DataLoaderExecutor(args);
 
             var nonFlags = unrecognizedSwitches.Where(s => !exec.IsLoaderFlagRecognized(s)).ToList();
             if (nonFlags.Any())
@@ -84,20 +73,6 @@ namespace UpdateDB
                 args.LoaderFlags = unrecognizedSwitches;
             }
 
-            foreach (var loaderArgument in loaderArguments)
-            {
-                var split = loaderArgument.Split(new[] {'.', ':'}, 3);
-                if (split.Length < 2 || !exec.IsArgumentSupported(split[0], split[1]))
-                {
-                    Log.Error("Invalid argument - \"" + loaderArgument + "\"");
-                    return 1;
-                }
-                if (split.Length == 2)
-                    exec.AddArgument(split[0], split[1]);
-                else
-                    exec.AddArgument(split[0], split[1], split[2]);
-            }
-
             await exec.LoadAllAsync();
             return 0;
         }
@@ -105,9 +80,9 @@ namespace UpdateDB
 
         private class Arguments : IArguments
         {
-            public OutputDirectory OutputDirectory { get; set; }
-            public string SpecifiedOutputDirectory { get; set; }
-            public IEnumerable<string> LoaderFlags { get; set; }
+            public OutputDirectory OutputDirectory { get; set; } = OutputDirectory.AppData;
+            public string SpecifiedOutputDirectory { get; set; } = "";
+            public IEnumerable<string> LoaderFlags { get; set; } = Enumerable.Empty<string>();
         }
     }
 }

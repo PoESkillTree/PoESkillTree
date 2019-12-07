@@ -33,7 +33,7 @@ namespace PoESkillTree.SkillTreeFiles
         /// <param name="characterClass">The character class.</param>
         /// <param name="ascOrder">The ascendancy class index.</param>
         /// <returns>The ascendancy class name.</returns>
-        string GetAscendancyClassName(CharacterClass characterClass, int ascOrder);
+        string? GetAscendancyClassName(CharacterClass characterClass, int ascOrder);
 
         /// <summary>
         /// Gets all Ascendancy classes associated with a character class.

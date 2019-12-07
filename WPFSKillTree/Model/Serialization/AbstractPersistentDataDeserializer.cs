@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,8 +23,8 @@ namespace PoESkillTree.Model.Serialization
     {
         private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
-        public Version MinimumDeserializableVersion { get; }
-        public Version MaximumDeserializableVersion { get; }
+        public Version? MinimumDeserializableVersion { get; }
+        public Version? MaximumDeserializableVersion { get; }
 
         public AbstractPersistentData PersistentData { protected get; set; }
 
@@ -40,7 +41,9 @@ namespace PoESkillTree.Model.Serialization
         /// </summary>
         protected bool DeserializesBuildsSavePath { private get; set; }
 
-        protected AbstractPersistentDataDeserializer(string minimumConvertableVersion, string maximumConvertableVersion)
+#pragma warning disable CS8618 // PersistentData has to be set before and DialogCoordinator will be set in InitializeAsnyc
+        protected AbstractPersistentDataDeserializer(string? minimumConvertableVersion, string? maximumConvertableVersion)
+#pragma warning restore
         {
             if (minimumConvertableVersion != null)
                 MinimumDeserializableVersion = new Version(minimumConvertableVersion);
@@ -61,7 +64,7 @@ namespace PoESkillTree.Model.Serialization
         public async Task InitializeAsync(IDialogCoordinator dialogCoordinator)
         {
             DialogCoordinator = dialogCoordinator;
-            if (PersistentData.Options.BuildsSavePath == null)
+            if (string.IsNullOrEmpty(PersistentData.Options.BuildsSavePath))
             {
                 PersistentData.Options.BuildsSavePath = await GetBuildsSavePathAsync();
             }
@@ -94,11 +97,11 @@ namespace PoESkillTree.Model.Serialization
                         ? L10n.Message("Directory must be empty.")
                         : null;
             }
-            return await DialogCoordinator.ShowFileSelectorAsync(PersistentData,
+            return (await DialogCoordinator.ShowFileSelectorAsync(PersistentData,
                 L10n.Message("Select build directory"),
                 L10n.Message("Select the directory where builds will be stored.\n" +
                              "It will be created if it does not yet exist. You can change it in the settings later."),
-                dialogSettings);
+                dialogSettings))!;
         }
 
         public virtual void SaveBuildChanges()
@@ -145,7 +148,8 @@ namespace PoESkillTree.Model.Serialization
         /// Creates a new <see cref="PoEBuild"/> instance from the given <see cref="XmlBuild"/> instance.
         /// Will return null if null is given.
         /// </summary>
-        protected static PoEBuild ConvertFromXmlBuild(XmlBuild build)
+        [return: NotNullIfNotNull("build")]
+        protected static PoEBuild? ConvertFromXmlBuild(XmlBuild? build)
         {
             if (build == null)
                 return null;

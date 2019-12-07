@@ -7,7 +7,6 @@
         xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
         xmlns:local="clr-namespace:PoESkillTree.Controls"
         xmlns:conv ="clr-namespace:PoESkillTree.ViewModels"
-        xmlns:items="clr-namespace:PoESkillTree.Model.Items"
         xmlns:dialogs="clr-namespace:PoESkillTree.Controls.Dialogs"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:builds="clr-namespace:PoESkillTree.Views.Builds"
@@ -48,10 +47,12 @@
             <Setter Property="Padding" Value="0" />
             <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="ExpandDirection" Value="Down" />
-            <Setter Property="Background" Value="{DynamicResource WhiteColorBrush}" />
+            <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.WhiteColor}" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="controls:ControlsHelper.ContentCharacterCasing" Value="Normal" />
             <Setter Property="controls:ControlsHelper.HeaderFontSize" Value="16" />
+            <Setter Property="controls:HeaderedControlHelper.HeaderBackground"
+                    Value="{DynamicResource MahApps.Brushes.WhiteColor}" />
         </Style>
     </Window.Resources>
 
@@ -480,14 +481,6 @@
                         <iconPacks:PackIconModern Kind="PageDownload" HorizontalAlignment="Center" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Click="Menu_ItemFilterEditor">
-                    <MenuItem.Header>
-                        <l:Catalog Message="Item _Filter Editor" />
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="Filter" HorizontalAlignment="Center" />
-                    </MenuItem.Icon>
-                </MenuItem>
             </MenuItem>
             <MenuItem>
                 <MenuItem.Header>
@@ -634,8 +627,8 @@
                         <l:Catalog Message="Bandit" />
                     </ToggleButton>
                     <Popup IsOpen="{Binding IsChecked, ElementName=BanditToggle}" StaysOpen="False" Placement="Bottom" HorizontalOffset="-20" VerticalOffset="5">
-                        <Border Background="{DynamicResource WhiteColorBrush}" BorderThickness="1"
-                                BorderBrush="{DynamicResource AccentColorBrush}">
+                        <Border Background="{DynamicResource MahApps.Brushes.WhiteColor}" BorderThickness="1"
+                                BorderBrush="{DynamicResource MahApps.Brushes.Accent}">
                             <local:BanditSelection DataContext="{Binding PersistentData.CurrentBuild.Bandits}" Margin="5" />
                         </Border>
                     </Popup>
@@ -643,7 +636,7 @@
                                             Height="{Binding ActualHeight, ElementName=cbCharType}"
                                             DataContext="{Binding Tree, ElementName=window}" Value="{Binding Level, ValidatesOnDataErrors=True}"
                                             Minimum="{Binding UndefinedLevel}" Maximum="{Binding MaximumLevel}"
-                                            HasDecimals="False">
+                                            NumericInputMode="Numbers">
                         <controls:NumericUpDown.ToolTip>
                             <l:Catalog Message="Level"/>
                         </controls:NumericUpDown.ToolTip>
@@ -767,7 +760,7 @@
                 <Expander.Header>
                     <l:Catalog Message="Attributes"/>
                 </Expander.Header>
-                <Grid Background="{DynamicResource WhiteColorBrush}">
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
@@ -785,7 +778,7 @@
                         <CheckBox Grid.Column="1" Content="RegEx" Height="28" HorizontalAlignment="Left" Margin="5,0,5,0" x:Name="cbAttributesFilterRegEx" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Click="cbAttributesFilterRegEx_Click" />
                     </Grid>
                     <Grid Grid.Row="1">
-                        <TabControl Margin="0" x:Name="tabControl1" HorizontalAlignment="Left" Width="410" controls:TabControlHelper.IsUnderlined="True" Focusable="True" SelectionChanged="tabControl1_SelectionChanged">
+                        <TabControl Margin="0" x:Name="tabControl1" HorizontalAlignment="Left" Width="410" controls:TabControlHelper.Underlined="TabItems" Focusable="True" SelectionChanged="tabControl1_SelectionChanged">
                             <TabItem Margin="0" x:Name="tabItem1" controls:ControlsHelper.HeaderFontSize="15">
                                 <TabItem.Header>
                                     <l:Catalog Message="Passive Attributes"/>

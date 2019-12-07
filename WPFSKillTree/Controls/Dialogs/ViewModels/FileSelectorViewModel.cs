@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 using System.Windows.Input;
-using Microsoft.WindowsAPICodePack.Dialogs;
 using PoESkillTree.Utils;
 using PoESkillTree.Common.ViewModels;
 
@@ -11,13 +12,13 @@ namespace PoESkillTree.Controls.Dialogs.ViewModels
     /// <summary>
     /// View model used for selecting a path to a file or directory.
     /// </summary>
-    public class FileSelectorViewModel : ErrorInfoViewModel<string>
+    public class FileSelectorViewModel : ErrorInfoViewModel<string?>
     {
         private string _filePath;
         private string _sanitizedFilePath;
         private readonly bool _isFolderPicker;
-        private readonly string _validationSubPath;
-        private readonly Func<string, string> _additionalValidationFunc;
+        private readonly string? _validationSubPath;
+        private readonly Func<string, string?> _additionalValidationFunc;
         private readonly bool _useRelativePaths;
 
         public string Message { get; }
@@ -42,7 +43,9 @@ namespace PoESkillTree.Controls.Dialogs.ViewModels
 
         public bool IsCancelable { get; }
 
+#pragma warning disable CS8618 // _filePath and _sanitizedFilePath are set through FilePath
         public FileSelectorViewModel(string title, string message, FileSelectorDialogSettings settings)
+#pragma warning restore
         {
             if (!settings.IsFolderPicker && !string.IsNullOrEmpty(settings.ValidationSubPath))
                 throw new ArgumentException("ValidationSubPath may only be given if IsFolderPicker is true",
@@ -61,39 +64,49 @@ namespace PoESkillTree.Controls.Dialogs.ViewModels
         private void SelectFile()
         {
             var path = Path.GetFullPath(SanitizedFilePath);
-            var dialog = new CommonOpenFileDialog
+            if (_isFolderPicker)
             {
-                IsFolderPicker = _isFolderPicker,
-                InitialDirectory = Path.GetDirectoryName(path),
-                DefaultFileName = Path.GetFileName(path)
-            };
-            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-            {
-                path = dialog.FileName;
-                FilePath = _useRelativePaths ? AppData.ToRelativePath(path) : path;
+                var dialog = new FolderBrowserDialog
+                {
+                    SelectedPath = path,
+                };
+                if (dialog.ShowDialog() != DialogResult.OK)
+                    return;
+                path = dialog.SelectedPath;
             }
+            else
+            {
+                var dialog = new OpenFileDialog
+                {
+                    InitialDirectory = Path.GetDirectoryName(path),
+                    FileName = Path.GetFileName(path),
+                };
+                if (dialog.ShowDialog() != DialogResult.OK)
+                    return;
+                path = dialog.FileName;
+            }
+            FilePath = _useRelativePaths ? AppData.ToRelativePath(path) : path;
         }
 
         protected override IEnumerable<string> ValidateProperty(string propertyName)
         {
             if (propertyName != nameof(FilePath))
-                return null;
-            string message;
+                return Enumerable.Empty<string>();
             var trimmed = PathEx.TrimTrailingDirectorySeparators(FilePath);
-            if (PathEx.IsPathValid(trimmed, out message, mustBeDirectory: _isFolderPicker, mustBeFile: !_isFolderPicker,
+            if (PathEx.IsPathValid(trimmed, out var message, mustBeDirectory: _isFolderPicker, mustBeFile: !_isFolderPicker,
                 mustBeAbsolute: !_useRelativePaths))
             {
                 if (!string.IsNullOrEmpty(_validationSubPath))
                 {
                     PathEx.IsPathValid(Path.Combine(trimmed, _validationSubPath), out message);
                 }
-                if (message == null)
+                if (message is null)
                 {
                     message = _additionalValidationFunc(trimmed);
                 }
                 SanitizedFilePath = _useRelativePaths ? AppData.ToRelativePath(trimmed) : trimmed;
             }
-            return new[] {message};
+            return message is null ? Enumerable.Empty<string>() : new[] {message};
         }
     }
 }

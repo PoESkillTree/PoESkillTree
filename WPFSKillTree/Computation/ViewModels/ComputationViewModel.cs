@@ -30,7 +30,9 @@ namespace PoESkillTree.Computation.ViewModels
         public SharedConfigurationViewModel SharedConfiguration { get; private set; }
         public IndependentResultStatsViewModel IndependentResultStats { get; private set; }
 
+#pragma warning disable CS8618 // The constructor is private and CreateAsync initializes everything
         private ComputationViewModel(ObservableCalculator observableCalculator, ComputationSchedulerProvider schedulers)
+#pragma warning restore
         {
             _observableCalculator = observableCalculator;
             var modifierNodeFactory = new ModifierNodeViewModelFactory(observableCalculator);

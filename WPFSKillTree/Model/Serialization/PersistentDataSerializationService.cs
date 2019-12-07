@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
 using NLog;
 using PoESkillTree.Controls.Dialogs;
 using PoESkillTree.Engine.Utils;
@@ -87,17 +86,6 @@ namespace PoESkillTree.Model.Serialization
             return data;
         }
 
-        /// <summary>
-        /// Creates an empty PersistentData file that only has the language option set.
-        /// Used by the installation script.
-        /// </summary>
-        [UsedImplicitly]
-        public static void CreateSetupTemplate(string path, string language)
-        {
-            var data = new BarePersistentData { Options = { Language = language } };
-            new PersistentDataSerializer(data).Serialize(Path.Combine(path, FileName + ".xml"));
-        }
-
 
         private class PersistentData : AbstractPersistentData
         {
@@ -106,7 +94,9 @@ namespace PoESkillTree.Model.Serialization
             private readonly string _importedBuildPath;
             private readonly PersistentDataDeserializerCurrent _currentDeserializer;
 
+#pragma warning disable CS8618 // _serializer is set in initialization
             public PersistentData(IPersistentDataDeserializer deserializer, string importedBuildPath)
+#pragma warning restore
             {
                 _deserializer = deserializer;
                 _deserializer.PersistentData = this;
@@ -162,7 +152,7 @@ namespace PoESkillTree.Model.Serialization
                 _serializer = new PersistentDataSerializer(this);
             }
 
-            public override Task<PoEBuild> ImportBuildAsync(string buildXml)
+            public override Task<PoEBuild?> ImportBuildAsync(string buildXml)
             {
                 return _currentDeserializer.ImportBuildFromStringAsync(buildXml);
             }

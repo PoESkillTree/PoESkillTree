@@ -1,32 +1,24 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <RootNamespace>PoESkillTree</RootNamespace>
     <AssemblyName>PoESkillTree.Tests</AssemblyName>
-    <TargetFramework>net462</TargetFramework>
-    <LangVersion>latest</LangVersion>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>8</LangVersion>
     <AssemblyTitle>WPFSKillTree.Tests</AssemblyTitle>
     <Product>WPFSKillTree.Tests</Product>
     <Copyright>Copyright ©  2019</Copyright>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>8600;8601;8602;8603;8604;8613;8619;8620;8625</WarningsAsErrors>
   </PropertyGroup>
-  <Target Name="Test">
-    <NUnit3 Assemblies="$(OutputPath)/$(TargetFileName)" ToolPath="$(PkgNUnit_ConsoleRunner)\tools\" />
-  </Target>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Enums.NET" Version="2.3.2" />
-    <PackageReference Include="Moq" Version="4.13.0" />
+    <PackageReference Include="Enums.NET" Version="3.0.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
+    <PackageReference Include="Moq" Version="4.13.1" />
     <PackageReference Include="morelinq" Version="3.2.0" />
-    <PackageReference Include="MSBuildTasks" Version="1.5.0.235">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="NUnit" Version="3.12.0" />
-    <PackageReference Include="NUnit.ConsoleRunner" Version="3.10.0" GeneratePathProperty="true" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
-    <PackageReference Include="PoESkillTree.Engine" Version="0.1.5" />
-    <PackageReference Include="System.Reactive" Version="4.1.6" />
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    <PackageReference Include="PoESkillTree.Engine" Version="0.1.7" />
+    <PackageReference Include="System.Reactive" Version="4.3.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WPFSKillTree\WPFSKillTree.csproj" />

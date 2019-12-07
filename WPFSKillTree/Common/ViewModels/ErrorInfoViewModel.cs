@@ -15,8 +15,8 @@ namespace PoESkillTree.Common.ViewModels
     /// </summary>
     /// <remarks>
     /// Subclasses need to implement <see cref="ValidateProperty"/>. It is called for a property when it is changed.
-    /// If property changes affect the errors of other properties, <see cref="SetError"/>, <see cref="SetErrors"/>,
-    /// <see cref="ClearErrors()"/> or <see cref="ClearErrors(string)"/> can be used.
+    /// If property changes affect the errors of other properties, <see cref="SetErrors"/>
+    /// or <see cref="ClearErrors(string)"/> can be used.
     /// </remarks>
     /// <typeparam name="T">Type of the parameter used for the close command.</typeparam>
     public abstract class ErrorInfoViewModel<T> : CloseableViewModel<T>, INotifyDataErrorInfo
@@ -28,27 +28,17 @@ namespace PoESkillTree.Common.ViewModels
             get { return _errorDict.Values.Any(l => l.Any()); }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether this view model can be closed with <c>null</c> parameters
-        /// even when there are currently errors. Defaults to <c>true</c>.
-        /// </summary>
-        protected bool AlwaysAllowNullParamClose { get; set; } = true;
-
         public IEnumerable GetErrors(string propertyName)
         {
             if (string.IsNullOrEmpty(propertyName))
             {
                 return _errorDict.Values.Flatten();
             }
-            IList<string> list;
-            if (_errorDict.TryGetValue(propertyName, out list))
-            {
-                return list;
-            }
-            return null;
+
+            return _errorDict.TryGetValue(propertyName, out var list) ? list : Enumerable.Empty<string>();
         }
 
-        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+        public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
 
         /// <summary>
         /// Returns all error messages of the given property. Is called after the property is changed
@@ -56,46 +46,23 @@ namespace PoESkillTree.Common.ViewModels
         /// </summary>
         /// <returns>All current error messages of the given property. Null or an empty enumerable means that
         /// there are no errors.</returns>
-        protected abstract IEnumerable<string> ValidateProperty(string propertyName);
-
-        /// <summary>
-        /// Sets the errors for the given property to <paramref name="error"/> as a single entry.
-        /// If <paramref name="error"/> is null or empty, the errors of <paramref name="propertyName"/> are cleared.
-        /// </summary>
-        protected void SetError(string propertyName, string error)
-        {
-            if (string.IsNullOrEmpty(error))
-            {
-                ClearErrors(propertyName);
-                return;
-            }
-            IList<string> oldList;
-            if (_errorDict.TryGetValue(propertyName, out oldList) && oldList.Count == 1 && oldList[0] == error)
-                return;
-            _errorDict[propertyName] = new[] {error};
-            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
-        }
+        protected abstract IEnumerable<string?> ValidateProperty(string propertyName);
 
         /// <summary>
         /// Sets the errors for the given property.
         /// If <paramref name="errors"/> is null or empty, the errors of <paramref name="propertyName"/> are cleared.
         /// If an entry of <paramref name="errors"/> is null or empty, it is ignored.
         /// </summary>
-        protected void SetErrors(string propertyName, IEnumerable<string> errors)
+        private void SetErrors(string propertyName, IEnumerable<string?> errors)
         {
-            if (errors == null)
-            {
-                ClearErrors(propertyName);
-                return;
-            }
-            var errorList = errors.Where(s => !string.IsNullOrEmpty(s)).ToList();
+            var errorList = errors.WhereNotNull().Where(s => !string.IsNullOrEmpty(s)).ToList();
             if (!errorList.Any())
             {
                 ClearErrors(propertyName);
                 return;
             }
-            IList<string> oldList;
-            if (_errorDict.TryGetValue(propertyName, out oldList) && oldList.Count == errorList.Count &&
+
+            if (_errorDict.TryGetValue(propertyName, out var oldList) && oldList.Count == errorList.Count &&
                 oldList.SequenceEqual(errorList))
                 return;
             _errorDict[propertyName] = errorList;
@@ -105,31 +72,17 @@ namespace PoESkillTree.Common.ViewModels
         /// <summary>
         /// Removes the errors for the given property.
         /// </summary>
-        protected void ClearErrors(string propertyName)
+        private void ClearErrors(string propertyName)
         {
-            IList<string> list;
-            if (!_errorDict.TryGetValue(propertyName, out list))
-                return;
-            if (list.Any())
+            if (_errorDict.TryGetValue(propertyName, out var list) && list.Any())
             {
                 list.Clear();
                 ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
             }
         }
 
-        /// <summary>
-        /// Removes the errors for all properties.
-        /// </summary>
-        protected void ClearErrors()
-        {
-            _errorDict.Clear();
-            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(null));
-        }
-
         protected override bool CanClose(T param)
-        {
-            return !HasErrors || (AlwaysAllowNullParamClose && param == null);
-        }
+            => !HasErrors;
 
         protected override void OnPropertyChanged(string propertyName)
         {

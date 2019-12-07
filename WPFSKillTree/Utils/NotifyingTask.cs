@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 namespace PoESkillTree.Utils
@@ -11,8 +12,9 @@ namespace PoESkillTree.Utils
     /// </summary>
     public sealed class NotifyingTask<TResult> : INotifyPropertyChanged
     {
-        public TResult Default { private get; set; }
-        public Task TaskCompletion { get; }
+        [MaybeNull]
+        public TResult Default { private get; set; } = default!;
+        public Task? TaskCompletion { get; }
         public Task<TResult> Task { get; }
         public TResult Result => (Task.Status == TaskStatus.RanToCompletion) ? Task.Result : Default;
         public TaskStatus Status => Task.Status;
@@ -21,9 +23,9 @@ namespace PoESkillTree.Utils
         public bool IsSuccessfullyCompleted => Task.Status == TaskStatus.RanToCompletion;
         public bool IsCanceled => Task.IsCanceled;
         public bool IsFaulted => Task.IsFaulted;
-        public AggregateException Exception => Task.Exception;
-        public Exception InnerException => Exception?.InnerException;
-        public string ErrorMessage => InnerException?.Message;
+        public AggregateException? Exception => Task.Exception;
+        public Exception? InnerException => Exception?.InnerException;
+        public string? ErrorMessage => InnerException?.Message;
 
         public NotifyingTask(Task<TResult> task, Action<Exception> errorHandler)
         {
@@ -43,7 +45,7 @@ namespace PoESkillTree.Utils
             }
         }
 
-        private async Task WatchTaskAsync(Action<Exception> errorHandler, Func<Exception, Task> asyncErrorHandler)
+        private async Task WatchTaskAsync(Action<Exception>? errorHandler, Func<Exception, Task>? asyncErrorHandler)
         {
             try
             {
@@ -80,6 +82,6 @@ namespace PoESkillTree.Utils
         private void OnPropertyChanged(string propertyName)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
     }
 }

@@ -2,7 +2,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
                     xmlns:dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
-                    xmlns:controls="clr-namespace:PoESkillTree.Controls.Dialogs">
+                    xmlns:controls="clr-namespace:PoESkillTree.Controls.Dialogs"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:viewModels="clr-namespace:PoESkillTree.Common.ViewModels"
+                    mc:Ignorable="d">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Themes/Dialogs/BaseMetroDialog.xaml" />
@@ -10,7 +14,7 @@
     </ResourceDictionary.MergedDictionaries>
     
     <!-- The control template can't be partially adjusted so this is mostly copy pasted from
-         https://github.com/MahApps/MahApps.Metro/blob/1.3.0/MahApps.Metro/Themes/Dialogs/BaseMetroDialog.xaml
+         https://github.com/MahApps/MahApps.Metro/blob/4858e7bc7ac0815d2330894b0b28410b2191e997/src/MahApps.Metro/Themes/Dialogs/BaseMetroDialog.xaml
          (MIT licensed). The close button at the bottom and some bindings are new.
          -->
     <ControlTemplate x:Key="BaseDialogTemplate" TargetType="{x:Type controls:BaseDialog}">
@@ -18,50 +22,58 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         </ControlTemplate.Resources>
         <Grid Background="{TemplateBinding Background}">
-            <Border FocusVisualStyle="{x:Null}" Focusable="False">
-                <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <ContentPresenter Grid.Row="0"
+                              AutomationProperties.Name="Dialog top"
+                              Content="{TemplateBinding DialogTop}"
+                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25*" />
+                    <ColumnDefinition Width="50*" MaxWidth="{TemplateBinding MaxContentWidth}" />
+                    <ColumnDefinition Width="25*" />
+                </Grid.ColumnDefinitions>
+                <ContentPresenter Grid.Column="0" Content="{TemplateBinding DialogLeft}" />
+                <!--  Content area  -->
+                <Grid Grid.Column="1" Margin="{TemplateBinding Padding}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <ContentPresenter Grid.Row="0" Content="{TemplateBinding DialogTop}" />
-                    <Grid Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="25*" />
-                            <ColumnDefinition Width="50*" MaxWidth="{TemplateBinding MaxContentWidth}" />
-                            <ColumnDefinition Width="25*" />
-                        </Grid.ColumnDefinitions>
-                        <ContentPresenter Grid.Column="0" Content="{TemplateBinding DialogLeft}" />
-                        <!--  Content area  -->
-                        <Grid Grid.Column="1" Margin="0 10 0 0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <TextBlock x:Name="PART_Title"
-                                       Grid.Row="0"
-                                       FontSize="{DynamicResource DialogTitleFontSize}"
-                                       Foreground="{TemplateBinding Foreground}"
-                                       TextWrapping="Wrap"
-                                       Text="{TemplateBinding Title}" />
-                            <ContentPresenter Grid.Row="1" Content="{TemplateBinding Content}" />
-                            <StackPanel Grid.Row="2"
-                                        Style="{StaticResource DialogPanel}"
-                                        Visibility="{TemplateBinding CloseButtonVisibility}">
-                                <Button IsDefault="True" IsCancel="True"
-                                        Style="{StaticResource DynamicDialogPanelButton}"
-                                        Command="{TemplateBinding CloseCommand}"
-                                        CommandParameter="{TemplateBinding CloseCommandParameter}">
-                                    <l:Catalog Message="Close"/>
-                                </Button>
-                            </StackPanel>
-                        </Grid>
-                    </Grid>
-                    <ContentPresenter Grid.Row="2" Content="{TemplateBinding DialogBottom}" />
+                    <TextBlock x:Name="PART_Title"
+                               Grid.Row="0"
+                               AutomationProperties.Name="Dialog title"
+                               FontSize="{TemplateBinding DialogTitleFontSize}"
+                               Foreground="{TemplateBinding Foreground}"
+                               Text="{TemplateBinding Title}"
+                               TextWrapping="Wrap" />
+                    <ContentPresenter Grid.Row="1"
+                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      AutomationProperties.Name="Dialog content"
+                                      Content="{TemplateBinding Content}"
+                                      ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    <StackPanel Grid.Row="2"
+                                Style="{StaticResource DialogPanel}"
+                                Visibility="{TemplateBinding CloseButtonVisibility}">
+                        <Button IsDefault="True" IsCancel="True"
+                                Style="{StaticResource DynamicDialogPanelButton}"
+                                Command="{TemplateBinding CloseCommand}"
+                                CommandParameter="{TemplateBinding CloseCommandParameter}">
+                            <l:Catalog Message="Close"/>
+                        </Button>
+                    </StackPanel>
                 </Grid>
-            </Border>
+            </Grid>
+            <ContentPresenter Grid.Row="2" Content="{TemplateBinding DialogBottom}" />
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="Title" Value="{x:Null}">
@@ -69,15 +81,7 @@
             </Trigger>
             <EventTrigger RoutedEvent="Loaded">
                 <EventTrigger.Actions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation AccelerationRatio=".9"
-                                 BeginTime="0:0:0"
-                                 Duration="0:0:0.2"
-                                 Storyboard.TargetProperty="Opacity"
-                                 To="1" />
-                        </Storyboard>
-                    </BeginStoryboard>
+                    <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.DialogShown}" />
                 </EventTrigger.Actions>
             </EventTrigger>
         </ControlTemplate.Triggers>
@@ -85,6 +89,9 @@
 
     <Style TargetType="{x:Type controls:BaseDialog}"
            BasedOn="{StaticResource {x:Type dialogs:BaseMetroDialog}}">
+        <d:Style.DataContext>
+            <x:Type Type="viewModels:ViewModelBase" />
+        </d:Style.DataContext>
         <Setter Property="Title" Value="{Binding DisplayName}" />
         <Setter Property="Template" Value="{StaticResource BaseDialogTemplate}" />
         <Setter Property="controls:DialogParticipation.Register" Value="{Binding}" />
@@ -92,6 +99,9 @@
 
     <Style TargetType="{x:Type controls:CloseableBaseDialog}"
            BasedOn="{StaticResource {x:Type controls:BaseDialog}}">
+        <d:Style.DataContext>
+            <x:Type Type="viewModels:CloseableViewModelBase{T}" />
+        </d:Style.DataContext>
         <Setter Property="CloseButtonVisibility" Value="Visible" />
         <Setter Property="CloseCommand" Value="{Binding CloseCommand}" />
     </Style>

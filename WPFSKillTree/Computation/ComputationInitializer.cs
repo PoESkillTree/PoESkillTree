@@ -35,7 +35,9 @@ namespace PoESkillTree.Computation
 
         private ObservableSet<IReadOnlyList<Skill>> _skills;
 
+#pragma warning disable CS8618 // The instance variables will be initialized if methods are called and awaited in the correct order
         private ComputationInitializer()
+#pragma warning restore
         {
             _gameData = new GameDataWithOldTreeModel();
         }

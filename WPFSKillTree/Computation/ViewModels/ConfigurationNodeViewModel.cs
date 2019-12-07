@@ -9,7 +9,7 @@ using PoESkillTree.Engine.Computation.Core;
 
 namespace PoESkillTree.Computation.ViewModels
 {
-    public class ConfigurationNodeViewModel : CalculationNodeViewModel, IDisposable
+    public sealed class ConfigurationNodeViewModel : CalculationNodeViewModel, IDisposable
     {
         private readonly NodeValue? _defaultValue;
         private readonly Subject<NodeValue?> _valueChangeSubject = new Subject<NodeValue?>();
@@ -48,7 +48,7 @@ namespace PoESkillTree.Computation.ViewModels
         private IReadOnlyList<Modifier> CreateModifiers(NodeValue? value)
         {
             if (value is null)
-                return new Modifier[0];
+                return Array.Empty<Modifier>();
 
             return new[]
             {

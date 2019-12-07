@@ -23,20 +23,17 @@ namespace PoESkillTree.TreeGenerator.Solver
         /// </summary>
         protected bool IsInitialized { get; private set; }
         
-        public bool IsConsideredDone
-        {
-            get { return IsInitialized && CurrentIteration >= (Iterations - 1) && CurrentStep >= Steps; }
-        }
+        public bool IsConsideredDone => IsInitialized && CurrentIteration >= (Iterations - 1) && CurrentStep >= Steps;
 
         public abstract int Steps { get; }
 
         public abstract int CurrentStep { get; }
 
-        public int Iterations { get { return Settings.Iterations; } }
+        public int Iterations => Settings.Iterations;
 
         public abstract int CurrentIteration { get; }
         
-        public abstract IEnumerable<ushort> BestSolution { get; }
+        public abstract IEnumerable<ushort> BestSolution { get; protected set; }
 
         /// <summary>
         /// Skill tree instance to operate on.
@@ -89,14 +86,13 @@ namespace PoESkillTree.TreeGenerator.Solver
         /// </summary>
         /// <param name="tree">The (not null) skill tree in which to optimize.</param>
         /// <param name="settings">The (not null) settings that describe what the solver should do.</param>
+#pragma warning disable CS8618 // Initialized in Inittialize
         protected AbstractSolver(SkillTree tree, TS settings)
+#pragma warning restore
         {
-            if (tree == null) throw new ArgumentNullException("tree");
-            if (settings == null) throw new ArgumentNullException("settings");
-
             IsInitialized = false;
-            _tree = tree;
-            Settings = settings;
+            _tree = tree ?? throw new ArgumentNullException(nameof(tree));
+            Settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
         /// <summary>
@@ -123,7 +119,7 @@ namespace PoESkillTree.TreeGenerator.Solver
             StartNode = result.StartNode;
 
             // SkillNode-Ids of the remaining search space may represent more than one node. This
-            // information needs to be safed.
+            // information needs to be saved.
             var expansionDict = new IReadOnlyCollection<ushort>[ushort.MaxValue];
             foreach (var node in remainingNodes)
             {
@@ -170,7 +166,7 @@ namespace PoESkillTree.TreeGenerator.Solver
         private void BuildSearchGraph()
         {
             // Make all directed edges from Scion Ascendant "Path of the ..." node undirected.
-            // This is really dirty but the whole code is so dependant on the skill tree stuff that
+            // This is really dirty but the whole code is so dependent on the skill tree stuff that
             // I don't see a non dirty way.
             var ascendantClassStartNodes = SkillTree.Skillnodes.Values.Where(SkillTree.IsAscendantClassStartNode).ToList();
             foreach (var classStartNode in ascendantClassStartNodes)
@@ -228,7 +224,7 @@ namespace PoESkillTree.TreeGenerator.Solver
                 var ng = i.Value;
                 var mustInclude = false;
 
-                SkillNode firstNeighbor = null;
+                SkillNode? firstNeighbor = null;
 
                 // Find out if this node group can be omitted.
                 foreach (var node in ng.Nodes)
@@ -275,7 +271,7 @@ namespace PoESkillTree.TreeGenerator.Solver
                             || Settings.Crossed.Contains(node)
                             // Mastery nodes are obviously not useful.
                             || node.Type == PassiveNodeType.Mastery
-                            // Ignore ascendancies for now
+                            // Ignore ascendencies for now
                             || node.IsAscendancyNode)
                             continue;
 

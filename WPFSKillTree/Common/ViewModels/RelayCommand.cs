@@ -2,142 +2,134 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using JetBrains.Annotations;
 
 namespace PoESkillTree.Common.ViewModels
 {
     /// <summary>
     /// <see cref="ICommand"/> implementation using delegates.
     /// </summary>
-    public class RelayCommand : RelayCommand<object>
+    public class RelayCommand : AbstractRelayCommand
     {
+        private readonly Action _execute;
+
         /// <param name="execute">The action that is called when this command is executed.</param>
         /// <param name="canExecute">A function returning whether this command can currently be executed.
         /// Null if all parameters can be executed.</param>
-        public RelayCommand(Action execute, Func<bool> canExecute = null)
-            : base(_ => execute(), canExecute == null ? null : (Predicate<object>) (_ => canExecute()))
+        public RelayCommand(Action execute, Func<bool>? canExecute = null)
+            : base(_ => canExecute is null || canExecute())
         {
+            _execute = execute;
+        }
+
+        public override void Execute(object? parameter)
+        {
+            _execute();
         }
     }
 
     /// <summary>
     /// <see cref="ICommand"/> implementation using delegates. The execution delegate is async, however, this is
     /// mostly for convenience as users of <see cref="ICommand"/>s can't wait on async execution
-    /// (<see cref="ICommand.Execute"/> will return at the first await call). If it needs to be waited upon,
-    /// <see cref="ExecuteAsync"/> can be used.
+    /// (<see cref="ICommand.Execute"/> will return at the first await call).
     /// </summary>
-    public class AsyncRelayCommand : AsyncRelayCommand<object>
+    public class AsyncRelayCommand : AbstractRelayCommand
     {
+        private readonly Func<Task> _execute;
+
         /// <param name="execute">The async action that is called when this command is executed.</param>
         /// <param name="canExecute">A function returning whether this command can currently be executed.
         /// Null if all parameters can be executed.</param>
-        public AsyncRelayCommand(Func<Task> execute, Func<bool> canExecute = null)
-            : base(_ => execute(), canExecute == null ? null : (Predicate<object>) (_ => canExecute()))
+        public AsyncRelayCommand(Func<Task> execute, Func<bool>? canExecute = null)
+            : base(_ => canExecute is null || canExecute())
         {
+            _execute = execute;
         }
 
-        /// <summary>
-        /// Executes this command asynchronously and returns a task that finishes when the command is finished.
-        /// </summary>
-        public async Task ExecuteAsync()
+        public override async void Execute(object? parameter)
         {
-            await ExecuteAsync(null);
+            await _execute();
         }
-    }
-
-    /// <summary>
-    /// Abstract <see cref="ICommand"/> implementation. Only leaves the execution for subclasses to implement.
-    /// </summary>
-    /// <typeparam name="T">The type of this command's parameter</typeparam>
-    public abstract class AbstractRelayCommand<T> : ICommand
-    {
-        private readonly Predicate<T> _canExecute;
-
-        /// <param name="canExecute">A predicate returning whether this command can be executed with a given parameter.
-        /// Null if all parameters that are of correct type or <c>default(T)</c> can be executed.</param>
-        protected AbstractRelayCommand([CanBeNull] Predicate<T> canExecute)
-        {
-            _canExecute = canExecute ?? (_ => true);
-        }
-
-        [DebuggerStepThrough]
-        public bool CanExecute(object parameter)
-        {
-            // Null or other defaults *are* valid input but are not considered
-            // of correct type ("parameter is T" is false if it's null).
-            return (parameter is T || Equals(parameter, default(T))) && _canExecute((T)parameter);
-        }
-
-        public event EventHandler CanExecuteChanged
-        {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
-        }
-
-        public void Execute(object parameter)
-        {
-            Execute((T) parameter);
-        }
-
-        /// <summary>
-        /// Executes this command with the given parameter.
-        /// </summary>
-        protected abstract void Execute(T parameter);
     }
 
     /// <summary>
     /// <see cref="ICommand"/> implementation using delegates.
     /// </summary>
     /// <typeparam name="T">The type of this command's parameter</typeparam>
-    public class RelayCommand<T> : AbstractRelayCommand<T>
+    public class RelayCommand<T> : AbstractRelayCommand
     {
         private readonly Action<T> _execute;
 
         /// <param name="execute">The action that is called when this command is executed.</param>
         /// <param name="canExecute">A predicate returning whether this command can be executed with a given parameter.
         /// Null if all parameters that are of correct type or <c>default(T)</c> can be executed.</param>
-        public RelayCommand(Action<T> execute, Predicate<T> canExecute = null)
-            : base(canExecute)
+        /// <param name="allowNull">If true, null parameters can be executed. Only set this to true if T is nullable.</param>
+        public RelayCommand(Action<T> execute, Predicate<T>? canExecute = null, bool allowNull = false)
+            : base(TypeSafeCanExecute(canExecute, allowNull))
         {
             _execute = execute;
         }
 
-        protected override void Execute(T parameter)
+        public override void Execute(object? parameter)
         {
-            _execute(parameter);
+            _execute((T) parameter!);
         }
     }
 
     /// <summary>
     /// <see cref="ICommand"/> implementation using delegates. The execution delegate is async, however, this is
     /// mostly for convenience as users of <see cref="ICommand"/>s can't wait on async execution
-    /// (<see cref="ICommand.Execute"/> will return at the first await call). If it needs to be waited upon,
-    /// <see cref="ExecuteAsync"/> can be used.
+    /// (<see cref="ICommand.Execute"/> will return at the first await call).
     /// </summary>
     /// <typeparam name="T">The type of this command's parameter</typeparam>
-    public class AsyncRelayCommand<T> : AbstractRelayCommand<T>
+    public class AsyncRelayCommand<T> : AbstractRelayCommand
     {
         private readonly Func<T, Task> _execute;
 
         /// <param name="execute">The async action that is called when this command is executed.</param>
         /// <param name="canExecute">A predicate returning whether this command can be executed with a given parameter.
         /// Null if all parameters that are of correct type or <c>default(T)</c> can be executed.</param>
-        public AsyncRelayCommand(Func<T, Task> execute, Predicate<T> canExecute = null) : base(canExecute)
+        public AsyncRelayCommand(Func<T, Task> execute, Predicate<T>? canExecute = null)
+            : base(TypeSafeCanExecute(canExecute, false))
         {
             _execute = execute;
         }
 
-        protected override async void Execute(T parameter)
+        public override async void Execute(object? parameter)
         {
-            await _execute(parameter);
+            await _execute((T) parameter!);
+        }
+    }
+
+    /// <summary>
+    /// Abstract <see cref="ICommand"/> implementation. Only leaves the execution for subclasses to implement.
+    /// </summary>
+    public abstract class AbstractRelayCommand : ICommand
+    {
+        private readonly Predicate<object?> _canExecute;
+
+        protected AbstractRelayCommand(Predicate<object?>? canExecute)
+        {
+            _canExecute = canExecute ?? (_ => true);
         }
 
-        /// <summary>
-        /// Executes this command asynchronously and returns a task that finishes when the command is finished.
-        /// </summary>
-        public async Task ExecuteAsync(T parameter)
+        [DebuggerStepThrough]
+        public bool CanExecute(object? parameter)
+            => _canExecute(parameter);
+
+        public event EventHandler CanExecuteChanged
         {
-            await _execute(parameter);
+            add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
         }
+
+        protected static Predicate<object?> TypeSafeCanExecute<T>(Predicate<T>? canExecute, bool allowNull) =>
+            p => p switch
+            {
+                T t => (canExecute is null || canExecute(t)),
+                null => (canExecute is null || allowNull),
+                _ => false
+            };
+
+        public abstract void Execute(object? parameter);
     }
 }

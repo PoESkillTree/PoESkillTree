@@ -3,9 +3,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
-    xmlns:properties="clr-namespace:PoESkillTree.Properties"
     xmlns:dialogs="clr-namespace:PoESkillTree.Controls.Dialogs"
     xmlns:wpf="clr-namespace:PoESkillTree.Utils.Wpf"
+    xmlns:utils="clr-namespace:PoESkillTree.Utils"
     MaxContentWidth="500">
     <dialogs:CloseableBaseDialog.Title>
         <l:Catalog Message="About PoESkillTree"/>
@@ -32,7 +32,7 @@
             <l:Catalog Message="Version"/>
         </Label>
         <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" Margin="0,5,0,10"
-                   Text="{x:Static properties:Version.ProductVersion}"/>
+                   Text="{x:Static utils:AppData.ProductVersion}"/>
         <Separator Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom"/>
         
         <Label Grid.Row="1" Grid.Column="0">
