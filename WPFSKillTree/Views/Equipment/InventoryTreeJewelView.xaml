@@ -11,7 +11,7 @@
         <Rectangle HorizontalAlignment="Stretch"
                    VerticalAlignment="Stretch"
                    Margin="2"
-                   Fill="{DynamicResource MahApps.Metro.Brushes.Badged.DisabledBackgroundBrush}"
+                   Fill="{DynamicResource MahApps.Brushes.Badged.DisabledBackground}"
                    Panel.ZIndex="1"
                    IsHitTestVisible="False">
             <Rectangle.Style>
