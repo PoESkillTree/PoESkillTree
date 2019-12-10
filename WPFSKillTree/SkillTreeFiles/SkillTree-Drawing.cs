@@ -51,6 +51,7 @@ namespace PoESkillTree.SkillTreeFiles
         private DrawingVisual _characterFaces;
         private DrawingVisual _highlights;
         private DrawingVisual _jewelHighlight;
+        private DrawingVisual _socketedJewels;
 
         private DrawingVisual _ascSkillTreeVisual;
         private DrawingVisual _ascClassFaces;
@@ -64,6 +65,8 @@ namespace PoESkillTree.SkillTreeFiles
         private DrawingVisual _ascActiveSkillIcons;
         private DrawingVisual _ascNodeSurround;
         private DrawingVisual _ascActiveNodeSurround;
+
+        public TreeJewelDrawer JewelDrawer { get; private set; }
         #endregion
         private void InitialSkillTreeDrawing()
         {
@@ -74,6 +77,9 @@ namespace PoESkillTree.SkillTreeFiles
             InitializeDrawingVisuals();
             InitializeNodeSurroundBrushes();
             InitializeFaceBrushes();
+
+            JewelDrawer = new TreeJewelDrawer(Assets, Skillnodes, _socketedJewels);
+
             //Drawing
             DrawBackgroundLayer();
             DrawInitialPaths();
@@ -96,7 +102,9 @@ namespace PoESkillTree.SkillTreeFiles
             DrawActiveSkillIconsAndSurrounds();
             DrawActivePaths();
             DrawCharacterFaces();
+            JewelDrawer.Draw();
         }
+
         /// <summary>
         /// This will initialize all drawing visuals. If a new drawing visual is added then it should be initialized here as well.
         /// </summary>
@@ -116,6 +124,7 @@ namespace PoESkillTree.SkillTreeFiles
             _characterFaces = new DrawingVisual();
             _highlights = new DrawingVisual();
             _jewelHighlight = new DrawingVisual();
+            _socketedJewels = new DrawingVisual();
 
             _ascSkillTreeVisual = new DrawingVisual();
             _ascClassFaces = new DrawingVisual();
@@ -161,6 +170,7 @@ namespace PoESkillTree.SkillTreeFiles
             SkillTreeVisual.Children.Add(_ascButtons);
             SkillTreeVisual.Children.Add(_highlights);
             SkillTreeVisual.Children.Add(_jewelHighlight);
+            SkillTreeVisual.Children.Add(_socketedJewels);
         }
 
         private void InitializeNodeSurroundBrushes()
@@ -220,10 +230,8 @@ namespace PoESkillTree.SkillTreeFiles
             }
         }
 
-        private void DrawSkillNodeIcon(DrawingContext dc, SkillNode skillNode, bool onlyAscendancy = false, bool isActive = false)
+        private void DrawSkillNodeIcon(DrawingContext dc, SkillNode skillNode, bool isActive = false)
         {
-            if (onlyAscendancy && !skillNode.IsAscendancyNode) return;
-
             Rect rect;
             BitmapImage bitmapImage;
 
@@ -250,9 +258,8 @@ namespace PoESkillTree.SkillTreeFiles
             dc.DrawEllipse(imageBrush, null, skillNode.Position, rect.Width, rect.Height);
         }
 
-        private void DrawSurround(DrawingContext dc, SkillNode node, bool onlyAscendancy = false, bool isActive = false, bool isHighlight = false)
+        private void DrawSurround(DrawingContext dc, SkillNode node, bool isActive = false, bool isHighlight = false)
         {
-            if (onlyAscendancy && !node.IsAscendancyNode) return;
             var surroundBrush = _nodeSurroundBrushes;
             var factor = 1f;
             var offset = isActive ? 1 : 0;
@@ -325,7 +332,7 @@ namespace PoESkillTree.SkillTreeFiles
             DrawingContext? dcSkillIcons = null;
             DrawingContext? dcSkillSurround = null;
             var ascSkillIcons = _ascSkillIcons.RenderOpen();
-            var adcAsctiveSkillSurround = _ascNodeSurround.RenderOpen();
+            var ascSkillSurround = _ascNodeSurround.RenderOpen();
 
             if (!onlyAscendancy)
             {
@@ -343,8 +350,8 @@ namespace PoESkillTree.SkillTreeFiles
                     if (!DrawAscendancy) continue;
                     if ((!_persistentData.Options.ShowAllAscendancyClasses &&
                             n.Value.AscendancyName != AscendancyClassName)) continue;
-                    DrawSkillNodeIcon(ascSkillIcons, n.Value, onlyAscendancy);
-                    DrawSurround(adcAsctiveSkillSurround, n.Value, onlyAscendancy);
+                    DrawSkillNodeIcon(ascSkillIcons, n.Value);
+                    DrawSurround(ascSkillSurround, n.Value);
                 }
                 else
                 {
@@ -354,7 +361,7 @@ namespace PoESkillTree.SkillTreeFiles
                 }
             }
             ascSkillIcons.Close();
-            adcAsctiveSkillSurround.Close();
+            ascSkillSurround.Close();
             dcSkillIcons?.Close();
             dcSkillSurround?.Close();
         }
@@ -380,14 +387,14 @@ namespace PoESkillTree.SkillTreeFiles
                     if (!DrawAscendancy) continue;
                     if ((!_persistentData.Options.ShowAllAscendancyClasses &&
                             skillNode.AscendancyName != AscendancyClassName)) continue;
-                    DrawSkillNodeIcon(ascActiveSkillIcons, skillNode, onlyAscendancy, true);
-                    DrawSurround(ascActiveSkillSurround, skillNode, onlyAscendancy, true);
+                    DrawSkillNodeIcon(ascActiveSkillIcons, skillNode, true);
+                    DrawSurround(ascActiveSkillSurround, skillNode, true);
                 }
                 else
                 {
                     if (onlyAscendancy) continue;
-                    DrawSkillNodeIcon(dcActiveSkillIcons!, skillNode, false, true);
-                    DrawSurround(dcActiveSkillSurround!, skillNode, false, true);
+                    DrawSkillNodeIcon(dcActiveSkillIcons!, skillNode, true);
+                    DrawSurround(dcActiveSkillSurround!, skillNode, true);
                 }
             }
             ascActiveSkillIcons.Close();
@@ -882,7 +889,7 @@ namespace PoESkillTree.SkillTreeFiles
                     foreach (var n1 in HighlightedNodes)
                     {
                         seen.Add(n1);
-                        DrawSurround(n1.IsAscendancyNode ? dcAsc : dc, n1, false, false, true);
+                        DrawSurround(n1.IsAscendancyNode ? dcAsc : dc, n1, false, true);
                         foreach (var n2 in n1.VisibleNeighbors)
                         {
                             if (!HighlightedNodes.Contains(n2) || seen.Contains(n2)) continue;
