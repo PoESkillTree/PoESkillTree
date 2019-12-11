@@ -12,9 +12,9 @@
   <PropertyGroup>
     <AssemblyName>PoESkillTree</AssemblyName>
     <Company>PoESkillTree Team</Company>
-    <Copyright>Copyright © 2012-2019 PoESkillTree Team</Copyright>
-    <Description>Passive skill tree planner for Path of Exile®</Description>
-    <Product>PoESkillTree 3</Product>
+    <Copyright>Copyright Â© 2012-2019 PoESkillTree Team</Copyright>
+    <Description>Passive skill tree planner for Path of ExileÂ®</Description>
+    <Product>PoESkillTree - Conquerors of the Atlas</Product>
     <ProductUrl>https://github.com/PoESkillTree/PoESkillTree/</ProductUrl>
     <VersionPrefix>3.0.0</VersionPrefix>
     <VersionSuffix>alpha.7</VersionSuffix>
