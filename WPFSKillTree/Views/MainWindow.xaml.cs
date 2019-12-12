@@ -45,6 +45,7 @@ using PoESkillTree.ViewModels.Equipment;
 using PoESkillTree.Views.Crafting;
 using PoESkillTree.Views.Equipment;
 using Attribute = PoESkillTree.ViewModels.Attribute;
+using Item = PoESkillTree.Model.Items.Item;
 
 namespace PoESkillTree.Views
 {
@@ -1466,9 +1467,10 @@ namespace PoESkillTree.Views
                 node.AscendancyName != Tree.AscendancyClassName)
                 return;
 
+            var socketedJewel = GetSocketedJewel(node);
             if (node.Type == PassiveNodeType.JewelSocket)
             {
-                Tree.DrawJewelHighlight(node);
+                Tree.DrawJewelHighlight(node, socketedJewel);
             }
 
             if (Tree.SkilledNodes.Contains(node))
@@ -1488,7 +1490,7 @@ namespace PoESkillTree.Views
                 tooltip += "\n" + node.StatDefinitions.Aggregate((s1, s2) => s1 + "\n" + s2);
             if (!(_sToolTip.IsOpen && _lasttooltip == tooltip) | forcerefresh)
             {
-                _sToolTip.Content = CreateTooltipForNode(node, tooltip);
+                _sToolTip.Content = CreateTooltipForNode(node, tooltip, socketedJewel);
                 if (!HighlightByHoverKeys.Any(Keyboard.IsKeyDown))
                 {
                     _sToolTip.IsOpen = true;
@@ -1497,18 +1499,20 @@ namespace PoESkillTree.Views
             }
         }
 
-        private object CreateTooltipForNode(SkillNode node, string tooltip)
+        private Item? GetSocketedJewel(SkillNode node) =>
+            node.Type == PassiveNodeType.JewelSocket ? ItemAttributes.GetItemInSlot(ItemSlot.SkillTree, node.Id) : null;
+
+        private object CreateTooltipForNode(SkillNode node, string tooltip, Item? socketedJewel)
         {
             var sp = new StackPanel();
 
-            var jewelItem = ItemAttributes.GetItemInSlot(ItemSlot.SkillTree, node.Id);
-            if (jewelItem is null)
+            if (socketedJewel is null)
             {
                 sp.Children.Add(new TextBlock {Text = tooltip});
             }
             else
             {
-                sp.Children.Add(new ItemTooltip {DataContext = jewelItem});
+                sp.Children.Add(new ItemTooltip {DataContext = socketedJewel});
             }
 
             if (node.ReminderText != null)

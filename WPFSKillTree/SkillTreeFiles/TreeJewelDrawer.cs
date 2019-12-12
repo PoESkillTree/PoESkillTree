@@ -35,19 +35,19 @@ namespace PoESkillTree.SkillTreeFiles
 
         private readonly IReadOnlyDictionary<string, BitmapImage> _assets;
         private readonly IReadOnlyDictionary<ushort, SkillNode> _skillNodes;
-        private readonly DrawingVisual _drawingVisual;
         private readonly Dictionary<JewelType, (Size, ImageBrush)> _brushes = new Dictionary<JewelType, (Size, ImageBrush)>();
         private IReadOnlyList<InventoryItemViewModel> _jewelViewModels;
 
         public TreeJewelDrawer(
-            IReadOnlyDictionary<string, BitmapImage> assets, IReadOnlyDictionary<ushort, SkillNode> skillNodes,
-            DrawingVisual drawingContext)
+            IReadOnlyDictionary<string, BitmapImage> assets, IReadOnlyDictionary<ushort, SkillNode> skillNodes)
         {
             _assets = assets;
             _skillNodes = skillNodes;
-            _drawingVisual = drawingContext;
+            Visual = new DrawingVisual();
             _jewelViewModels = Array.Empty<InventoryItemViewModel>();
         }
+
+        public DrawingVisual Visual { get; }
 
         public IReadOnlyList<InventoryItemViewModel> JewelViewModels
         {
@@ -77,7 +77,7 @@ namespace PoESkillTree.SkillTreeFiles
         public void Draw()
         {
             var stopwatch = Stopwatch.StartNew();
-            using var dc = _drawingVisual.RenderOpen();
+            using var dc = Visual.RenderOpen();
             foreach (var item in JewelViewModels.Select(vm => vm.Item).WhereNotNull())
             {
                 if (GetJewelType(item.Tags) is JewelType jewelType)

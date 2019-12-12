@@ -11,6 +11,7 @@ using PoESkillTree.Model;
 using MoreLinq;
 using PoESkillTree.Engine.GameModel;
 using PoESkillTree.Engine.GameModel.PassiveTree;
+using PoESkillTree.Model.Items;
 using PoESkillTree.Utils.Wpf;
 
 namespace PoESkillTree.SkillTreeFiles
@@ -50,8 +51,6 @@ namespace PoESkillTree.SkillTreeFiles
         private DrawingVisual _activeNodeSurround;
         private DrawingVisual _characterFaces;
         private DrawingVisual _highlights;
-        private DrawingVisual _jewelHighlight;
-        private DrawingVisual _socketedJewels;
 
         private DrawingVisual _ascSkillTreeVisual;
         private DrawingVisual _ascClassFaces;
@@ -67,7 +66,9 @@ namespace PoESkillTree.SkillTreeFiles
         private DrawingVisual _ascActiveNodeSurround;
 
         public TreeJewelDrawer JewelDrawer { get; private set; }
+        private JewelRadiusDrawer _jewelRadiusDrawer;
         #endregion
+
         private void InitialSkillTreeDrawing()
         {
 
@@ -78,7 +79,8 @@ namespace PoESkillTree.SkillTreeFiles
             InitializeNodeSurroundBrushes();
             InitializeFaceBrushes();
 
-            JewelDrawer = new TreeJewelDrawer(Assets, Skillnodes, _socketedJewels);
+            JewelDrawer = new TreeJewelDrawer(Assets, Skillnodes);
+            _jewelRadiusDrawer = new JewelRadiusDrawer(PoESkillTreeOptions);
 
             //Drawing
             DrawBackgroundLayer();
@@ -123,8 +125,6 @@ namespace PoESkillTree.SkillTreeFiles
             _activeNodeSurround = new DrawingVisual();
             _characterFaces = new DrawingVisual();
             _highlights = new DrawingVisual();
-            _jewelHighlight = new DrawingVisual();
-            _socketedJewels = new DrawingVisual();
 
             _ascSkillTreeVisual = new DrawingVisual();
             _ascClassFaces = new DrawingVisual();
@@ -169,8 +169,8 @@ namespace PoESkillTree.SkillTreeFiles
             SkillTreeVisual.Children.Add(_ascSkillTreeVisual);
             SkillTreeVisual.Children.Add(_ascButtons);
             SkillTreeVisual.Children.Add(_highlights);
-            SkillTreeVisual.Children.Add(_jewelHighlight);
-            SkillTreeVisual.Children.Add(_socketedJewels);
+            SkillTreeVisual.Children.Add(_jewelRadiusDrawer.Visual);
+            SkillTreeVisual.Children.Add(JewelDrawer.Visual);
         }
 
         private void InitializeNodeSurroundBrushes()
@@ -411,7 +411,7 @@ namespace PoESkillTree.SkillTreeFiles
 
         public void ClearJewelHighlight()
         {
-            _jewelHighlight.RenderOpen().Close();
+            _jewelRadiusDrawer.Clear();
         }
 
         public void ToggleAscendancyTree()
@@ -1051,43 +1051,9 @@ namespace PoESkillTree.SkillTreeFiles
             _initialized = false;
         }
 
-        public void DrawJewelHighlight(SkillNode node)
+        public void DrawJewelHighlight(SkillNode node, Item? socketedJewel)
         {
-            const int thickness = 10;
-            var radiusPen = new Pen(Brushes.Cyan, thickness);
-
-            double smallRadius = 800;
-            double mediumRadius = 1200;
-            double largeRadius = 1500;
-            if (PoESkillTreeOptions?.Circles != null)
-            {
-                if (PoESkillTreeOptions.Circles.ContainsKey("Small") && Constants.AssetZoomLevel < PoESkillTreeOptions.Circles["Small"].Count)
-                {
-                    var circle = PoESkillTreeOptions.Circles["Small"][Constants.AssetZoomLevel];
-                    smallRadius = Math.Round((circle.Width / circle.ZoomLevel) / 2);
-                }
-
-                if (PoESkillTreeOptions.Circles.ContainsKey("Medium") && Constants.AssetZoomLevel < PoESkillTreeOptions.Circles["Medium"].Count)
-                {
-                    var circle = PoESkillTreeOptions.Circles["Medium"][Constants.AssetZoomLevel];
-                    mediumRadius = Math.Round((circle.Width / circle.ZoomLevel) / 2);
-                }
-
-                if (PoESkillTreeOptions.Circles.ContainsKey("Large") && Constants.AssetZoomLevel < PoESkillTreeOptions.Circles["Large"].Count)
-                {
-                    var circle = PoESkillTreeOptions.Circles["Large"][Constants.AssetZoomLevel];
-                    largeRadius = Math.Round((circle.Width / circle.ZoomLevel) / 2);
-                }
-            }
-            smallRadius -= thickness / 2;
-            mediumRadius -= thickness / 2;
-            largeRadius -= thickness / 2;
-            using (var dc = _jewelHighlight.RenderOpen())
-            {
-                dc.DrawEllipse(null, radiusPen, node.Position, smallRadius, smallRadius);
-                dc.DrawEllipse(null, radiusPen, node.Position, mediumRadius, mediumRadius);
-                dc.DrawEllipse(null, radiusPen, node.Position, largeRadius, largeRadius);
-            }
+            _jewelRadiusDrawer.Draw(node, socketedJewel);
         }
     }
 }
