@@ -25,8 +25,10 @@ using PoESkillTree.Utils;
 using PoESkillTree.Common.ViewModels;
 using PoESkillTree.Computation;
 using PoESkillTree.Computation.ViewModels;
+using PoESkillTree.Controls;
 using PoESkillTree.Controls.Dialogs;
 using PoESkillTree.Engine.GameModel;
+using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Engine.GameModel.PassiveTree;
 using PoESkillTree.Localization;
 using PoESkillTree.Model;
@@ -1486,79 +1488,93 @@ namespace PoESkillTree.Views
                 tooltip += "\n" + node.StatDefinitions.Aggregate((s1, s2) => s1 + "\n" + s2);
             if (!(_sToolTip.IsOpen && _lasttooltip == tooltip) | forcerefresh)
             {
-                var sp = new StackPanel();
-                sp.Children.Add(new TextBlock
-                {
-                    Text = tooltip
-                });
-                if (node.ReminderText != null)
-                {
-                    sp.Children.Add(new Separator());
-                    sp.Children.Add(new TextBlock { Text = node.ReminderText.Aggregate((s1, s2) => s1 + '\n' + s2) });
-                }
-                if (_prePath != null && node.Type != PassiveNodeType.Mastery)
-                {
-                    var points = _prePath.Count;
-                    if (_prePath.Any(x => x.IsAscendancyStart))
-                        points--;
-                    sp.Children.Add(new Separator());
-                    sp.Children.Add(new TextBlock { Text = "Points to skill node: " + points });
-                }
-
-                //Change summary, activated with ctrl
-                if (PersistentData.Options.ChangeSummaryEnabled)
-                {
-                    //Sum up the total change to attributes and add it to the tooltip
-                    if (_prePath != null | _toRemove != null)
-                    {
-
-                        var attributechanges = new Dictionary<string, List<float>>();
-
-                        int changedNodes;
-
-                        if (_prePath != null)
-                        {
-                            attributechanges = SkillTree.GetAttributesWithoutImplicitNodesOnly(_prePath);
-                            tooltip = "Total gain:";
-                            changedNodes = _prePath.Count;
-                        }
-                        else if (_toRemove != null)
-                        {
-                            attributechanges = SkillTree.GetAttributesWithoutImplicitNodesOnly(_toRemove);
-                            tooltip = "Total loss:";
-                            changedNodes = _toRemove.Count;
-                        }
-                        else
-                        {
-                            changedNodes = 0;
-                        }
-
-                        if (changedNodes > 1)
-                        {
-                            foreach (var attrchange in attributechanges)
-                            {
-                                if (attrchange.Value.Count != 0)
-                                {
-                                    var regex = new Regex(Regex.Escape("#"));
-                                    var attr = attrchange.Key;
-                                    foreach (var val in attrchange.Value)
-                                        attr = regex.Replace(attr, val.ToString(), 1);
-                                    tooltip += "\n" + attr;
-                                }
-                            }
-                            sp.Children.Add(new Separator());
-                            sp.Children.Add(new TextBlock { Text = tooltip });
-                        }
-                    }
-                }
-
-                _sToolTip.Content = sp;
+                _sToolTip.Content = CreateTooltipForNode(node, tooltip);
                 if (!HighlightByHoverKeys.Any(Keyboard.IsKeyDown))
                 {
                     _sToolTip.IsOpen = true;
                 }
                 _lasttooltip = tooltip;
             }
+        }
+
+        private object CreateTooltipForNode(SkillNode node, string tooltip)
+        {
+            var sp = new StackPanel();
+
+            var jewelItem = ItemAttributes.GetItemInSlot(ItemSlot.SkillTree, node.Id);
+            if (jewelItem is null)
+            {
+                sp.Children.Add(new TextBlock {Text = tooltip});
+            }
+            else
+            {
+                sp.Children.Add(new ItemTooltip {DataContext = jewelItem});
+            }
+
+            if (node.ReminderText != null)
+            {
+                sp.Children.Add(new Separator());
+                sp.Children.Add(new TextBlock {Text = node.ReminderText.Aggregate((s1, s2) => s1 + '\n' + s2)});
+            }
+
+            if (_prePath != null && node.Type != PassiveNodeType.Mastery)
+            {
+                var points = _prePath.Count;
+                if (_prePath.Any(x => x.IsAscendancyStart))
+                    points--;
+                sp.Children.Add(new Separator());
+                sp.Children.Add(new TextBlock {Text = "Points to skill node: " + points});
+            }
+
+            //Change summary, activated with ctrl
+            if (PersistentData.Options.ChangeSummaryEnabled)
+            {
+                //Sum up the total change to attributes and add it to the tooltip
+                if (_prePath != null | _toRemove != null)
+                {
+
+                    var attributechanges = new Dictionary<string, List<float>>();
+
+                    int changedNodes;
+
+                    if (_prePath != null)
+                    {
+                        attributechanges = SkillTree.GetAttributesWithoutImplicitNodesOnly(_prePath);
+                        tooltip = "Total gain:";
+                        changedNodes = _prePath.Count;
+                    }
+                    else if (_toRemove != null)
+                    {
+                        attributechanges = SkillTree.GetAttributesWithoutImplicitNodesOnly(_toRemove);
+                        tooltip = "Total loss:";
+                        changedNodes = _toRemove.Count;
+                    }
+                    else
+                    {
+                        changedNodes = 0;
+                    }
+
+                    if (changedNodes > 1)
+                    {
+                        foreach (var attrchange in attributechanges)
+                        {
+                            if (attrchange.Value.Count != 0)
+                            {
+                                var regex = new Regex(Regex.Escape("#"));
+                                var attr = attrchange.Key;
+                                foreach (var val in attrchange.Value)
+                                    attr = regex.Replace(attr, val.ToString(), 1);
+                                tooltip += "\n" + attr;
+                            }
+                        }
+
+                        sp.Children.Add(new Separator());
+                        sp.Children.Add(new TextBlock {Text = tooltip});
+                    }
+                }
+            }
+
+            return sp;
         }
 
         private void HighlightNodesByHover()
