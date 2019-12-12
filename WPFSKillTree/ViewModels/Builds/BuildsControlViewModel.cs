@@ -266,7 +266,7 @@ namespace PoESkillTree.ViewModels.Builds
             CopyCommand = new RelayCommand<IBuildViewModel<PoEBuild>>(Copy);
             PasteCommand = new AsyncRelayCommand<IBuildViewModel>(Paste, CanPaste);
             ReloadCommand = new AsyncRelayCommand(Reload);
-            OpenBuildsSavePathCommand = new RelayCommand(() => Process.Start(PersistentData.Options.BuildsSavePath));
+            OpenBuildsSavePathCommand = new RelayCommand(() => Process.Start("explorer.exe", PersistentData.Options.BuildsSavePath));
             ExpandAllCommand = new RelayCommand(ExpandAll);
             CollapseAllCommand = new RelayCommand(CollapseAll);
             ExportCurrentToClipboardCommand = new RelayCommand(() => CopyToClipboard(CurrentBuild.Build));
