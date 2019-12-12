@@ -80,7 +80,7 @@ namespace PoESkillTree.SkillTreeFiles
             InitializeFaceBrushes();
 
             JewelDrawer = new TreeJewelDrawer(Assets, Skillnodes);
-            _jewelRadiusDrawer = new JewelRadiusDrawer(PoESkillTreeOptions);
+            _jewelRadiusDrawer = new JewelRadiusDrawer(PoESkillTreeOptions, Skillnodes.Values);
 
             //Drawing
             DrawBackgroundLayer();
@@ -154,6 +154,8 @@ namespace PoESkillTree.SkillTreeFiles
             SkillTreeVisual.Children.Add(_nodeSurround);
             SkillTreeVisual.Children.Add(_activeNodeSurround);
             SkillTreeVisual.Children.Add(_characterFaces);
+            SkillTreeVisual.Children.Add(JewelDrawer.Visual);
+            SkillTreeVisual.Children.Add(_jewelRadiusDrawer.Visual);
 
             _ascSkillTreeVisual.Children.Add(_ascClassFaces);
             _ascSkillTreeVisual.Children.Add(_ascNodeComparisonHighlight);
@@ -169,8 +171,6 @@ namespace PoESkillTree.SkillTreeFiles
             SkillTreeVisual.Children.Add(_ascSkillTreeVisual);
             SkillTreeVisual.Children.Add(_ascButtons);
             SkillTreeVisual.Children.Add(_highlights);
-            SkillTreeVisual.Children.Add(_jewelRadiusDrawer.Visual);
-            SkillTreeVisual.Children.Add(JewelDrawer.Visual);
         }
 
         private void InitializeNodeSurroundBrushes()
