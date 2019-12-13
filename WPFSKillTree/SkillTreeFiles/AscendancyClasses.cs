@@ -33,7 +33,7 @@ namespace PoESkillTree.SkillTreeFiles
                 }
 
                 var characterClass = Enums.Parse<CharacterClass>(ascClass.Value.CharacterName);
-                _classes.Add(characterClass, classes);
+                _classes[characterClass] = classes;
             }
         }
 
