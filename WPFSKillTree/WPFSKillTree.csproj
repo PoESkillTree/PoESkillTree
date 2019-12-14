@@ -17,7 +17,7 @@
     <Product>PoESkillTree - Conquerors of the Atlas</Product>
     <ProductUrl>https://github.com/PoESkillTree/PoESkillTree/</ProductUrl>
     <VersionPrefix>3.0.0</VersionPrefix>
-    <VersionSuffix>alpha.7</VersionSuffix>
+    <VersionSuffix>alpha.8</VersionSuffix>
   </PropertyGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="$(Configuration) == Release">
     <Exec Command="$(ProjectDir)build-locale.bat" />
