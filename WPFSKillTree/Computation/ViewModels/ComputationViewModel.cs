@@ -112,7 +112,7 @@ namespace PoESkillTree.Computation.ViewModels
                 a => AddAvailableStats(OffensiveStats, f.MetaStatBuilders.AilmentEffectiveInstances(a)));
             
             AddAvailableStats(OffensiveStats, f.MetaStatBuilders.SkillHitDamageSource);
-            AddAvailableStats(OffensiveStats, f.MetaStatBuilders.SkillNumberOfHitsPerCast);
+            AddAvailableStats(OffensiveStats, f.StatBuilders.SkillNumberOfHitsPerCast);
             AddAvailableStats(OffensiveStats, f.MetaStatBuilders.SkillUsesHand(AttackDamageHand.MainHand));
             AddAvailableStats(OffensiveStats, f.MetaStatBuilders.SkillUsesHand(AttackDamageHand.OffHand));
 

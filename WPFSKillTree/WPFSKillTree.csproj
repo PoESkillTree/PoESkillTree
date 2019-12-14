@@ -12,12 +12,12 @@
   <PropertyGroup>
     <AssemblyName>PoESkillTree</AssemblyName>
     <Company>PoESkillTree Team</Company>
-    <Copyright>Copyright © 2012-2019 PoESkillTree Team</Copyright>
-    <Description>Passive skill tree planner for Path of Exile®</Description>
-    <Product>PoESkillTree 3</Product>
+    <Copyright>Copyright Â© 2012-2019 PoESkillTree Team</Copyright>
+    <Description>Passive skill tree planner for Path of ExileÂ®</Description>
+    <Product>PoESkillTree - Conquerors of the Atlas</Product>
     <ProductUrl>https://github.com/PoESkillTree/PoESkillTree/</ProductUrl>
     <VersionPrefix>3.0.0</VersionPrefix>
-    <VersionSuffix>alpha.7</VersionSuffix>
+    <VersionSuffix>alpha.8</VersionSuffix>
   </PropertyGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="$(Configuration) == Release">
     <Exec Command="$(ProjectDir)build-locale.bat" />
@@ -33,7 +33,7 @@
     <PackageReference Include="morelinq" Version="3.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="NLog" Version="4.6.8" />
-    <PackageReference Include="PoESkillTree.Engine" Version="0.1.7" />
+    <PackageReference Include="PoESkillTree.Engine" Version="0.1.9" />
     <PackageReference Include="System.Buffers" Version="4.5.0" />
     <PackageReference Include="System.Reactive" Version="4.3.1" />
     <PackageReference Include="System.Threading.Tasks.Dataflow" Version="4.11.0" />
