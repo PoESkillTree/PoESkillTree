@@ -47,6 +47,13 @@ namespace PoESkillTree.ViewModels.Equipment
             }
         }
 
+        private bool _isCurrent;
+        public bool IsCurrent
+        {
+            get => _isCurrent;
+            set => SetProperty(ref _isCurrent, value);
+        }
+
         /// <summary>
         /// Gets or sets the path to the image that should be shown if Item is null.
         /// </summary>
@@ -95,15 +102,12 @@ namespace PoESkillTree.ViewModels.Equipment
 
         public void DragOver(IDropInfo dropInfo)
         {
-            var draggedItem = dropInfo.Data as DraggableItemViewModel;
-
-            if (draggedItem == null
-                || !_itemAttributes.CanEquip(draggedItem.Item, _slot, Socket)
-                || draggedItem == this) // can't drop onto itself
+            if (dropInfo.Data is DraggableItemViewModel draggedItem
+                && _itemAttributes.CanEquip(draggedItem.Item, _slot, Socket)
+                && draggedItem != this) // can't drop onto itself
             {
-                return;
+                dropInfo.Effects = draggedItem.DropOnInventoryEffect;
             }
-            dropInfo.Effects = draggedItem.DropOnInventoryEffect;
         }
 
         public void Drop(IDropInfo dropInfo)

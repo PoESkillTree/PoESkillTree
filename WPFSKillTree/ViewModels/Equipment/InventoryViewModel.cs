@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MoreLinq;
 using PoESkillTree.Engine.GameModel.Items;
+using PoESkillTree.Engine.Utils;
 using PoESkillTree.Engine.Utils.Extensions;
 using PoESkillTree.Model.Items;
 using PoESkillTree.Utils;
@@ -52,7 +53,7 @@ namespace PoESkillTree.ViewModels.Equipment
 
             Flasks = ItemSlotExtensions.Flasks.Select(s => CreateSlotVm(s)).ToList();
 
-            TreeJewels = jewelPassiveNodes.Select(i => CreateSlotVm(ItemSlot.SkillTree, i)).ToList();
+            TreeJewels = jewelPassiveNodes.OrderBy(Funcs.Identity).Select(i => CreateSlotVm(ItemSlot.SkillTree, i)).ToList();
             ItemJewels = new Dictionary<ItemSlot, IReadOnlyList<InventoryItemViewModel>>
             {
                 [ItemSlot.BodyArmour] = CreateItemJewelVms(ItemSlot.BodyArmour, 1),

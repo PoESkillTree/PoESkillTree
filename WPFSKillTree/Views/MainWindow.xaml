@@ -725,13 +725,18 @@
                                 </Button>
                             </UniformGrid>
 
+                            <equipment:SkillTreeAreaView Grid.Column="0" Grid.Row="1"
+                                                         HorizontalAlignment="Right" VerticalAlignment="Top"
+                                                         Margin="0 446 441 0"
+                                                         DataContext="{Binding SkillTreeAreaViewModel}"
+                                                         SkillTreeVisual="{Binding Tree.SkillTreeVisual, ElementName=window}" />
                             <equipment:InventoryView Grid.Column="0" Grid.Row="1"
                                                      HorizontalAlignment="Right" VerticalAlignment="Top"
                                                      Margin="20 0"
-                                                     DataContext="{Binding InventoryViewModel, ElementName=window}"/>
+                                                     DataContext="{Binding InventoryViewModel}" />
                             <equipment:StashView Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"
                                                  HorizontalAlignment="Left" Margin="0,4,0,0"
-                                                 DataContext="{Binding StashViewModel, ElementName=window}" />
+                                                 DataContext="{Binding StashViewModel}" />
                         </Grid>
                     </ScrollViewer>
                 </TabItem>
@@ -740,7 +745,7 @@
                                   VerticalScrollBarVisibility="Auto"
                                   HorizontalAlignment="Center">
                         <computation:ComputationView HorizontalAlignment="Center"
-                                                     DataContext="{Binding ComputationViewModel, ElementName=window}" />
+                                                     DataContext="{Binding ComputationViewModel}" />
                     </ScrollViewer>
                 </TabItem>
             </TabControl>

@@ -93,6 +93,13 @@ namespace PoESkillTree.Views
             private set => SetProperty(ref _inventoryViewModel, value);
         }
 
+        private SkillTreeAreaViewModel _skillTreeAreaViewModel;
+        public SkillTreeAreaViewModel SkillTreeAreaViewModel
+        {
+            get => _skillTreeAreaViewModel;
+            private set => SetProperty(ref _skillTreeAreaViewModel, value);
+        }
+
         private JewelSocketObserver _jewelSocketObserver;
         private AbyssalSocketObserver _abyssalSocketObserver;
 
@@ -137,7 +144,11 @@ namespace PoESkillTree.Views
             if (TreeGeneratorInteraction != null)
                 TreeGeneratorInteraction.SkillTree = tree;
             if (InventoryViewModel != null)
+            {
                 tree.JewelDrawer.JewelViewModels = InventoryViewModel.TreeJewels;
+                SkillTreeAreaViewModel.Dispose();
+                SkillTreeAreaViewModel = new SkillTreeAreaViewModel(SkillTree.Skillnodes, InventoryViewModel.TreeJewels);
+            }
             _jewelSocketObserver?.Dispose();
             _jewelSocketObserver = new JewelSocketObserver(tree.SkilledNodes);
             return tree;
@@ -1641,6 +1652,7 @@ namespace PoESkillTree.Views
                 ItemAttributes.ItemDataChanged -= ItemAttributesOnItemDataChanged;
                 ItemAttributes.Dispose();
             }
+            SkillTreeAreaViewModel?.Dispose();
             InventoryViewModel?.Dispose();
 
             var equipmentData = PersistentData.EquipmentData;
@@ -1663,6 +1675,7 @@ namespace PoESkillTree.Views
             ItemAttributes = itemAttributes;
             InventoryViewModel =
                 new InventoryViewModel(_dialogCoordinator, itemAttributes, await GetJewelPassiveNodesAsync());
+            SkillTreeAreaViewModel = new SkillTreeAreaViewModel(SkillTree.Skillnodes, InventoryViewModel.TreeJewels);
             _abyssalSocketObserver?.SetItemJewelViewModels(InventoryViewModel.ItemJewels);
             Tree.JewelDrawer.JewelViewModels = InventoryViewModel.TreeJewels;
             UpdateUI();
