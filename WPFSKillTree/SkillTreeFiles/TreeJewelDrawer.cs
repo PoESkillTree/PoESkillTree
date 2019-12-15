@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using NLog;
 using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Engine.Utils.Extensions;
 using PoESkillTree.ViewModels.Equipment;
@@ -76,7 +74,6 @@ namespace PoESkillTree.SkillTreeFiles
 
         public void Draw()
         {
-            var stopwatch = Stopwatch.StartNew();
             using var dc = Visual.RenderOpen();
             foreach (var item in JewelViewModels.Select(vm => vm.Item).WhereNotNull())
             {
@@ -85,8 +82,6 @@ namespace PoESkillTree.SkillTreeFiles
                     Draw(dc, item.Socket!.Value, jewelType);
                 }
             }
-            stopwatch.Stop();
-            LogManager.GetCurrentClassLogger().Info($"Draw: {stopwatch.ElapsedMilliseconds} ms");
         }
 
         private void Draw(DrawingContext drawingContext, ushort nodeId, JewelType jewelType)

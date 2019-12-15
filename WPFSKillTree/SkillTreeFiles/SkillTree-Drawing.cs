@@ -13,6 +13,7 @@ using PoESkillTree.Engine.GameModel;
 using PoESkillTree.Engine.GameModel.PassiveTree;
 using PoESkillTree.Model.Items;
 using PoESkillTree.Utils.Wpf;
+using PoESkillTree.ViewModels.Equipment;
 
 namespace PoESkillTree.SkillTreeFiles
 {
@@ -65,8 +66,17 @@ namespace PoESkillTree.SkillTreeFiles
         private DrawingVisual _ascNodeSurround;
         private DrawingVisual _ascActiveNodeSurround;
 
-        public TreeJewelDrawer JewelDrawer { get; private set; }
+        private TreeJewelDrawer _jewelDrawer;
         private JewelRadiusDrawer _jewelRadiusDrawer;
+
+        public IReadOnlyList<InventoryItemViewModel> JewelViewModels
+        {
+            set
+            {
+                _jewelDrawer.JewelViewModels = value;
+                _jewelRadiusDrawer.JewelViewModels = value;
+            }
+        }
         #endregion
 
         private void InitialSkillTreeDrawing()
@@ -79,8 +89,8 @@ namespace PoESkillTree.SkillTreeFiles
             InitializeNodeSurroundBrushes();
             InitializeFaceBrushes();
 
-            JewelDrawer = new TreeJewelDrawer(Assets, Skillnodes);
-            _jewelRadiusDrawer = new JewelRadiusDrawer(PoESkillTreeOptions, Skillnodes.Values);
+            _jewelDrawer = new TreeJewelDrawer(Assets, Skillnodes);
+            _jewelRadiusDrawer = new JewelRadiusDrawer(PoESkillTreeOptions, Skillnodes, SkilledNodes);
 
             //Drawing
             DrawBackgroundLayer();
@@ -104,7 +114,8 @@ namespace PoESkillTree.SkillTreeFiles
             DrawActiveSkillIconsAndSurrounds();
             DrawActivePaths();
             DrawCharacterFaces();
-            JewelDrawer.Draw();
+            _jewelRadiusDrawer.DrawSkilledNodes();
+            _jewelDrawer.Draw();
         }
 
         /// <summary>
@@ -154,7 +165,7 @@ namespace PoESkillTree.SkillTreeFiles
             SkillTreeVisual.Children.Add(_nodeSurround);
             SkillTreeVisual.Children.Add(_activeNodeSurround);
             SkillTreeVisual.Children.Add(_characterFaces);
-            SkillTreeVisual.Children.Add(JewelDrawer.Visual);
+            SkillTreeVisual.Children.Add(_jewelDrawer.Visual);
             SkillTreeVisual.Children.Add(_jewelRadiusDrawer.Visual);
 
             _ascSkillTreeVisual.Children.Add(_ascClassFaces);
@@ -411,7 +422,7 @@ namespace PoESkillTree.SkillTreeFiles
 
         public void ClearJewelHighlight()
         {
-            _jewelRadiusDrawer.Clear();
+            _jewelRadiusDrawer.ClearHighlight();
         }
 
         public void ToggleAscendancyTree()
@@ -1053,7 +1064,7 @@ namespace PoESkillTree.SkillTreeFiles
 
         public void DrawJewelHighlight(SkillNode node, Item? socketedJewel)
         {
-            _jewelRadiusDrawer.Draw(node, socketedJewel);
+            _jewelRadiusDrawer.DrawHighlight(node, socketedJewel);
         }
     }
 }

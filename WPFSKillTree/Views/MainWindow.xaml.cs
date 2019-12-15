@@ -145,7 +145,7 @@ namespace PoESkillTree.Views
                 TreeGeneratorInteraction.SkillTree = tree;
             if (InventoryViewModel != null)
             {
-                tree.JewelDrawer.JewelViewModels = InventoryViewModel.TreeJewels;
+                tree.JewelViewModels = InventoryViewModel.TreeJewels;
                 SkillTreeAreaViewModel.Dispose();
                 SkillTreeAreaViewModel = new SkillTreeAreaViewModel(SkillTree.Skillnodes, InventoryViewModel.TreeJewels);
             }
@@ -1677,7 +1677,7 @@ namespace PoESkillTree.Views
                 new InventoryViewModel(_dialogCoordinator, itemAttributes, await GetJewelPassiveNodesAsync());
             SkillTreeAreaViewModel = new SkillTreeAreaViewModel(SkillTree.Skillnodes, InventoryViewModel.TreeJewels);
             _abyssalSocketObserver?.SetItemJewelViewModels(InventoryViewModel.ItemJewels);
-            Tree.JewelDrawer.JewelViewModels = InventoryViewModel.TreeJewels;
+            Tree.JewelViewModels = InventoryViewModel.TreeJewels;
             UpdateUI();
         }
 
