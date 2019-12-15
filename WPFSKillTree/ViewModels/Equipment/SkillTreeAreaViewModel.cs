@@ -8,11 +8,12 @@ namespace PoESkillTree.ViewModels.Equipment
 {
     public sealed class SkillTreeAreaViewModel : Notifier, IDisposable
     {
+        private static readonly Rect DefaultViewBox = GetViewBox(15000, new Point());
+
         private readonly IReadOnlyDictionary<ushort, SkillNode> _skillNodes;
         private readonly IReadOnlyList<InventoryItemViewModel> _jewels;
 
-        private bool _hasViewBox;
-        private Rect _viewBox;
+        private Rect _viewBox = DefaultViewBox;
 
         public SkillTreeAreaViewModel(
             IReadOnlyDictionary<ushort, SkillNode> skillNodes, IReadOnlyList<InventoryItemViewModel> jewels)
@@ -23,12 +24,6 @@ namespace PoESkillTree.ViewModels.Equipment
             {
                 jewel.PropertyChanged += JewelOnPropertyChanged;
             }
-        }
-
-        public bool HasViewBox
-        {
-            get => _hasViewBox;
-            private set => SetProperty(ref _hasViewBox, value);
         }
 
         public Rect ViewBox
@@ -49,17 +44,17 @@ namespace PoESkillTree.ViewModels.Equipment
         {
             if (inventoryItem.IsCurrent)
             {
-                HasViewBox = true;
                 var position = _skillNodes[inventoryItem.Socket!.Value].Position;
-                var topLeft = new Point(position.X - 1000, position.Y - 1000);
-                ViewBox = new Rect(topLeft, new Size(2000, 2000));
+                ViewBox = GetViewBox(2500, position);
             }
             else
             {
-                HasViewBox = false;
-                ViewBox = new Rect();
+                ViewBox = DefaultViewBox;
             }
         }
+
+        private static Rect GetViewBox(double size, Point center) =>
+            new Rect(new Point(center.X - size/2, center.Y - size/2), new Size(size, size));
 
         public void Dispose()
         {

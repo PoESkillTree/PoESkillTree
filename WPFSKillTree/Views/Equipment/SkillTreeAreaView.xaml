@@ -7,9 +7,7 @@
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance equipment:SkillTreeAreaViewModel}"
              x:Name="Control">
-    <Border Width="120" Height="120"
-            BorderThickness="2" BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
-            Visibility="{Binding HasViewBox, Converter={StaticResource BooleanToVisibilityConverter}}">
+    <Border BorderThickness="2" BorderBrush="{DynamicResource MahApps.Brushes.Accent}">
         <Rectangle>
             <Rectangle.Fill>
                 <VisualBrush Visual="{Binding SkillTreeVisual, ElementName=Control}"
