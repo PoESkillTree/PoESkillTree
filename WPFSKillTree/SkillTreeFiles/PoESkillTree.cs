@@ -105,6 +105,9 @@ namespace PoESkillTree.SkillTreeFiles
         [JsonProperty("ia")]
         public int IntelligenceGranted { get; set; }
 
+        [JsonProperty("isBlighted")]
+        public bool IsBlighted { get; set; }
+
         [JsonProperty("spc")]
         public int[] Characters { get; set; } = default!;
 

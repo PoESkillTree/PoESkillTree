@@ -317,6 +317,9 @@ namespace PoESkillTree.SkillTreeFiles
                     case PassiveNodeType.Small:
                         offset += 0;
                         break;
+                    case PassiveNodeType.Notable when node.IsBlighted:
+                        offset += 12;
+                        break;
                     case PassiveNodeType.Notable:
                         offset += 2;
                         break;
