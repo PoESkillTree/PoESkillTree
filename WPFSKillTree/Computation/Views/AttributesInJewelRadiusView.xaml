@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="PoESkillTree.Computation.Views.AttributesInJewelRadiusView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:PoESkillTree.Computation.ViewModels"
+             xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance viewModels:AttributesInJewelRadiusViewModel}">
+    <StackPanel Orientation="Horizontal"
+                Visibility="{Binding DisplayAttributes, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <StackPanel.Resources>
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="Margin" Value="0 0 6 0"/>
+            </Style>
+        </StackPanel.Resources> 
+        <TextBlock>
+            <l:Catalog Message="Attributes in radius:" />
+        </TextBlock>
+        <TextBlock Foreground="#FF800000">
+            <Run Text="{Binding Strength.Result, Mode=OneWay}" /> Strength
+        </TextBlock>
+        <TextBlock Foreground="#FF008000">
+            <Run Text="{Binding Dexterity.Result, Mode=OneWay}" /> Dexterity
+        </TextBlock>
+        <TextBlock Foreground="#FF000080">
+            <Run Text="{Binding Intelligence.Result, Mode=OneWay}" /> Intelligence
+        </TextBlock>
+    </StackPanel>
+</UserControl>

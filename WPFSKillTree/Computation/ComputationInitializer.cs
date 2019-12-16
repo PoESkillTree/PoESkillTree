@@ -51,8 +51,6 @@ namespace PoESkillTree.Computation
 
         public GameData GameData => _gameData.Data;
 
-        public AttributesInJewelRadiusCalculator AttributesInJewelRadiusCalculator { get; private set; }
-
         public async Task InitializeAsync(IEnumerable<SkillNode> skillNodes)
         {
             await InitializeFields(skillNodes);
@@ -71,7 +69,6 @@ namespace PoESkillTree.Computation
             _schedulers = new ComputationSchedulerProvider();
             _observables = new ComputationObservables(_parser);
             _calculator = new ObservableCalculator(calculator, _schedulers.CalculationThread);
-            AttributesInJewelRadiusCalculator = new AttributesInJewelRadiusCalculator(await GameData.PassiveTree, _builderFactories, _calculator);
         }
 
         private async Task DoInitialParseAsync()
@@ -133,6 +130,9 @@ namespace PoESkillTree.Computation
                 vm.MainSkillSelection.ConfigurationNodes);
             return vm;
         }
+
+        public async Task<AttributesInJewelRadiusViewModel> CreateAttributesInJewelRadiusViewModel()
+            => new AttributesInJewelRadiusViewModel(await GameData.PassiveTree, _builderFactories, _calculator);
 
         public void SetupPeriodicActions()
             => _calculator.PeriodicallyRemoveUnusedNodes(
