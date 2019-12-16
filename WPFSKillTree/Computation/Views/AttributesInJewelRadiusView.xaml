@@ -17,13 +17,16 @@
         <TextBlock>
             <l:Catalog Message="Attributes in radius:" />
         </TextBlock>
-        <TextBlock Foreground="#FF800000">
+        <TextBlock Foreground="#FF800000"
+                   Visibility="{Binding DisplayStrength, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Run Text="{Binding Strength.Result, Mode=OneWay}" /> Strength
         </TextBlock>
-        <TextBlock Foreground="#FF008000">
+        <TextBlock Foreground="#FF008000"
+                   Visibility="{Binding DisplayDexterity, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Run Text="{Binding Dexterity.Result, Mode=OneWay}" /> Dexterity
         </TextBlock>
-        <TextBlock Foreground="#FF000080">
+        <TextBlock Foreground="#FF000080"
+                   Visibility="{Binding DisplayIntelligence, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Run Text="{Binding Intelligence.Result, Mode=OneWay}" /> Intelligence
         </TextBlock>
     </StackPanel>

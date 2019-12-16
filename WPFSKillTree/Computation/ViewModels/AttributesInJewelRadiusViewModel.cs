@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using NLog;
 using PoESkillTree.Computation.Model;
@@ -18,6 +20,9 @@ namespace PoESkillTree.Computation.ViewModels
         private static readonly NotifyingTask<double> CompletedTask = new NotifyingTask<double>(Task.FromResult(0D), _ => {});
 
         private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
+
+        private const string UsesAttributesInJewelRadiusRegex =
+            "(per|for every) # {0} (allocated|(from|on) allocated passives) in radius";
 
         private readonly PassiveTreeDefinition _tree;
         private readonly IBuilderFactories _builders;
@@ -38,28 +43,47 @@ namespace PoESkillTree.Computation.ViewModels
             _intelligenceStatBuilder = new Lazy<IStatBuilder>(() => _builders.StatBuilders.Attribute.Intelligence);
         }
 
-        public bool DisplayAttributes { get; private set; }
+        public bool DisplayAttributes => DisplayStrength || DisplayDexterity || DisplayIntelligence;
 
+        public bool DisplayStrength { get; private set; }
         public NotifyingTask<double> Strength { get; private set; } = CompletedTask;
+        public bool DisplayDexterity { get; private set; }
         public NotifyingTask<double> Dexterity { get; private set; } = CompletedTask;
+        public bool DisplayIntelligence { get; private set; }
         public NotifyingTask<double> Intelligence { get; private set; } = CompletedTask;
 
-        public void Calculate(ushort node, JewelRadius radius)
+        public void Calculate(ushort node, JewelRadius radius, IReadOnlyCollection<string> modifiers)
         {
-            DisplayAttributes = radius != JewelRadius.None;
+            DisplayStrength = AnyModifierUsesAttributesInJewelRadius(modifiers, "Strength");
+            DisplayDexterity = AnyModifierUsesAttributesInJewelRadius(modifiers, "Dexterity");
+            DisplayIntelligence = AnyModifierUsesAttributesInJewelRadius(modifiers, "Intelligence");
+            if (!DisplayAttributes)
+                return;
 
             var task = GetAttributesInRadiusAsync(node, radius);
-            Strength = new NotifyingTask<double>(GetStrengthAsync(task),
-                e => Log.Error(e, "Calculating Strength in radius failed"));
-            Dexterity = new NotifyingTask<double>(GetDexterityAsync(task),
-                e => Log.Error(e, "Calculating Dexterity in radius failed"));
-            Intelligence = new NotifyingTask<double>(GetIntelligenceAsync(task),
-                e => Log.Error(e, "Calculating Intelligence in radius failed"));
+            if (DisplayStrength)
+            {
+                Strength = new NotifyingTask<double>(GetStrengthAsync(task),
+                    e => Log.Error(e, "Calculating Strength in radius failed"));
+            }
+            if (DisplayDexterity)
+            {
+                Dexterity = new NotifyingTask<double>(GetDexterityAsync(task),
+                    e => Log.Error(e, "Calculating Dexterity in radius failed"));
+            }
+            if (DisplayIntelligence)
+            {
+                Intelligence = new NotifyingTask<double>(GetIntelligenceAsync(task),
+                    e => Log.Error(e, "Calculating Intelligence in radius failed"));
+            }
 
             static async Task<double> GetStrengthAsync(Task<AttributeValues> t) => (await t).Strength;
             static async Task<double> GetDexterityAsync(Task<AttributeValues> t) => (await t).Dexterity;
             static async Task<double> GetIntelligenceAsync(Task<AttributeValues> t) => (await t).Intelligence;
         }
+
+        private static bool AnyModifierUsesAttributesInJewelRadius(IEnumerable<string> modifiers, string attribute)
+            => modifiers.Any(m => Regex.IsMatch(m, string.Format(UsesAttributesInJewelRadiusRegex, attribute), RegexOptions.IgnoreCase));
 
         private async Task<AttributeValues> GetAttributesInRadiusAsync(ushort node, JewelRadius radius)
         {

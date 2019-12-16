@@ -1527,7 +1527,8 @@ namespace PoESkillTree.Views
             else
             {
                 sp.Children.Add(new ItemTooltip {DataContext = socketedJewel});
-                _attributesInJewelRadiusViewModel.Calculate(node.Id, socketedJewel.JewelRadius);
+                _attributesInJewelRadiusViewModel.Calculate(
+                    node.Id, socketedJewel.JewelRadius, socketedJewel.ExplicitMods.Select(m => m.Attribute).ToList());
                 sp.Children.Add(new AttributesInJewelRadiusView {DataContext = _attributesInJewelRadiusViewModel});
             }
 
