@@ -97,7 +97,7 @@ namespace PoESkillTree.Computation.ViewModels
 
         private async Task<AttributeValues> GetAttributeValuesAsync(ushort node)
         {
-            var nodeSkilled = await GetNodeValueAsync(_builders.PassiveTreeBuilders.NodeSkilled(node));
+            var nodeSkilled = await GetNodeValueAsync(_builders.PassiveTreeBuilders.NodeAllocated(node));
             if (nodeSkilled.IsTrue())
             {
                 return new AttributeValues(
