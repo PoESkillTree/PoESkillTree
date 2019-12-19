@@ -11,6 +11,7 @@ using PoESkillTree.Model;
 using MoreLinq;
 using PoESkillTree.Engine.GameModel;
 using PoESkillTree.Engine.GameModel.PassiveTree;
+using PoESkillTree.Engine.Utils;
 using PoESkillTree.Model.Items;
 using PoESkillTree.TreeDrawing;
 using PoESkillTree.Utils.Wpf;
@@ -45,10 +46,12 @@ namespace PoESkillTree.SkillTreeFiles
         private DrawingVisual _paths;
         public DrawingVisual ActivePaths { get; private set; }
         private DrawingVisual _pathOverlay;
-        private NonAscendancyNodeIconDrawer _nodeIconDrawer; 
+        private NonAscendancyNodeIconDrawer _nodeIconDrawer;
         private NonAscendancyNodeIconDrawer _activeNodeIconDrawer;
+        private NonAscendancyNodeIconDrawer _itemAllocatedNodeIconDrawer;
         private NonAscendancyNodeSurroundDrawer _nodeSurroundDrawer;
         private NonAscendancyNodeSurroundDrawer _activeNodeSurroundDrawer;
+        private NonAscendancyNodeSurroundDrawer _itemAllocatedNodeSurroundDrawer;
         private DrawingVisual _characterFaces;
         private DrawingVisual _highlights;
 
@@ -83,7 +86,10 @@ namespace PoESkillTree.SkillTreeFiles
 
             SkilledNodes.CollectionChanged += SkilledNodes_CollectionChanged;
             HighlightedNodes.CollectionChanged += HighlightedNodes_CollectionChanged;
+            _itemAllocatedNodes.CollectionChanged += ItemAllocatedNodesOnCollectionChanged;
+
             if (_initialized) return;
+
             InitializeDrawingVisuals();
             InitializeNodeSurroundBrushes();
             InitializeFaceBrushes();
@@ -115,6 +121,12 @@ namespace PoESkillTree.SkillTreeFiles
             _jewelDrawer.Draw();
         }
 
+        private void ItemAllocatedNodesOnCollectionChanged(object sender, CollectionChangedEventArgs<SkillNode> args)
+        {
+            _itemAllocatedNodeIconDrawer.Draw();
+            _itemAllocatedNodeSurroundDrawer.Draw();
+        }
+
         /// <summary>
         /// This will initialize all drawing visuals. If a new drawing visual is added then it should be initialized here as well.
         /// </summary>
@@ -142,6 +154,7 @@ namespace PoESkillTree.SkillTreeFiles
         {
             _nodeIconDrawer = new NonAscendancyNodeIconDrawer(IconInActiveSkills, Skillnodes.Values);
             _activeNodeIconDrawer = new NonAscendancyNodeIconDrawer(IconActiveSkills, SkilledNodes);
+            _itemAllocatedNodeIconDrawer = new NonAscendancyNodeIconDrawer(IconActiveSkills, _itemAllocatedNodes);
             _ascendancyNodeIconDrawer = new AscendancyNodeIconDrawer(IconInActiveSkills, Skillnodes.Values);
             _activeAscendancyNodeIconDrawer = new AscendancyNodeIconDrawer(IconActiveSkills, SkilledNodes);
 
@@ -149,6 +162,8 @@ namespace PoESkillTree.SkillTreeFiles
                 Skillnodes.Values, 1, n => GetNodeSurroundBrushSize(n, 0), n => GetNodeSurroundBrush(n, 0));
             _activeNodeSurroundDrawer = new NonAscendancyNodeSurroundDrawer(
                 SkilledNodes, 1, n => GetNodeSurroundBrushSize(n, 1), n => GetNodeSurroundBrush(n, 1));
+            _itemAllocatedNodeSurroundDrawer = new NonAscendancyNodeSurroundDrawer(
+                _itemAllocatedNodes, 1, n => GetNodeSurroundBrushSize(n, 1), n => GetNodeSurroundBrush(n, 1));
             _nodeComparisonSurroundDrawer = new NonAscendancyNodeSurroundDrawer(
                 HighlightedNodes, 1.2, GetComparisonNodeSurroundBrushSize, GetComparisonNodeSurroundBrush);
             _ascendancyNodeSurroundDrawer = new AscendancyNodeSurroundDrawer(
@@ -172,8 +187,10 @@ namespace PoESkillTree.SkillTreeFiles
             SkillTreeVisual.Children.Add(ActivePaths);
             SkillTreeVisual.Children.Add(_pathOverlay);
             SkillTreeVisual.Children.Add(_nodeIconDrawer.Visual);
+            SkillTreeVisual.Children.Add(_itemAllocatedNodeIconDrawer.Visual);
             SkillTreeVisual.Children.Add(_activeNodeIconDrawer.Visual);
             SkillTreeVisual.Children.Add(_nodeSurroundDrawer.Visual);
+            SkillTreeVisual.Children.Add(_itemAllocatedNodeSurroundDrawer.Visual);
             SkillTreeVisual.Children.Add(_activeNodeSurroundDrawer.Visual);
             SkillTreeVisual.Children.Add(_characterFaces);
             SkillTreeVisual.Children.Add(_jewelDrawer.Visual);

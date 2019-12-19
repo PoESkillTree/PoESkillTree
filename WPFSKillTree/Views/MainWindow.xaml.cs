@@ -487,15 +487,7 @@ namespace PoESkillTree.Views
             Log.Info($"Build UI initialized after {stopwatch.ElapsedMilliseconds} ms");
             
             await initialComputationTask;
-            await computationInitializer.InitializeAfterBuildLoadAsync(
-                Tree.SkilledNodes,
-                _equipmentConverter.Equipment,
-                _equipmentConverter.Jewels,
-                _equipmentConverter.Skills);
-            ComputationViewModel = await computationInitializer.CreateComputationViewModelAsync(PersistentData);
-            _attributesInJewelRadiusViewModel = await computationInitializer.CreateAttributesInJewelRadiusViewModel();
-            computationInitializer.SetupPeriodicActions();
-            _abyssalSocketObserver = computationInitializer.CreateAbyssalSocketObserver(InventoryViewModel.ItemJewels);
+            await InitializeComputationDependentAsync(computationInitializer);
             Log.Info($"Computation UI initialized after {stopwatch.ElapsedMilliseconds} ms");
 
             await controller.CloseAsync();
@@ -611,6 +603,22 @@ namespace PoESkillTree.Views
                         break;
                 }
             };
+        }
+
+        private async Task InitializeComputationDependentAsync(ComputationInitializer computationInitializer)
+        {
+            await computationInitializer.InitializeAfterBuildLoadAsync(
+                Tree.SkilledNodes,
+                _equipmentConverter.Equipment,
+                _equipmentConverter.Jewels,
+                _equipmentConverter.Skills);
+            computationInitializer.SetupPeriodicActions();
+            ComputationViewModel = await computationInitializer.CreateComputationViewModelAsync(PersistentData);
+            _attributesInJewelRadiusViewModel = await computationInitializer.CreateAttributesInJewelRadiusViewModel();
+            _abyssalSocketObserver = computationInitializer.CreateAbyssalSocketObserver(InventoryViewModel.ItemJewels);
+            (await computationInitializer.CreateItemAllocatedPassiveNodesObservableAsync()).Subscribe(
+                nodes => Tree.ItemAllocatedNodes = nodes,
+                ex => Log.Error(ex, "Error in ItemAllocatedPassiveNodesObservable"));
         }
 
         private void Options_PropertyChanged(object sender, PropertyChangedEventArgs e)

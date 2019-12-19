@@ -161,6 +161,14 @@ namespace PoESkillTree.SkillTreeFiles
 
         public readonly ObservableSet<SkillNode> SkilledNodes = new ObservableSet<SkillNode>();
         public readonly ObservableSet<SkillNode> HighlightedNodes = new ObservableSet<SkillNode>();
+
+        private readonly ObservableSet<SkillNode> _itemAllocatedNodes = new ObservableSet<SkillNode>();
+
+        public IEnumerable<ushort> ItemAllocatedNodes
+        {
+            set => _itemAllocatedNodes.ResetTo(value.Select(n => Skillnodes[n]));
+        }
+
         public SkillTreeSerializer Serializer { get; }
         public IAscendancyClasses AscendancyClasses { get; private set; }
         public IBuildConverter BuildConverter { get; private set; }

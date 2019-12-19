@@ -25,6 +25,7 @@ namespace PoESkillTree.Computation
 
         private readonly GameDataWithOldTreeModel _gameData;
 
+        private ICalculator _iCalculator;
         private IBuilderFactories _builderFactories;
         private IParser _parser;
         private ComputationSchedulerProvider _schedulers;
@@ -62,13 +63,13 @@ namespace PoESkillTree.Computation
             _gameData.PassiveNodes = skillNodes;
 
             var computationFactory = new ComputationFactory(GameData);
-            var calculator = computationFactory.CreateCalculator();
+            _iCalculator = computationFactory.CreateCalculator();
             _builderFactories = await computationFactory.CreateBuilderFactoriesAsync();
             _parser = await computationFactory.CreateParserAsync();
 
             _schedulers = new ComputationSchedulerProvider();
             _observables = new ComputationObservables(_parser);
-            _calculator = new ObservableCalculator(calculator, _schedulers.CalculationThread);
+            _calculator = new ObservableCalculator(_iCalculator, _schedulers.CalculationThread);
         }
 
         private async Task DoInitialParseAsync()
@@ -144,6 +145,13 @@ namespace PoESkillTree.Computation
             var observer = AbyssalSocketObserver.Create(_calculator, _schedulers.Dispatcher, _builderFactories);
             observer.SetItemJewelViewModels(jewels);
             return observer;
+        }
+
+        public async Task<IObservable<IEnumerable<ushort>>> CreateItemAllocatedPassiveNodesObservableAsync()
+        {
+            return ItemAllocatedPassiveNodesObservableFactory.Create(
+                _iCalculator, _schedulers.CalculationThread, _schedulers.Dispatcher,
+                _builderFactories.PassiveTreeBuilders, (await GameData.PassiveTree).Nodes);
         }
     }
 }
