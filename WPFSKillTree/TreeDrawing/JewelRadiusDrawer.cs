@@ -5,10 +5,11 @@ using System.Linq;
 using System.Windows.Media;
 using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Engine.Utils.Extensions;
+using PoESkillTree.SkillTreeFiles;
 using PoESkillTree.ViewModels.Equipment;
 using Item = PoESkillTree.Model.Items.Item;
 
-namespace PoESkillTree.SkillTreeFiles
+namespace PoESkillTree.TreeDrawing
 {
     public class JewelRadiusDrawer
     {

@@ -7,11 +7,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Engine.Utils.Extensions;
+using PoESkillTree.SkillTreeFiles;
 using PoESkillTree.ViewModels.Equipment;
 
-namespace PoESkillTree.SkillTreeFiles
+namespace PoESkillTree.TreeDrawing
 {
-    public class TreeJewelDrawer
+    public class JewelDrawer
     {
         private enum JewelType
         {
@@ -36,7 +37,7 @@ namespace PoESkillTree.SkillTreeFiles
         private readonly Dictionary<JewelType, (Size, ImageBrush)> _brushes = new Dictionary<JewelType, (Size, ImageBrush)>();
         private IReadOnlyList<InventoryItemViewModel> _jewelViewModels;
 
-        public TreeJewelDrawer(
+        public JewelDrawer(
             IReadOnlyDictionary<string, BitmapImage> assets, IReadOnlyDictionary<ushort, SkillNode> skillNodes)
         {
             _assets = assets;
