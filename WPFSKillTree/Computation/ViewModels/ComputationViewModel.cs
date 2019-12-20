@@ -29,6 +29,8 @@ namespace PoESkillTree.Computation.ViewModels
         public GainOnActionStatsViewModel GainOnActionStats { get; private set; }
         public SharedConfigurationViewModel SharedConfiguration { get; private set; }
         public IndependentResultStatsViewModel IndependentResultStats { get; private set; }
+        public PassiveTreeConnectionsViewModel PassiveTreeConnections { get; private set; }
+        public AttributesInJewelRadiusViewModel AttributesInJewelRadius { get; private set; }
 
 #pragma warning disable CS8618 // The constructor is private and CreateAsync initializes everything
         private ComputationViewModel(ObservableCalculator observableCalculator, ComputationSchedulerProvider schedulers)
@@ -43,9 +45,9 @@ namespace PoESkillTree.Computation.ViewModels
         }
 
         private async Task InitializeAsync(
-            SkillDefinitions skillDefinitions, IBuilderFactories f, ObservableSet<IReadOnlyList<Skill>> skills)
+            GameData gameData, IBuilderFactories f, ObservableSet<IReadOnlyList<Skill>> skills)
         {
-            MainSkillSelection = MainSkillSelectionViewModel.Create(skillDefinitions, f, _nodeFactory, skills);
+            MainSkillSelection = MainSkillSelectionViewModel.Create(await gameData.Skills, f, _nodeFactory, skills);
 
             InitializeOffensiveStats(f);
             InitializeDefensiveStats(f);
@@ -55,8 +57,9 @@ namespace PoESkillTree.Computation.ViewModels
 
             GainOnActionStats = await GainOnActionStatsViewModel.CreateAsync(_observableCalculator, _nodeFactory);
             SharedConfiguration = SharedConfigurationViewModel.Create(_nodeFactory, f);
-            IndependentResultStats =
-                await IndependentResultStatsViewModel.CreateAsync(_observableCalculator, _nodeFactory);
+            IndependentResultStats = await IndependentResultStatsViewModel.CreateAsync(_observableCalculator, _nodeFactory);
+            PassiveTreeConnections = await PassiveTreeConnectionsViewModel.CreateAsync(_observableCalculator, _nodeFactory);
+            AttributesInJewelRadius = new AttributesInJewelRadiusViewModel(await gameData.PassiveTree, f, _observableCalculator);
         }
 
         private void InitializeOffensiveStats(IBuilderFactories f)
@@ -240,9 +243,8 @@ namespace PoESkillTree.Computation.ViewModels
             ObservableCalculator observableCalculator, ComputationSchedulerProvider schedulers,
             ObservableSet<IReadOnlyList<Skill>> skills)
         {
-            var skillDefinitions = await gameData.Skills;
             var vm = new ComputationViewModel(observableCalculator, schedulers);
-            await vm.InitializeAsync(skillDefinitions, builderFactories, skills);
+            await vm.InitializeAsync(gameData, builderFactories, skills);
             return vm;
         }
     }

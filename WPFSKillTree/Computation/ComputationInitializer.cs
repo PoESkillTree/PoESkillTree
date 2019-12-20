@@ -132,9 +132,6 @@ namespace PoESkillTree.Computation
             return vm;
         }
 
-        public async Task<AttributesInJewelRadiusViewModel> CreateAttributesInJewelRadiusViewModel()
-            => new AttributesInJewelRadiusViewModel(await GameData.PassiveTree, _builderFactories, _calculator);
-
         public void SetupPeriodicActions()
             => _calculator.PeriodicallyRemoveUnusedNodes(
                 ex => Log.Error(ex, "Exception while removing unused calculation nodes"));
