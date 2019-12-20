@@ -21,7 +21,7 @@ using PoESkillTree.Model.Items;
 
 namespace PoESkillTree.ViewModels.Equipment
 {
-    public class DownloadStashViewModel : CloseableViewModel
+    public class ImportStashViewModel : CloseableViewModel
     {
         private readonly StashViewModel _stash;
         private readonly IPersistentData _persistentData;
@@ -62,7 +62,7 @@ namespace PoESkillTree.ViewModels.Equipment
         private ICommand? _loadTabContentsCommand;
         public ICommand LoadTabContentsCommand => _loadTabContentsCommand ??= new AsyncRelayCommand(LoadTabContents);
 
-        public DownloadStashViewModel(
+        public ImportStashViewModel(
             IDialogCoordinator dialogCoordinator, IPersistentData persistentData, StashViewModel stash)
         {
             _stash = stash;

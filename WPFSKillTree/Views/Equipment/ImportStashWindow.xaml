@@ -1,5 +1,5 @@
 ﻿<dialogs:CloseableBaseDialog
-    x:Class="PoESkillTree.Views.Equipment.DownloadStashWindow"
+    x:Class="PoESkillTree.Views.Equipment.ImportStashWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
@@ -8,7 +8,7 @@
     xmlns:metroControls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:dialogs="clr-namespace:PoESkillTree.Controls.Dialogs"
     xmlns:viewModels="clr-namespace:PoESkillTree.ViewModels.Equipment"
-    d:DataContext="{d:DesignInstance viewModels:DownloadStashViewModel}">
+    d:DataContext="{d:DesignInstance viewModels:ImportStashViewModel}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />

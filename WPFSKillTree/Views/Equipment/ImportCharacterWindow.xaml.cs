@@ -1,11 +1,11 @@
 ﻿namespace PoESkillTree.Views.Equipment
 {
     /// <summary>
-    /// Interaction logic for DownloadItemsWindow.xaml
+    /// Interaction logic for ImportCharacterWindow.xaml
     /// </summary>
-    public partial class DownloadItemsWindow
+    public partial class ImportCharacterWindow
     {
-        public DownloadItemsWindow()
+        public ImportCharacterWindow()
         {
             InitializeComponent();
         }

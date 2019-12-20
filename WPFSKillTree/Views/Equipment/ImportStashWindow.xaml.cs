@@ -1,11 +1,11 @@
 ﻿namespace PoESkillTree.Views.Equipment
 {
     /// <summary>
-    /// Interaction logic for DownloadItemsWindow.xaml
+    /// Interaction logic for ImportStashWindow.xaml
     /// </summary>
-    public partial class DownloadStashWindow
+    public partial class ImportStashWindow
     {
-        public DownloadStashWindow()
+        public ImportStashWindow()
         {
             InitializeComponent();
         }

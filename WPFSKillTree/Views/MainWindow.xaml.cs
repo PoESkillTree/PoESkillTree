@@ -927,17 +927,17 @@ namespace PoESkillTree.Views
             }
         }
 
-        private async void Menu_ImportItems(object sender, RoutedEventArgs e)
+        private async void Menu_ImportCharacter(object sender, RoutedEventArgs e)
         {
             await this.ShowDialogAsync(
-                new DownloadItemsViewModel(PersistentData.CurrentBuild),
-                new DownloadItemsWindow());
+                new ImportCharacterViewModel(PersistentData.CurrentBuild),
+                new ImportCharacterWindow());
         }
 
         private async void Menu_ImportStash(object sender, RoutedEventArgs e)
         {
-            var vm = new DownloadStashViewModel(DialogCoordinator.Instance, PersistentData, StashViewModel);
-            await this.ShowDialogAsync(vm, new DownloadStashWindow(), () => vm.ViewLoaded());
+            var vm = new ImportStashViewModel(DialogCoordinator.Instance, PersistentData, StashViewModel);
+            await this.ShowDialogAsync(vm, new ImportStashWindow(), () => vm.ViewLoaded());
         }
 
         private async void Menu_CopyStats(object sender, RoutedEventArgs e)

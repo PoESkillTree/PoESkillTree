@@ -7,7 +7,7 @@ using PoESkillTree.Model.Builds;
 
 namespace PoESkillTree.ViewModels.Equipment
 {
-    public class DownloadItemsViewModel : CloseableViewModel
+    public class ImportCharacterViewModel : CloseableViewModel
     {
         public PoEBuild Build { get; }
 
@@ -21,9 +21,9 @@ namespace PoESkillTree.ViewModels.Equipment
         private RelayCommand? _openInBrowserCommand;
         public ICommand OpenInBrowserCommand => _openInBrowserCommand ??= new RelayCommand(() => Process.Start(ItemsLink));
 
-        public DownloadItemsViewModel(PoEBuild build)
+        public ImportCharacterViewModel(PoEBuild build)
         {
-            DisplayName = L10n.Message("Download & Import Items");
+            DisplayName = L10n.Message("Import Character");
             Build = build;
             Build.PropertyChanged += BuildOnPropertyChanged;
             _itemsLink = CreateItemsLink();

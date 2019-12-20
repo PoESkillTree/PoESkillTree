@@ -1,5 +1,5 @@
 ﻿<dialogs:CloseableBaseDialog
-    x:Class="PoESkillTree.Views.Equipment.DownloadItemsWindow"
+    x:Class="PoESkillTree.Views.Equipment.ImportCharacterWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
@@ -8,7 +8,7 @@
     xmlns:metroControls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:dialogs="clr-namespace:PoESkillTree.Controls.Dialogs"
     xmlns:viewModels="clr-namespace:PoESkillTree.ViewModels.Equipment"
-    d:DataContext="{d:DesignInstance viewModels:DownloadItemsViewModel}">
+    d:DataContext="{d:DesignInstance viewModels:ImportCharacterViewModel}">
     <StackPanel>
         <TextBlock Margin="5" TextWrapping="Wrap">
             <l:Catalog Message="Please enter your Character and Account Name below and click 'Open in Browser'."/><LineBreak/>
@@ -38,7 +38,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Label HorizontalAlignment="Left">
-                <l:Catalog Message="Link to item data:"/>
+                <l:Catalog Message="Link to item and skill data:"/>
             </Label>
             <Button Grid.Column="1"
                     Command="{Binding OpenInBrowserCommand}">
@@ -49,7 +49,7 @@
                  Text="{Binding ItemsLink, Mode=OneWay}" IsReadOnly="True"/>
 
         <Label HorizontalAlignment="Left" Margin="5,5,0,0">
-            <l:Catalog Message="Item data:"/>
+            <l:Catalog Message="Item and skill data:"/>
         </Label>
         <TextBox Margin="5" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
                  AcceptsTab="True" AcceptsReturn="True" MaxLines="6"

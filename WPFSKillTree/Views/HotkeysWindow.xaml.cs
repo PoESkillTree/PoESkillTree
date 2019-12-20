@@ -1,7 +1,7 @@
 ﻿namespace PoESkillTree.Views
 {
     /// <summary>
-    /// Interaction logic for DownloadItemsWindow.xaml
+    /// Interaction logic for HotkeysWindow.xaml
     /// </summary>
     public partial class HotkeysWindow
     {
