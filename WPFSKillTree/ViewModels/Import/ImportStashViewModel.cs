@@ -10,7 +10,6 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using Newtonsoft.Json.Linq;
-using PoESkillTree.Utils;
 using PoESkillTree.Common.ViewModels;
 using PoESkillTree.Controls;
 using PoESkillTree.Controls.Dialogs;
@@ -18,8 +17,10 @@ using PoESkillTree.Localization;
 using PoESkillTree.Model;
 using PoESkillTree.Model.Builds;
 using PoESkillTree.Model.Items;
+using PoESkillTree.Utils;
+using PoESkillTree.ViewModels.Equipment;
 
-namespace PoESkillTree.ViewModels.Equipment
+namespace PoESkillTree.ViewModels.Import
 {
     public class ImportStashViewModel : CloseableViewModel
     {
@@ -105,7 +106,7 @@ namespace PoESkillTree.ViewModels.Equipment
             using var client = new HttpClient();
             var file = await client.GetStringAsync("http://api.pathofexile.com/leagues?type=main&compact=1")
                 .ConfigureAwait(false);
-            return JArray.Parse(file).Select(t => t["id"]!.Value<string>()).ToList();
+            return JArray.Parse(file).Select(t => Extensions.Value<string>(t["id"]!)).ToList();
         }
 
         protected override void OnClose()

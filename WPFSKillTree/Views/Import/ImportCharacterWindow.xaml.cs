@@ -1,4 +1,4 @@
-﻿namespace PoESkillTree.Views.Equipment
+﻿namespace PoESkillTree.Views.Import
 {
     /// <summary>
     /// Interaction logic for ImportCharacterWindow.xaml

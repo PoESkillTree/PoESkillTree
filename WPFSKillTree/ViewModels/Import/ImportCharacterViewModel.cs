@@ -5,7 +5,7 @@ using PoESkillTree.Common.ViewModels;
 using PoESkillTree.Localization;
 using PoESkillTree.Model.Builds;
 
-namespace PoESkillTree.ViewModels.Equipment
+namespace PoESkillTree.ViewModels.Import
 {
     public class ImportCharacterViewModel : CloseableViewModel
     {

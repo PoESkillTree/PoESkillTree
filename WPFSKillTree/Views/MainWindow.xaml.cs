@@ -43,8 +43,9 @@ using PoESkillTree.ViewModels;
 using PoESkillTree.ViewModels.Builds;
 using PoESkillTree.ViewModels.Crafting;
 using PoESkillTree.ViewModels.Equipment;
+using PoESkillTree.ViewModels.Import;
 using PoESkillTree.Views.Crafting;
-using PoESkillTree.Views.Equipment;
+using PoESkillTree.Views.Import;
 using Attribute = PoESkillTree.ViewModels.Attribute;
 using Item = PoESkillTree.Model.Items.Item;
 
