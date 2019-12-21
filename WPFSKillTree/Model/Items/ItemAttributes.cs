@@ -22,6 +22,8 @@ namespace PoESkillTree.Model.Items
         public Item? GetItemInSlot(ItemSlot slot, ushort? socket)
             => Equip.FirstOrDefault(i => i.Slot == slot && i.Socket == socket);
 
+        public void RemoveItem(Item item) => SetItemInSlot(null, item.Slot, item.Socket);
+
         public void SetItemInSlot(Item? value, ItemSlot slot, ushort? socket)
         {
             if (!CanEquip(value, slot, socket))
@@ -121,13 +123,30 @@ namespace PoESkillTree.Model.Items
             return ((int) item.ItemClass.ItemSlots() & (int) slot) != 0;
         }
 
-        public IReadOnlyList<Skill> GetSkillsInSlot(ItemSlot slot)
-            => Skills.Where(ss => ss.Any(s => s.ItemSlot == slot)).DefaultIfEmpty(new Skill[0]).First();
+        public IReadOnlyList<Skill> GetSkillsInSlot(ItemSlot slot) =>
+            Skills.FirstOrDefault(ss => ss.First().ItemSlot == slot) ?? Array.Empty<Skill>();
+
+        public void RemoveSkills(IReadOnlyList<Skill> value) =>
+            SetSkillsInSlot(Array.Empty<Skill>(), value.First().ItemSlot);
 
         public void SetSkillsInSlot(IReadOnlyList<Skill> value, ItemSlot slot)
         {
-            var oldValue = Skills.FirstOrDefault(ss => ss.Any(s => s.ItemSlot == slot));
-            Skills.RemoveAndAdd(oldValue, value);
+            if (value.Any(s => s.ItemSlot != slot))
+                throw new ArgumentException("Skills for a slot must all have that slot as ItemSlot", nameof(value));
+
+            var oldValue = GetSkillsInSlot(slot);
+            if (oldValue.Any() && value.Any())
+            {
+                Skills.RemoveAndAdd(oldValue, value);
+            }
+            if (value.Any())
+            {
+                Skills.Add(value);
+            }
+            else if (oldValue.Any())
+            {
+                Skills.Remove(oldValue);
+            }
         }
 
         private void AddSkillsToSlot(IEnumerable<Skill> skills, ItemSlot slot)
@@ -194,6 +213,10 @@ namespace PoESkillTree.Model.Items
                 if (addItem)
                 {
                     SetItemInSlot(item, slot, item.Socket);
+                    foreach (var socketedItem in item.DeserializeSocketedItems(_equipmentData, itemJson))
+                    {
+                        SetItemInSlot(socketedItem, slot, socketedItem.Socket);
+                    }
                 }
                 if (addSkills)
                 {

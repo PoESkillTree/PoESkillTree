@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using NLog;
 using PoESkillTree.Common.ViewModels;
 using PoESkillTree.Controls.Dialogs;
+using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Localization;
 using PoESkillTree.Model.Builds;
 using PoESkillTree.Model.Items;
@@ -186,13 +187,28 @@ namespace PoESkillTree.ViewModels.Import
             if (string.IsNullOrEmpty(importJson))
                 return Unit.Default;
 
-            var import = JObject.Parse(importJson);
+            if (importItems)
+            {
+                var toRemove = _itemAttributes.Equip.Where(i => i.Slot != ItemSlot.SkillTree).ToList();
+                foreach (var item in toRemove)
+                {
+                    _itemAttributes.RemoveItem(item);
+                }
+            }
+            if (importSkills)
+            {
+                var toRemove = _itemAttributes.Skills.Where(ss => ss.First().ItemSlot != ItemSlot.Unequipable).ToList();
+                foreach (var skills in toRemove)
+                {
+                    _itemAttributes.RemoveSkills(skills);
+                }
+            }
 
+            var import = JObject.Parse(importJson);
             if (importItems || importSkills)
             {
                 _itemAttributes.DeserializeItemsWithSkills(import, importItems, importSkills);
             }
-
             if (importLevel && import.TryGetValue("character", out var characterToken))
             {
                 Build.Level = characterToken.Value<int>("level");

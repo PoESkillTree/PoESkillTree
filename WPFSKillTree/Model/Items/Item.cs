@@ -312,6 +312,23 @@ namespace PoESkillTree.Model.Items
                 FlavourText = string.Join("\r\n", flavourTextToken.Values<string>().Select(s => s.Replace("\r", "")));
         }
 
+        public IEnumerable<Item> DeserializeSocketedItems(EquipmentData equipmentData, JObject itemJson)
+        {
+            if (!itemJson.TryGetValue("socketedItems", out var socketedItemsJson))
+                yield break;
+
+            ushort socket = 0;
+            foreach (var socketedItemJson in socketedItemsJson.Values<JObject>())
+            {
+                var frameType = socketedItemJson.Value<int>("frameType");
+                if ((FrameType) frameType != FrameType.Gem)
+                {
+                    yield return new Item(equipmentData, socketedItemJson, Slot) {Socket = socket};
+                    socket++;
+                }
+            }
+        }
+
         public IReadOnlyList<Skill> DeserializeSocketedSkills(SkillDefinitions skillDefinitions, JObject itemJson)
         {
             if (!itemJson.TryGetValue("socketedItems", out var skillJson))
@@ -326,31 +343,30 @@ namespace PoESkillTree.Model.Items
                 }
             }
 
-            int socket = 0;
             var skills = new List<Skill>();
-            foreach (JObject obj in (JArray) skillJson)
+            foreach (var obj in skillJson.Values<JObject>())
             {
                 var frameType = obj.Value<int>("frameType");
                 if ((FrameType) frameType == FrameType.Gem)
                 {
-                    if (TryDeserializeSocketedSkill(skillDefinitions, obj, socket, sockets[socket], out var skill))
+                    if (TryDeserializeSocketedSkill(skillDefinitions, obj, sockets, out var skill))
                     {
                         skills.Add(skill);
                     }
                 }
-                socket++;
             }
             return skills;
         }
 
         private bool TryDeserializeSocketedSkill(
-            SkillDefinitions skillDefinitions, JObject jObject, int socketIndex, int socketGroup, [NotNullWhen(true)] out Skill? skill)
+            SkillDefinitions skillDefinitions, JObject jObject, IReadOnlyList<int> socketGroups, [NotNullWhen(true)] out Skill? skill)
         {
             var baseItemSkills = skillDefinitions.Skills
                 .Where(d => d.BaseItem != null)
                 .Where(d => d.BaseItem!.ReleaseState == ReleaseState.Released
                             || d.BaseItem.ReleaseState == ReleaseState.Legacy)
                 .ToList();
+            var socketIndex = jObject.Value<int>("socket");
             var name = jObject.Value<string>("typeLine");
             var definition = baseItemSkills.FirstOrDefault(d => d.BaseItem?.DisplayName == name)
                 ?? baseItemSkills.FirstOrDefault(d => d.BaseItem?.DisplayName == name + " Support");
@@ -367,7 +383,7 @@ namespace PoESkillTree.Model.Items
                 level = (int) properties.First("Level: # (Max)", 0, 1);
             }
             var quality = (int) properties.First("Quality: +#%", 0, 0);
-            skill = new Skill(definition.Id, (int) level, quality, Slot, socketIndex, socketGroup);
+            skill = new Skill(definition.Id, (int) level, quality, Slot, socketIndex, socketGroups[socketIndex]);
             return true;
         }
 
