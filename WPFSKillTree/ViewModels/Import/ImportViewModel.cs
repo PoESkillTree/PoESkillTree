@@ -11,6 +11,7 @@ namespace PoESkillTree.ViewModels.Import
         private readonly IDialogCoordinator _dialogCoordinator;
         private readonly IPersistentData _persistentData;
         private readonly StashViewModel _stash;
+        private readonly HttpClient _httpClient;
         private readonly Lazy<CurrentLeaguesViewModel> _currentLeagues;
         private readonly Lazy<AccountCharactersViewModel> _accountCharacters;
 
@@ -19,13 +20,14 @@ namespace PoESkillTree.ViewModels.Import
             _dialogCoordinator = dialogCoordinator;
             _persistentData = persistentData;
             _stash = stash;
-            var httpClient = new HttpClient();
-            _currentLeagues = new Lazy<CurrentLeaguesViewModel>(() => new CurrentLeaguesViewModel(httpClient));
-            _accountCharacters = new Lazy<AccountCharactersViewModel>(() => new AccountCharactersViewModel(httpClient));
+            _httpClient = new HttpClient();
+            _currentLeagues = new Lazy<CurrentLeaguesViewModel>(() => new CurrentLeaguesViewModel(_httpClient));
+            _accountCharacters = new Lazy<AccountCharactersViewModel>(() => new AccountCharactersViewModel(_httpClient));
         }
 
         public ImportCharacterViewModel ImportCharacter =>
-            new ImportCharacterViewModel(_persistentData.CurrentBuild, _currentLeagues.Value, _accountCharacters.Value);
+            new ImportCharacterViewModel(_httpClient, _dialogCoordinator, _persistentData.CurrentBuild, _currentLeagues.Value,
+                _accountCharacters.Value);
 
         public ImportStashViewModel ImportStash => new ImportStashViewModel(_dialogCoordinator, _persistentData, _stash, _currentLeagues.Value);
     }

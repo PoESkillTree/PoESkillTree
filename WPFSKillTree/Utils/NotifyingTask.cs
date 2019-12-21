@@ -45,6 +45,9 @@ namespace PoESkillTree.Utils
             TaskCompletion = task.IsCompleted ? System.Threading.Tasks.Task.CompletedTask : WatchTaskAsync();
         }
 
+        public static NotifyingTask<TResult> FromResult(TResult result) =>
+            new NotifyingTask<TResult>(System.Threading.Tasks.Task.FromResult(result), _ => { });
+
         private async Task WatchTaskAsync()
         {
             try

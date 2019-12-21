@@ -67,7 +67,7 @@ namespace PoESkillTree.Controls.Dialogs
             return metroWindow.Invoke(() => metroWindow.ShowInfoAsync(message, details, title));
         }
 
-        public Task<string> ShowInputAsync(object context, string title, string message, string defaultText = "")
+        public Task<string?> ShowInputAsync(object context, string title, string message, string defaultText = "")
         {
             var metroWindow = GetMetroWindow(context);
             return metroWindow.Invoke(() => metroWindow.ShowInputAsync(title, message, defaultText));

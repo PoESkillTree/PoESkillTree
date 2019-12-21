@@ -1,4 +1,4 @@
-﻿<dialogs:CloseableBaseDialog
+<dialogs:CloseableBaseDialog
     x:Class="PoESkillTree.Views.Import.ImportCharacterWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -10,7 +10,7 @@
     xmlns:viewModels="clr-namespace:PoESkillTree.ViewModels.Import"
     xmlns:builds="clr-namespace:PoESkillTree.Model.Builds"
     xmlns:wpf="clr-namespace:PoESkillTree.Utils.Wpf"
-    MinContentWidth="400" MaxContentWidth="800"
+    MinContentWidth="500" MaxContentWidth="650"
     d:DataContext="{d:DesignInstance viewModels:ImportCharacterViewModel}">
     <dialogs:CloseableBaseDialog.Resources>
         <Style x:Key="FaultedTaskBorderStyle"
@@ -30,10 +30,10 @@
             <Setter Property="Margin" Value="0 5 0 0" />
         </Style>
     </dialogs:CloseableBaseDialog.Resources>
+
     <dialogs:CloseableBaseDialog.DialogLeft>
         <StackPanel HorizontalAlignment="Right"
-                    Margin="10 50 10 0"
-                    Visibility="{Binding PublicProfile, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    Margin="10 15 10 0">
             <Border Visibility="{Binding CurrentLeagues.IsFaulted, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Style="{StaticResource FaultedTaskBorderStyle}">
                 <TextBlock Foreground="{DynamicResource MahApps.Brushes.Text.Validation}">
@@ -48,34 +48,58 @@
                     <l:Catalog Message="Retrieving leagues for realm…"/>
                 </Label>
             </Border>
-            <Border Visibility="{Binding AccountCharacters.IsFaulted, Converter={StaticResource BooleanToVisibilityConverter}}"
+
+            <Grid Visibility="{Binding PublicProfile, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Border Visibility="{Binding AccountCharacters.IsFaulted, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Style="{StaticResource FaultedTaskBorderStyle}">
+                    <TextBlock Foreground="{DynamicResource MahApps.Brushes.Text.Validation}">
+                        <Run><Run.Text><l:Catalog Message="Retrieving characters for account failed:"/></Run.Text></Run>
+                        <LineBreak />
+                        <Run Text="{Binding AccountCharacters.ErrorMessage, Mode=OneWay}" />
+                    </TextBlock>
+                </Border>
+                <Border Visibility="{Binding AccountCharacters.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Style="{StaticResource NotCompletedTaskBorderStyle}">
+                    <Label>
+                        <l:Catalog Message="Retrieving characters for account…"/>
+                    </Label>
+                </Border>
+            </Grid>
+
+            <Border Visibility="{Binding ImportItemsTask.IsFaulted, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Style="{StaticResource FaultedTaskBorderStyle}">
                 <TextBlock Foreground="{DynamicResource MahApps.Brushes.Text.Validation}">
-                    <Run><Run.Text><l:Catalog Message="Retrieving characters for account failed:"/></Run.Text></Run>
+                    <Run><Run.Text><l:Catalog Message="Importing item and skill data failed:"/></Run.Text></Run>
                     <LineBreak />
-                    <Run Text="{Binding AccountCharacters.ErrorMessage, Mode=OneWay}" />
+                    <Run Text="{Binding ImportItemsTask.ErrorMessage, Mode=OneWay}" />
                 </TextBlock>
             </Border>
-            <Border Visibility="{Binding AccountCharacters.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"
+            <Border Visibility="{Binding ImportItemsTask.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Style="{StaticResource NotCompletedTaskBorderStyle}">
                 <Label>
-                    <l:Catalog Message="Retrieving characters for account…"/>
+                    <l:Catalog Message="Importing item and skill data…"/>
+                </Label>
+            </Border>
+
+            <Border Visibility="{Binding ImportPassiveTreeTask.IsFaulted, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Style="{StaticResource FaultedTaskBorderStyle}">
+                <TextBlock Foreground="{DynamicResource MahApps.Brushes.Text.Validation}">
+                    <Run><Run.Text><l:Catalog Message="Importing passive tree and jewel data failed:"/></Run.Text></Run>
+                    <LineBreak />
+                    <Run Text="{Binding ImportPassiveTreeTask.ErrorMessage, Mode=OneWay}" />
+                </TextBlock>
+            </Border>
+            <Border Visibility="{Binding ImportPassiveTreeTask.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Style="{StaticResource NotCompletedTaskBorderStyle}">
+                <Label>
+                    <l:Catalog Message="Importing passive tree and jewel data data…"/>
                 </Label>
             </Border>
         </StackPanel>
     </dialogs:CloseableBaseDialog.DialogLeft>
-    <StackPanel>
-        <metroControls:ToggleSwitch IsChecked="{Binding PrivateProfile}"
-                                    HorizontalAlignment="Right">
-            <metroControls:ToggleSwitch.OnLabel>
-                <l:Catalog Message="Profile is private" />
-            </metroControls:ToggleSwitch.OnLabel>
-            <metroControls:ToggleSwitch.OffLabel>
-                <l:Catalog Message="Profile is not private" />
-            </metroControls:ToggleSwitch.OffLabel>
-        </metroControls:ToggleSwitch>
 
-        <UniformGrid Margin="0 3"
+    <StackPanel>
+        <UniformGrid Margin="0 5"
                      Columns="4">
             <ComboBox Margin="0"
                       Text="{Binding Build.Realm}"
@@ -96,7 +120,7 @@
                       IsEditable="True"
                       ItemsSource="{Binding CurrentLeagues.Result}">
                 <metroControls:TextBoxHelper.Watermark>
-                    <l:Catalog Message="League"/>
+                    <l:Catalog Message="All leagues"/>
                 </metroControls:TextBoxHelper.Watermark>
             </ComboBox>
             <ComboBox Margin="5 0 0 0"
@@ -122,37 +146,59 @@
             </ComboBox>
         </UniformGrid>
 
-        <TextBlock Margin="0 3" TextWrapping="Wrap">
-            <l:Catalog Message="Please enter your Character and Account Name below and click 'Open in Browser'."/><LineBreak/>
-            <l:Catalog Message="This will open a page in your default Web-Browser containing your character's item data"/><LineBreak/>
-            <l:Catalog Message="Copy the contents of that page and paste them into the 'Item data' field."/>
-        </TextBlock>
+        <CheckBox IsChecked="{Binding PrivateProfile}"
+                  Margin="0 5">
+            <l:Catalog Message="Profile is private" />
+        </CheckBox>
 
-        <Grid Margin="0 3 0 0">
+        <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
-            <Label HorizontalAlignment="Left">
-                <l:Catalog Message="Link to item and skill data:"/>
-            </Label>
-            <Button Grid.Column="1"
-                    Command="{Binding OpenInBrowserCommand}">
-                <l:Catalog Message="Open in Browser"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+
+            <Button Grid.Column="0" Grid.Row="0"
+                    Margin="0 5 0 5"
+                    Command="{Binding ImportItemsSkillsAndLevelCommand}">
+                <l:Catalog Message="Import items, skills and level" />
+            </Button>
+            <Button Grid.Column="1" Grid.Row="0"
+                    Margin="5 5 0 5"
+                    Command="{Binding ImportItemsCommand}">
+                <l:Catalog Message="Import items" />
+            </Button>
+            <Button Grid.Column="2" Grid.Row="0"
+                    Margin="5 5 0 5"
+                    Command="{Binding ImportSkillsCommand}">
+                <l:Catalog Message="Import skills" />
+            </Button>
+            <Button Grid.Column="3" Grid.Row="0"
+                    Margin="5 5 0 5"
+                    Command="{Binding ImportILevelCommand}">
+                <l:Catalog Message="Import level" />
+            </Button>
+
+            <Button Grid.Column="0" Grid.Row="1"
+                    Margin="0 5 0 0"
+                    Command="{Binding ImportPassiveTreeAndJewelsCommand}">
+                <l:Catalog Message="Import passive tree and jewels" />
+            </Button>
+            <Button Grid.Column="1" Grid.Row="1"
+                    Margin="5 5 0 0"
+                    Command="{Binding ImportPassiveTreeCommand}">
+                <l:Catalog Message="Import tree" />
+            </Button>
+            <Button Grid.Column="2" Grid.Row="1"
+                    Margin="5 5 0 0"
+                    Command="{Binding ImportJewelsCommand}">
+                <l:Catalog Message="Import jewels" />
             </Button>
         </Grid>
-        <TextBox Margin="0 3" TextWrapping="Wrap"
-                 MaxLines="1"
-                 VerticalScrollBarVisibility="Auto"
-                 Text="{Binding ItemsLink, Mode=OneWay}" IsReadOnly="True"/>
-
-        <Label HorizontalAlignment="Left" Margin="0 3 0 0">
-            <l:Catalog Message="Item and skill data:"/>
-        </Label>
-        <TextBox Margin="0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
-                 AcceptsTab="True" AcceptsReturn="True" MaxLines="6"
-                 metroControls:TextBoxHelper.ClearTextButton="True"
-                 metroControls:TextBoxHelper.SelectAllOnFocus="True"
-                 Text="{Binding Build.ItemData}" />
     </StackPanel>
 </dialogs:CloseableBaseDialog>
