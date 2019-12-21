@@ -8,31 +8,91 @@
     xmlns:metroControls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:dialogs="clr-namespace:PoESkillTree.Controls.Dialogs"
     xmlns:viewModels="clr-namespace:PoESkillTree.ViewModels.Import"
+    xmlns:builds="clr-namespace:PoESkillTree.Model.Builds"
+    xmlns:wpf="clr-namespace:PoESkillTree.Utils.Wpf"
+    MinContentWidth="400" MaxContentWidth="800"
     d:DataContext="{d:DesignInstance viewModels:ImportCharacterViewModel}">
+    <dialogs:CloseableBaseDialog.DialogLeft>
+        <StackPanel HorizontalAlignment="Right"
+                    Margin="5 80 5 0"
+                    Visibility="{Binding PublicProfile, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Border Visibility="{Binding AccountCharacters.IsFaulted, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Background="{DynamicResource MahApps.Brushes.Validation5}"
+                    CornerRadius="2">
+                <TextBlock Foreground="{DynamicResource MahApps.Brushes.Text.Validation}"
+                           Margin="4 2">
+                    <Run><Run.Text><l:Catalog Message="Retrieving characters for account failed:"/></Run.Text></Run>
+                    <LineBreak />
+                    <Run Text="{Binding AccountCharacters.ErrorMessage, Mode=OneWay}" />
+                </TextBlock>
+            </Border>
+        </StackPanel>
+    </dialogs:CloseableBaseDialog.DialogLeft>
     <StackPanel>
-        <TextBlock Margin="5" TextWrapping="Wrap">
-            <l:Catalog Message="Please enter your Character and Account Name below and click 'Open in Browser'."/><LineBreak/>
-            <l:Catalog Message="This will open a page in your default Web-Browser containing your character's item data"/><LineBreak/>
-            <l:Catalog Message="Copy the contents of that page and paste them into the 'Item data' field."/>
-        </TextBlock>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <TextBox Margin="5,5,2,5" MaxLength="24" Text="{Binding Build.CharacterName}">
+        <metroControls:ToggleSwitch IsChecked="{Binding PrivateProfile}"
+                                    HorizontalAlignment="Right">
+            <metroControls:ToggleSwitch.OnLabel>
+                <l:Catalog Message="Profile is private" />
+            </metroControls:ToggleSwitch.OnLabel>
+            <metroControls:ToggleSwitch.OffLabel>
+                <l:Catalog Message="Profile is not private" />
+            </metroControls:ToggleSwitch.OffLabel>
+        </metroControls:ToggleSwitch>
+
+        <UniformGrid Margin="0 3"
+                     Columns="4">
+            <ComboBox Margin="0"
+                      Text="{Binding Build.Realm}"
+                      ItemsSource="{Binding Source={wpf:EnumMarkup {x:Type builds:Realm}}}">
                 <metroControls:TextBoxHelper.Watermark>
-                    <l:Catalog Message="Character name"/>
+                    <l:Catalog Message="Realm"/>
                 </metroControls:TextBoxHelper.Watermark>
-            </TextBox>
-            <TextBox Grid.Column="1" Margin="3,5,5,5" Text="{Binding Build.AccountName}" MaxLength="31">
+            </ComboBox>
+            <TextBox Margin="5 0 0 0"
+                     Text="{Binding Build.AccountName}"
+                     MaxLength="31">
                 <metroControls:TextBoxHelper.Watermark>
                     <l:Catalog Message="Account name"/>
                 </metroControls:TextBoxHelper.Watermark>
             </TextBox>
-        </Grid>
+            <ComboBox Margin="5 0 0 0"
+                      Text="{Binding Build.League}"
+                      IsEditable="True"
+                      ItemsSource="{Binding CurrentLeagues.Result}">
+                <metroControls:TextBoxHelper.Watermark>
+                    <l:Catalog Message="League"/>
+                </metroControls:TextBoxHelper.Watermark>
+            </ComboBox>
+            <ComboBox Margin="5 0 0 0"
+                      IsEditable="True"
+                      IsTextSearchEnabled="True" 
+                      IsTextSearchCaseSensitive="False" 
+                      StaysOpenOnEdit="True"
+                      TextSearch.TextPath="Name"
+                      Text="{Binding Build.CharacterName}"
+                      ItemsSource="{Binding AccountCharacters.Result}">
+                <metroControls:TextBoxHelper.Watermark>
+                    <l:Catalog Message="Character name"/>
+                </metroControls:TextBoxHelper.Watermark>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate DataType="viewModels:AccountCharacterViewModel">
+                        <TextBlock>
+                            <Run Text="{Binding Name, Mode=OneWay}" />
+                            (level <Run Text="{Binding Level, Mode=OneWay}" /> <Run Text="{Binding Class, Mode=OneWay}" />
+                            in <Run Text="{Binding League, Mode=OneWay}" />)
+                        </TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </UniformGrid>
 
-        <Grid Margin="5,5,5,0">
+        <TextBlock Margin="0 3" TextWrapping="Wrap">
+            <l:Catalog Message="Please enter your Character and Account Name below and click 'Open in Browser'."/><LineBreak/>
+            <l:Catalog Message="This will open a page in your default Web-Browser containing your character's item data"/><LineBreak/>
+            <l:Catalog Message="Copy the contents of that page and paste them into the 'Item data' field."/>
+        </TextBlock>
+
+        <Grid Margin="0 3 0 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
@@ -45,13 +105,15 @@
                 <l:Catalog Message="Open in Browser"/>
             </Button>
         </Grid>
-        <TextBox Margin="5" TextWrapping="Wrap" 
+        <TextBox Margin="0 3" TextWrapping="Wrap"
+                 MaxLines="1"
+                 VerticalScrollBarVisibility="Auto"
                  Text="{Binding ItemsLink, Mode=OneWay}" IsReadOnly="True"/>
 
-        <Label HorizontalAlignment="Left" Margin="5,5,0,0">
+        <Label HorizontalAlignment="Left" Margin="0 3 0 0">
             <l:Catalog Message="Item and skill data:"/>
         </Label>
-        <TextBox Margin="5" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+        <TextBox Margin="0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
                  AcceptsTab="True" AcceptsReturn="True" MaxLines="6"
                  metroControls:TextBoxHelper.ClearTextButton="True"
                  metroControls:TextBoxHelper.SelectAllOnFocus="True"

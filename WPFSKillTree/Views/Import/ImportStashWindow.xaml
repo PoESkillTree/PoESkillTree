@@ -42,6 +42,12 @@
                     <l:Catalog Message="Realm"/>
                 </metroControls:TextBoxHelper.Watermark>
             </ComboBox>
+            <TextBox Margin="5 0 0 0"
+                     Text="{Binding Build.AccountName}" MaxLength="31">
+                <metroControls:TextBoxHelper.Watermark>
+                    <l:Catalog Message="Account name"/>
+                </metroControls:TextBoxHelper.Watermark>
+            </TextBox>
             <ComboBox Margin="5 0 0 0"
                       Text="{Binding Build.League}" IsEditable="True"
                       ItemsSource="{Binding CurrentLeagues.Result}">
@@ -49,12 +55,6 @@
                     <l:Catalog Message="League"/>
                 </metroControls:TextBoxHelper.Watermark>
             </ComboBox>
-            <TextBox Margin="5 0 0 0"
-                     Text="{Binding Build.AccountName}" MaxLength="31">
-                <metroControls:TextBoxHelper.Watermark>
-                    <l:Catalog Message="Account name"/>
-                </metroControls:TextBoxHelper.Watermark>
-            </TextBox>
         </UniformGrid>
 
         <Grid Margin="5,5,5,0"
@@ -75,7 +75,7 @@
         <TextBox Margin="5" TextWrapping="Wrap" 
                  Text="{Binding TabsLink, Mode=OneWay}" IsReadOnly="True"
                  Grid.Column="0" Grid.Row="3"
-                 MinLines="3" MaxLines="3"
+                 MinLines="2" MaxLines="2"
                  VerticalScrollBarVisibility="Auto"
                  metroControls:TextBoxHelper.SelectAllOnFocus="True" />
         <Button Command="{Binding LoadTabsCommand}"
@@ -126,7 +126,7 @@
         <TextBox Margin="5" TextWrapping="Wrap" 
                  Text="{Binding TabLink, Mode=OneWay}" IsReadOnly="True"
                  Grid.Column="1" Grid.Row="3"
-                 MinLines="3" MaxLines="3"
+                 MinLines="2" MaxLines="2"
                  VerticalScrollBarVisibility="Auto"
                  metroControls:TextBoxHelper.SelectAllOnFocus="True" />
         <Button Command="{Binding LoadTabContentsCommand}"

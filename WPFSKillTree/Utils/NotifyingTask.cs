@@ -14,9 +14,9 @@ namespace PoESkillTree.Utils
     {
         [MaybeNull]
         public TResult Default { private get; set; } = default!;
-        public Task? TaskCompletion { get; }
+        public Task TaskCompletion { get; }
         public Task<TResult> Task { get; }
-        public TResult Result => (Task.Status == TaskStatus.RanToCompletion) ? Task.Result : Default;
+        public TResult Result => IsSuccessfullyCompleted ? Task.Result : Default;
         public TaskStatus Status => Task.Status;
         public bool IsCompleted => Task.IsCompleted;
         public bool IsNotCompleted => !Task.IsCompleted;
@@ -27,25 +27,25 @@ namespace PoESkillTree.Utils
         public Exception? InnerException => Exception?.InnerException;
         public string? ErrorMessage => InnerException?.Message;
 
+        private readonly Func<Exception, Task> _errorHandler;
+
         public NotifyingTask(Task<TResult> task, Action<Exception> errorHandler)
-        {
-            Task = task;
-            if (!task.IsCompleted)
+            : this(task, e =>
             {
-                TaskCompletion = WatchTaskAsync(errorHandler, null);
-            }
+                errorHandler(e);
+                return System.Threading.Tasks.Task.CompletedTask;
+            })
+        {
         }
 
         public NotifyingTask(Task<TResult> task, Func<Exception, Task> errorHandler)
         {
             Task = task;
-            if (!task.IsCompleted)
-            {
-                TaskCompletion = WatchTaskAsync(null, errorHandler);
-            }
+            _errorHandler = errorHandler;
+            TaskCompletion = task.IsCompleted ? System.Threading.Tasks.Task.CompletedTask : WatchTaskAsync();
         }
 
-        private async Task WatchTaskAsync(Action<Exception>? errorHandler, Func<Exception, Task>? asyncErrorHandler)
+        private async Task WatchTaskAsync()
         {
             try
             {
@@ -53,9 +53,7 @@ namespace PoESkillTree.Utils
             }
             catch (Exception e)
             {
-                errorHandler?.Invoke(e);
-                if (asyncErrorHandler != null)
-                    await asyncErrorHandler(e);
+                await _errorHandler(e);
             }
 
             OnPropertyChanged(nameof(Status));
@@ -83,5 +81,11 @@ namespace PoESkillTree.Utils
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        public NotifyingTask<TResult> Select(Func<TResult, TResult> selector) =>
+            new NotifyingTask<TResult>(SelectAsync(selector), _errorHandler) {Default = Default};
+
+        private async Task<TResult> SelectAsync(Func<TResult, TResult> selector) =>
+            selector(await Task);
     }
 }
