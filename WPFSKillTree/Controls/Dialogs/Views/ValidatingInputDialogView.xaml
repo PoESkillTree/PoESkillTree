@@ -28,7 +28,9 @@
                  controls:ControlsHelper.FocusBorderBrush="{DynamicResource MahApps.Brushes.Accent}"
                  controls:TextBoxHelper.SelectAllOnFocus="True"
                  Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"
-                 TextWrapping="Wrap" />
+                 TextWrapping="Wrap"
+                 MaxLines="10"
+                 VerticalScrollBarVisibility="Auto" />
 
         <StackPanel Grid.Row="2"
                     Style="{StaticResource DialogPanel}">

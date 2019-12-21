@@ -74,13 +74,14 @@ namespace PoESkillTree.Controls.Dialogs
 
         public static Task<string?> ShowInputAsync(this MetroWindow window, string title, string message, string defaultText = "")
         {
-            var settings = new MetroDialogSettings
-            {
-                NegativeButtonText = L10n.Message("Cancel"),
-                AffirmativeButtonText = L10n.Message("OK"),
-                DefaultText = defaultText,
-            };
-            return window.ShowInputAsync(title, message, settings);
+            return window.ShowValidatingInputDialogAsync(title, message, _ => null, defaultText);
+        }
+
+        public static Task<string?> ShowValidatingInputDialogAsync(this MetroWindow window,
+            string title, string message, Func<string, string?> inputValidationFunc, string defaultText = "")
+        {
+            return window.ShowDialogAsync(new ValidatingInputDialogViewModel(title, message, defaultText, inputValidationFunc),
+                new ValidatingInputDialogView());
         }
 
         public static async Task<ProgressDialogController> ShowProgressAsync(this MetroWindow window, string title,

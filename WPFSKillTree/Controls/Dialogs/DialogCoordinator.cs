@@ -91,9 +91,8 @@ namespace PoESkillTree.Controls.Dialogs
         public Task<string?> ShowValidatingInputDialogAsync(object context, string title, string message,
             string defaultText, Func<string, string?> inputValidationFunc)
         {
-            return ShowDialogAsync(context,
-                new ValidatingInputDialogViewModel(title, message, defaultText, inputValidationFunc),
-                new ValidatingInputDialogView());
+            var metroWindow = GetMetroWindow(context);
+            return metroWindow.Invoke(() => metroWindow.ShowValidatingInputDialogAsync(title, message, inputValidationFunc, defaultText));
         }
     }
 }
