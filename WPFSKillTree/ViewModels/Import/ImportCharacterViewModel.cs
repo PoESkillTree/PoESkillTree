@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Net.Http;
+using System.Reactive;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Newtonsoft.Json.Linq;
 using NLog;
 using PoESkillTree.Common.ViewModels;
 using PoESkillTree.Controls.Dialogs;
 using PoESkillTree.Localization;
 using PoESkillTree.Model.Builds;
+using PoESkillTree.Model.Items;
 using PoESkillTree.Utils;
 
 namespace PoESkillTree.ViewModels.Import
@@ -26,6 +29,7 @@ namespace PoESkillTree.ViewModels.Import
         private readonly IDialogCoordinator _dialogCoordinator;
         private readonly CurrentLeaguesViewModel _currentLeaguesViewModel;
         private readonly AccountCharactersViewModel _accountCharactersViewModel;
+        private readonly ItemAttributes _itemAttributes;
 
         public PoEBuild Build { get; }
 
@@ -55,58 +59,55 @@ namespace PoESkillTree.ViewModels.Import
             private set => SetProperty(ref _accountCharacters, value);
         }
 
-        private NotifyingTask<string?> _importItemsTask = NotifyingTask<string?>.FromResult(default);
+        private NotifyingTask<Unit> _importItemsSkillsAndLevelTask = NotifyingTask<Unit>.FromResult(default);
 
-        public NotifyingTask<string?> ImportItemsTask
+        public NotifyingTask<Unit> ImportItemsSkillsAndLevelTask
         {
-            get => _importItemsTask;
-            private set => SetProperty(ref _importItemsTask, value);
+            get => _importItemsSkillsAndLevelTask;
+            private set => SetProperty(ref _importItemsSkillsAndLevelTask, value);
         }
 
-        private NotifyingTask<string?> _importPassiveTreeTask = NotifyingTask<string?>.FromResult(default);
+        private NotifyingTask<Unit> _importPassiveTreeAndJewelsTask = NotifyingTask<Unit>.FromResult(default);
 
-        public NotifyingTask<string?> ImportPassiveTreeTask
+        public NotifyingTask<Unit> ImportPassiveTreeAndJewelsTask
         {
-            get => _importPassiveTreeTask;
-            private set => SetProperty(ref _importPassiveTreeTask, value);
+            get => _importPassiveTreeAndJewelsTask;
+            private set => SetProperty(ref _importPassiveTreeAndJewelsTask, value);
         }
 
         private ICommand? _importItemsSkillsAndLevelCommand;
         public ICommand ImportItemsSkillsAndLevelCommand =>
-            _importItemsSkillsAndLevelCommand ??= new AsyncRelayCommand(ImportItemsSkillsAndLevelAsync, CanImport);
+            _importItemsSkillsAndLevelCommand ??= new RelayCommand(ImportItemsSkillsAndLevel, CanImportItemsSkillsAndLevel);
 
         private ICommand? _importItemsCommand;
-        public ICommand ImportItemsCommand =>
-            _importItemsCommand ??= new AsyncRelayCommand(ImportItemsAsync, CanImport);
+        public ICommand ImportItemsCommand => _importItemsCommand ??= new RelayCommand(ImportItems, CanImportItemsSkillsAndLevel);
 
         private ICommand? _importSkillsCommand;
-        public ICommand ImportSkillsCommand =>
-            _importSkillsCommand ??= new AsyncRelayCommand(ImportSkillsAsync, CanImport);
+        public ICommand ImportSkillsCommand => _importSkillsCommand ??= new RelayCommand(ImportSkills, CanImportItemsSkillsAndLevel);
 
         private ICommand? _importLevelCommand;
-        public ICommand ImportILevelCommand =>
-            _importLevelCommand ??= new AsyncRelayCommand(ImportLevelAsync, CanImport);
+        public ICommand ImportILevelCommand => _importLevelCommand ??= new RelayCommand(ImportLevel, CanImportItemsSkillsAndLevel);
 
         private ICommand? _importPassiveTreeAndJewelsCommand;
         public ICommand ImportPassiveTreeAndJewelsCommand =>
-            _importPassiveTreeAndJewelsCommand ??= new AsyncRelayCommand(ImportPassiveTreeAndJewelsAsync, CanImport);
+            _importPassiveTreeAndJewelsCommand ??= new RelayCommand(ImportPassiveTreeAndJewels, CanImportPassiveTreeAndJewels);
 
         private ICommand? _importPassiveTreeCommand;
-        public ICommand ImportPassiveTreeCommand =>
-            _importPassiveTreeCommand ??= new AsyncRelayCommand(ImportPassiveTreeAsync, CanImport);
+        public ICommand ImportPassiveTreeCommand => _importPassiveTreeCommand ??= new RelayCommand(ImportPassiveTree, CanImportPassiveTreeAndJewels);
 
         private ICommand? _importJewelsCommand;
-        public ICommand ImportJewelsCommand =>
-            _importJewelsCommand ??= new AsyncRelayCommand(ImportJewelsAsync, CanImport);
+        public ICommand ImportJewelsCommand => _importJewelsCommand ??= new RelayCommand(ImportJewels, CanImportPassiveTreeAndJewels);
 
         public ImportCharacterViewModel(
-            HttpClient httpClient, IDialogCoordinator dialogCoordinator, PoEBuild build,
-            CurrentLeaguesViewModel currentLeagues, AccountCharactersViewModel accountCharacters)
+            HttpClient httpClient, IDialogCoordinator dialogCoordinator,
+            ItemAttributes itemAttributes,
+            PoEBuild build, CurrentLeaguesViewModel currentLeagues, AccountCharactersViewModel accountCharacters)
         {
             _httpClient = httpClient;
             _dialogCoordinator = dialogCoordinator;
             _currentLeaguesViewModel = currentLeagues;
             _accountCharactersViewModel = accountCharacters;
+            _itemAttributes = itemAttributes;
             DisplayName = L10n.Message("Import Character");
             Build = build;
             Build.PropertyChanged += BuildOnPropertyChanged;
@@ -142,73 +143,94 @@ namespace PoESkillTree.ViewModels.Import
             return task;
         }
 
+        private bool CanImportItemsSkillsAndLevel() =>
+            CanImport() && ImportItemsSkillsAndLevelTask.IsCompleted;
+
+        private bool CanImportPassiveTreeAndJewels() =>
+            CanImport() && ImportPassiveTreeAndJewelsTask.IsCompleted;
+
         private bool CanImport() =>
             !string.IsNullOrEmpty(Build.CharacterName) && (PrivateProfile || !string.IsNullOrEmpty(Build.AccountName));
 
-        // TODO import functionality
-        private async Task ImportItemsSkillsAndLevelAsync()
+        private void ImportItemsSkillsAndLevel()
         {
-            var importJson = await RequestItemsAsync(L10n.Message("Import Items, Skills and Level"));
-            if (importJson is null)
-                return;
+            StartItemSkillsAndLevelImport(L10n.Message("Import Items, Skills and Level"), true, true, true);
         }
 
-        private async Task ImportItemsAsync()
+        private void ImportItems()
         {
-            var importJson = await RequestItemsAsync(L10n.Message("Import Items"));
-            if (importJson is null)
-                return;
+            StartItemSkillsAndLevelImport(L10n.Message("Import Items"), items: true);
         }
 
-        private async Task ImportSkillsAsync()
+        private void ImportSkills()
         {
-            var importJson = await RequestItemsAsync(L10n.Message("Import Skills"));
-            if (importJson is null)
-                return;
+            StartItemSkillsAndLevelImport(L10n.Message("Import Skills"), skills: true);
         }
 
-        private async Task ImportLevelAsync()
+        private void ImportLevel()
         {
-            var importJson = await RequestItemsAsync(L10n.Message("Import Level"));
-            if (importJson is null)
-                return;
+            StartItemSkillsAndLevelImport(L10n.Message("Import Level"), level: true);
         }
 
-        private async Task ImportPassiveTreeAndJewelsAsync()
+        private async void StartItemSkillsAndLevelImport(string title, bool items = false, bool skills = false, bool level = false)
         {
-            var importJson = await RequestPassiveTreeAsync(L10n.Message("Import Passive Tree and Jewels"));
-            if (importJson is null)
-                return;
-        }
-
-        private async Task ImportPassiveTreeAsync()
-        {
-            var importJson = await RequestPassiveTreeAsync(L10n.Message("Import Passive Tree"));
-            if (importJson is null)
-                return;
-        }
-
-        private async Task ImportJewelsAsync()
-        {
-            var importJson = await RequestPassiveTreeAsync(L10n.Message("Import Jewels"));
-            if (importJson is null)
-                return;
-        }
-
-        private async Task<string?> RequestItemsAsync(string title)
-        {
-            ImportItemsTask = new NotifyingTask<string?>(RequestAsync(ItemsUrl, title),
+            ImportItemsSkillsAndLevelTask = new NotifyingTask<Unit>(ImportItemSkillsAndLevelAsync(title, items, skills, level),
                 e => Log.Error($"Could not retrieve {ItemsUrl}"));
-            await ImportItemsTask.TaskCompletion;
-            return ImportItemsTask.IsSuccessfullyCompleted ? ImportItemsTask.Result : null;
+            await ImportItemsSkillsAndLevelTask.TaskCompletion;
+            CommandManager.InvalidateRequerySuggested();
         }
 
-        private async Task<string?> RequestPassiveTreeAsync(string title)
+        private async Task<Unit> ImportItemSkillsAndLevelAsync(string title, bool importItems, bool importSkills, bool importLevel)
         {
-            ImportPassiveTreeTask = new NotifyingTask<string?>(RequestAsync(PassiveTreeUrl, title),
+            var importJson = await RequestAsync(ItemsUrl, title);
+            if (string.IsNullOrEmpty(importJson))
+                return Unit.Default;
+
+            var import = JObject.Parse(importJson);
+
+            if (importItems || importSkills)
+            {
+                _itemAttributes.DeserializeItemsWithSkills(import, importItems, importSkills);
+            }
+
+            if (importLevel && import.TryGetValue("character", out var characterToken))
+            {
+                Build.Level = characterToken.Value<int>("level");
+            }
+            return Unit.Default;
+        }
+
+        private void ImportPassiveTreeAndJewels()
+        {
+            StartPassiveTreeAndJewelsImport(L10n.Message("Import Passive Tree and Jewels"), true, true);
+        }
+
+        private void ImportPassiveTree()
+        {
+            StartPassiveTreeAndJewelsImport(L10n.Message("Import Passive Tree"), passiveTree: true);
+        }
+
+        private void ImportJewels()
+        {
+            StartPassiveTreeAndJewelsImport(L10n.Message("Import Jewels"), jewels: true);
+        }
+
+        private async void StartPassiveTreeAndJewelsImport(string title, bool passiveTree = false, bool jewels = false)
+        {
+            ImportPassiveTreeAndJewelsTask = new NotifyingTask<Unit>(ImportPassiveTreeAndJewelsAsync(title, passiveTree, jewels),
                 e => Log.Error($"Could not retrieve {PassiveTreeUrl}"));
-            await ImportPassiveTreeTask.TaskCompletion;
-            return ImportPassiveTreeTask.IsSuccessfullyCompleted ? ImportPassiveTreeTask.Result : null;
+            await ImportPassiveTreeAndJewelsTask.TaskCompletion;
+            CommandManager.InvalidateRequerySuggested();
+        }
+
+        private async Task<Unit> ImportPassiveTreeAndJewelsAsync(string title, bool importPassiveTree, bool importJewels)
+        {
+            var importJson = await RequestAsync(PassiveTreeUrl, title);
+            if (string.IsNullOrEmpty(importJson))
+                return Unit.Default;
+
+            // TODO
+            return Unit.Default;
         }
 
         private async Task<string?> RequestAsync(string url, string title)

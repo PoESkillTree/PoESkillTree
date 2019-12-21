@@ -27,16 +27,26 @@ namespace PoESkillTree.Model.Items
             if (!CanEquip(value, slot, socket))
                 return;
             
-            var old = Equip.FirstOrDefault(i => i.Slot == slot && i.Socket == socket);
+            var old = GetItemInSlot(slot, socket);
             if (value is null)
             {
-                Equip.Remove(old);
+                if (old != null)
+                {
+                    Equip.Remove(old);
+                }
             }
             else
             {
                 value.Slot = slot;
                 value.Socket = socket;
-                Equip.RemoveAndAdd(old, value);
+                if (old is null)
+                {
+                    Equip.Add(value);
+                }
+                else
+                {
+                    Equip.RemoveAndAdd(old, value);
+                }
             }
 
             if (old != null)
@@ -146,36 +156,48 @@ namespace PoESkillTree.Model.Items
             if (!string.IsNullOrEmpty(itemData))
             {
                 var jObject = JObject.Parse(itemData);
-                DeserializeItems(jObject);
+                DeserializeItemsWithSkills(jObject);
                 DeserializeSkills(jObject);
             }
         }
 
-        private void DeserializeItems(JObject itemData)
+        public void DeserializeItemsWithSkills(JObject itemData, bool addItems = true, bool addSkills = true)
         {
-            if (!itemData.TryGetValue("items", out var itemJson))
+            if (!itemData.TryGetValue("items", out var itemsJson))
                 return;
 
-            foreach (JObject jobj in (JArray) itemJson)
+            foreach (var itemJson in itemsJson.Values<JObject>())
             {
-                var inventoryId = jobj.Value<string>("inventoryId");
-                switch (inventoryId)
-                {
-                    case "Weapon":
-                        inventoryId = "MainHand";
-                        break;
-                    case "Offhand":
-                        inventoryId = "OffHand";
-                        break;
-                    case "Flask":
-                        inventoryId = $"Flask{jobj.Value<int>("x") + 1}";
-                        break;
-                }
+                DeserializeItemWithSkills(itemJson, addItems, addSkills);
+            }
+        }
 
-                if (EnumsNET.Enums.TryParse(inventoryId, out ItemSlot slot))
+        private void DeserializeItemWithSkills(JObject itemJson, bool addItem, bool addSkills)
+        {
+            var inventoryId = itemJson.Value<string>("inventoryId");
+            switch (inventoryId)
+            {
+                case "Weapon":
+                    inventoryId = "MainHand";
+                    break;
+                case "Offhand":
+                    inventoryId = "OffHand";
+                    break;
+                case "Flask":
+                    inventoryId = $"Flask{itemJson.Value<int>("x") + 1}";
+                    break;
+            }
+
+            if (EnumsNET.Enums.TryParse(inventoryId, out ItemSlot slot))
+            {
+                var item = new Item(_equipmentData, itemJson, slot);
+                if (addItem)
                 {
-                    var item = AddItem(jobj, slot);
-                    AddSkillsToSlot(item.DeserializeSocketedSkills(_skillDefinitions, jobj), slot);
+                    SetItemInSlot(item, slot, item.Socket);
+                }
+                if (addSkills)
+                {
+                    SetSkillsInSlot(item.DeserializeSocketedSkills(_skillDefinitions, itemJson), slot);
                 }
             }
         }
@@ -240,13 +262,5 @@ namespace PoESkillTree.Model.Items
 
         private void OnItemChanged(ItemSlot slot, ushort? socket)
             => ItemChanged?.Invoke((slot, socket));
-
-        private Item AddItem(JObject val, ItemSlot islot)
-        {
-            var item = new Item(_equipmentData, val, islot);
-            Equip.Add(item);
-            item.PropertyChanged += SlottedItemOnPropertyChanged;
-            return item;
-        }
     }
 }

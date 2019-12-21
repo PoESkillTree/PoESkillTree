@@ -933,7 +933,7 @@ namespace PoESkillTree.Views
 
         private async void Menu_ImportCharacter(object sender, RoutedEventArgs e)
         {
-            await this.ShowDialogAsync(_importViewModels.ImportCharacter, new ImportCharacterWindow());
+            await this.ShowDialogAsync(_importViewModels.ImportCharacter(ItemAttributes), new ImportCharacterWindow());
         }
 
         private async void Menu_ImportStash(object sender, RoutedEventArgs e)

@@ -66,30 +66,30 @@
                 </Border>
             </Grid>
 
-            <Border Visibility="{Binding ImportItemsTask.IsFaulted, Converter={StaticResource BooleanToVisibilityConverter}}"
+            <Border Visibility="{Binding ImportItemsSkillsAndLevelTask.IsFaulted, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Style="{StaticResource FaultedTaskBorderStyle}">
                 <TextBlock Foreground="{DynamicResource MahApps.Brushes.Text.Validation}">
                     <Run><Run.Text><l:Catalog Message="Importing item and skill data failed:"/></Run.Text></Run>
                     <LineBreak />
-                    <Run Text="{Binding ImportItemsTask.ErrorMessage, Mode=OneWay}" />
+                    <Run Text="{Binding ImportItemsSkillsAndLevelTask.ErrorMessage, Mode=OneWay}" />
                 </TextBlock>
             </Border>
-            <Border Visibility="{Binding ImportItemsTask.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"
+            <Border Visibility="{Binding ImportItemsSkillsAndLevelTask.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Style="{StaticResource NotCompletedTaskBorderStyle}">
                 <Label>
                     <l:Catalog Message="Importing item and skill data…"/>
                 </Label>
             </Border>
 
-            <Border Visibility="{Binding ImportPassiveTreeTask.IsFaulted, Converter={StaticResource BooleanToVisibilityConverter}}"
+            <Border Visibility="{Binding ImportPassiveTreeAndJewelsTask.IsFaulted, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Style="{StaticResource FaultedTaskBorderStyle}">
                 <TextBlock Foreground="{DynamicResource MahApps.Brushes.Text.Validation}">
                     <Run><Run.Text><l:Catalog Message="Importing passive tree and jewel data failed:"/></Run.Text></Run>
                     <LineBreak />
-                    <Run Text="{Binding ImportPassiveTreeTask.ErrorMessage, Mode=OneWay}" />
+                    <Run Text="{Binding ImportPassiveTreeAndJewelsTask.ErrorMessage, Mode=OneWay}" />
                 </TextBlock>
             </Border>
-            <Border Visibility="{Binding ImportPassiveTreeTask.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"
+            <Border Visibility="{Binding ImportPassiveTreeAndJewelsTask.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Style="{StaticResource NotCompletedTaskBorderStyle}">
                 <Label>
                     <l:Catalog Message="Importing passive tree and jewel data data…"/>

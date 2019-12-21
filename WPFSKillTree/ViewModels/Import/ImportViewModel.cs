@@ -2,6 +2,7 @@
 using System.Net.Http;
 using PoESkillTree.Controls.Dialogs;
 using PoESkillTree.Model;
+using PoESkillTree.Model.Items;
 using PoESkillTree.ViewModels.Equipment;
 
 namespace PoESkillTree.ViewModels.Import
@@ -15,7 +16,8 @@ namespace PoESkillTree.ViewModels.Import
         private readonly Lazy<CurrentLeaguesViewModel> _currentLeagues;
         private readonly Lazy<AccountCharactersViewModel> _accountCharacters;
 
-        public ImportViewModels(IDialogCoordinator dialogCoordinator, IPersistentData persistentData, StashViewModel stash)
+        public ImportViewModels(
+            IDialogCoordinator dialogCoordinator, IPersistentData persistentData, StashViewModel stash)
         {
             _dialogCoordinator = dialogCoordinator;
             _persistentData = persistentData;
@@ -25,8 +27,8 @@ namespace PoESkillTree.ViewModels.Import
             _accountCharacters = new Lazy<AccountCharactersViewModel>(() => new AccountCharactersViewModel(_httpClient));
         }
 
-        public ImportCharacterViewModel ImportCharacter =>
-            new ImportCharacterViewModel(_httpClient, _dialogCoordinator, _persistentData.CurrentBuild, _currentLeagues.Value,
+        public ImportCharacterViewModel ImportCharacter(ItemAttributes itemAttributes) =>
+            new ImportCharacterViewModel(_httpClient, _dialogCoordinator, itemAttributes, _persistentData.CurrentBuild, _currentLeagues.Value,
                 _accountCharacters.Value);
 
         public ImportStashViewModel ImportStash => new ImportStashViewModel(_dialogCoordinator, _persistentData, _stash, _currentLeagues.Value);
