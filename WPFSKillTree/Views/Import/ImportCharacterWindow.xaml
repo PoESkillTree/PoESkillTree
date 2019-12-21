@@ -12,19 +12,55 @@
     xmlns:wpf="clr-namespace:PoESkillTree.Utils.Wpf"
     MinContentWidth="400" MaxContentWidth="800"
     d:DataContext="{d:DesignInstance viewModels:ImportCharacterViewModel}">
+    <dialogs:CloseableBaseDialog.Resources>
+        <Style x:Key="FaultedTaskBorderStyle"
+               TargetType="Border">
+            <Setter Property="Background"
+                    Value="{DynamicResource MahApps.Brushes.Validation5}" />
+            <Setter Property="CornerRadius" Value="2" />
+            <Setter Property="Padding" Value="8 4" />
+            <Setter Property="Margin" Value="0 5 0 0" />
+        </Style>
+        <Style x:Key="NotCompletedTaskBorderStyle"
+               TargetType="Border">
+            <Setter Property="Background"
+                    Value="{DynamicResource MahApps.Brushes.Accent}" />
+            <Setter Property="CornerRadius" Value="2" />
+            <Setter Property="Padding" Value="2 0" />
+            <Setter Property="Margin" Value="0 5 0 0" />
+        </Style>
+    </dialogs:CloseableBaseDialog.Resources>
     <dialogs:CloseableBaseDialog.DialogLeft>
         <StackPanel HorizontalAlignment="Right"
-                    Margin="5 80 5 0"
+                    Margin="10 50 10 0"
                     Visibility="{Binding PublicProfile, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Border Visibility="{Binding CurrentLeagues.IsFaulted, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Style="{StaticResource FaultedTaskBorderStyle}">
+                <TextBlock Foreground="{DynamicResource MahApps.Brushes.Text.Validation}">
+                    <Run><Run.Text><l:Catalog Message="Retrieving leagues for realm failed:"/></Run.Text></Run>
+                    <LineBreak />
+                    <Run Text="{Binding CurrentLeagues.ErrorMessage, Mode=OneWay}" />
+                </TextBlock>
+            </Border>
+            <Border Visibility="{Binding CurrentLeagues.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Style="{StaticResource NotCompletedTaskBorderStyle}">
+                <Label>
+                    <l:Catalog Message="Retrieving leagues for realm…"/>
+                </Label>
+            </Border>
             <Border Visibility="{Binding AccountCharacters.IsFaulted, Converter={StaticResource BooleanToVisibilityConverter}}"
-                    Background="{DynamicResource MahApps.Brushes.Validation5}"
-                    CornerRadius="2">
-                <TextBlock Foreground="{DynamicResource MahApps.Brushes.Text.Validation}"
-                           Margin="4 2">
+                    Style="{StaticResource FaultedTaskBorderStyle}">
+                <TextBlock Foreground="{DynamicResource MahApps.Brushes.Text.Validation}">
                     <Run><Run.Text><l:Catalog Message="Retrieving characters for account failed:"/></Run.Text></Run>
                     <LineBreak />
                     <Run Text="{Binding AccountCharacters.ErrorMessage, Mode=OneWay}" />
                 </TextBlock>
+            </Border>
+            <Border Visibility="{Binding AccountCharacters.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Style="{StaticResource NotCompletedTaskBorderStyle}">
+                <Label>
+                    <l:Catalog Message="Retrieving characters for account…"/>
+                </Label>
             </Border>
         </StackPanel>
     </dialogs:CloseableBaseDialog.DialogLeft>
