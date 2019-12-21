@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using MoreLinq;
 
 namespace PoESkillTree.Utils
@@ -20,6 +21,11 @@ namespace PoESkillTree.Utils
                 i++;
             }
             return name + $" ({i})";
+        }
+
+        public static void OpenInBrowser(string url)
+        {
+            Process.Start(new ProcessStartInfo(url) {UseShellExecute = true});
         }
     }
 }

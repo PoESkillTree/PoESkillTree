@@ -16,6 +16,15 @@ namespace PoESkillTree.Controls.Dialogs
     /// </summary>
     public class BaseDialog : BaseMetroDialog
     {
+        public static readonly DependencyProperty MinContentWidthProperty = DependencyProperty.Register(
+            "MinContentWidth", typeof(double), typeof(BaseDialog), new PropertyMetadata(0D));
+
+        public double MinContentWidth
+        {
+            get => (double) GetValue(MinContentWidthProperty);
+            set => SetValue(MinContentWidthProperty, value);
+        }
+
         public static readonly DependencyProperty MaxContentWidthProperty =
             DependencyProperty.Register("MaxContentWidth", typeof(double), typeof(BaseDialog), new PropertyMetadata(double.PositiveInfinity));
 
@@ -27,8 +36,8 @@ namespace PoESkillTree.Controls.Dialogs
         /// </summary>
         public double MaxContentWidth
         {
-            get { return (double) GetValue(MaxContentWidthProperty); }
-            set { SetValue(MaxContentWidthProperty, value); }
+            get => (double) GetValue(MaxContentWidthProperty);
+            set => SetValue(MaxContentWidthProperty, value);
         }
 
         public static readonly DependencyProperty CloseButtonVisibilityProperty =
@@ -41,8 +50,8 @@ namespace PoESkillTree.Controls.Dialogs
         /// </summary>
         public Visibility CloseButtonVisibility
         {
-            get { return (Visibility) GetValue(CloseButtonVisibilityProperty); }
-            set { SetValue(CloseButtonVisibilityProperty, value); }
+            get => (Visibility) GetValue(CloseButtonVisibilityProperty);
+            set => SetValue(CloseButtonVisibilityProperty, value);
         }
 
         public static readonly DependencyProperty CloseCommandProperty =
@@ -53,8 +62,8 @@ namespace PoESkillTree.Controls.Dialogs
         /// </summary>
         public ICommand CloseCommand
         {
-            get { return (ICommand) GetValue(CloseCommandProperty); }
-            set { SetValue(CloseCommandProperty, value); }
+            get => (ICommand) GetValue(CloseCommandProperty);
+            set => SetValue(CloseCommandProperty, value);
         }
 
         public static readonly DependencyProperty CloseCommandParameterProperty = DependencyProperty.Register(
@@ -65,8 +74,8 @@ namespace PoESkillTree.Controls.Dialogs
         /// </summary>
         public object CloseCommandParameter
         {
-            get { return GetValue(CloseCommandParameterProperty); }
-            set { SetValue(CloseCommandParameterProperty, value); }
+            get => GetValue(CloseCommandParameterProperty);
+            set => SetValue(CloseCommandParameterProperty, value);
         }
 
         public static readonly DependencyProperty DialogLeftProperty =
@@ -77,8 +86,8 @@ namespace PoESkillTree.Controls.Dialogs
         /// </summary>
         public object DialogLeft
         {
-            get { return GetValue(DialogLeftProperty); }
-            set { SetValue(DialogLeftProperty, value); }
+            get => GetValue(DialogLeftProperty);
+            set => SetValue(DialogLeftProperty, value);
         }
 
         static BaseDialog()

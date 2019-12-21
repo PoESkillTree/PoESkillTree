@@ -107,6 +107,8 @@ namespace PoESkillTree.Views
 
         public StashViewModel StashViewModel { get; } = new StashViewModel();
 
+        private ImportViewModels _importViewModels;
+
         private readonly ObservableItemCollectionConverter
             _equipmentConverter = new ObservableItemCollectionConverter();
 
@@ -552,6 +554,7 @@ namespace PoESkillTree.Views
             _dialogCoordinator = new ExtendedDialogCoordinator(_gameData, PersistentData);
             RegisterPersistentDataHandlers();
             StashViewModel.Initialize(_dialogCoordinator, PersistentData);
+            _importViewModels = new ImportViewModels(_dialogCoordinator, PersistentData, StashViewModel);
             // Set theme & accent.
             SetTheme(PersistentData.Options.Theme);
             SetAccent(PersistentData.Options.Accent);
@@ -930,15 +933,12 @@ namespace PoESkillTree.Views
 
         private async void Menu_ImportCharacter(object sender, RoutedEventArgs e)
         {
-            await this.ShowDialogAsync(
-                new ImportCharacterViewModel(PersistentData.CurrentBuild),
-                new ImportCharacterWindow());
+            await this.ShowDialogAsync(_importViewModels.ImportCharacter, new ImportCharacterWindow());
         }
 
         private async void Menu_ImportStash(object sender, RoutedEventArgs e)
         {
-            var vm = new ImportStashViewModel(DialogCoordinator.Instance, PersistentData, StashViewModel);
-            await this.ShowDialogAsync(vm, new ImportStashWindow(), () => vm.ViewLoaded());
+            await this.ShowDialogAsync(_importViewModels.ImportStash, new ImportStashWindow());
         }
 
         private async void Menu_CopyStats(object sender, RoutedEventArgs e)
@@ -1008,12 +1008,12 @@ namespace PoESkillTree.Views
 
         private void Menu_OpenPoEWebsite(object sender, RoutedEventArgs e)
         {
-            Process.Start("https://www.pathofexile.com/");
+            Util.OpenInBrowser("https://www.pathofexile.com/");
         }
 
         private void Menu_OpenWiki(object sender, RoutedEventArgs e)
         {
-            Process.Start("http://pathofexile.gamepedia.com/");
+            Util.OpenInBrowser("http://pathofexile.gamepedia.com/");
         }
 
         private async void Menu_OpenHelp(object sender, RoutedEventArgs e)

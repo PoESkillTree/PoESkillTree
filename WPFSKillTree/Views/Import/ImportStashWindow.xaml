@@ -8,6 +8,9 @@
     xmlns:metroControls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:dialogs="clr-namespace:PoESkillTree.Controls.Dialogs"
     xmlns:viewModels="clr-namespace:PoESkillTree.ViewModels.Import"
+    xmlns:wpf="clr-namespace:PoESkillTree.Utils.Wpf"
+    xmlns:builds="clr-namespace:PoESkillTree.Model.Builds"
+    MinContentWidth="800"
     d:DataContext="{d:DesignInstance viewModels:ImportStashViewModel}">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -24,28 +27,35 @@
 
         <TextBlock Margin="5" TextWrapping="Wrap"
                    Grid.Column="0" Grid.Row="0">
-            <l:Catalog Message="Please enter your Account Name and league below and click on 'Open in Browser'."/><LineBreak/>
+            <l:Catalog Message="Enter your realm, account name and league below and click 'Open in Browser'."/><LineBreak/>
             <l:Catalog Message="This will open a page in your default Web-browser containing a list of your stash tabs."/><LineBreak/>
-            <l:Catalog Message="Copy the contents of that page and click 'Load stash tab list'."/>
+            <l:Catalog Message="Copy the contents of that page and click 'Load stash tab list from clipboard'."/>
         </TextBlock>
 
-        <Grid Grid.Column="0" Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <ComboBox Margin="5,5,2,5" Text="{Binding Build.League}" IsEditable="True"
+        <UniformGrid Grid.Column="0" Grid.Row="1"
+                     Margin="5"
+                     Columns="3">
+            <ComboBox Margin="0"
+                      Text="{Binding Build.Realm}"
+                      ItemsSource="{Binding Source={wpf:EnumMarkup {x:Type builds:Realm}}}">
+                <metroControls:TextBoxHelper.Watermark>
+                    <l:Catalog Message="Realm"/>
+                </metroControls:TextBoxHelper.Watermark>
+            </ComboBox>
+            <ComboBox Margin="5 0 0 0"
+                      Text="{Binding Build.League}" IsEditable="True"
                       ItemsSource="{Binding CurrentLeagues.Result}">
                 <metroControls:TextBoxHelper.Watermark>
                     <l:Catalog Message="League"/>
                 </metroControls:TextBoxHelper.Watermark>
             </ComboBox>
-            <TextBox Grid.Column="1" Margin="3,5,5,5" Text="{Binding Build.AccountName}" MaxLength="31">
+            <TextBox Margin="5 0 0 0"
+                     Text="{Binding Build.AccountName}" MaxLength="31">
                 <metroControls:TextBoxHelper.Watermark>
                     <l:Catalog Message="Account name"/>
                 </metroControls:TextBoxHelper.Watermark>
             </TextBox>
-        </Grid>
+        </UniformGrid>
 
         <Grid Margin="5,5,5,0"
               Grid.Column="0" Grid.Row="2">
@@ -64,7 +74,9 @@
         </Grid>
         <TextBox Margin="5" TextWrapping="Wrap" 
                  Text="{Binding TabsLink, Mode=OneWay}" IsReadOnly="True"
-                 Grid.Column="0" Grid.Row="3" MinLines="4"
+                 Grid.Column="0" Grid.Row="3"
+                 MinLines="3" MaxLines="3"
+                 VerticalScrollBarVisibility="Auto"
                  metroControls:TextBoxHelper.SelectAllOnFocus="True" />
         <Button Command="{Binding LoadTabsCommand}"
                 HorizontalAlignment="Right" Margin="5,0,5,5"
@@ -74,9 +86,9 @@
 
         <TextBlock Margin="5" TextWrapping="Wrap"
                    Grid.Column="1" Grid.Row="0">
-            <l:Catalog Message="Select a stash tab and click 'Open in browser' below"/><LineBreak/>
+            <l:Catalog Message="Select a stash tab and click 'Open in browser' below."/><LineBreak/>
             <l:Catalog Message="This will open a page in your default Web-browser containing the item data of the selected stash."/><LineBreak/>
-            <l:Catalog Message="Copy the contents of that page and click 'Load stash tab'."/>
+            <l:Catalog Message="Copy the contents of that page and click 'Load stash tab from clipboard'."/>
         </TextBlock>
 
         <ComboBox Margin="5" ItemsSource="{Binding TabsView}" DisplayMemberPath="Name"
@@ -113,7 +125,9 @@
         </Grid>
         <TextBox Margin="5" TextWrapping="Wrap" 
                  Text="{Binding TabLink, Mode=OneWay}" IsReadOnly="True"
-                 Grid.Column="1" Grid.Row="3" MinLines="4"
+                 Grid.Column="1" Grid.Row="3"
+                 MinLines="3" MaxLines="3"
+                 VerticalScrollBarVisibility="Auto"
                  metroControls:TextBoxHelper.SelectAllOnFocus="True" />
         <Button Command="{Binding LoadTabContentsCommand}"
                 HorizontalAlignment="Right" Margin="5,0,5,5"

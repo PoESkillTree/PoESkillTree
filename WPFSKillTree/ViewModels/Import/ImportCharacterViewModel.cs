@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows.Input;
 using PoESkillTree.Common.ViewModels;
 using PoESkillTree.Localization;
 using PoESkillTree.Model.Builds;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.ViewModels.Import
 {
@@ -19,7 +19,7 @@ namespace PoESkillTree.ViewModels.Import
         }
 
         private RelayCommand? _openInBrowserCommand;
-        public ICommand OpenInBrowserCommand => _openInBrowserCommand ??= new RelayCommand(() => Process.Start(ItemsLink));
+        public ICommand OpenInBrowserCommand => _openInBrowserCommand ??= new RelayCommand(() => Util.OpenInBrowser(ItemsLink));
 
         public ImportCharacterViewModel(PoEBuild build)
         {

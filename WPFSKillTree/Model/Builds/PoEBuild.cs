@@ -21,6 +21,7 @@ namespace PoESkillTree.Model.Builds
         private string? _characterName;
         private string? _accountName;
         private string? _league;
+        private Realm _realm;
         private int _level = 1;
         private string _treeUrl = Constants.DefaultTree;
         private string? _itemData;
@@ -68,6 +69,12 @@ namespace PoESkillTree.Model.Builds
         {
             get => _league;
             set => SetProperty(ref _league, value);
+        }
+
+        public Realm Realm
+        {
+            get => _realm;
+            set => SetProperty(ref _realm, value);
         }
 
         /// <summary>
@@ -330,6 +337,7 @@ namespace PoESkillTree.Model.Builds
                 target.CharacterName = _build.CharacterName;
                 target.AccountName = _build.AccountName;
                 target.League = _build.League;
+                target.Realm = _build.Realm;
                 target.Level = _build.Level;
                 target.TreeUrl = _build.TreeUrl;
                 target.ItemData = _build.ItemData;

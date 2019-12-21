@@ -47,7 +47,7 @@ namespace PoESkillTree.Utils.Wpf
             if (hyperlink == null)
                 return;
 
-            hyperlink.RequestNavigate += (sender, args) => Process.Start(args.Uri.ToString());
+            hyperlink.RequestNavigate += (sender, args) => Util.OpenInBrowser(args.Uri.ToString());
         }
 
         /// <summary>
