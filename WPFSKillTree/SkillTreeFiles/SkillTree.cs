@@ -115,7 +115,9 @@ namespace PoESkillTree.SkillTreeFiles
             {"keystone", "KeystoneFrameUnallocated"},
             {"jewel", "JewelFrameUnallocated"},
             {"ascendancyNormal", "PassiveSkillScreenAscendancyFrameSmallNormal"},
-            {"ascendancyNotable", "PassiveSkillScreenAscendancyFrameLargeNormal"}
+            {"ascendancyNotable", "PassiveSkillScreenAscendancyFrameLargeNormal"},
+            {"ascendancyStart", "PassiveSkillScreenAscendancyMiddle"},
+            {"blighted", "BlightedNotableFrameUnallocated"},
         };
 
         private static readonly Dictionary<string, string> NodeBackgroundsActive = new Dictionary<string, string>
@@ -125,7 +127,9 @@ namespace PoESkillTree.SkillTreeFiles
             {"keystone", "KeystoneFrameAllocated"},
             {"jewel", "JewelFrameAllocated"},
             {"ascendancyNormal", "PassiveSkillScreenAscendancyFrameSmallAllocated"},
-            {"ascendancyNotable", "PassiveSkillScreenAscendancyFrameLargeAllocated"}
+            {"ascendancyNotable", "PassiveSkillScreenAscendancyFrameLargeAllocated"},
+            {"ascendancyStart", "PassiveSkillScreenAscendancyMiddle"},
+            {"blighted", "BlightedNotableFrameAllocated"},
         };
 
         private static SkillIcons IconActiveSkills { get; set; }
@@ -157,6 +161,20 @@ namespace PoESkillTree.SkillTreeFiles
 
         public readonly ObservableSet<SkillNode> SkilledNodes = new ObservableSet<SkillNode>();
         public readonly ObservableSet<SkillNode> HighlightedNodes = new ObservableSet<SkillNode>();
+
+        private readonly ObservableSet<SkillNode> _itemAllocatedNodes = new ObservableSet<SkillNode>();
+
+        public IEnumerable<ushort> ItemAllocatedNodes
+        {
+            set => _itemAllocatedNodes.ResetTo(value.Select(n => Skillnodes[n]));
+        }
+
+        public Func<IReadOnlyCollection<ushort>, IEnumerable<ushort>> ItemConnectedNodesSelector { private get; set; }
+
+        private IEnumerable<SkillNode> SelectItemConnectedNodes(IEnumerable<SkillNode> sourceNodes) =>
+            ItemConnectedNodesSelector(sourceNodes.Select(n => n.Id).ToHashSet())
+                .Select(n => Skillnodes[n]);
+
         public SkillTreeSerializer Serializer { get; }
         public IAscendancyClasses AscendancyClasses { get; private set; }
         public IBuildConverter BuildConverter { get; private set; }
@@ -545,9 +563,6 @@ namespace PoESkillTree.SkillTreeFiles
             return temp;
         }
 
-        public Dictionary<string, List<float>> SelectedAttributesWithoutImplicit
-            => GetAttributesWithoutImplicit(SkilledNodes, CharClass, _persistentData.CurrentBuild.Bandits);
-
         private static Dictionary<string, List<float>> GetAttributesWithoutImplicit(
             IEnumerable<SkillNode> skilledNodes, CharacterClass charClass, BanditSettings banditSettings)
         {
@@ -695,6 +710,7 @@ namespace PoESkillTree.SkillTreeFiles
 
         public void AllocateSkillNodes(IReadOnlyCollection<SkillNode> toAdd)
         {
+            toAdd = toAdd.Where(n => !SkilledNodes.Contains(n)).ToList();
             var toRemove = toAdd.SelectMany(SelectAscendancyNodesToRemove).ToList();
             SkilledNodes.ExceptAndUnionWith(toRemove, toAdd);
             if (SelectAscendancyFromNodes(toAdd) is int ascType)
@@ -726,74 +742,59 @@ namespace PoESkillTree.SkillTreeFiles
 
         public void ForceRefundNode(SkillNode node)
         {
-            if (!SkilledNodes.Contains(node)) return;
-            var charStartNode = GetCharNode();
-            var front = new HashSet<SkillNode>() { charStartNode };
-            foreach (var i in charStartNode.Neighbor)
-                if (SkilledNodes.Contains(i) && i != node)
-                    front.Add(i);
-            var reachable = new HashSet<SkillNode>(front);
+            if (!SkilledNodes.Contains(node))
+                return;
 
-            while (front.Any())
-            {
-                var newFront = new HashSet<SkillNode>();
-                foreach (var i in front)
-                {
-                    foreach (var j in i.Neighbor)
-                    {
-                        if (reachable.Contains(j) || !SkilledNodes.Contains(j) || j == node) continue;
-                        newFront.Add(j);
-                        reachable.Add(j);
-                    }
-                }
-                front = newFront;
-            }
-            var removable = SkilledNodes.Except(reachable).ToList();
-            SkilledNodes.ExceptWith(removable);
+            SkilledNodes.ExceptWith(GetNodesToRefundWhenRefunding(node));
         }
 
-        public HashSet<SkillNode> ForceRefundNodePreview(SkillNode node)
+        public IReadOnlyCollection<SkillNode> ForceRefundNodePreview(SkillNode node) =>
+            GetNodesToRefundWhenRefunding(node);
+
+        private IReadOnlyCollection<SkillNode> GetNodesToRefundWhenRefunding(SkillNode node)
         {
-            if (!SkilledNodes.Contains(node)) return new HashSet<SkillNode>();
+            if (!SkilledNodes.Contains(node))
+                return Array.Empty<SkillNode>();
 
-            var charStartNode = GetCharNode();
-            var front = new HashSet<SkillNode>() { charStartNode };
-            foreach (var i in charStartNode.Neighbor)
-                if (SkilledNodes.Contains(i) && i != node)
-                    front.Add(i);
-            var reachable = new HashSet<SkillNode>(front);
+            var newSkilledNodes = SkilledNodes.ToHashSet();
+            newSkilledNodes.Remove(node);
 
-            while (front.Any())
-            {
-                var newFront = new HashSet<SkillNode>();
-                foreach (var i in front)
-                {
-                    foreach (var j in i.Neighbor)
-                    {
-                        if (j == node || reachable.Contains(j) || !SkilledNodes.Contains(j)) continue;
-                        newFront.Add(j);
-                        reachable.Add(j);
-                    }
-                }
-                front = newFront;
-            }
-            var unreachable = new HashSet<SkillNode>(SkilledNodes);
-            unreachable.ExceptWith(reachable);
-            return unreachable;
+            var reachable = SelectNodesReachableFromStart(newSkilledNodes);
+            reachable.UnionWith(SelectItemConnectedNodes(reachable));
+            reachable.Remove(node);
+            return SkilledNodes.Except(reachable).ToList();
         }
 
-        public List<SkillNode> GetShortestPathTo(SkillNode targetNode, IEnumerable<SkillNode> start)
+        private HashSet<SkillNode> SelectNodesReachableFromStart(IReadOnlyCollection<SkillNode> nodes)
         {
-            var startNodes = start as IList<SkillNode> ?? start.ToList();
-            if (startNodes.Contains(targetNode))
+            var front = new HashSet<SkillNode> {GetCharNode()};
+
+            var reachable = new HashSet<SkillNode>(front);
+            while (front.Any())
+            {
+                front = front.SelectMany(n => n.Neighbor)
+                    .Where(n => !reachable.Contains(n))
+                    .Where(nodes.Contains)
+                    .ToHashSet();
+                reachable.UnionWith(front);
+            }
+
+            return reachable;
+        }
+
+        public IReadOnlyCollection<SkillNode> GetShortestPathTo(SkillNode targetNode)
+        {
+            if (SkilledNodes.Contains(targetNode))
                 return new List<SkillNode>();
-            var adjacent = GetAvailableNodes(startNodes);
-            if (adjacent.Contains(targetNode))
+            var reachableSkilled = SelectNodesReachableFromStart(SkilledNodes);
+            var itemConnected = SelectItemConnectedNodes(reachableSkilled);
+            var adjacent = GetAvailableNodes(reachableSkilled);
+            if (adjacent.Contains(targetNode) || itemConnected.Contains(targetNode))
                 return new List<SkillNode> { targetNode };
 
-            var visited = new HashSet<SkillNode>(startNodes);
+            var visited = new HashSet<SkillNode>(reachableSkilled);
             var distance = new Dictionary<SkillNode, int>();
-            var parent = new Dictionary<SkillNode, SkillNode>();
+            var parents = new Dictionary<SkillNode, SkillNode>();
             var newOnes = new Queue<SkillNode>();
             var toOmit = new HashSet<SkillNode>(
                          from entry in _nodeHighlighter.NodeHighlights
@@ -832,7 +833,7 @@ namespace PoESkillTree.SkillTreeFiles
                     distance.Add(connection, dis + 1);
                     newOnes.Enqueue(connection);
 
-                    parent.Add(connection, newNode);
+                    parents.Add(connection, newNode);
 
                     if (connection == targetNode)
                     {
@@ -847,10 +848,10 @@ namespace PoESkillTree.SkillTreeFiles
 
             var curr = targetNode;
             var result = new List<SkillNode> { curr };
-            while (parent.ContainsKey(curr))
+            while (parents.ContainsKey(curr))
             {
-                result.Add(parent[curr]);
-                curr = parent[curr];
+                result.Add(parents[curr]);
+                curr = parents[curr];
             }
             result.Reverse();
             return result;
@@ -1282,14 +1283,11 @@ namespace PoESkillTree.SkillTreeFiles
         private bool CanSwitchClass(CharacterClass charClass)
         {
             RootNodeClassDictionary.TryGetValue(charClass, out var rootNodeValue);
-            var classSpecificStartNodes = StartNodeDictionary.Where(kvp => kvp.Value == rootNodeValue).Select(kvp => kvp.Key).ToList();
-
-            return (
-                from nodeId in classSpecificStartNodes
-                let temp = GetShortestPathTo(Skillnodes[nodeId], SkilledNodes)
-                where !temp.Any() && !Skillnodes[nodeId].IsAscendancyNode
-                select nodeId
-            ).Any();
+            var classSpecificStartNodes = StartNodeDictionary
+                .Where(kvp => kvp.Value == rootNodeValue)
+                .Select(kvp => Skillnodes[kvp.Key])
+                .Where(n => !n.IsAscendancyNode);
+            return classSpecificStartNodes.Any(n => SkilledNodes.Contains(n));
         }
 
         #region ISkillTree members

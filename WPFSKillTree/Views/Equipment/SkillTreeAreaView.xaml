@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="PoESkillTree.Views.Equipment.SkillTreeAreaView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:equipment="clr-namespace:PoESkillTree.ViewModels.Equipment"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance equipment:SkillTreeAreaViewModel}"
+             x:Name="Control">
+    <Border BorderThickness="2" BorderBrush="{DynamicResource MahApps.Brushes.Accent}">
+        <Rectangle>
+            <Rectangle.Fill>
+                <VisualBrush Visual="{Binding SkillTreeVisual, ElementName=Control}"
+                             ViewboxUnits="Absolute"
+                             Viewbox="{Binding ViewBox}" />
+            </Rectangle.Fill>
+        </Rectangle>
+    </Border>
+</UserControl>

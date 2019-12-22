@@ -281,7 +281,7 @@ namespace PoESkillTree.ViewModels.Equipment
             }
             if (!_inBatchUpdate)
             {
-                ScrollBarValue = item.Y;
+                ScrollBarValue = item.Y + item.Height - VisibleRows;
             }
             else if (item.Y < _smallestAddedItemY)
             {
