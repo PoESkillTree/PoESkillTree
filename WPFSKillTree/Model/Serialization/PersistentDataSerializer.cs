@@ -283,6 +283,7 @@ namespace PoESkillTree.Model.Serialization
                 ItemData = build.ItemData,
                 LastUpdated = build.LastUpdated,
                 League = build.League,
+                Realm = build.Realm,
                 Level = build.Level,
                 Name = build.Name,
                 Note = build.Note,

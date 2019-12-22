@@ -74,7 +74,7 @@ namespace PoESkillTree.Computation.ViewModels
             if (Value is null)
                 return L10n.Message("None");
             if (DataType.IsEnum)
-                return EnumValues.GetValue((int) Value.Single())!.ToString()!;
+                return EnumsNET.Enums.AsString(DataType, (uint) Value.Single());
             return Value.Select(d => Math.Round(d, 2, MidpointRounding.AwayFromZero))
                 .ToString()!.Replace(" to ", " \nto ");
         }

@@ -43,8 +43,9 @@ using PoESkillTree.ViewModels;
 using PoESkillTree.ViewModels.Builds;
 using PoESkillTree.ViewModels.Crafting;
 using PoESkillTree.ViewModels.Equipment;
+using PoESkillTree.ViewModels.Import;
 using PoESkillTree.Views.Crafting;
-using PoESkillTree.Views.Equipment;
+using PoESkillTree.Views.Import;
 using Attribute = PoESkillTree.ViewModels.Attribute;
 using Item = PoESkillTree.Model.Items.Item;
 
@@ -106,6 +107,8 @@ namespace PoESkillTree.Views
 
         public StashViewModel StashViewModel { get; } = new StashViewModel();
 
+        private ImportViewModels _importViewModels;
+
         private readonly ObservableItemCollectionConverter
             _equipmentConverter = new ObservableItemCollectionConverter();
 
@@ -117,7 +120,7 @@ namespace PoESkillTree.Views
             get => _computationViewModel;
             private set
             {
-                value!.SharedConfiguration.SetLevel(Tree.Level);
+                value!.SharedConfiguration.SetLevel(PersistentData.CurrentBuild.Level);
                 value.SharedConfiguration.SetCharacterClass(Tree.CharClass);
                 value.SharedConfiguration.SetBandit(PersistentData.CurrentBuild.Bandits.Choice);
                 SetProperty(ref _computationViewModel, value);
@@ -305,6 +308,9 @@ namespace PoESkillTree.Views
                 case nameof(BanditSettings.Choice):
                     UpdateUI();
                     ComputationViewModel?.SharedConfiguration.SetBandit(PersistentData.CurrentBuild.Bandits.Choice);
+                    break;
+                case nameof(PoEBuild.Level):
+                    ComputationViewModel?.SharedConfiguration.SetLevel(PersistentData.CurrentBuild.Level);
                     break;
             }
         }
@@ -551,6 +557,7 @@ namespace PoESkillTree.Views
             _dialogCoordinator = new ExtendedDialogCoordinator(_gameData, PersistentData);
             RegisterPersistentDataHandlers();
             StashViewModel.Initialize(_dialogCoordinator, PersistentData);
+            _importViewModels = new ImportViewModels(_dialogCoordinator, PersistentData, StashViewModel);
             // Set theme & accent.
             SetTheme(PersistentData.Options.Theme);
             SetAccent(PersistentData.Options.Accent);
@@ -642,10 +649,6 @@ namespace PoESkillTree.Views
         {
             switch (e.PropertyName)
             {
-                case nameof(SkillTree.Level):
-                    PersistentData.CurrentBuild.Level = Tree.Level;
-                    ComputationViewModel?.SharedConfiguration.SetLevel(Tree.Level);
-                    break;
                 case nameof(SkillTree.CharClass):
                     Tree.UpdateAscendancyClasses = true;
                     PopulateAscendancySelectionList();
@@ -927,17 +930,16 @@ namespace PoESkillTree.Views
             }
         }
 
-        private async void Menu_ImportItems(object sender, RoutedEventArgs e)
+        private async void Menu_ImportCharacter(object sender, RoutedEventArgs e)
         {
-            await this.ShowDialogAsync(
-                new DownloadItemsViewModel(PersistentData.CurrentBuild),
-                new DownloadItemsWindow());
+            await this.ShowDialogAsync(_importViewModels.ImportCharacter(ItemAttributes, Tree), new ImportCharacterWindow());
+            UpdateUI();
+            SetCurrentBuildUrlFromTree();
         }
 
         private async void Menu_ImportStash(object sender, RoutedEventArgs e)
         {
-            var vm = new DownloadStashViewModel(DialogCoordinator.Instance, PersistentData, StashViewModel);
-            await this.ShowDialogAsync(vm, new DownloadStashWindow(), () => vm.ViewLoaded());
+            await this.ShowDialogAsync(_importViewModels.ImportStash, new ImportStashWindow());
         }
 
         private async void Menu_CopyStats(object sender, RoutedEventArgs e)
@@ -1007,12 +1009,12 @@ namespace PoESkillTree.Views
 
         private void Menu_OpenPoEWebsite(object sender, RoutedEventArgs e)
         {
-            Process.Start("https://www.pathofexile.com/");
+            Util.OpenInBrowser("https://www.pathofexile.com/");
         }
 
         private void Menu_OpenWiki(object sender, RoutedEventArgs e)
         {
-            Process.Start("http://pathofexile.gamepedia.com/");
+            Util.OpenInBrowser("http://pathofexile.gamepedia.com/");
         }
 
         private async void Menu_OpenHelp(object sender, RoutedEventArgs e)
@@ -1190,6 +1192,8 @@ namespace PoESkillTree.Views
 
         private void Level_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> args)
         {
+            if (Tree == null)
+                return;
             UpdateUI();
         }
 
@@ -1720,7 +1724,6 @@ namespace PoESkillTree.Views
         {
             var build = PersistentData.CurrentBuild;
             InputTreeUrl = PersistentData.CurrentBuild.TreeUrl;
-            Tree.Level = build.Level;
             Tree.ResetTaggedNodes();
             TreeGeneratorInteraction?.LoadSettings();
             await LoadItemData();

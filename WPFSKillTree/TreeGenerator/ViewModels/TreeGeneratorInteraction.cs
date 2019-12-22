@@ -34,7 +34,7 @@ namespace PoESkillTree.TreeGenerator.ViewModels
                 {
                     if (_treeGeneratorViewModel != null)
                         _treeGeneratorViewModel.RunFinished -= ViewModelRunFinished;
-                    _treeGeneratorViewModel = new SettingsViewModel(SkillTree, SettingsDialogCoordinator.Instance, this);
+                    _treeGeneratorViewModel = new SettingsViewModel(SkillTree, _persistentData, SettingsDialogCoordinator.Instance, this);
                     _treeGeneratorViewModel.RunFinished += ViewModelRunFinished;
                     LoadSettings();
                 });

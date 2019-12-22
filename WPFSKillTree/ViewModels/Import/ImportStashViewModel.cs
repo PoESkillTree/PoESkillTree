@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using Newtonsoft.Json.Linq;
-using PoESkillTree.Utils;
 using PoESkillTree.Common.ViewModels;
 using PoESkillTree.Controls;
 using PoESkillTree.Controls.Dialogs;
@@ -18,15 +15,17 @@ using PoESkillTree.Localization;
 using PoESkillTree.Model;
 using PoESkillTree.Model.Builds;
 using PoESkillTree.Model.Items;
+using PoESkillTree.Utils;
+using PoESkillTree.ViewModels.Equipment;
 
-namespace PoESkillTree.ViewModels.Equipment
+namespace PoESkillTree.ViewModels.Import
 {
-    public class DownloadStashViewModel : CloseableViewModel
+    public class ImportStashViewModel : CloseableViewModel
     {
         private readonly StashViewModel _stash;
+        private readonly CurrentLeaguesViewModel _currentLeaguesViewModel;
         private readonly IPersistentData _persistentData;
         private readonly IDialogCoordinator _dialogCoordinator;
-        private readonly TaskCompletionSource<object?> _viewLoadedCompletionSource;
 
         public PoEBuild Build { get; }
 
@@ -48,12 +47,18 @@ namespace PoESkillTree.ViewModels.Equipment
 
         public ICollectionView TabsView { get; }
 
-        public static NotifyingTask<IReadOnlyList<string>>? CurrentLeagues { get; private set; }
+        private NotifyingTask<IReadOnlyList<string>> _currentLeagues;
+
+        public NotifyingTask<IReadOnlyList<string>> CurrentLeagues
+        {
+            get => _currentLeagues;
+            private set => SetProperty(ref _currentLeagues, value);
+        }
 
         private RelayCommand<string>? _openInBrowserCommand;
 
         public ICommand OpenInBrowserCommand => _openInBrowserCommand ??= new RelayCommand<string>(
-            param => Process.Start(param),
+            Util.OpenInBrowser,
             param => !string.IsNullOrEmpty(param));
 
         private ICommand? _loadTabsCommand;
@@ -62,14 +67,17 @@ namespace PoESkillTree.ViewModels.Equipment
         private ICommand? _loadTabContentsCommand;
         public ICommand LoadTabContentsCommand => _loadTabContentsCommand ??= new AsyncRelayCommand(LoadTabContents);
 
-        public DownloadStashViewModel(
-            IDialogCoordinator dialogCoordinator, IPersistentData persistentData, StashViewModel stash)
+        public ImportStashViewModel(
+            IDialogCoordinator dialogCoordinator, IPersistentData persistentData, StashViewModel stash, CurrentLeaguesViewModel currentLeagues)
         {
             _stash = stash;
+            _currentLeaguesViewModel = currentLeagues;
             _persistentData = persistentData;
             _dialogCoordinator = dialogCoordinator;
             DisplayName = L10n.Message("Download & Import Stash");
             Build = persistentData.CurrentBuild;
+
+            _currentLeagues = _currentLeaguesViewModel[Build.Realm];
 
             if (Build.League != null && _persistentData.LeagueStashes.ContainsKey(Build.League))
                 _tabs = new List<StashBookmark>(_persistentData.LeagueStashes[Build.League]);
@@ -79,33 +87,6 @@ namespace PoESkillTree.ViewModels.Equipment
             _tabsLink = CreateTabsLink();
             _tabLink = CreateTabLink();
             Build.PropertyChanged += BuildOnPropertyChanged;
-
-            _viewLoadedCompletionSource = new TaskCompletionSource<object?>();
-            if (CurrentLeagues == null)
-            {
-                CurrentLeagues = new NotifyingTask<IReadOnlyList<string>>(LoadCurrentLeaguesAsync(),
-                    async e =>
-                    {
-                        await _viewLoadedCompletionSource.Task;
-                        await _dialogCoordinator.ShowWarningAsync(this,
-                            L10n.Message("Could not load the currently running leagues."), e.Message);
-                    });
-            }
-        }
-
-        // Errors in CurrentLeagues task may only be shown when the dialog coordinator context is registered,
-        // which requires the view to be loaded.
-        public void ViewLoaded()
-        {
-            _viewLoadedCompletionSource.SetResult(null);
-        }
-
-        private static async Task<IReadOnlyList<string>> LoadCurrentLeaguesAsync()
-        {
-            using var client = new HttpClient();
-            var file = await client.GetStringAsync("http://api.pathofexile.com/leagues?type=main&compact=1")
-                .ConfigureAwait(false);
-            return JArray.Parse(file).Select(t => t["id"]!.Value<string>()).ToList();
         }
 
         protected override void OnClose()
@@ -115,7 +96,7 @@ namespace PoESkillTree.ViewModels.Equipment
 
         private void BuildOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            if (propertyChangedEventArgs.PropertyName == "League")
+            if (propertyChangedEventArgs.PropertyName == nameof(PoEBuild.League))
             {
                 _tabs.Clear();
                 if (Build.League != null && _persistentData.LeagueStashes.ContainsKey(Build.League))
@@ -125,12 +106,16 @@ namespace PoESkillTree.ViewModels.Equipment
                 TabsView.Refresh();
                 TabsView.MoveCurrentToFirst();
             }
+            else if (propertyChangedEventArgs.PropertyName == nameof(PoEBuild.Realm))
+            {
+                CurrentLeagues = _currentLeaguesViewModel[Build.Realm];
+            }
             TabsLink = CreateTabsLink();
             UpdateTabLink();
         }
 
         private string CreateTabsLink() =>
-            $"https://www.pathofexile.com/character-window/get-stash-items?tabs=1&tabIndex=0&league={Build.League}&accountName={Build.AccountName}";
+            $"https://www.pathofexile.com/character-window/get-stash-items?tabs=1&tabIndex=0&realm={Build.Realm.ToGGGIdentifier()}&league={Build.League}&accountName={Build.AccountName}";
 
         private void UpdateTabLink()
         {
@@ -139,7 +124,7 @@ namespace PoESkillTree.ViewModels.Equipment
 
         private string CreateTabLink() =>
             TabsView.CurrentItem is StashBookmark selectedTab
-                ? $"https://www.pathofexile.com/character-window/get-stash-items?tabs=0&tabIndex={selectedTab.Position}&league={Build.League}&accountName={Build.AccountName}"
+                ? $"https://www.pathofexile.com/character-window/get-stash-items?tabs=0&tabIndex={selectedTab.Position}&realm={Build.Realm.ToGGGIdentifier()}&league={Build.League}&accountName={Build.AccountName}"
                 : "";
 
         private async Task LoadTabs()

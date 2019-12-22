@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using PoESkillTree.Model;
 using PoESkillTree.Model.JsonSettings;
 using PoESkillTree.SkillTreeFiles;
 
@@ -42,9 +43,10 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         /// Constructs a new SettingsViewModel that operates on the given skill tree.
         /// </summary>
         /// <param name="tree">The skill tree to operate on. (not null)</param>
+        /// <param name="persistentData"></param>
         /// <param name="dialogCoordinator"></param>
         /// <param name="dialogContext">The context used for <paramref name="dialogCoordinator"/>.</param>
-        public SettingsViewModel(SkillTree tree, ISettingsDialogCoordinator dialogCoordinator, object dialogContext)
+        public SettingsViewModel(SkillTree tree, IPersistentData persistentData, ISettingsDialogCoordinator dialogCoordinator, object dialogContext)
         {
             Tree = tree;
             _dialogCoordinator = dialogCoordinator;
@@ -56,7 +58,7 @@ namespace PoESkillTree.TreeGenerator.ViewModels
             Tabs = new ObservableCollection<GeneratorTabViewModel>
             {
                 new SteinerTabViewModel(Tree, _dialogCoordinator, _dialogContext, RunCallback),
-                new AdvancedTabViewModel(Tree, _dialogCoordinator, _dialogContext, RunCallback),
+                new AdvancedTabViewModel(Tree, persistentData, _dialogCoordinator, _dialogContext, RunCallback),
                 new AutomatedTabViewModel(Tree, _dialogCoordinator, _dialogContext, RunCallback)
             };
             SubSettings = new ISetting[] {SelectedTabIndex}.Union(Tabs).ToArray();

@@ -17,8 +17,8 @@ namespace PoESkillTree.Controls.Dialogs.ViewModels
 
         public string Input
         {
-            get { return _input; }
-            set { SetProperty(ref _input, value); }
+            get => _input;
+            set => SetProperty(ref _input, value);
         }
 
 #pragma warning disable CS8618 // _input is set through Input

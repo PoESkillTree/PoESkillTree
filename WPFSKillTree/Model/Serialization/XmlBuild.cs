@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using PoESkillTree.Model.Builds;
 
 namespace PoESkillTree.Model.Serialization
 {
@@ -20,6 +21,8 @@ namespace PoESkillTree.Model.Serialization
         public string? AccountName { get; set; }
 
         public string? League { get; set; }
+
+        public Realm Realm { get; set; }
 
         public int Level { get; set; }
 

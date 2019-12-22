@@ -24,7 +24,7 @@ namespace PoESkillTree.Controls.Dialogs
         /// <param name="message">A message shown in the dialog</param>
         /// <param name="defaultText">The text that the input box initially contains</param>
         /// <returns>The text entered by the user or null if the dialog was canceled</returns>
-        Task<string> ShowInputAsync(object context, string title, string message, string defaultText = "");
+        Task<string?> ShowInputAsync(object context, string title, string message, string defaultText = "");
 
         Task<ProgressDialogController> ShowProgressAsync(object context, string title, string message,
             bool isCancelable = false);

@@ -456,9 +456,9 @@
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator />
-                <MenuItem Click="Menu_ImportItems">
+                <MenuItem Click="Menu_ImportCharacter">
                     <MenuItem.Header>
-                        <l:Catalog Message="_Download &amp; Import Items…"/>
+                        <l:Catalog Message="Import _Character…"/>
                     </MenuItem.Header>
                     <MenuItem.Icon>
                         <iconPacks:PackIconModern Kind="CloudDownload" HorizontalAlignment="Center" />
@@ -466,7 +466,7 @@
                 </MenuItem>
                 <MenuItem Click="Menu_ImportStash">
                     <MenuItem.Header>
-                        <l:Catalog Message="_Download &amp; Import Stash…"/>
+                        <l:Catalog Message="Import _Stash…"/>
                     </MenuItem.Header>
                     <MenuItem.Icon>
                         <iconPacks:PackIconModern Kind="CloudDownload" HorizontalAlignment="Center" />
@@ -634,8 +634,8 @@
                     </Popup>
                     <controls:NumericUpDown Margin="5,0,0,0" x:Name="LevelUpDown" ValueChanged="Level_ValueChanged" MinWidth="70"
                                             Height="{Binding ActualHeight, ElementName=cbCharType}"
-                                            DataContext="{Binding Tree, ElementName=window}" Value="{Binding Level, ValidatesOnDataErrors=True}"
-                                            Minimum="{Binding UndefinedLevel}" Maximum="{Binding MaximumLevel}"
+                                            Value="{Binding PersistentData.CurrentBuild.Level, ValidatesOnDataErrors=True}"
+                                            Minimum="0" Maximum="100"
                                             NumericInputMode="Numbers">
                         <controls:NumericUpDown.ToolTip>
                             <l:Catalog Message="Level"/>
@@ -709,8 +709,8 @@
                                                  Height="32"
                                                  Rows="1">
                                         <Button Margin="0 0 4 0"
-                                                Click="Menu_ImportItems">
-                                            <l:Catalog>Import Items</l:Catalog>
+                                                Click="Menu_ImportCharacter">
+                                            <l:Catalog>Import Character</l:Catalog>
                                         </Button>
                                         <Button Margin="4 0"
                                                 Click="Menu_ImportStash">
