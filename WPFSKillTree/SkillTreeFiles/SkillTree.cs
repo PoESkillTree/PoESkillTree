@@ -181,9 +181,6 @@ namespace PoESkillTree.SkillTreeFiles
 
         private CharacterClass _charClass;
         private int _asctype;
-        public static int UndefinedLevel => 0;
-        public static int MaximumLevel => 100;
-        private int _level = UndefinedLevel;
 
         public static PoESkillTree PoESkillTree { get; private set; }
         private static PoESkillTreeOptions PoESkillTreeOptions { get; set; }
@@ -429,12 +426,6 @@ namespace PoESkillTree.SkillTreeFiles
             _initialized = true;
         }
 
-        public int Level
-        {
-            get => _level;
-            set => SetProperty(ref _level, value);
-        }
-
         /// <summary>
         /// This will get all skill points related to the tree both Normal and Ascendancy
         /// </summary>
@@ -450,7 +441,7 @@ namespace PoESkillTree.SkillTreeFiles
             };
 
             var bandits = _persistentData.CurrentBuild.Bandits;
-            points["NormalTotal"] += Level - 1;
+            points["NormalTotal"] += _persistentData.CurrentBuild.Level - 1;
             if (bandits.Choice == Bandit.None)
                 points["NormalTotal"] += 2;
 
@@ -537,7 +528,7 @@ namespace PoESkillTree.SkillTreeFiles
         public Dictionary<string, List<float>>? HighlightedAttributes { get; set; }
 
         public Dictionary<string, List<float>> SelectedAttributes
-            => GetAttributes(SkilledNodes, CharClass, Level, _persistentData.CurrentBuild.Bandits);
+            => GetAttributes(SkilledNodes, CharClass, _persistentData.CurrentBuild.Level, _persistentData.CurrentBuild.Bandits);
 
         public static Dictionary<string, List<float>> GetAttributes(
             IEnumerable<SkillNode> skilledNodes, CharacterClass charClass, int level, BanditSettings banditSettings)

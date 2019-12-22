@@ -634,8 +634,8 @@
                     </Popup>
                     <controls:NumericUpDown Margin="5,0,0,0" x:Name="LevelUpDown" ValueChanged="Level_ValueChanged" MinWidth="70"
                                             Height="{Binding ActualHeight, ElementName=cbCharType}"
-                                            DataContext="{Binding Tree, ElementName=window}" Value="{Binding Level, ValidatesOnDataErrors=True}"
-                                            Minimum="{Binding UndefinedLevel}" Maximum="{Binding MaximumLevel}"
+                                            Value="{Binding PersistentData.CurrentBuild.Level, ValidatesOnDataErrors=True}"
+                                            Minimum="0" Maximum="100"
                                             NumericInputMode="Numbers">
                         <controls:NumericUpDown.ToolTip>
                             <l:Catalog Message="Level"/>

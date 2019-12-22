@@ -15,6 +15,7 @@ using PoESkillTree.Controls.Dialogs;
 using PoESkillTree.Engine.GameModel.PassiveTree;
 using PoESkillTree.Engine.Utils.Extensions;
 using PoESkillTree.Localization;
+using PoESkillTree.Model;
 using PoESkillTree.Model.JsonSettings;
 using PoESkillTree.SkillTreeFiles;
 using PoESkillTree.TreeGenerator.Model;
@@ -286,7 +287,7 @@ namespace PoESkillTree.TreeGenerator.ViewModels
 
         /// <summary>
         /// Gets the total number of points the solver can use.
-        /// Equals <see cref="SkillTree.Level"/> - 1 + <see cref="AdditionalPoints"/>.
+        /// Equals Level - 1 + <see cref="AdditionalPoints"/>.
         /// </summary>
         public int TotalPoints
         {
@@ -389,6 +390,8 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         /// Tags used for pseudo attribute calculations.
         /// </summary>
         public LeafSetting<Tags> Tags { get; }
+
+        public IPersistentData PersistentData { get; }
 
         #endregion
 
@@ -530,27 +533,36 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         /// Instantiates a new AdvancedTabViewModel.
         /// </summary>
         /// <param name="tree">The (not null) SkillTree instance to operate on.</param>
+        /// <param name="persistentData"></param>
         /// <param name="dialogCoordinator">The <see cref="IDialogCoordinator"/> used to display dialogs.</param>
         /// <param name="dialogContext">The context used for <paramref name="dialogCoordinator"/>.</param>
         /// <param name="runCallback">The action that is called when RunCommand is executed.</param>
-        public AdvancedTabViewModel(SkillTree tree, IDialogCoordinator dialogCoordinator, object dialogContext,
+        public AdvancedTabViewModel(SkillTree tree, IPersistentData persistentData, IDialogCoordinator dialogCoordinator, object dialogContext,
             Action<GeneratorTabViewModel> runCallback)
             : base(tree, dialogCoordinator, dialogContext, 3, runCallback)
         {
-            AdditionalPoints = new LeafSetting<int>(nameof(AdditionalPoints), 22,
-                () => TotalPoints = Tree.Level - 1 + AdditionalPoints.Value);
-            TotalPoints = Tree.Level - 1 + AdditionalPoints.Value;
+            PersistentData = persistentData;
+            AdditionalPoints = new LeafSetting<int>(nameof(AdditionalPoints), 22, CalculateTotalPoints);
+            CalculateTotalPoints();
             TreePlusItemsMode = new LeafSetting<bool>(nameof(TreePlusItemsMode), false);
             WeaponClass = new LeafSetting<WeaponClass>(nameof(WeaponClass), Model.PseudoAttributes.WeaponClass.Unarmed,
                 () => WeaponClassIsTwoHanded = WeaponClass.Value.IsTwoHanded());
             OffHand = new LeafSetting<OffHand>(nameof(OffHand), Model.PseudoAttributes.OffHand.Shield);
             Tags = new LeafSetting<Tags>(nameof(Tags), Model.PseudoAttributes.Tags.None);
 
-            tree.PropertyChanged += (sender, args) =>
+            PersistentData.PropertyChanging += (sender, args) =>
             {
-                if (args.PropertyName == nameof(SkillTree.Level))
+                if (args.PropertyName == nameof(IPersistentData.CurrentBuild))
                 {
-                    TotalPoints = Tree.Level - 1 + AdditionalPoints.Value;
+                    PersistentData.CurrentBuild.PropertyChanged -= CurrentBuildOnPropertyChanged;
+                }
+            };
+            PersistentData.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == nameof(IPersistentData.CurrentBuild))
+                {
+                    PersistentData.CurrentBuild.PropertyChanged += CurrentBuildOnPropertyChanged;
+                    CalculateTotalPoints();
                 }
             };
 
@@ -589,6 +601,17 @@ namespace PoESkillTree.TreeGenerator.ViewModels
                 new ConstraintsSetting(this)
             };
         }
+
+        private void CurrentBuildOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(PoESkillTree.Model.Builds.PoEBuild.Level))
+            {
+                CalculateTotalPoints();
+            }
+        }
+
+        private void CalculateTotalPoints() =>
+            TotalPoints = PersistentData.CurrentBuild.Level - 1 + AdditionalPoints.Value;
 
         private void ClearAttributeConstraints()
         {
@@ -803,15 +826,16 @@ namespace PoESkillTree.TreeGenerator.ViewModels
             // Level attributes (flat mana, life, evasion and accuracy) are blacklisted, because they are also dependent
             // on core attributes, which are dependent on the actual tree and are pretty pointless as basic attributes anyway.
             // For the calculation of pseudo attributes, they need to be included however.
+            var level = PersistentData.CurrentBuild.Level;
             foreach (var attr in AttributesPerLevel)
             {
                 if (stats.ContainsKey(attr.Key))
                 {
-                    stats[attr.Key] += Tree.Level*attr.Value;
+                    stats[attr.Key] += level*attr.Value;
                 }
                 else
                 {
-                    stats[attr.Key] = Tree.Level*attr.Value;
+                    stats[attr.Key] = level*attr.Value;
                 }
             }
 

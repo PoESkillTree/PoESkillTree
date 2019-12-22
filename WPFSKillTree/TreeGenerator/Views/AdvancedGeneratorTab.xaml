@@ -100,9 +100,9 @@
         </Label>
         <metroControls:NumericUpDown Grid.Row="0" Grid.Column="1"
                                      Margin="0 5"
-                                     Minimum="{Binding Tree.UndefinedLevel}" Maximum="{Binding Tree.MaximumLevel}"
+                                     Minimum="0" Maximum="100"
                                      NumericInputMode="Numbers"
-                                     Value="{Binding Tree.Level}" />
+                                     Value="{Binding PersistentData.CurrentBuild.Level}" />
 
         <Label Grid.Row="1" Grid.Column="0"
                Margin="5">
@@ -119,6 +119,7 @@
         </Label>
         <TextBox Grid.Row="2" Grid.Column="1"
                  Margin="0 5" Padding="0 0 45 0"
+                 VerticalContentAlignment="Center"
                  HorizontalContentAlignment="Right"
                  Text="{Binding TotalPoints, Mode=OneWay}" IsReadOnly="True" />
 

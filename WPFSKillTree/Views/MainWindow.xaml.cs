@@ -120,7 +120,7 @@ namespace PoESkillTree.Views
             get => _computationViewModel;
             private set
             {
-                value!.SharedConfiguration.SetLevel(Tree.Level);
+                value!.SharedConfiguration.SetLevel(PersistentData.CurrentBuild.Level);
                 value.SharedConfiguration.SetCharacterClass(Tree.CharClass);
                 value.SharedConfiguration.SetBandit(PersistentData.CurrentBuild.Bandits.Choice);
                 SetProperty(ref _computationViewModel, value);
@@ -308,6 +308,9 @@ namespace PoESkillTree.Views
                 case nameof(BanditSettings.Choice):
                     UpdateUI();
                     ComputationViewModel?.SharedConfiguration.SetBandit(PersistentData.CurrentBuild.Bandits.Choice);
+                    break;
+                case nameof(PoEBuild.Level):
+                    ComputationViewModel?.SharedConfiguration.SetLevel(PersistentData.CurrentBuild.Level);
                     break;
             }
         }
@@ -646,10 +649,6 @@ namespace PoESkillTree.Views
         {
             switch (e.PropertyName)
             {
-                case nameof(SkillTree.Level):
-                    PersistentData.CurrentBuild.Level = Tree.Level;
-                    ComputationViewModel?.SharedConfiguration.SetLevel(Tree.Level);
-                    break;
                 case nameof(SkillTree.CharClass):
                     Tree.UpdateAscendancyClasses = true;
                     PopulateAscendancySelectionList();
@@ -1191,6 +1190,8 @@ namespace PoESkillTree.Views
 
         private void Level_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double?> args)
         {
+            if (Tree == null)
+                return;
             UpdateUI();
         }
 
@@ -1721,7 +1722,6 @@ namespace PoESkillTree.Views
         {
             var build = PersistentData.CurrentBuild;
             InputTreeUrl = PersistentData.CurrentBuild.TreeUrl;
-            Tree.Level = build.Level;
             Tree.ResetTaggedNodes();
             TreeGeneratorInteraction?.LoadSettings();
             await LoadItemData();
