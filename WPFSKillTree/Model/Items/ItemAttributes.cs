@@ -225,6 +225,19 @@ namespace PoESkillTree.Model.Items
             }
         }
 
+        public void DeserializePassiveTreeJewels(JObject treeImportJson)
+        {
+            if (!treeImportJson.TryGetValue("items", out var itemsJson) || !treeImportJson.TryGetValue("jewel_slots", out var socketsJson))
+                return;
+            
+            var sockets = socketsJson.Values<ushort>().ToList();
+            foreach (var itemJson in itemsJson.Values<JObject>())
+            {
+                var item = new Item(_equipmentData, itemJson, ItemSlot.SkillTree);
+                SetItemInSlot(item, ItemSlot.SkillTree, sockets[item.X]);
+            }
+        }
+
         private void DeserializeSkills(JObject itemData)
         {
             if (!itemData.TryGetValue("skills", out var skillJson))

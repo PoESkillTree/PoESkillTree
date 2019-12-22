@@ -24,7 +24,7 @@ namespace PoESkillTree.ViewModels.Import
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private const string ItemsEndpoint = "https://www.pathofexile.com/character-window/get-items?";
-        private const string PassiveTreeEndpoint = "https://www.pathofexile.com/character-window/get-passive-skills?reqData=0";
+        private const string PassiveTreeEndpoint = "https://www.pathofexile.com/character-window/get-passive-skills?";
 
         private readonly HttpClient _httpClient;
         private readonly IDialogCoordinator _dialogCoordinator;
@@ -183,8 +183,8 @@ namespace PoESkillTree.ViewModels.Import
 
         private async Task<Unit> ImportItemSkillsAndLevelAsync(string title, bool importItems, bool importSkills, bool importLevel)
         {
-            var importJson = await RequestAsync(ItemsUrl, title);
-            if (string.IsNullOrEmpty(importJson))
+            var importString = await RequestAsync(ItemsUrl, title);
+            if (string.IsNullOrEmpty(importString))
                 return Unit.Default;
 
             if (importItems)
@@ -204,12 +204,12 @@ namespace PoESkillTree.ViewModels.Import
                 }
             }
 
-            var import = JObject.Parse(importJson);
+            var importJson = JObject.Parse(importString);
             if (importItems || importSkills)
             {
-                _itemAttributes.DeserializeItemsWithSkills(import, importItems, importSkills);
+                _itemAttributes.DeserializeItemsWithSkills(importJson, importItems, importSkills);
             }
-            if (importLevel && import.TryGetValue("character", out var characterToken))
+            if (importLevel && importJson.TryGetValue("character", out var characterToken))
             {
                 Build.Level = characterToken.Value<int>("level");
             }
@@ -241,11 +241,28 @@ namespace PoESkillTree.ViewModels.Import
 
         private async Task<Unit> ImportPassiveTreeAndJewelsAsync(string title, bool importPassiveTree, bool importJewels)
         {
-            var importJson = await RequestAsync(PassiveTreeUrl, title);
-            if (string.IsNullOrEmpty(importJson))
+            var importString = await RequestAsync(PassiveTreeUrl, title);
+            if (string.IsNullOrEmpty(importString))
                 return Unit.Default;
 
-            // TODO
+            if (importJewels)
+            {
+                var toRemove = _itemAttributes.Equip.Where(i => i.Slot == ItemSlot.SkillTree).ToList();
+                foreach (var item in toRemove)
+                {
+                    _itemAttributes.RemoveItem(item);
+                }
+            }
+
+            var importJson = JObject.Parse(importString);
+            if (importPassiveTree && importJson.TryGetValue("hashes", out var nodeHashesJson))
+            {
+
+            }
+            if (importJewels)
+            {
+                _itemAttributes.DeserializePassiveTreeJewels(importJson);
+            }
             return Unit.Default;
         }
 
