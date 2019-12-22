@@ -130,6 +130,7 @@
                       StaysOpenOnEdit="True"
                       TextSearch.TextPath="Name"
                       Text="{Binding Build.CharacterName}"
+                      SelectedItem="{Binding SelectedAccountCharacter}"
                       ItemsSource="{Binding AccountCharacters.Result}">
                 <metroControls:TextBoxHelper.Watermark>
                     <l:Catalog Message="Character name"/>

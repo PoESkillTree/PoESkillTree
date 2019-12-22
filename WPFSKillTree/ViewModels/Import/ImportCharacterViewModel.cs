@@ -11,10 +11,12 @@ using Newtonsoft.Json.Linq;
 using NLog;
 using PoESkillTree.Common.ViewModels;
 using PoESkillTree.Controls.Dialogs;
+using PoESkillTree.Engine.GameModel;
 using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Localization;
 using PoESkillTree.Model.Builds;
 using PoESkillTree.Model.Items;
+using PoESkillTree.SkillTreeFiles;
 using PoESkillTree.Utils;
 
 namespace PoESkillTree.ViewModels.Import
@@ -31,6 +33,7 @@ namespace PoESkillTree.ViewModels.Import
         private readonly CurrentLeaguesViewModel _currentLeaguesViewModel;
         private readonly AccountCharactersViewModel _accountCharactersViewModel;
         private readonly ItemAttributes _itemAttributes;
+        private readonly SkillTree _skillTree;
 
         public PoEBuild Build { get; }
 
@@ -58,6 +61,14 @@ namespace PoESkillTree.ViewModels.Import
         {
             get => _accountCharacters;
             private set => SetProperty(ref _accountCharacters, value);
+        }
+
+        private AccountCharacterViewModel? _selectedAccountCharacter;
+
+        public AccountCharacterViewModel? SelectedAccountCharacter
+        {
+            get => _selectedAccountCharacter;
+            set => SetProperty(ref _selectedAccountCharacter, value);
         }
 
         private NotifyingTask<Unit> _importItemsSkillsAndLevelTask = NotifyingTask<Unit>.FromResult(default);
@@ -101,7 +112,7 @@ namespace PoESkillTree.ViewModels.Import
 
         public ImportCharacterViewModel(
             HttpClient httpClient, IDialogCoordinator dialogCoordinator,
-            ItemAttributes itemAttributes,
+            ItemAttributes itemAttributes, SkillTree skillTree,
             PoEBuild build, CurrentLeaguesViewModel currentLeagues, AccountCharactersViewModel accountCharacters)
         {
             _httpClient = httpClient;
@@ -109,6 +120,7 @@ namespace PoESkillTree.ViewModels.Import
             _currentLeaguesViewModel = currentLeagues;
             _accountCharactersViewModel = accountCharacters;
             _itemAttributes = itemAttributes;
+            _skillTree = skillTree;
             DisplayName = L10n.Message("Import Character");
             Build = build;
             Build.PropertyChanged += BuildOnPropertyChanged;
@@ -135,13 +147,17 @@ namespace PoESkillTree.ViewModels.Import
             }
         }
 
-        private NotifyingTask<IReadOnlyList<AccountCharacterViewModel>> GetAccountCharacters()
+        private NotifyingTask<IReadOnlyList<AccountCharacterViewModel>> GetAccountCharacters() =>
+            _accountCharactersViewModel.Get(Build.Realm, Build.AccountName).Select(SelectAccountCharacters);
+
+        private IReadOnlyList<AccountCharacterViewModel> SelectAccountCharacters(IEnumerable<AccountCharacterViewModel> characters)
         {
-            var task = _accountCharactersViewModel.Get(Build.Realm, Build.AccountName).Select(cs =>
-                cs.Where(c => string.IsNullOrEmpty(Build.League) || c.League == Build.League)
-                    .OrderBy(c => c.Name)
-                    .ToList());
-            return task;
+            var results = characters
+                .Where(c => string.IsNullOrEmpty(Build.League) || c.League == Build.League)
+                .OrderBy(c => c.Name)
+                .ToList();
+            SelectedAccountCharacter = results.FirstOrDefault(c => c.Name == Build.CharacterName);
+            return results;
         }
 
         private bool CanImportItemsSkillsAndLevel() =>
@@ -245,6 +261,22 @@ namespace PoESkillTree.ViewModels.Import
             if (string.IsNullOrEmpty(importString))
                 return Unit.Default;
 
+            var importJson = JObject.Parse(importString);
+
+            if (importPassiveTree && importJson.TryGetValue("hashes", out var nodeHashesJson))
+            {
+                var passiveNodes = nodeHashesJson.Values<ushort>()
+                    .Where(n => SkillTree.Skillnodes.ContainsKey(n))
+                    .Select(n => SkillTree.Skillnodes[n])
+                    .ToList();
+                var (characterClass, ascendancyClass) = GetCharacterAndAscendancyClass(passiveNodes);
+
+                _skillTree.ResetSkilledNodesTo(Array.Empty<SkillNode>());
+                _skillTree.SwitchClass(characterClass);
+                _skillTree.AscType = ascendancyClass;
+                _skillTree.AllocateSkillNodes(passiveNodes);
+            }
+
             if (importJewels)
             {
                 var toRemove = _itemAttributes.Equip.Where(i => i.Slot == ItemSlot.SkillTree).ToList();
@@ -252,18 +284,32 @@ namespace PoESkillTree.ViewModels.Import
                 {
                     _itemAttributes.RemoveItem(item);
                 }
-            }
 
-            var importJson = JObject.Parse(importString);
-            if (importPassiveTree && importJson.TryGetValue("hashes", out var nodeHashesJson))
-            {
-
-            }
-            if (importJewels)
-            {
                 _itemAttributes.DeserializePassiveTreeJewels(importJson);
             }
             return Unit.Default;
+        }
+
+        private (CharacterClass characterClass, int ascendancyClass) GetCharacterAndAscendancyClass(IReadOnlyList<SkillNode> nodes)
+        {
+            if (SelectedAccountCharacter is null)
+            {
+                var ascendancyClassName = nodes.FirstOrDefault(n => n.IsAscendancyNode)?.AscendancyName;
+                if (ascendancyClassName is null)
+                {
+                    var rootNode = nodes.SelectMany(n => n.Neighbor).FirstOrDefault(n => n.IsRootNode);
+                    return ((CharacterClass) (rootNode?.Character ?? 0), 0);
+                }
+                else
+                {
+                    return (_skillTree.AscendancyClasses.GetStartingClass(ascendancyClassName),
+                        _skillTree.AscendancyClasses.GetAscendancyClassNumber(ascendancyClassName));
+                }
+            }
+            else
+            {
+                return ((CharacterClass) SelectedAccountCharacter.ClassId, SelectedAccountCharacter.AscendancyClass);
+            }
         }
 
         private async Task<string?> RequestAsync(string url, string title)

@@ -3,6 +3,7 @@ using System.Net.Http;
 using PoESkillTree.Controls.Dialogs;
 using PoESkillTree.Model;
 using PoESkillTree.Model.Items;
+using PoESkillTree.SkillTreeFiles;
 using PoESkillTree.ViewModels.Equipment;
 
 namespace PoESkillTree.ViewModels.Import
@@ -27,9 +28,9 @@ namespace PoESkillTree.ViewModels.Import
             _accountCharacters = new Lazy<AccountCharactersViewModel>(() => new AccountCharactersViewModel(_httpClient));
         }
 
-        public ImportCharacterViewModel ImportCharacter(ItemAttributes itemAttributes) =>
-            new ImportCharacterViewModel(_httpClient, _dialogCoordinator, itemAttributes, _persistentData.CurrentBuild, _currentLeagues.Value,
-                _accountCharacters.Value);
+        public ImportCharacterViewModel ImportCharacter(ItemAttributes itemAttributes, SkillTree skillTree) =>
+            new ImportCharacterViewModel(_httpClient, _dialogCoordinator, itemAttributes, skillTree, _persistentData.CurrentBuild,
+                _currentLeagues.Value, _accountCharacters.Value);
 
         public ImportStashViewModel ImportStash => new ImportStashViewModel(_dialogCoordinator, _persistentData, _stash, _currentLeagues.Value);
     }

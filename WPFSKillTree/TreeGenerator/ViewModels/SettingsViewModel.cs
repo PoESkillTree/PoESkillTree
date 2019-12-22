@@ -43,6 +43,7 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         /// Constructs a new SettingsViewModel that operates on the given skill tree.
         /// </summary>
         /// <param name="tree">The skill tree to operate on. (not null)</param>
+        /// <param name="persistentData"></param>
         /// <param name="dialogCoordinator"></param>
         /// <param name="dialogContext">The context used for <paramref name="dialogCoordinator"/>.</param>
         public SettingsViewModel(SkillTree tree, IPersistentData persistentData, ISettingsDialogCoordinator dialogCoordinator, object dialogContext)
