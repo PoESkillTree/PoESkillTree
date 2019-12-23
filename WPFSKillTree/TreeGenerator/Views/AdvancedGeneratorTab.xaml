@@ -173,7 +173,7 @@
 
         <TabControl Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5"
                     metroControls:TabControlHelper.Underlined="TabItems" Style="{DynamicResource TabControlStyle1}">
-            <TabItem metroControls:ControlsHelper.HeaderFontSize="15">
+            <TabItem metroControls:HeaderedControlHelper.HeaderFontSize="15">
                 <TabItem.Header>
                     <l:Catalog Message="Attributes"/>
                 </TabItem.Header>
@@ -279,7 +279,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem metroControls:ControlsHelper.HeaderFontSize="15">
+            <TabItem metroControls:HeaderedControlHelper.HeaderFontSize="15">
                 <TabItem.Header>
                     <l:Catalog Message="Pseudo Attributes"/>
                 </TabItem.Header>
@@ -383,7 +383,7 @@
                 </TabItem.ToolTip>
             </TabItem>-->
 
-            <TabItem metroControls:ControlsHelper.HeaderFontSize="15">
+            <TabItem metroControls:HeaderedControlHelper.HeaderFontSize="15">
                 <TabItem.Header>
                     <l:Catalog Message="Settings"/>
                 </TabItem.Header>

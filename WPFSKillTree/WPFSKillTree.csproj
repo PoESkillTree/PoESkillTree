@@ -25,12 +25,13 @@
   <ItemGroup>
     <PackageReference Include="ControlzEx" Version="4.2.0" />
     <PackageReference Include="DynamicExpresso.Core" Version="2.3.1" />
-    <PackageReference Include="Enums.NET" Version="3.0.1" />
+    <PackageReference Include="Enums.NET" Version="3.0.2" />
+    <PackageReference Include="Fluent.Ribbon" Version="7.0.1" />
     <PackageReference Include="gong-wpf-dragdrop" Version="2.2.0" />
-    <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0605" />
-    <PackageReference Include="MahApps.Metro.IconPacks.Modern" Version="3.0.0-alpha0270" />
-    <PackageReference Include="MahApps.Metro.SimpleChildWindow" Version="2.0.0-alpha0031" />
-    <PackageReference Include="morelinq" Version="3.2.0" />
+    <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0660" />
+    <PackageReference Include="MahApps.Metro.IconPacks.Modern" Version="3.0.1" />
+    <PackageReference Include="MahApps.Metro.SimpleChildWindow" Version="2.0.0-alpha0032" />
+    <PackageReference Include="morelinq" Version="3.3.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="NLog" Version="4.6.8" />
     <PackageReference Include="PoESkillTree.Engine" Version="0.1.10" />

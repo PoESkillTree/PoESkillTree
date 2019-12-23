@@ -50,7 +50,7 @@
             <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.WhiteColor}" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="controls:ControlsHelper.ContentCharacterCasing" Value="Normal" />
-            <Setter Property="controls:ControlsHelper.HeaderFontSize" Value="16" />
+            <Setter Property="controls:HeaderedControlHelper.HeaderFontSize" Value="16" />
             <Setter Property="controls:HeaderedControlHelper.HeaderBackground"
                     Value="{DynamicResource MahApps.Brushes.WhiteColor}" />
         </Style>
@@ -593,19 +593,19 @@
         </Menu>
 
         <TabControl Grid.Row="0" HorizontalAlignment="Right">
-            <TabItem controls:ControlsHelper.HeaderFontSize="14"
+            <TabItem controls:HeaderedControlHelper.HeaderFontSize="14"
                      IsSelected="{Binding IsSelected, ElementName=tyPassiveTree}">
                 <TabItem.Header>
                     <l:Catalog Message="Skill Tree"/>
                 </TabItem.Header>
             </TabItem>
-            <TabItem controls:ControlsHelper.HeaderFontSize="14"
+            <TabItem controls:HeaderedControlHelper.HeaderFontSize="14"
                      IsSelected="{Binding IsSelected, ElementName=tyEquipment}">
                 <TabItem.Header>
                     <l:Catalog Message="Equipment"/>
                 </TabItem.Header>
             </TabItem>
-            <TabItem controls:ControlsHelper.HeaderFontSize="14"
+            <TabItem controls:HeaderedControlHelper.HeaderFontSize="14"
                      IsSelected="{Binding IsSelected, ElementName=ComputationTab}">
                 <TabItem.Header>
                     <l:Catalog Message="Computation"/>
@@ -789,7 +789,7 @@
                     </Grid>
                     <Grid Grid.Row="1">
                         <TabControl Margin="0" x:Name="tabControl1" HorizontalAlignment="Left" Width="410" controls:TabControlHelper.Underlined="TabItems" Focusable="True" SelectionChanged="tabControl1_SelectionChanged">
-                            <TabItem Margin="0" x:Name="tabItem1" controls:ControlsHelper.HeaderFontSize="15">
+                            <TabItem Margin="0" x:Name="tabItem1" controls:HeaderedControlHelper.HeaderFontSize="15">
                                 <TabItem.Header>
                                     <l:Catalog Message="Passive Attributes"/>
                                 </TabItem.Header>
