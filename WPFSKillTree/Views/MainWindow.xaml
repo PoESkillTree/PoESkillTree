@@ -13,21 +13,40 @@
         xmlns:equipment="clr-namespace:PoESkillTree.Views.Equipment"
         xmlns:computation="clr-namespace:PoESkillTree.Computation.Views"
         xmlns:dd="urn:gong-wpf-dragdrop"
-
-        mc:Ignorable="d" x:Class="PoESkillTree.Views.MainWindow"
-        Height="667" Width="1200" SizeChanged="Window_SizeChanged" 
-        Closing="Window_Closing" Icon="/PoESkillTree;component/logo.ico" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
-        PreviewKeyDown="Window_PreviewKeyDown" PreviewKeyUp="Window_PreviewKeyUp"
+        xmlns:fluent="urn:fluent-ribbon"
+        mc:Ignorable="d"
+        x:Class="PoESkillTree.Views.MainWindow"
+        x:Name="window"
+        Height="667" Width="1200"
+        SizeChanged="Window_SizeChanged" 
+        Closing="Window_Closing"
+        Icon="/PoESkillTree;component/logo.ico"
+        Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen"
+        PreviewKeyDown="Window_PreviewKeyDown"
+        PreviewKeyUp="Window_PreviewKeyUp"
         TextOptions.TextFormattingMode="Display"
-        x:Name="window" SaveWindowPosition="True"
+        SaveWindowPosition="True"
         DataContext="{Binding ElementName=window}"
-        UseLayoutRounding="True">
-    <controls:MetroWindow.Title>
-        <MultiBinding StringFormat="{}{0} - {1}">
-            <Binding Path="PersistentData.CurrentBuild.Name" ElementName="window" />
-            <Binding Path="MainWindowTitle" ElementName="window" />
-        </MultiBinding>
-    </controls:MetroWindow.Title>
+        UseLayoutRounding="True"
+        ShowSystemMenuOnRightClick="False"
+        Title="{Binding PersistentData.CurrentBuild.Name}">
+    <controls:MetroWindow.TitleTemplate>
+        <DataTemplate>
+            <fluent:RibbonTitleBar x:Name="RibbonTitleBar"
+                                   Header="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                                   HeaderAlignment="Left">
+                <fluent:RibbonTitleBar.HeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}"
+                                   FontSize="{DynamicResource MahApps.Font.Size.Window.Title}"
+                                   VerticalAlignment="Center"
+                                   Margin="5 0 0 0"/>
+                    </DataTemplate>
+                </fluent:RibbonTitleBar.HeaderTemplate>
+            </fluent:RibbonTitleBar>
+        </DataTemplate>
+    </controls:MetroWindow.TitleTemplate>
 
     <Window.Resources>
         <conv:AttributeToTextblockConverter x:Key="attributeToTextblockConverter" />
@@ -53,6 +72,13 @@
             <Setter Property="controls:HeaderedControlHelper.HeaderFontSize" Value="16" />
             <Setter Property="controls:HeaderedControlHelper.HeaderBackground"
                     Value="{DynamicResource MahApps.Brushes.WhiteColor}" />
+        </Style>
+        
+        <Style x:Key="{x:Type fluent:BackstageTabControl}"
+               TargetType="{x:Type fluent:BackstageTabControl}"
+               BasedOn="{StaticResource {x:Type fluent:BackstageTabControl}}">
+            <Setter Property="SelectedContentMargin"
+                    Value="0" />
         </Style>
     </Window.Resources>
 
@@ -91,15 +117,82 @@
 
     <Grid Margin="0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="31"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="31"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
 
         <!-- grid row 0 - upper part-->
+        <fluent:Ribbon Grid.Row="0">
+            <fluent:Ribbon.Menu>
+                <fluent:Backstage UseHighestAvailableAdornerLayer="False"></fluent:Backstage>
+            </fluent:Ribbon.Menu>
+
+            <fluent:RibbonTabItem KeyTip="H">
+                <fluent:RibbonTabItem.Header>
+                    <l:Catalog Message="Home" />
+                </fluent:RibbonTabItem.Header>
+                <fluent:RibbonGroupBox Header="Edit">
+                    <fluent:Button Icon="{iconPacks:Modern Settings}"
+                                   KeyTip="S"
+                                   Click="Menu_OpenSettings">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconModern Kind="Settings"
+                                                      Width="20" Height="20"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Settings" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Settings" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Open the settings dialog." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
+                    <fluent:Button Icon="{iconPacks:Modern Undo}"
+                                   KeyTip="U"
+                                   Click="tbSkillURL_Undo_Click">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconModern Kind="Undo"
+                                                      Width="20" Height="20"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Undo" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Undo (Ctrl+Z)" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Undo the last skill tree action." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
+                </fluent:RibbonGroupBox>
+            </fluent:RibbonTabItem>
+
+            <fluent:RibbonTabItem KeyTip="V">
+                <fluent:RibbonTabItem.Header>
+                    <l:Catalog Message="View" />
+                </fluent:RibbonTabItem.Header>
+            </fluent:RibbonTabItem>
+        </fluent:Ribbon>
+
         <Menu IsMainMenu="True" Grid.Row="0" Margin="0,0,0,2"
-             dialogs:DialogParticipation.Register="{Binding PersistentData}">
+             dialogs:DialogParticipation.Register="{Binding PersistentData}"
+             Visibility="Collapsed">
             <MenuItem>
                 <MenuItem.Header>
                     <l:Catalog Message="_File" />
@@ -592,7 +685,8 @@
             </MenuItem>
         </Menu>
 
-        <TabControl Grid.Row="0" HorizontalAlignment="Right">
+        <TabControl Grid.Row="0" HorizontalAlignment="Right"
+                    Visibility="Collapsed">
             <TabItem controls:HeaderedControlHelper.HeaderFontSize="14"
                      IsSelected="{Binding IsSelected, ElementName=tyPassiveTree}">
                 <TabItem.Header>

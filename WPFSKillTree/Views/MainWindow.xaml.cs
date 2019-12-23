@@ -18,7 +18,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using EnumsNET;
-using MahApps.Metro;
+using Fluent;
 using MahApps.Metro.Controls;
 using NLog;
 using PoESkillTree.Utils;
@@ -47,7 +47,11 @@ using PoESkillTree.ViewModels.Import;
 using PoESkillTree.Views.Crafting;
 using PoESkillTree.Views.Import;
 using Attribute = PoESkillTree.ViewModels.Attribute;
+using ContextMenu = System.Windows.Controls.ContextMenu;
 using Item = PoESkillTree.Model.Items.Item;
+using MenuItem = System.Windows.Controls.MenuItem;
+using OnThemeChangedEventArgs = MahApps.Metro.OnThemeChangedEventArgs;
+using ThemeManager = MahApps.Metro.ThemeManager;
 
 namespace PoESkillTree.Views
 {
@@ -213,8 +217,6 @@ namespace PoESkillTree.Views
             get => _treeGeneratorInteraction;
             private set => SetProperty(ref _treeGeneratorInteraction, value);
         }
-
-        public string MainWindowTitle { get; } = AppData.ProductName;
 
         /// <summary>
         /// Set to true when CurrentBuild.TreeUrl was set after direct SkillTree changes so the SkillTree
@@ -507,6 +509,10 @@ namespace PoESkillTree.Views
 
         private void InitializeIndependentUI()
         {
+            var titleBar = this.FindChild<RibbonTitleBar>("RibbonTitleBar");
+            titleBar.InvalidateArrange();
+            titleBar.UpdateLayout();
+
             var cmHighlight = new MenuItem
             {
                 Header = L10n.Message("Highlight nodes by attribute")
@@ -558,9 +564,7 @@ namespace PoESkillTree.Views
             RegisterPersistentDataHandlers();
             StashViewModel.Initialize(_dialogCoordinator, PersistentData);
             _importViewModels = new ImportViewModels(_dialogCoordinator, PersistentData, StashViewModel);
-            // Set theme & accent.
-            SetTheme(PersistentData.Options.Theme);
-            SetAccent(PersistentData.Options.Accent);
+            InitializeTheme();
         }
 
         private void InitializeTreeDependentUI()
@@ -1992,6 +1996,20 @@ namespace PoESkillTree.Views
             ThemeManager.ChangeTheme(Application.Current, PersistentData.Options.Theme, sAccent);
             ((MenuItem)NameScope.GetNameScope(this).FindName("mnuViewAccent" + sAccent)).IsChecked = true;
             PersistentData.Options.Accent = sAccent;
+        }
+
+        private void InitializeTheme()
+        {
+            SetTheme(PersistentData.Options.Theme);
+            SetAccent(PersistentData.Options.Accent);
+            SyncThemeManagers(null, null);
+            ThemeManager.IsThemeChanged += SyncThemeManagers;
+        }
+
+        private void SyncThemeManagers(object? sender, OnThemeChangedEventArgs? args)
+        {
+            var mahAppsTheme = args?.Theme ?? ThemeManager.DetectTheme();
+            Fluent.ThemeManager.ChangeTheme(this, mahAppsTheme.Name);
         }
 #endregion
 
