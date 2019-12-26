@@ -14,6 +14,7 @@
         xmlns:computation="clr-namespace:PoESkillTree.Computation.Views"
         xmlns:dd="urn:gong-wpf-dragdrop"
         xmlns:fluent="urn:fluent-ribbon"
+        xmlns:mahApps="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
         mc:Ignorable="d"
         x:Class="PoESkillTree.Views.MainWindow"
         x:Name="window"
@@ -444,7 +445,7 @@
                 </fluent:RibbonTabItem.Header>
                 <fluent:RibbonGroupBox>
                     <fluent:RibbonGroupBox.Header>
-                        <l:Catalog Message="Undo" />
+                        <l:Catalog Message="Passive tree" />
                     </fluent:RibbonGroupBox.Header>
                     <fluent:Button Click="tbSkillURL_Undo_Click"
                                    KeyTip="U"
@@ -462,7 +463,7 @@
                                     <l:Catalog Message="Undo (Ctrl+Z)" />
                                 </fluent:ScreenTip.Title>
                                 <fluent:ScreenTip.Text>
-                                    <l:Catalog Message="Undo the last skill tree action." />
+                                    <l:Catalog Message="Undo the last passive tree action." />
                                 </fluent:ScreenTip.Text>
                             </fluent:ScreenTip>
                         </fluent:Button.ToolTip>
@@ -483,7 +484,105 @@
                                     <l:Catalog Message="Redo (Ctrl+Y)" />
                                 </fluent:ScreenTip.Title>
                                 <fluent:ScreenTip.Text>
-                                    <l:Catalog Message="Redo the last skill tree action." />
+                                    <l:Catalog Message="Redo the last passive tree action." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
+                    <fluent:Button Click="btnReset_Click"
+                                   KeyTip="T"
+                                   Icon="{iconPacks:Modern Reset}">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconModern Kind="Reset"
+                                                      Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Reset" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Reset passive tree (Ctrl+R)" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Reset the passive tree. What is reset can be configured in the options." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
+                </fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox>
+                    <fluent:RibbonGroupBox.Header>
+                        <l:Catalog Message="Import" />
+                    </fluent:RibbonGroupBox.Header>
+                    <fluent:Button Command="{Binding BuildsControlViewModel.ImportCurrentFromClipboardCommand}"
+                                   KeyTip="IC"
+                                   Icon="{iconPacks:Modern ClipboardPaste}">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconModern Kind="ClipboardPaste"
+                                                      Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Import build (clipboard)" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Import build from clipboard" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Import a new build from the clipboard and open it." />
+                                </fluent:ScreenTip.Text>
+                                <fluent:ScreenTip.DisableReason>
+                                    <l:Catalog Message="The clipboard is empty or does not contain a build in a suitable format. Builds can only be imported as a XML string." />
+                                </fluent:ScreenTip.DisableReason>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
+                </fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox>
+                    <fluent:RibbonGroupBox.Header>
+                        <l:Catalog Message="Export" />
+                    </fluent:RibbonGroupBox.Header>
+                    <fluent:Button Command="{Binding BuildsControlViewModel.ExportCurrentToClipboardCommand}"
+                                   KeyTip="EC"
+                                   Icon="{iconPacks:Material ClipboardMultiple}">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconMaterial Kind="ClipboardMultiple"
+                                                        Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Export build (clipboard)" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Export build to clipboard" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Export the current build to the clipboard as a XML string." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
+                    <fluent:Button Click="btnPoeUrl_Click"
+                                   KeyTip="EP"
+                                   Icon="{iconPacks:Material Web}"
+                                   IsEnabled="{Binding NoAsyncTaskRunning, ElementName=window}">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconMaterial Kind="Web"
+                                                        Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Create PoEUrl of passive tree" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Create PoEUrl of passive tree (Ctrl+E)" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Creates a PoEUrl from the current passive tree URL and copies it to the clipboard." />
                                 </fluent:ScreenTip.Text>
                             </fluent:ScreenTip>
                         </fluent:Button.ToolTip>
@@ -495,6 +594,208 @@
                 <fluent:RibbonTabItem.Header>
                     <l:Catalog Message="View" />
                 </fluent:RibbonTabItem.Header>
+                <fluent:RibbonGroupBox>
+                    <fluent:RibbonGroupBox.Header>
+                        <l:Catalog Message="Panels" />
+                    </fluent:RibbonGroupBox.Header>
+                    <fluent:ToggleButton IsChecked="{Binding PersistentData.Options.AttributesBarOpened}"
+                                         KeyTip="S"
+                                         Icon="{iconPacks:Material TextShort}">
+                        <fluent:ToggleButton.LargeIcon>
+                            <iconPacks:PackIconMaterial Kind="TextShort"
+                                                        Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:ToggleButton.LargeIcon>
+                        <fluent:ToggleButton.Header>
+                            <l:Catalog Message="Build summary" />
+                        </fluent:ToggleButton.Header>
+                        <fluent:ToggleButton.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Build summary (Ctrl+Q)" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Show a summary of the currently opened build." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:ToggleButton.ToolTip>
+                    </fluent:ToggleButton>
+                    <fluent:ToggleButton IsChecked="{Binding PersistentData.Options.BuildsBarOpened}"
+                                         KeyTip="B"
+                                         Icon="{iconPacks:Material FileTree}">
+                        <fluent:ToggleButton.LargeIcon>
+                            <iconPacks:PackIconMaterial Kind="FileTree"
+                                                        Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:ToggleButton.LargeIcon>
+                        <fluent:ToggleButton.Header>
+                            <l:Catalog Message="Saved builds" />
+                        </fluent:ToggleButton.Header>
+                        <fluent:ToggleButton.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Saved builds (Ctrl+B)" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Show the available builds in the build save path." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:ToggleButton.ToolTip>
+                    </fluent:ToggleButton>
+                </fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox>
+                    <fluent:RibbonGroupBox.Header>
+                        <l:Catalog Message="Passive tree" />
+                    </fluent:RibbonGroupBox.Header>
+                    <fluent:ToggleButton IsChecked="{Binding PersistentData.Options.TreeComparisonEnabled}"
+                                         KeyTip="P"
+                                         Icon="{iconPacks:Material SelectCompare}">
+                        <fluent:ToggleButton.LargeIcon>
+                            <iconPacks:PackIconMaterial Kind="SelectCompare"
+                                                        Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:ToggleButton.LargeIcon>
+                        <fluent:ToggleButton.Header>
+                            <l:Catalog Message="Passive tree comparison" />
+                        </fluent:ToggleButton.Header>
+                        <fluent:ToggleButton.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Passive tree comparison" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Compare the passive trees of the current and selected builds. Builds can be selected in the saved builds panel." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:ToggleButton.ToolTip>
+                    </fluent:ToggleButton>
+                    <fluent:ToggleButton IsChecked="{Binding PersistentData.Options.ChangeSummaryEnabled}"
+                                         KeyTip="G"
+                                         Icon="{iconPacks:Material FileCompare}">
+                        <fluent:ToggleButton.LargeIcon>
+                            <iconPacks:PackIconMaterial Kind="FileCompare"
+                                                        Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:ToggleButton.LargeIcon>
+                        <fluent:ToggleButton.Header>
+                            <l:Catalog Message="Show summary of changes" />
+                        </fluent:ToggleButton.Header>
+                        <fluent:ToggleButton.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Show summary of changes (Ctrl+G)" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Show a summary of the total changes to the passive tree when hovering over a node." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:ToggleButton.ToolTip>
+                    </fluent:ToggleButton>
+                </fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox IsEnabled="{Binding PersistentData.Options.BuildsBarOpened}">
+                    <fluent:RibbonGroupBox.Header>
+                        <l:Catalog Message="Saved builds" />
+                    </fluent:RibbonGroupBox.Header>
+                    <fluent:Button Command="{Binding BuildsControlViewModel.ExpandAllCommand}"
+                                   KeyTip="E"
+                                   Icon="{iconPacks:Modern SectionExpandAll}">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconModern Kind="SectionExpandAll"
+                                                      Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Expand all folders" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Expand all folders" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Expand all build folders in the saved builds panel." />
+                                </fluent:ScreenTip.Text>
+                                <fluent:ScreenTip.DisableReason>
+                                    <l:Catalog Message="The saved builds panel must be open." />
+                                </fluent:ScreenTip.DisableReason>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
+                    <fluent:Button Command="{Binding BuildsControlViewModel.CollapseAllCommand}"
+                                   KeyTip="C"
+                                   Icon="{iconPacks:Modern SectionCollapseAll}">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconModern Kind="SectionCollapseAll"
+                                                      Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Collapse all folders" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Collapse all folders" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Collapse all build folders in the saved builds panel." />
+                                </fluent:ScreenTip.Text>
+                                <fluent:ScreenTip.DisableReason>
+                                    <l:Catalog Message="The saved builds panel must be open." />
+                                </fluent:ScreenTip.DisableReason>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
+                </fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox>
+                    <fluent:RibbonGroupBox.Header>
+                        <l:Catalog Message="Theme" />
+                    </fluent:RibbonGroupBox.Header>
+                    <fluent:ComboBox ItemsSource="{x:Static mahApps:ThemeManager.BaseColors}"
+                                     SelectedItem="{Binding PersistentData.Options.Theme}"
+                                     KeyTip="T"
+                                     IsEditable="False"
+                                     InputWidth="90">
+                        <fluent:ComboBox.Header>
+                            <l:Catalog Message="Theme:" />
+                        </fluent:ComboBox.Header>
+                        <fluent:ComboBox.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Theme" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Change the theme of the program's look." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:ComboBox.ToolTip>
+                    </fluent:ComboBox>
+                    <fluent:ComboBox ItemsSource="{x:Static mahApps:ThemeManager.ColorSchemes}"
+                                     SelectedValuePath="Name"
+                                     SelectedValue="{Binding PersistentData.Options.Accent}"
+                                     KeyTip="A"
+                                     IsEditable="False"
+                                     InputWidth="90">
+                        <fluent:ComboBox.Header>
+                            <l:Catalog Message="Accent:" />
+                        </fluent:ComboBox.Header>
+                        <fluent:ComboBox.ItemTemplate>
+                            <DataTemplate DataType="mahApps:ColorScheme">
+                                <StackPanel Orientation="Horizontal">
+                                    <Ellipse Width="15"
+                                             Height="15"
+                                             Fill="{Binding ShowcaseBrush, Mode=OneWay}" />
+                                    <TextBlock Text="{Binding Name}"
+                                               Margin="2 0 0 0" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </fluent:ComboBox.ItemTemplate>
+                        <fluent:ComboBox.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Accent" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Change the accent of the program's look." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:ComboBox.ToolTip>
+                    </fluent:ComboBox>
+                </fluent:RibbonGroupBox>
             </fluent:RibbonTabItem>
 
             <fluent:RibbonTabItem KeyTip="T">
@@ -513,246 +814,6 @@
         <Menu IsMainMenu="True" Grid.Row="0" Margin="0,0,0,2"
              dialogs:DialogParticipation.Register="{Binding PersistentData}"
              Visibility="Collapsed">
-            <MenuItem>
-                <MenuItem.Header>
-                    <l:Catalog Message="_File" />
-                </MenuItem.Header>
-                <MenuItem Command="{Binding BuildsControlViewModel.ExportCurrentToClipboardCommand}">
-                    <MenuItem.Header>
-                        <AccessText>
-                            <Binding Path="BuildsControlViewModel.CurrentBuild.Build.Name">
-                                <Binding.StringFormat>
-                                    <l:Catalog Message="Export {0} to clipboard" />
-                                </Binding.StringFormat>
-                            </Binding>
-                        </AccessText>
-                    </MenuItem.Header>
-                </MenuItem>
-                <MenuItem Command="{Binding BuildsControlViewModel.ImportCurrentFromClipboardCommand}">
-                    <MenuItem.Header>
-                        <l:Catalog Message="Import build from clipboard" />
-                    </MenuItem.Header>
-                </MenuItem>
-            </MenuItem>
-            <MenuItem>
-                <MenuItem InputGestureText="Ctrl+R" Click="btnReset_Click">
-                    <MenuItem.Header>
-                        <l:Catalog Message="Reset Skill _Tree" />
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="Reset" HorizontalAlignment="Center" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <Separator />
-                <MenuItem Click="Menu_CopyStats">
-                    <MenuItem.Header>
-                        <l:Catalog Message="Copy _Passive Attributes to Clipboard"/>
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="ClipboardPaste" HorizontalAlignment="Center" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem InputGestureText="Ctrl+E" Click="btnPoeUrl_Click" IsEnabled="{Binding NoAsyncTaskRunning, ElementName=window}">
-                    <MenuItem.Header>
-                        <l:Catalog Message="Copy Po_EUrl of Skill tree to Clipboard" />
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="ClipboardPaste" HorizontalAlignment="Center" />
-                    </MenuItem.Icon>
-                </MenuItem>
-            </MenuItem>
-            <MenuItem>
-                <MenuItem.Header>
-                    <l:Catalog Message="_View" />
-                </MenuItem.Header>
-                <MenuItem>
-                    <MenuItem.Header>
-                        <l:Catalog Message="_Theme" />
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="DrawBrush" HorizontalAlignment="Center" />
-                    </MenuItem.Icon>
-                    <MenuItem x:Name="mnuViewThemeLight" local:MenuItemExtensions.GroupName="ThemeGroup" IsCheckable="True" Tag="Light" Click="mnuSetTheme_Click">
-                        <MenuItem.Header>
-                            <l:Catalog Message="Light" Context="color" />
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem x:Name="mnuViewThemeDark" local:MenuItemExtensions.GroupName="ThemeGroup" IsCheckable="True" Tag="Dark" Click="mnuSetTheme_Click">
-                        <MenuItem.Header>
-                            <l:Catalog Message="Dark" Context="color" />
-                        </MenuItem.Header>
-                    </MenuItem>
-                </MenuItem>
-                <MenuItem>
-                    <MenuItem.Header>
-                        <l:Catalog Message="Acce_nt" />
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="DrawBrush" HorizontalAlignment="Center" />
-                    </MenuItem.Icon>
-                    <MenuItem x:Name="mnuViewAccentAmber" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Amber" Click="mnuSetAccent_Click" >
-                        <MenuItem.Header>
-                            <l:Catalog Context="color" Message="Amber"/>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem x:Name="mnuViewAccentBlue" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Blue" Click="mnuSetAccent_Click" >
-                        <MenuItem.Header>
-                            <l:Catalog Context="color" Message="Blue"/>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem x:Name="mnuViewAccentBrown" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Brown" Click="mnuSetAccent_Click" >
-                        <MenuItem.Header>
-                            <l:Catalog Context="color" Message="Brown"/>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem x:Name="mnuViewAccentCobalt" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Cobalt" Click="mnuSetAccent_Click" >
-                        <MenuItem.Header>
-                            <l:Catalog Context="color" Message="Cobalt"/>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem x:Name="mnuViewAccentCrimson" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Crimson" Click="mnuSetAccent_Click" >
-                        <MenuItem.Header>
-                            <l:Catalog Context="color" Message="Crimson"/>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem x:Name="mnuViewAccentCyan" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Cyan" Click="mnuSetAccent_Click" >
-                        <MenuItem.Header>
-                            <l:Catalog Context="color" Message="Cyan"/>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem x:Name="mnuViewAccentEmerald" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Emerald" Click="mnuSetAccent_Click" >
-                        <MenuItem.Header>
-                            <l:Catalog Context="color" Message="Emerald"/>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem x:Name="mnuViewAccentGreen" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Green" Click="mnuSetAccent_Click" >
-                        <MenuItem.Header>
-                            <l:Catalog Context="color" Message="Green"/>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem x:Name="mnuViewAccentIndigo" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Indigo" Click="mnuSetAccent_Click" >
-                        <MenuItem.Header>
-                            <l:Catalog Context="color" Message="Indigo"/>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem x:Name="mnuViewAccentLime" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Lime" Click="mnuSetAccent_Click" >
-                        <MenuItem.Header>
-                            <l:Catalog Context="color" Message="Lime"/>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem x:Name="mnuViewAccentMagenta" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Magenta" Click="mnuSetAccent_Click" >
-                        <MenuItem.Header>
-                            <l:Catalog Context="color" Message="Magenta"/>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem x:Name="mnuViewAccentMauve" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Mauve" Click="mnuSetAccent_Click" >
-                        <MenuItem.Header>
-                            <l:Catalog Context="color" Message="Mauve"/>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem x:Name="mnuViewAccentOlive" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Olive" Click="mnuSetAccent_Click" >
-                        <MenuItem.Header>
-                            <l:Catalog Context="color" Message="Olive"/>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem x:Name="mnuViewAccentOrange" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Orange" Click="mnuSetAccent_Click" >
-                        <MenuItem.Header>
-                            <l:Catalog Context="color" Message="Orange"/>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem x:Name="mnuViewAccentPink" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Pink" Click="mnuSetAccent_Click" >
-                        <MenuItem.Header>
-                            <l:Catalog Context="color" Message="Pink"/>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem x:Name="mnuViewAccentPurple" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Purple" Click="mnuSetAccent_Click" >
-                        <MenuItem.Header>
-                            <l:Catalog Context="color" Message="Purple"/>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem x:Name="mnuViewAccentRed" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Red" Click="mnuSetAccent_Click" >
-                        <MenuItem.Header>
-                            <l:Catalog Context="color" Message="Red"/>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem x:Name="mnuViewAccentSienna" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Sienna" Click="mnuSetAccent_Click" >
-                        <MenuItem.Header>
-                            <l:Catalog Context="color" Message="Sienna"/>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem x:Name="mnuViewAccentSteel" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Steel" Click="mnuSetAccent_Click" >
-                        <MenuItem.Header>
-                            <l:Catalog Context="color" Message="Steel"/>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem x:Name="mnuViewAccentTaupe" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Taupe" Click="mnuSetAccent_Click" >
-                        <MenuItem.Header>
-                            <l:Catalog Context="color" Message="Taupe"/>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem x:Name="mnuViewAccentTeal" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Teal" Click="mnuSetAccent_Click" >
-                        <MenuItem.Header>
-                            <l:Catalog Context="color" Message="Teal"/>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem x:Name="mnuViewAccentViolet" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Violet" Click="mnuSetAccent_Click" >
-                        <MenuItem.Header>
-                            <l:Catalog Context="color" Message="Violet"/>
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem x:Name="mnuViewAccentYellow" local:MenuItemExtensions.GroupName="AccentGroup" IsCheckable="True" Tag="Yellow" Click="mnuSetAccent_Click" >
-                        <MenuItem.Header>
-                            <l:Catalog Context="color" Message="Yellow"/>
-                        </MenuItem.Header>
-                    </MenuItem>
-                </MenuItem>
-                <Separator />
-                <MenuItem x:Name="mnuViewBuilds" InputGestureText="Ctrl+B" IsCheckable="true" IsChecked="{Binding PersistentData.Options.BuildsBarOpened,ElementName=window, Mode=TwoWay}">
-                    <MenuItem.Header>
-                        <l:Catalog Message="Saved _Builds" />
-                    </MenuItem.Header>
-                </MenuItem>
-                <MenuItem x:Name="mnuViewAttributes" InputGestureText="Ctrl+Q" IsCheckable="true"
-                          IsChecked="{Binding PersistentData.Options.AttributesBarOpened,ElementName=window, Mode=TwoWay}">
-                    <MenuItem.Header>
-                        <l:Catalog Message="_Attributes" />
-                    </MenuItem.Header>
-                </MenuItem>
-                <MenuItem IsCheckable="true"
-                          IsChecked="{Binding PersistentData.Options.TreeComparisonEnabled,ElementName=window, Mode=TwoWay}">
-                    <MenuItem.Header>
-                        <l:Catalog Message="Skill _Tree Comparison" />
-                    </MenuItem.Header>
-                </MenuItem>
-                <Separator/>
-                <MenuItem Command="{Binding BuildsControlViewModel.ExpandAllCommand}">
-                    <MenuItem.Header>
-                        <l:Catalog>Expand all build folders</l:Catalog>
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="SectionExpandAll" HorizontalAlignment="Center" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Command="{Binding BuildsControlViewModel.CollapseAllCommand}">
-                    <MenuItem.Header>
-                        <l:Catalog>Collapse all build folders</l:Catalog>
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="SectionCollapseAll" HorizontalAlignment="Center" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <Separator />
-                <MenuItem x:Name="mnuShowSummary" IsCheckable="true"
-                          IsChecked="{Binding PersistentData.Options.ChangeSummaryEnabled,ElementName=window, Mode=TwoWay}"
-                          InputGestureText="Ctrl+G">
-                    <MenuItem.Header>
-                        <l:Catalog Message="Show summary of changes" />
-                    </MenuItem.Header>
-                    <MenuItem.ToolTip>
-                        <l:Catalog>Shows a summary of the total changes to the passive tree when hovering over a node.</l:Catalog>
-                    </MenuItem.ToolTip>
-                </MenuItem>
-            </MenuItem>
             <MenuItem>
                 <MenuItem.Header>
                     <l:Catalog Message="_Tools" />
@@ -1066,7 +1127,7 @@
                 </TabItem>
             </TabControl>
 
-            <Expander Style="{StaticResource TopRowExpander}" HorizontalAlignment="Right" FlowDirection="RightToLeft" IsExpanded="{Binding IsChecked,ElementName=mnuViewBuilds}">
+            <Expander Style="{StaticResource TopRowExpander}" HorizontalAlignment="Right" FlowDirection="RightToLeft" IsExpanded="{Binding PersistentData.Options.BuildsBarOpened}">
                 <Expander.Header>
                     <l:Catalog Message="Saved Builds"/>
                 </Expander.Header>
@@ -1076,7 +1137,7 @@
             </Expander>
 
             <Expander Style="{StaticResource TopRowExpander}"
-                      IsExpanded="{Binding IsChecked,ElementName=mnuViewAttributes}"
+                      IsExpanded="{Binding PersistentData.Options.AttributesBarOpened}"
                       MouseLeave="expAttributes_MouseLeave">
                 <Expander.Header>
                     <l:Catalog Message="Attributes"/>

@@ -654,6 +654,10 @@ namespace PoESkillTree.Views
                 case nameof(Options.TreeComparisonEnabled):
                     UpdateTreeComparison();
                     break;
+                case nameof(Options.Theme):
+                case nameof(Options.Accent):
+                    SetTheme();
+                    break;
             }
             SearchUpdate();
         }
@@ -953,23 +957,6 @@ namespace PoESkillTree.Views
         private async void Menu_ImportStash(object sender, RoutedEventArgs e)
         {
             await this.ShowDialogAsync(_importViewModels.ImportStash, new ImportStashWindow());
-        }
-
-        private async void Menu_CopyStats(object sender, RoutedEventArgs e)
-        {
-            var sb = new StringBuilder();
-            foreach (var at in _attiblist)
-            {
-                sb.AppendLine(at.ToString());
-            }
-            try
-            {
-                Clipboard.SetText(sb.ToString());
-            }
-            catch (Exception ex)
-            {
-                await this.ShowErrorAsync(L10n.Message("An error occurred while copying to Clipboard."), ex.Message);
-            }
         }
 
         private async void Menu_RedownloadTreeAssets(object sender, RoutedEventArgs e)
@@ -1977,42 +1964,16 @@ namespace PoESkillTree.Views
 
 #region Theme
 
-        private void mnuSetTheme_Click(object? sender, RoutedEventArgs e)
-        {
-            var menuItem = sender as MenuItem;
-            if (menuItem == null) return;
-
-            SetTheme((string) menuItem.Tag);
-        }
-
-        private void SetTheme(string sTheme)
-        {
-            ThemeManager.ChangeTheme(Application.Current, sTheme, PersistentData.Options.Accent);
-            ((MenuItem)NameScope.GetNameScope(this).FindName("mnuViewTheme" + sTheme)).IsChecked = true;
-            PersistentData.Options.Theme = sTheme;
-        }
-
-        private void mnuSetAccent_Click(object? sender, RoutedEventArgs e)
-        {
-            var menuItem = sender as MenuItem;
-            if (menuItem == null) return;
-
-            SetAccent((string) menuItem.Tag);
-        }
-
-        private void SetAccent(string sAccent)
-        {
-            ThemeManager.ChangeTheme(Application.Current, PersistentData.Options.Theme, sAccent);
-            ((MenuItem)NameScope.GetNameScope(this).FindName("mnuViewAccent" + sAccent)).IsChecked = true;
-            PersistentData.Options.Accent = sAccent;
-        }
-
         private void InitializeTheme()
         {
-            SetTheme(PersistentData.Options.Theme);
-            SetAccent(PersistentData.Options.Accent);
+            SetTheme();
             SyncThemeManagers(null, null);
             ThemeManager.IsThemeChanged += SyncThemeManagers;
+        }
+
+        private void SetTheme()
+        {
+            ThemeManager.ChangeTheme(Application.Current, PersistentData.Options.Theme, PersistentData.Options.Accent);
         }
 
         private void SyncThemeManagers(object? sender, OnThemeChangedEventArgs? args)

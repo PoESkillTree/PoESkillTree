@@ -312,57 +312,5 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </TreeView>
-
-        <controls:ToggleSwitch Grid.Row="2" Margin="0 0 5 0"
-                               IsChecked="{Binding PersistentData.Options.TreeComparisonEnabled}"
-                               ContentDirection="RightToLeft"
-                               HorizontalContentAlignment="Left">
-            <controls:ToggleSwitch.OnLabel>
-                <l:Catalog Message="Skill Tree comparison enabled" />
-            </controls:ToggleSwitch.OnLabel>
-            <controls:ToggleSwitch.OffLabel>
-                <l:Catalog Message="Skill Tree comparison disabled" />
-            </controls:ToggleSwitch.OffLabel>
-        </controls:ToggleSwitch>
-        
-        <UniformGrid Grid.Row="3" Rows="1" Margin="5 0">
-            <Button Command="{Binding SaveBuildCommand}"
-                    CommandParameter="{Binding CurrentBuild}"
-                    Margin="0 0 5 0" Height="30" MinWidth="55"
-                    ToolTipService.ShowOnDisabled="True">
-                <l:Catalog Message="Save" />
-                <Button.ToolTip>
-                    <l:Catalog Message="Saves the currently opened build" />
-                </Button.ToolTip>
-            </Button>
-            <Button Command="{Binding SaveBuildAsCommand}"
-                    CommandParameter="{Binding CurrentBuild}"
-                    Margin="0 0 5 0" Height="30" MinWidth="55"
-                    ToolTipService.ShowOnDisabled="True">
-                <l:Catalog Message="Save As" />
-                <Button.ToolTip>
-                    <l:Catalog Message="Saves the currently opened build as a new build" />
-                </Button.ToolTip>
-            </Button>
-            <Button Command="{Binding SaveAllBuildsCommand}"
-                    Margin="0" Height="30" MinWidth="55">
-                <l:Catalog Message="Save All" />
-                <Button.ToolTip>
-                    <l:Catalog Message="Saves all changed builds" />
-                </Button.ToolTip>
-            </Button>
-        </UniformGrid>
-        <UniformGrid Grid.Row="4" Rows="1" Margin="5 5 5 0">
-            <Button Command="{Binding NewBuildCommand}"
-                    CommandParameter="{Binding BuildRoot}"
-                    Margin="0 0 5 0" Height="30">
-                <l:Catalog Message="New top level build" />
-            </Button>
-            <Button Command="{Binding NewFolderCommand}"
-                    CommandParameter="{Binding BuildRoot}"
-                    Margin="0" Height="30">
-                <l:Catalog Message="New top level folder" />
-            </Button>
-        </UniformGrid>
     </Grid>
 </UserControl>
