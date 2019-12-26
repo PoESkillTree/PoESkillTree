@@ -58,7 +58,7 @@ namespace PoESkillTree.Views
     /// <summary>
     ///     Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : INotifyPropertyChanged
+    public partial class MainWindow : INotifyPropertyChanged, IRibbonWindow
     {
         private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
@@ -234,6 +234,15 @@ namespace PoESkillTree.Views
         {
             get => _inputTreeUrl;
             set => SetProperty(ref _inputTreeUrl, value);
+        }
+
+        public static readonly DependencyProperty TitleBarProperty = DependencyProperty.Register(
+            "TitleBar", typeof(RibbonTitleBar), typeof(MainWindow), new PropertyMetadata(default(RibbonTitleBar)));
+
+        public RibbonTitleBar TitleBar
+        {
+            get => (RibbonTitleBar) GetValue(TitleBarProperty);
+            private set => SetValue(TitleBarProperty, value);
         }
 
 #pragma warning disable CS8618 // Initialized in Window_Loaded
@@ -509,9 +518,9 @@ namespace PoESkillTree.Views
 
         private void InitializeIndependentUI()
         {
-            var titleBar = this.FindChild<RibbonTitleBar>("RibbonTitleBar");
-            titleBar.InvalidateArrange();
-            titleBar.UpdateLayout();
+            TitleBar = this.FindChild<RibbonTitleBar>("RibbonTitleBar");
+            TitleBar.InvalidateArrange();
+            TitleBar.UpdateLayout();
 
             var cmHighlight = new MenuItem
             {
