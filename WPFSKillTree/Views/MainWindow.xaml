@@ -30,18 +30,16 @@
         DataContext="{Binding ElementName=window}"
         UseLayoutRounding="True"
         ShowSystemMenuOnRightClick="False"
-        Title="{Binding PersistentData.CurrentBuild.Name}">
+        Title="{Binding PersistentData.CurrentBuild.Name}"
+        TitleBarHeight="25">
     <controls:MetroWindow.TitleTemplate>
         <DataTemplate>
             <fluent:RibbonTitleBar x:Name="RibbonTitleBar"
-                                   Header="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
-                                   HeaderAlignment="Left">
+                                   Header="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}">
                 <fluent:RibbonTitleBar.HeaderTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding}"
-                                   FontSize="{DynamicResource MahApps.Font.Size.Window.Title}"
-                                   VerticalAlignment="Center"
-                                   Margin="5 0 0 0"/>
+                                   FontSize="{DynamicResource MahApps.Font.Size.Window.Title}"/>
                     </DataTemplate>
                 </fluent:RibbonTitleBar.HeaderTemplate>
             </fluent:RibbonTitleBar>
@@ -79,6 +77,20 @@
                BasedOn="{StaticResource {x:Type fluent:BackstageTabControl}}">
             <Setter Property="SelectedContentMargin"
                     Value="0" />
+        </Style>
+        <Style x:Key="LargeRibbonIconStyle"
+               TargetType="iconPacks:PackIconBase">
+            <Setter Property="Width" Value="20" />
+            <Setter Property="Height" Value="20" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="LargeBackstageIconStyle"
+               TargetType="iconPacks:PackIconBase">
+            <Setter Property="Width" Value="25" />
+            <Setter Property="Height" Value="25" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
     </Window.Resources>
 
@@ -124,47 +136,322 @@
         </Grid.RowDefinitions>
 
         <!-- grid row 0 - upper part-->
-        <fluent:Ribbon Grid.Row="0">
+        <fluent:Ribbon Grid.Row="0"
+                       AutomaticStateManagement="True">
+            <fluent:Ribbon.QuickAccessItems>
+                <fluent:QuickAccessMenuItem Target="{Binding ElementName=NewTopLevelBuildButton}"
+                                            IsChecked="True" />
+                <fluent:QuickAccessMenuItem Target="{Binding ElementName=NewTopLevelFolderButton}" />
+                <fluent:QuickAccessMenuItem Target="{Binding ElementName=SaveButton}"
+                                            IsChecked="True" />
+                <fluent:QuickAccessMenuItem Target="{Binding ElementName=SaveAsButton}"
+                                            IsChecked="True" />
+                <fluent:QuickAccessMenuItem Target="{Binding ElementName=SaveAllButton}"
+                                            IsChecked="True" />
+            </fluent:Ribbon.QuickAccessItems>
+
             <fluent:Ribbon.Menu>
-                <fluent:Backstage UseHighestAvailableAdornerLayer="False"></fluent:Backstage>
+                <fluent:Backstage UseHighestAvailableAdornerLayer="False" >
+                    <fluent:BackstageTabControl>
+                        <fluent:BackstageTabItem KeyTip="N">
+                            <fluent:BackstageTabItem.Header>
+                                <l:Catalog Message="New" />
+                            </fluent:BackstageTabItem.Header>
+                            <UniformGrid Columns="2" 
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top">
+                                <UniformGrid.Resources>
+                                    <Style TargetType="fluent:Button"
+                                           BasedOn="{StaticResource {x:Type fluent:Button}}">
+                                        <Setter Property="Margin" Value="5 5 0 0" />
+                                        <Setter Property="BorderThickness" Value="1" />
+                                        <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Controls.Border}" />
+                                    </Style>
+                                </UniformGrid.Resources>
+                                <fluent:Button x:Name="NewTopLevelBuildButton"
+                                               Command="{Binding BuildsControlViewModel.NewBuildCommand}"
+                                               CommandParameter="{Binding BuildsControlViewModel.BuildRoot}"
+                                               KeyTip="BT"
+                                               Icon="{iconPacks:Material FilePlusOutline}">
+                                    <fluent:Button.LargeIcon>
+                                        <iconPacks:PackIconMaterial Kind="FilePlusOutline"
+                                                                    Style="{StaticResource LargeBackstageIconStyle}" />
+                                    </fluent:Button.LargeIcon>
+                                    <fluent:Button.Header>
+                                        <l:Catalog Message="New top level build" />
+                                    </fluent:Button.Header>
+                                    <fluent:Button.ToolTip>
+                                        <fluent:ScreenTip>
+                                            <fluent:ScreenTip.Title>
+                                                <l:Catalog Message="New top level build (Ctrl+N)" />
+                                            </fluent:ScreenTip.Title>
+                                            <fluent:ScreenTip.Text>
+                                                <l:Catalog Message="Create a new empty build in the root build folder" />
+                                            </fluent:ScreenTip.Text>
+                                        </fluent:ScreenTip>
+                                    </fluent:Button.ToolTip>
+                                </fluent:Button>
+                                <fluent:Button Command="{Binding BuildsControlViewModel.NewBuildCommand}"
+                                               CommandParameter="{Binding BuildsControlViewModel.CurrentBuild}"
+                                               KeyTip="BC"
+                                               Icon="{iconPacks:Material FilePlus}">
+                                    <fluent:Button.LargeIcon>
+                                        <iconPacks:PackIconMaterial Kind="FilePlus"
+                                                                    Style="{StaticResource LargeBackstageIconStyle}" />
+                                    </fluent:Button.LargeIcon>
+                                    <fluent:Button.Header>
+                                        <l:Catalog Message="New build next to current" />
+                                    </fluent:Button.Header>
+                                    <fluent:Button.ToolTip>
+                                        <fluent:ScreenTip>
+                                            <fluent:ScreenTip.Title>
+                                                <l:Catalog Message="New build next to current" />
+                                            </fluent:ScreenTip.Title>
+                                            <fluent:ScreenTip.Text>
+                                                <Binding Path="BuildsControlViewModel.CurrentBuild.Parent.Build.Name">
+                                                    <Binding.StringFormat>
+                                                        <l:Catalog Message="Create a new empty build in the same folder as the current build ({0})" />
+                                                    </Binding.StringFormat>
+                                                </Binding>
+                                            </fluent:ScreenTip.Text>
+                                        </fluent:ScreenTip>
+                                    </fluent:Button.ToolTip>
+                                </fluent:Button>
+                                <fluent:Button x:Name="NewTopLevelFolderButton"
+                                               Command="{Binding BuildsControlViewModel.NewFolderCommand}"
+                                               CommandParameter="{Binding BuildsControlViewModel.BuildRoot}"
+                                               KeyTip="FT"
+                                               Icon="{iconPacks:Material FolderPlusOutline}">
+                                    <fluent:Button.LargeIcon>
+                                        <iconPacks:PackIconMaterial Kind="FolderPlusOutline"
+                                                                    Style="{StaticResource LargeBackstageIconStyle}" />
+                                    </fluent:Button.LargeIcon>
+                                    <fluent:Button.Header>
+                                        <l:Catalog Message="New top level folder" />
+                                    </fluent:Button.Header>
+                                    <fluent:Button.ToolTip>
+                                        <fluent:ScreenTip>
+                                            <fluent:ScreenTip.Title>
+                                                <l:Catalog Message="New top level folder" />
+                                            </fluent:ScreenTip.Title>
+                                            <fluent:ScreenTip.Text>
+                                                <l:Catalog Message="Create a new empty folder in the root build folder" />
+                                            </fluent:ScreenTip.Text>
+                                        </fluent:ScreenTip>
+                                    </fluent:Button.ToolTip>
+                                </fluent:Button>
+                                <fluent:Button Command="{Binding BuildsControlViewModel.NewFolderCommand}"
+                                               CommandParameter="{Binding BuildsControlViewModel.CurrentBuild}"
+                                               KeyTip="FC"
+                                               Icon="{iconPacks:Material FolderPlus}">
+                                    <fluent:Button.LargeIcon>
+                                        <iconPacks:PackIconMaterial Kind="FolderPlus"
+                                                                    Style="{StaticResource LargeBackstageIconStyle}" />
+                                    </fluent:Button.LargeIcon>
+                                    <fluent:Button.Header>
+                                        <l:Catalog Message="New folder next to current" />
+                                    </fluent:Button.Header>
+                                    <fluent:Button.ToolTip>
+                                        <fluent:ScreenTip>
+                                            <fluent:ScreenTip.Title>
+                                                <l:Catalog Message="New folder next to current" />
+                                            </fluent:ScreenTip.Title>
+                                            <fluent:ScreenTip.Text>
+                                                <Binding Path="BuildsControlViewModel.CurrentBuild.Parent.Build.Name">
+                                                    <Binding.StringFormat>
+                                                        <l:Catalog Message="Create a new empty folder in the same folder as the current build ({0})" />
+                                                    </Binding.StringFormat>
+                                                </Binding>
+                                            </fluent:ScreenTip.Text>
+                                            <fluent:ScreenTip.DisableReason>
+                                                <l:Catalog Message="Maximum folder depth has been reached." />
+                                            </fluent:ScreenTip.DisableReason>
+                                        </fluent:ScreenTip>
+                                    </fluent:Button.ToolTip>
+                                </fluent:Button>
+                            </UniformGrid>
+                        </fluent:BackstageTabItem>
+                        <fluent:BackstageTabItem KeyTip="S">
+                            <fluent:BackstageTabItem.Header>
+                                <l:Catalog Message="Save" />
+                            </fluent:BackstageTabItem.Header>
+                            <StackPanel Orientation="Vertical"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top">
+                                <StackPanel.Resources>
+                                    <Style TargetType="fluent:Button"
+                                           BasedOn="{StaticResource {x:Type fluent:Button}}">
+                                        <Setter Property="Margin" Value="5 5 0 0" />
+                                        <Setter Property="BorderThickness" Value="1" />
+                                        <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Controls.Border}" />
+                                    </Style>
+                                </StackPanel.Resources>
+                                <fluent:Button x:Name="SaveButton"
+                                               Command="{Binding BuildsControlViewModel.SaveBuildCommand}"
+                                               CommandParameter="{Binding BuildsControlViewModel.CurrentBuild}"
+                                               KeyTip="S"
+                                               Icon="{iconPacks:Material ContentSave}">
+                                    <fluent:Button.LargeIcon>
+                                        <iconPacks:PackIconMaterial Kind="ContentSave"
+                                                                    Style="{StaticResource LargeBackstageIconStyle}" />
+                                    </fluent:Button.LargeIcon>
+                                    <fluent:Button.Header>
+                                        <l:Catalog Message="Save current build" />
+                                    </fluent:Button.Header>
+                                    <fluent:Button.ToolTip>
+                                        <fluent:ScreenTip>
+                                            <fluent:ScreenTip.Title>
+                                                <l:Catalog Message="Save current build (Ctrl+S)" />
+                                            </fluent:ScreenTip.Title>
+                                            <fluent:ScreenTip.Text>
+                                                <l:Catalog Message="Save the currently opened build" />
+                                            </fluent:ScreenTip.Text>
+                                            <fluent:ScreenTip.DisableReason>
+                                                <l:Catalog Message="The current build has no unsaved changes." />
+                                            </fluent:ScreenTip.DisableReason>
+                                        </fluent:ScreenTip>
+                                    </fluent:Button.ToolTip>
+                                </fluent:Button>
+                                <fluent:Button x:Name="SaveAsButton"
+                                               Command="{Binding BuildsControlViewModel.SaveBuildAsCommand}"
+                                               CommandParameter="{Binding BuildsControlViewModel.CurrentBuild}"
+                                               KeyTip="N"
+                                               Icon="{iconPacks:Material ContentSaveEdit}">
+                                    <fluent:Button.LargeIcon>
+                                        <iconPacks:PackIconMaterial Kind="ContentSaveEdit"
+                                                                    Style="{StaticResource LargeBackstageIconStyle}" />
+                                    </fluent:Button.LargeIcon>
+                                    <fluent:Button.Header>
+                                        <l:Catalog Message="Save current build as" />
+                                    </fluent:Button.Header>
+                                    <fluent:Button.ToolTip>
+                                        <fluent:ScreenTip>
+                                            <fluent:ScreenTip.Title>
+                                                <l:Catalog Message="Save current build as (Ctrl+Alt+S)" />
+                                            </fluent:ScreenTip.Title>
+                                            <fluent:ScreenTip.Text>
+                                                <l:Catalog Message="Save the currently opened build as a new build" />
+                                            </fluent:ScreenTip.Text>
+                                        </fluent:ScreenTip>
+                                    </fluent:Button.ToolTip>
+                                </fluent:Button>
+                                <fluent:Button x:Name="SaveAllButton"
+                                               Command="{Binding BuildsControlViewModel.SaveAllBuildsCommand}"
+                                               KeyTip="A"
+                                               Icon="{iconPacks:Material ContentSaveAll}">
+                                    <fluent:Button.LargeIcon>
+                                        <iconPacks:PackIconMaterial Kind="ContentSaveAll"
+                                                                    Style="{StaticResource LargeBackstageIconStyle}" />
+                                    </fluent:Button.LargeIcon>
+                                    <fluent:Button.Header>
+                                        <l:Catalog Message="Save all builds" />
+                                    </fluent:Button.Header>
+                                    <fluent:Button.ToolTip>
+                                        <fluent:ScreenTip>
+                                            <fluent:ScreenTip.Title>
+                                                <l:Catalog Message="Save all builds (Ctrl+Shift+N)" />
+                                            </fluent:ScreenTip.Title>
+                                            <fluent:ScreenTip.Text>
+                                                <l:Catalog Message="Save all changed builds" />
+                                            </fluent:ScreenTip.Text>
+                                            <fluent:ScreenTip.DisableReason>
+                                                <l:Catalog Message="No build has unsaved changes." />
+                                            </fluent:ScreenTip.DisableReason>
+                                        </fluent:ScreenTip>
+                                    </fluent:Button.ToolTip>
+                                </fluent:Button>
+                            </StackPanel>
+                        </fluent:BackstageTabItem>
+
+                        <fluent:SeparatorTabItem />
+                        <fluent:Button Command="{Binding BuildsControlViewModel.ReloadCommand}"
+                                       KeyTip="R"
+                                       Icon="{iconPacks:Modern RefreshClockwiseUp}">
+                            <fluent:Button.Header>
+                                <l:Catalog Message="Reload builds from file system" />
+                            </fluent:Button.Header>
+                            <fluent:Button.ToolTip>
+                                <fluent:ScreenTip>
+                                    <fluent:ScreenTip.Title>
+                                        <l:Catalog Message="Reload builds from file system" />
+                                    </fluent:ScreenTip.Title>
+                                    <fluent:ScreenTip.Text>
+                                        <l:Catalog Message="Reload saved build information from file system, e.g. after manually copying builds there" />
+                                    </fluent:ScreenTip.Text>
+                                </fluent:ScreenTip>
+                            </fluent:Button.ToolTip>
+                        </fluent:Button>
+                        <fluent:Button Command="{Binding BuildsControlViewModel.OpenBuildsSavePathCommand}"
+                                       KeyTip="B"
+                                       Icon="{iconPacks:Modern FolderOpen}">
+                            <fluent:Button.Header>
+                                <l:Catalog Message="Open build directory" />
+                            </fluent:Button.Header>
+                            <fluent:Button.ToolTip>
+                                <fluent:ScreenTip>
+                                    <fluent:ScreenTip.Title>
+                                        <l:Catalog Message="Open build directory" />
+                                    </fluent:ScreenTip.Title>
+                                    <fluent:ScreenTip.Text>
+                                        <l:Catalog Message="Open the build save path in the file explorer.&#x0a;The path can be changed in the options." />
+                                    </fluent:ScreenTip.Text>
+                                </fluent:ScreenTip>
+                            </fluent:Button.ToolTip>
+                        </fluent:Button>
+
+                        <fluent:SeparatorTabItem />
+                        <fluent:Button Click="Menu_OpenSettings"
+                                       KeyTip="O"
+                                       Icon="{iconPacks:Modern Settings}">
+                            <fluent:Button.Header>
+                                <l:Catalog Message="Options" />
+                            </fluent:Button.Header>
+                            <fluent:Button.ToolTip>
+                                <fluent:ScreenTip>
+                                    <fluent:ScreenTip.Title>
+                                        <l:Catalog Message="Options" />
+                                    </fluent:ScreenTip.Title>
+                                    <fluent:ScreenTip.Text>
+                                        <l:Catalog Message="Open the options." />
+                                    </fluent:ScreenTip.Text>
+                                </fluent:ScreenTip>
+                            </fluent:Button.ToolTip>
+                        </fluent:Button>
+                        <fluent:Button Click="Menu_Exit"
+                                       KeyTip="X"
+                                       Icon="{iconPacks:Modern Close}">
+                            <fluent:Button.Header>
+                                <l:Catalog Message="Exit" />
+                            </fluent:Button.Header>
+                            <fluent:Button.ToolTip>
+                                <fluent:ScreenTip>
+                                    <fluent:ScreenTip.Title>
+                                        <l:Catalog Message="Exit (Alt+F4)" />
+                                    </fluent:ScreenTip.Title>
+                                    <fluent:ScreenTip.Text>
+                                        <l:Catalog Message="Exit the program." />
+                                    </fluent:ScreenTip.Text>
+                                </fluent:ScreenTip>
+                            </fluent:Button.ToolTip>
+                        </fluent:Button>
+                    </fluent:BackstageTabControl>
+                </fluent:Backstage>
             </fluent:Ribbon.Menu>
 
             <fluent:RibbonTabItem KeyTip="H">
                 <fluent:RibbonTabItem.Header>
                     <l:Catalog Message="Home" />
                 </fluent:RibbonTabItem.Header>
-                <fluent:RibbonGroupBox Header="Edit">
-                    <fluent:Button Icon="{iconPacks:Modern Settings}"
-                                   KeyTip="S"
-                                   Click="Menu_OpenSettings">
-                        <fluent:Button.LargeIcon>
-                            <iconPacks:PackIconModern Kind="Settings"
-                                                      Width="20" Height="20"
-                                                      HorizontalAlignment="Center"
-                                                      VerticalAlignment="Center" />
-                        </fluent:Button.LargeIcon>
-                        <fluent:Button.Header>
-                            <l:Catalog Message="Settings" />
-                        </fluent:Button.Header>
-                        <fluent:Button.ToolTip>
-                            <fluent:ScreenTip>
-                                <fluent:ScreenTip.Title>
-                                    <l:Catalog Message="Settings" />
-                                </fluent:ScreenTip.Title>
-                                <fluent:ScreenTip.Text>
-                                    <l:Catalog Message="Open the settings dialog." />
-                                </fluent:ScreenTip.Text>
-                            </fluent:ScreenTip>
-                        </fluent:Button.ToolTip>
-                    </fluent:Button>
-                    <fluent:Button Icon="{iconPacks:Modern Undo}"
+                <fluent:RibbonGroupBox>
+                    <fluent:RibbonGroupBox.Header>
+                        <l:Catalog Message="Undo" />
+                    </fluent:RibbonGroupBox.Header>
+                    <fluent:Button Click="tbSkillURL_Undo_Click"
                                    KeyTip="U"
-                                   Click="tbSkillURL_Undo_Click">
+                                   Icon="{iconPacks:Modern Undo}">
                         <fluent:Button.LargeIcon>
                             <iconPacks:PackIconModern Kind="Undo"
-                                                      Width="20" Height="20"
-                                                      HorizontalAlignment="Center"
-                                                      VerticalAlignment="Center" />
+                                                      Style="{StaticResource LargeRibbonIconStyle}" />
                         </fluent:Button.LargeIcon>
                         <fluent:Button.Header>
                             <l:Catalog Message="Undo" />
@@ -180,12 +467,45 @@
                             </fluent:ScreenTip>
                         </fluent:Button.ToolTip>
                     </fluent:Button>
+                    <fluent:Button Click="tbSkillURL_Redo_Click"
+                                   KeyTip="R"
+                                   Icon="{iconPacks:Modern Redo}">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconModern Kind="Redo"
+                                                      Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Redo" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Redo (Ctrl+Y)" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Redo the last skill tree action." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
                 </fluent:RibbonGroupBox>
             </fluent:RibbonTabItem>
 
             <fluent:RibbonTabItem KeyTip="V">
                 <fluent:RibbonTabItem.Header>
                     <l:Catalog Message="View" />
+                </fluent:RibbonTabItem.Header>
+            </fluent:RibbonTabItem>
+
+            <fluent:RibbonTabItem KeyTip="T">
+                <fluent:RibbonTabItem.Header>
+                    <l:Catalog Message="Tools" />
+                </fluent:RibbonTabItem.Header>
+            </fluent:RibbonTabItem>
+
+            <fluent:RibbonTabItem KeyTip="E">
+                <fluent:RibbonTabItem.Header>
+                    <l:Catalog Message="Help" />
                 </fluent:RibbonTabItem.Header>
             </fluent:RibbonTabItem>
         </fluent:Ribbon>
@@ -197,52 +517,6 @@
                 <MenuItem.Header>
                     <l:Catalog Message="_File" />
                 </MenuItem.Header>
-                <MenuItem InputGestureText="Ctrl+N"
-                          Command="{Binding BuildsControlViewModel.NewBuildCommand}"
-                          CommandParameter="{Binding BuildsControlViewModel.BuildRoot}">
-                    <MenuItem.Header>
-                        <l:Catalog Message="_New" />
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="PageNew" HorizontalAlignment="Center" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem InputGestureText="Ctrl+S"
-                          Command="{Binding BuildsControlViewModel.SaveBuildCommand}"
-                          CommandParameter="{Binding BuildsControlViewModel.CurrentBuild}">
-                    <MenuItem.Header>
-                        <AccessText>
-                            <Binding Path="BuildsControlViewModel.CurrentBuild.Build.Name">
-                                <Binding.StringFormat>
-                                    <l:Catalog>_Save {0}</l:Catalog>
-                                </Binding.StringFormat>
-                            </Binding>
-                        </AccessText>
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="Save" HorizontalAlignment="Center" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem InputGestureText="Ctrl+Alt+S"
-                          Command="{Binding BuildsControlViewModel.SaveBuildAsCommand}"
-                          CommandParameter="{Binding BuildsControlViewModel.CurrentBuild}">
-                    <MenuItem.Header>
-                        <AccessText>
-                            <Binding Path="BuildsControlViewModel.CurrentBuild.Build.Name">
-                                <Binding.StringFormat>
-                                    <l:Catalog>Save {0} _As…</l:Catalog>
-                                </Binding.StringFormat>
-                            </Binding>
-                        </AccessText>
-                    </MenuItem.Header>
-                </MenuItem>
-                <MenuItem InputGestureText="Ctrl+Shift+S"
-                          Command="{Binding BuildsControlViewModel.SaveAllBuildsCommand}">
-                    <MenuItem.Header>
-                        <l:Catalog Message="Save A_ll" />
-                    </MenuItem.Header>
-                </MenuItem>
-                <Separator/>
                 <MenuItem Command="{Binding BuildsControlViewModel.ExportCurrentToClipboardCommand}">
                     <MenuItem.Header>
                         <AccessText>
@@ -259,65 +533,8 @@
                         <l:Catalog Message="Import build from clipboard" />
                     </MenuItem.Header>
                 </MenuItem>
-                <Separator/>
-                <MenuItem Command="{Binding BuildsControlViewModel.ReloadCommand}">
-                    <MenuItem.Header>
-                        <l:Catalog Message="Reload builds from filesystem" />
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="RefreshClockwiseDown" HorizontalAlignment="Center" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Command="{Binding BuildsControlViewModel.OpenBuildsSavePathCommand}">
-                    <MenuItem.Header>
-                        <l:Catalog>Open build directory</l:Catalog>
-                    </MenuItem.Header>
-                    <MenuItem.ToolTip>
-                        <l:Catalog Message="Opens the directory your builds are saved to so you can share those builds.&#x0a;The directory can be changed in the settings." />
-                    </MenuItem.ToolTip>
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="FolderOpen" HorizontalAlignment="Center" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <Separator/>
-                <MenuItem Click="Menu_Exit"
-                          InputGestureText="Alt+F4">
-                    <MenuItem.Header>
-                        <l:Catalog Message="E_xit" />
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="Close" HorizontalAlignment="Center" />
-                    </MenuItem.Icon>
-                </MenuItem>
             </MenuItem>
             <MenuItem>
-                <MenuItem.Header>
-                    <l:Catalog Message="_Edit" />
-                </MenuItem.Header>
-                <MenuItem Click="Menu_OpenSettings">
-                    <MenuItem.Header>
-                        <l:Catalog Message="Settings…" />
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="Settings" HorizontalAlignment="Center" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem InputGestureText="Ctrl+Z" Click="tbSkillURL_Undo_Click">
-                    <MenuItem.Header>
-                        <l:Catalog Message="_Undo" />
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="Undo" HorizontalAlignment="Center" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem InputGestureText="Ctrl+Y" Click="tbSkillURL_Redo_Click">
-                    <MenuItem.Header>
-                        <l:Catalog Message="_Redo" />
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="Redo" HorizontalAlignment="Center" />
-                    </MenuItem.Icon>
-                </MenuItem>
                 <MenuItem InputGestureText="Ctrl+R" Click="btnReset_Click">
                     <MenuItem.Header>
                         <l:Catalog Message="Reset Skill _Tree" />

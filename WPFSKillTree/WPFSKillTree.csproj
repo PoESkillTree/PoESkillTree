@@ -29,7 +29,7 @@
     <PackageReference Include="Fluent.Ribbon" Version="7.0.1" />
     <PackageReference Include="gong-wpf-dragdrop" Version="2.2.0" />
     <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0660" />
-    <PackageReference Include="MahApps.Metro.IconPacks.Modern" Version="3.0.1" />
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="3.0.1" />
     <PackageReference Include="MahApps.Metro.SimpleChildWindow" Version="2.0.0-alpha0032" />
     <PackageReference Include="morelinq" Version="3.3.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />

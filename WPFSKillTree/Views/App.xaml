@@ -9,13 +9,11 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Generic.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/themes/Dark.Steel.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Dark.Steel.xaml" />
-                <ResourceDictionary
-                    Source="pack://application:,,,/MahApps.Metro.IconPacks.Modern;component/Themes/PackIconModern.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Generic.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/themes/Dark.Steel.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Styles/Dialogs.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
