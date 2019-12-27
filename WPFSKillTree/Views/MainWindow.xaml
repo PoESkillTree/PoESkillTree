@@ -791,6 +791,28 @@
                             </fluent:ScreenTip>
                         </fluent:Button.ToolTip>
                     </fluent:Button>
+                    <fluent:Button Click="Menu_CheckForUpdates"
+                                   KeyTip="C"
+                                   Icon="{iconPacks:Material Update}"
+                                   IsEnabled="{Binding NoAsyncTaskRunning, ElementName=window}">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconMaterial Kind="Update"
+                                                        Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Check for updates" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Check for updates" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Check for updates available for PoESkillTree." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
                 </fluent:RibbonGroupBox>
             </fluent:RibbonTabItem>
 
@@ -1000,74 +1022,128 @@
                         </fluent:ComboBox.ToolTip>
                     </fluent:ComboBox>
                 </fluent:RibbonGroupBox>
-            </fluent:RibbonTabItem>
-
-            <fluent:RibbonTabItem KeyTip="E">
-                <fluent:RibbonTabItem.Header>
-                    <l:Catalog Message="Help" />
-                </fluent:RibbonTabItem.Header>
+                <fluent:RibbonGroupBox>
+                    <fluent:RibbonGroupBox.Header>
+                        <l:Catalog Message="Links" />
+                    </fluent:RibbonGroupBox.Header>
+                    <fluent:Button Click="Menu_OpenPoEWebsite"
+                                   KeyTip="P"
+                                   Icon="{iconPacks:Material WebBox}"
+                                   SizeDefinition="Middle,Middle,Small">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconMaterial Kind="WebBox"
+                                                        Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Path of Exile website" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Path of Exile website" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Open the official Path of Exile website in the default web browser." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
+                    <fluent:Button Click="Menu_OpenWiki"
+                                   KeyTip="W"
+                                   Icon="{iconPacks:Material BookOpen}"
+                                   SizeDefinition="Middle,Middle,Small">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconMaterial Kind="BookOpen"
+                                                        Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Path of Exile wiki" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Path of Exile wiki" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Open the Path of Exile wiki in the default web browser." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
+                </fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox>
+                    <fluent:RibbonGroupBox.Header>
+                        <l:Catalog Message="Help" />
+                    </fluent:RibbonGroupBox.Header>
+                    <fluent:Button Click="Menu_OpenHelp"
+                                   KeyTip="H"
+                                   Icon="{iconPacks:Material HelpCircle}"
+                                   SizeDefinition="Middle,Middle,Small">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconMaterial Kind="HelpCircle"
+                                                        Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Help" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Help" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Learn more about the program." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
+                    <fluent:Button Click="Menu_OpenHotkeys"
+                                   KeyTip="K"
+                                   Icon="{iconPacks:Material Keyboard}"
+                                   SizeDefinition="Middle,Middle,Small">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconMaterial Kind="Keyboard"
+                                                        Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Hotkeys" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Hotkeys" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Learn more about the available hotkeys." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
+                    <fluent:Button Click="Menu_OpenAbout"
+                                   KeyTip="A"
+                                   Icon="{iconPacks:Material Information}"
+                                   SizeDefinition="Middle,Middle,Small">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconMaterial Kind="Information"
+                                                        Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="About" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="About" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="View information about the program." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
+                </fluent:RibbonGroupBox>
             </fluent:RibbonTabItem>
         </fluent:Ribbon>
-
-        <Menu IsMainMenu="True" Grid.Row="0" Margin="0,0,0,2"
-             dialogs:DialogParticipation.Register="{Binding PersistentData}"
-             Visibility="Collapsed">
-            <MenuItem>
-                <MenuItem.Header>
-                    <l:Catalog Message="_Help" />
-                </MenuItem.Header>
-                <MenuItem>
-                    <MenuItem.Header>
-                        <l:Catalog Message="_Links" />
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="Globe" HorizontalAlignment="Center" />
-                    </MenuItem.Icon>
-                    <MenuItem Click="Menu_OpenPoEWebsite">
-                        <MenuItem.Header>
-                            <l:Catalog Message="_Path of Exile Website" />
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem Click="Menu_OpenWiki">
-                        <MenuItem.Header>
-                            <l:Catalog Message="Path of Exile _Wiki" />
-                        </MenuItem.Header>
-                    </MenuItem>
-                </MenuItem>
-                <MenuItem Click="Menu_OpenHelp">
-                    <MenuItem.Header>
-                        <l:Catalog Message="View _Help" />
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="Question" HorizontalAlignment="Center" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Click="Menu_OpenHotkeys">
-                    <MenuItem.Header>
-                        <l:Catalog Message="Hot_keys" />
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="InputKeyboard" HorizontalAlignment="Center" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Click="Menu_CheckForUpdates" IsEnabled="{Binding NoAsyncTaskRunning, ElementName=window}">
-                    <MenuItem.Header>
-                        <l:Catalog Message="Check for _Updates" />
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="Refresh" HorizontalAlignment="Center" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Click="Menu_OpenAbout">
-                    <MenuItem.Header>
-                        <l:Catalog Message="_About PoESkillTree" />
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="Information" HorizontalAlignment="Center" />
-                    </MenuItem.Icon>
-                </MenuItem>
-            </MenuItem>
-        </Menu>
 
         <TabControl Grid.Row="0" HorizontalAlignment="Right"
                     Visibility="Collapsed">
