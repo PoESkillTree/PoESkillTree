@@ -109,7 +109,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
 
         <!-- grid row 0 - upper part-->
@@ -1194,8 +1193,8 @@
             <Border DockPanel.Dock="Right"
                     BorderBrush="{DynamicResource MahApps.Brushes.Border.NonActive}"
                     BorderThickness="1 0 0 0"
-                    Padding="4 0 3 0"
-                    Margin="0 4 2 0"
+                    Padding="1 0 0 0"
+                    Margin="3 3 2 3"
                     Visibility="{Binding PersistentData.Options.BuildsBarOpened, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <builds:BuildsControl DataContext="{Binding BuildsControlViewModel}" />
             </Border>
@@ -1203,12 +1202,12 @@
             <Border DockPanel.Dock="Left"
                     BorderBrush="{DynamicResource MahApps.Brushes.Border.NonActive}"
                     BorderThickness="0 0 1 0"
-                    Padding="5 0"
-                    Margin="0 4 2 0"
+                    Padding="0 0 2 0"
+                    Margin="3 3 2 3"
                     Visibility="{Binding PersistentData.Options.AttributesBarOpened, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="26" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -1256,7 +1255,14 @@
                             <l:Catalog Message="Passive tree" />
                         </TabItem.Header>
                         <Grid>
-                            <local:ZoomBorder IsManipulationEnabled="True" x:Name="zbSkillTreeBackground"
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <local:ZoomBorder x:Name="zbSkillTreeBackground"
+                                              Grid.Row="0"
+                                              IsManipulationEnabled="True"
                                               ClipToBounds="True" MouseMove="zbSkillTreeBackground_MouseMove"
                                               Click="zbSkillTreeBackground_Click"
                                               Background="{DynamicResource MahApps.Brushes.White}"
@@ -1269,7 +1275,8 @@
                                            VerticalAlignment="Center" HorizontalAlignment="Center" />
                             </local:ZoomBorder>
 
-                            <StackPanel Orientation="Horizontal"
+                            <StackPanel Grid.Row="0"
+                                        Orientation="Horizontal"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Top">
                                 <Border Background="{DynamicResource MahApps.Brushes.Control.Background}"
@@ -1311,6 +1318,47 @@
                                     </TextBlock>
                                 </Border>
                             </StackPanel>
+
+                            <DockPanel Grid.Row="1"
+                                       LastChildFill="True">
+                                <TextBox x:Name="tbSearch"
+                                         DockPanel.Dock="Left"
+                                         controls:TextBoxHelper.ClearTextButton="True"
+                                         Width="200"
+                                         TextChanged="tbSearch_TextChanged">
+                                    <controls:TextBoxHelper.Watermark>
+                                        <l:Catalog>Search</l:Catalog>
+                                    </controls:TextBoxHelper.Watermark>
+                                </TextBox>
+                                <CheckBox x:Name="cbRegEx"
+                                          DockPanel.Dock="Left"
+                                          Content="RegEx"
+                                          Margin="2 0 0 0"
+                                          Click="cbRegEx_Click" />
+
+                                <controls:SplitButton DockPanel.Dock="Right"
+                                                      Margin="2 0 0 0"
+                                                      DataContext="{Binding LoadTreeButtonViewModel}"
+                                                      Command="{Binding SelectedItem.Command}"
+                                                      ItemsSource="{Binding Items}"
+                                                      SelectedItem="{Binding SelectedItem}"
+                                                      DisplayMemberPath="Title"/>
+                                <TextBox Margin="4 0 0 0"
+                                         Text="{Binding InputTreeUrl, UpdateSourceTrigger=PropertyChanged}"
+                                         TextChanged="tbSkillURL_TextChanged"
+                                         controls:TextBoxHelper.SelectAllOnFocus="True">
+                                    <TextBox.ToolTip>
+                                        <l:Catalog Message="Skill tree link"/>
+                                    </TextBox.ToolTip>
+                                    <controls:TextBoxHelper.Watermark>
+                                        <l:Catalog Message="Skill tree link"/>
+                                    </controls:TextBoxHelper.Watermark>
+                                    <TextBox.InputBindings>
+                                        <KeyBinding Key="Enter"
+                                                    Command="{Binding LoadTreeButtonViewModel.SelectedItem.Command}" />
+                                    </TextBox.InputBindings>
+                                </TextBox>
+                            </DockPanel>
                         </Grid>
                     </TabItem>
                     <TabItem>
@@ -1377,46 +1425,5 @@
                 </StackPanel>
             </Grid>
         </DockPanel>
-
-        <!-- grid row 2 - bottom part, search and tree -->
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="35"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
-
-            <TextBox Grid.Column="0" controls:TextBoxHelper.ClearTextButton="True" Height="24" HorizontalAlignment="Left" Margin="5,1,1,2" x:Name="tbSearch" VerticalAlignment="Bottom" Width="334" TextChanged="tbSearch_TextChanged">
-                <controls:TextBoxHelper.Watermark>
-                    <l:Catalog>Search</l:Catalog>
-                </controls:TextBoxHelper.Watermark>
-            </TextBox>
-            <CheckBox Grid.Column="1" Content="RegEx" Height="28" HorizontalAlignment="Left" Margin="1" x:Name="cbRegEx" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Click="cbRegEx_Click" />
-
-            <TextBox Grid.Column="3" Height="24" Margin="1,0,2.854,2" VerticalAlignment="Bottom"
-                     Text="{Binding InputTreeUrl, UpdateSourceTrigger=PropertyChanged}"
-                     VerticalContentAlignment="Center" TextChanged="tbSkillURL_TextChanged"
-                     controls:TextBoxHelper.SelectAllOnFocus="True">
-                <TextBox.ToolTip>
-                    <l:Catalog Message="Skill tree link"/>
-                </TextBox.ToolTip>
-                <controls:TextBoxHelper.Watermark>
-                    <l:Catalog Message="Skill tree link"/>
-                </controls:TextBoxHelper.Watermark>
-                <TextBox.InputBindings>
-                    <KeyBinding Key="Enter"
-                                Command="{Binding LoadTreeButtonViewModel.SelectedItem.Command}" />
-                </TextBox.InputBindings>
-            </TextBox>
-
-            <controls:SplitButton Grid.Column="4" Height="24" HorizontalAlignment="Center" VerticalAlignment="Bottom" MinWidth="110" Margin="0,0,2,2"
-                                  DataContext="{Binding LoadTreeButtonViewModel}"
-                                  Command="{Binding SelectedItem.Command}"
-                                  ItemsSource="{Binding Items}"
-                                  SelectedItem="{Binding SelectedItem}"
-                                  DisplayMemberPath="Title"/>
-        </Grid>
     </Grid>
 </controls:MetroWindow>

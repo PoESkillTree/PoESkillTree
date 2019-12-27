@@ -8,8 +8,8 @@ namespace PoESkillTree.Model
         private string _language = "";
         private string _theme = "Dark";
         private string _accent = "Steel";
-        private bool _attributesBarOpened;
-        private bool _buildsBarOpened;
+        private bool _attributesBarOpened = true;
+        private bool _buildsBarOpened = true;
         private bool _treeComparisonEnabled;
         private bool _changeSummaryEnabled;
         private bool _showAllAscendancyClasses = true;
