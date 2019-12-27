@@ -470,6 +470,53 @@
                 </fluent:RibbonGroupBox>
                 <fluent:RibbonGroupBox>
                     <fluent:RibbonGroupBox.Header>
+                        <l:Catalog Message="Craft" />
+                    </fluent:RibbonGroupBox.Header>
+                    <fluent:Button Click="Button_CraftUnique_Click"
+                                   KeyTip="CR"
+                                   Icon="{iconPacks:Material Hammer}">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconMaterial Kind="Hammer"
+                                                        Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Craft unique" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Craft unique" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Craft a new unique item and add it to the stash." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
+                    <fluent:Button Click="Button_CraftUnique_Click"
+                                   KeyTip="CI"
+                                   Icon="{iconPacks:Material Tools}">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconMaterial Kind="Tools"
+                                                        Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Craft item" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Craft item" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Craft a new non-unique item and add it to the stash." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
+                </fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox>
+                    <fluent:RibbonGroupBox.Header>
                         <l:Catalog Message="Import" />
                     </fluent:RibbonGroupBox.Header>
                     <fluent:Button Click="Menu_ImportCharacter"
@@ -792,7 +839,7 @@
                         </fluent:Button.ToolTip>
                     </fluent:Button>
                     <fluent:Button Click="Menu_CheckForUpdates"
-                                   KeyTip="C"
+                                   KeyTip="CU"
                                    Icon="{iconPacks:Material Update}"
                                    IsEnabled="{Binding NoAsyncTaskRunning, ElementName=window}">
                         <fluent:Button.LargeIcon>
@@ -1253,40 +1300,12 @@
                                           Margin="0 6 5 0"
                                           Width="500">
                                 <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="*" />
-                                    </Grid.RowDefinitions>
-
-                                    <UniformGrid Grid.Row="0"
-                                                 Height="32"
-                                                 Rows="1">
-                                        <Button Margin="0 0 4 0"
-                                                Click="Menu_ImportCharacter">
-                                            <l:Catalog>Import Character</l:Catalog>
-                                        </Button>
-                                        <Button Margin="4 0"
-                                                Click="Menu_ImportStash">
-                                            <l:Catalog>Import Stash</l:Catalog>
-                                        </Button>
-                                        <Button Margin="4 0"
-                                                Click="Button_CraftUnique_Click">
-                                            <l:Catalog Message="Craft new unique" />
-                                        </Button>
-                                        <Button Margin="4 0 0 0"
-                                                Click="Button_Craft_Click">
-                                            <l:Catalog Message="Craft new item" />
-                                        </Button>
-                                    </UniformGrid>
-
-                                    <equipment:SkillTreeAreaView Grid.Row="1"
-                                                                 HorizontalAlignment="Left" VerticalAlignment="Top"
+                                    <equipment:SkillTreeAreaView HorizontalAlignment="Left" VerticalAlignment="Top"
                                                                  Margin="0 532 0 0"
                                                                  Width="247" Height="247"
                                                                  DataContext="{Binding SkillTreeAreaViewModel}"
                                                                  SkillTreeVisual="{Binding Tree.SkillTreeVisual, ElementName=window}" />
-                                    <equipment:InventoryView Grid.Row="1"
-                                                             HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                                    <equipment:InventoryView HorizontalAlignment="Stretch" VerticalAlignment="Top"
                                                              Margin="0 10 0 0"
                                                              DataContext="{Binding InventoryViewModel}" />
 
