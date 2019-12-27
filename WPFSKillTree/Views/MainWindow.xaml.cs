@@ -1332,11 +1332,6 @@ namespace PoESkillTree.Views
             Tree.HighlightNodesBySearch("", true, NodeHighlighter.HighlightState.FromAttrib);
         }
 
-        private void expAttributes_MouseLeave(object sender, MouseEventArgs e)
-        {
-            SearchUpdate();
-        }
-
         private void ToggleBuilds()
         {
             PersistentData.Options.BuildsBarOpened = !PersistentData.Options.BuildsBarOpened;
@@ -1357,14 +1352,6 @@ namespace PoESkillTree.Views
             if (cbAttributesFilterRegEx.IsChecked == true && !RegexTools.IsValidRegex(tbAttributesFilter.Text)) return;
             UpdateAttributeList();
             RefreshAttributeLists();
-        }
-
-        private void tabControl1_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (tabItem1.IsSelected)
-                gAttributesFilter.Visibility = Visibility.Visible;
-            else
-                gAttributesFilter.Visibility = Visibility.Collapsed;
         }
 
 #endregion

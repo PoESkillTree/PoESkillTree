@@ -53,24 +53,14 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate>
-                        <Expander Header="{Binding Name}" IsExpanded="{Binding Name.IsExpanded}" FontSize="12" Width="370">
+                        <Expander Header="{Binding Name}"
+                                  IsExpanded="{Binding Name.IsExpanded}"
+                                  FontSize="12">
                             <ItemsPresenter />
                         </Expander>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
-        <Style x:Key="TopRowExpander" TargetType="Expander" BasedOn="{StaticResource {x:Type Expander}}">
-            <Setter Property="Margin" Value="0 -30 0 0" />
-            <Setter Property="Padding" Value="0" />
-            <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="ExpandDirection" Value="Down" />
-            <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.WhiteColor}" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="controls:ControlsHelper.ContentCharacterCasing" Value="Normal" />
-            <Setter Property="controls:HeaderedControlHelper.HeaderFontSize" Value="16" />
-            <Setter Property="controls:HeaderedControlHelper.HeaderBackground"
-                    Value="{DynamicResource MahApps.Brushes.WhiteColor}" />
         </Style>
 
         <Style x:Key="LargeRibbonIconStyle"
@@ -493,7 +483,7 @@
                             </fluent:ScreenTip>
                         </fluent:Button.ToolTip>
                     </fluent:Button>
-                    <fluent:Button Click="Button_CraftUnique_Click"
+                    <fluent:Button Click="Button_Craft_Click"
                                    KeyTip="CI"
                                    Icon="{iconPacks:Material Tools}">
                         <fluent:Button.LargeIcon>
@@ -1192,28 +1182,6 @@
             </fluent:RibbonTabItem>
         </fluent:Ribbon>
 
-        <TabControl Grid.Row="0" HorizontalAlignment="Right"
-                    Visibility="Collapsed">
-            <TabItem controls:HeaderedControlHelper.HeaderFontSize="14"
-                     IsSelected="{Binding IsSelected, ElementName=tyPassiveTree}">
-                <TabItem.Header>
-                    <l:Catalog Message="Skill Tree"/>
-                </TabItem.Header>
-            </TabItem>
-            <TabItem controls:HeaderedControlHelper.HeaderFontSize="14"
-                     IsSelected="{Binding IsSelected, ElementName=tyEquipment}">
-                <TabItem.Header>
-                    <l:Catalog Message="Equipment"/>
-                </TabItem.Header>
-            </TabItem>
-            <TabItem controls:HeaderedControlHelper.HeaderFontSize="14"
-                     IsSelected="{Binding IsSelected, ElementName=ComputationTab}">
-                <TabItem.Header>
-                    <l:Catalog Message="Computation"/>
-                </TabItem.Header>
-            </TabItem>
-        </TabControl>
-
         <!-- grid row 1 - attirbutes, buttons, saved builds-->
         <Grid x:Name="BtnGrid" Grid.Row="1" HorizontalAlignment="Stretch" Panel.ZIndex="99" VerticalAlignment="Center">
             <Grid>
@@ -1271,119 +1239,114 @@
         </Grid>
 
         <!-- grid row 2 - center part, tree and editors -->
-        <Grid Grid.Row="2">
-            <TabControl Background="Transparent" Name="tcMainArea"
-                        dd:DragDrop.IsDropTarget="True">
-                <TabControl.ItemContainerStyle>
-                    <Style TargetType="TabItem">
-                        <Style.Setters>
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </Style.Setters>
-                    </Style>
-                </TabControl.ItemContainerStyle>
-                <TabItem IsSelected="True" Name="tyPassiveTree">
+        <DockPanel Grid.Row="2"
+                   LastChildFill="True">
+            <Border DockPanel.Dock="Right"
+                    BorderBrush="{DynamicResource MahApps.Brushes.Border.NonActive}"
+                    BorderThickness="1 0 0 0"
+                    Padding="4 0 3 0"
+                    Margin="0 0 2 0"
+                    Visibility="{Binding PersistentData.Options.BuildsBarOpened, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <builds:BuildsControl DataContext="{Binding BuildsControlViewModel}" />
+            </Border>
+
+            <Border DockPanel.Dock="Left"
+                    BorderBrush="{DynamicResource MahApps.Brushes.Border.NonActive}"
+                    BorderThickness="0 0 1 0"
+                    Padding="5 0"
+                    Margin="0 0 2 0"
+                    Visibility="{Binding PersistentData.Options.AttributesBarOpened, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="26" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox x:Name="tbAttributesFilter"
+                             Grid.Row="0" Grid.Column="0"
+                             TextChanged="tbAttributesFilter_TextChanged"
+                             controls:TextBoxHelper.SelectAllOnFocus="True"
+                             controls:TextBoxHelper.ClearTextButton="True">
+                        <controls:TextBoxHelper.Watermark>
+                            <l:Catalog>Filter</l:Catalog>
+                        </controls:TextBoxHelper.Watermark>
+                    </TextBox>
+                    <CheckBox Grid.Row="0" Grid.Column="1"
+                              Content="RegEx" Margin="5 0 0 0" x:Name="cbAttributesFilterRegEx"
+                              Click="cbAttributesFilterRegEx_Click" />
+
+                    <ListBox x:Name="lbAttr"
+                             Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                             Width="410"
+                             Margin="0 5 0 0"
+                             ScrollViewer.VerticalScrollBarVisibility="Visible">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <ContentControl
+                                    Content="{Binding Converter={StaticResource attributeToTextblockConverter}}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.GroupStyle>
+                            <GroupStyle ContainerStyle="{StaticResource ContainerStyleIsExpanded}" />
+                        </ListBox.GroupStyle>
+                    </ListBox>
+                </Grid>
+            </Border>
+
+            <TabControl dd:DragDrop.IsDropTarget="True"
+                        controls:TabControlHelper.Underlined="TabItems"
+                        controls:HeaderedControlHelper.HeaderFontSize="18">
+                <TabItem IsSelected="True">
+                    <TabItem.Header>
+                        <l:Catalog Message="Passive tree" />
+                    </TabItem.Header>
                     <local:ZoomBorder IsManipulationEnabled="True" x:Name="zbSkillTreeBackground" ClipToBounds="True" MouseMove="zbSkillTreeBackground_MouseMove" Click="zbSkillTreeBackground_Click" Background="Black" MouseLeave="zbSkillTreeBackground_MouseLeave" Margin="0,0,0,0" Focusable="True" PreviewMouseUp="zbSkillTreeBackground_PreviewMouseUp" StylusSystemGesture="zbSkillTreeBackground_StylusSystemGesture">
                         <Rectangle Height="500" Width="597" IsManipulationEnabled="True" x:Name="recSkillTree" Stretch="Fill"  ClipToBounds="True" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </local:ZoomBorder>
                 </TabItem>
-                <TabItem Name="tyEquipment">
+                <TabItem>
+                    <TabItem.Header>
+                        <l:Catalog Message="Equipment" />
+                    </TabItem.Header>
                     <ScrollViewer HorizontalScrollBarVisibility="Auto"
                                   VerticalScrollBarVisibility="Disabled">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center">
                             <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                                           VerticalScrollBarVisibility="Auto"
-                                          HorizontalAlignment="Right"
-                                          Margin="0 6 5 0"
-                                          Width="500">
-                                <Grid>
+                                          Margin="0 0 2 0">
+                                <Grid Width="500">
                                     <equipment:SkillTreeAreaView HorizontalAlignment="Left" VerticalAlignment="Top"
-                                                                 Margin="0 532 0 0"
+                                                                 Margin="0 522 0 0"
                                                                  Width="247" Height="247"
                                                                  DataContext="{Binding SkillTreeAreaViewModel}"
                                                                  SkillTreeVisual="{Binding Tree.SkillTreeVisual, ElementName=window}" />
                                     <equipment:InventoryView HorizontalAlignment="Stretch" VerticalAlignment="Top"
-                                                             Margin="0 10 0 0"
                                                              DataContext="{Binding InventoryViewModel}" />
 
                                 </Grid>
                             </ScrollViewer>
-                            <equipment:StashView Grid.Column="1"
-                                                 HorizontalAlignment="Left" Margin="5 6 0 0"
+                            <equipment:StashView Margin="2 0 0 0"
                                                  DataContext="{Binding StashViewModel}" />
-                        </Grid>
+                        </StackPanel>
                     </ScrollViewer>
                 </TabItem>
-                <TabItem Name="ComputationTab">
+                <TabItem>
+                    <TabItem.Header>
+                        <l:Catalog Message="Computation" />
+                    </TabItem.Header>
                     <ScrollViewer HorizontalScrollBarVisibility="Auto"
                                   VerticalScrollBarVisibility="Auto"
                                   HorizontalAlignment="Center">
-                        <computation:ComputationView HorizontalAlignment="Center"
-                                                     DataContext="{Binding ComputationViewModel}" />
+                        <computation:ComputationView DataContext="{Binding ComputationViewModel}" />
                     </ScrollViewer>
                 </TabItem>
             </TabControl>
-
-            <Expander Style="{StaticResource TopRowExpander}" HorizontalAlignment="Right" FlowDirection="RightToLeft" IsExpanded="{Binding PersistentData.Options.BuildsBarOpened}">
-                <Expander.Header>
-                    <l:Catalog Message="Saved Builds"/>
-                </Expander.Header>
-
-                <builds:BuildsControl FlowDirection="LeftToRight"
-                                      DataContext="{Binding ElementName=window, Path=BuildsControlViewModel}" />
-            </Expander>
-
-            <Expander Style="{StaticResource TopRowExpander}"
-                      IsExpanded="{Binding PersistentData.Options.AttributesBarOpened}"
-                      MouseLeave="expAttributes_MouseLeave">
-                <Expander.Header>
-                    <l:Catalog Message="Attributes"/>
-                </Expander.Header>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid Grid.Row="0" x:Name="gAttributesFilter">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBox Height="26" x:Name="tbAttributesFilter" Margin="5,0,0,0" Grid.Column="0" TextChanged="tbAttributesFilter_TextChanged"
-                                 controls:TextBoxHelper.SelectAllOnFocus="True"
-                                 controls:TextBoxHelper.ClearTextButton="True">
-                            <controls:TextBoxHelper.Watermark><l:Catalog>Filter</l:Catalog></controls:TextBoxHelper.Watermark>
-                        </TextBox>
-                        <CheckBox Grid.Column="1" Content="RegEx" Height="28" HorizontalAlignment="Left" Margin="5,0,5,0" x:Name="cbAttributesFilterRegEx" VerticalAlignment="Bottom" VerticalContentAlignment="Center" Click="cbAttributesFilterRegEx_Click" />
-                    </Grid>
-                    <Grid Grid.Row="1">
-                        <TabControl Margin="0" x:Name="tabControl1" HorizontalAlignment="Left" Width="410" controls:TabControlHelper.Underlined="TabItems" Focusable="True" SelectionChanged="tabControl1_SelectionChanged">
-                            <TabItem Margin="0" x:Name="tabItem1" controls:HeaderedControlHelper.HeaderFontSize="15">
-                                <TabItem.Header>
-                                    <l:Catalog Message="Passive Attributes"/>
-                                </TabItem.Header>
-                                <Grid ScrollViewer.HorizontalScrollBarVisibility="Hidden">
-                                    <ListBox ScrollViewer.CanContentScroll="False" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" HorizontalAlignment="Center" x:Name="lbAttr" VerticalAlignment="Top" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" ItemsSource="{Binding}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" >
-                                        <ListBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <ContentControl Content="{Binding Converter={StaticResource attributeToTextblockConverter}}"/>
-                                            </DataTemplate>
-                                        </ListBox.ItemTemplate>
-                                        <ListBox.GroupStyle>
-                                            <GroupStyle ContainerStyle="{StaticResource ContainerStyleIsExpanded}" />
-                                        </ListBox.GroupStyle>
-                                    </ListBox>
-                                </Grid>
-                            </TabItem>
-                        </TabControl>
-                    </Grid>
-                </Grid>
-            </Expander>
-
-        </Grid>
+        </DockPanel>
 
         <!-- grid row 3 - bottom part, search and tree -->
         <Grid Grid.Row="3">

@@ -69,13 +69,10 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <DockPanel Grid.Row="0">
-            <controls1:SearchableComboBox Width="110" Margin="5 0"
+            <controls1:SearchableComboBox Width="110" Margin="1 0 2 0"
                                           SelectedItem="{Binding ClassFilter}"
                                           SelectedIndex="0"
                                           ItemsSource="{Binding ClassFilterItems}"
