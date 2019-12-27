@@ -125,7 +125,8 @@
 
         <!-- grid row 0 - upper part-->
         <fluent:Ribbon Grid.Row="0"
-                       AutomaticStateManagement="True">
+                       AutomaticStateManagement="True"
+                       dialogs:DialogParticipation.Register="{Binding PersistentData}">
             <fluent:Ribbon.QuickAccessItems>
                 <fluent:QuickAccessMenuItem Target="{Binding ElementName=NewTopLevelBuildMenuItem}"
                                             IsChecked="True" />
@@ -471,8 +472,50 @@
                     <fluent:RibbonGroupBox.Header>
                         <l:Catalog Message="Import" />
                     </fluent:RibbonGroupBox.Header>
-                    <fluent:Button Command="{Binding BuildsControlViewModel.ImportCurrentFromClipboardCommand}"
+                    <fluent:Button Click="Menu_ImportCharacter"
                                    KeyTip="IC"
+                                   Icon="{iconPacks:Material ClipboardAccount}">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconMaterial Kind="ClipboardAccount"
+                                                        Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Import character" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Import character" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Import passive tree, items and skills of an existing character." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
+                    <fluent:Button Click="Menu_ImportStash"
+                                   KeyTip="IS"
+                                   Icon="{iconPacks:Material ClipboardList}">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconMaterial Kind="ClipboardList"
+                                                        Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Import stash" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Import stash" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Import stash tabs of an account." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
+                    <fluent:Button Command="{Binding BuildsControlViewModel.ImportCurrentFromClipboardCommand}"
+                                   KeyTip="IB"
                                    Icon="{iconPacks:Modern ClipboardPaste}">
                         <fluent:Button.LargeIcon>
                             <iconPacks:PackIconModern Kind="ClipboardPaste"
@@ -501,7 +544,7 @@
                         <l:Catalog Message="Export" />
                     </fluent:RibbonGroupBox.Header>
                     <fluent:Button Command="{Binding BuildsControlViewModel.ExportCurrentToClipboardCommand}"
-                                   KeyTip="EC"
+                                   KeyTip="EB"
                                    Icon="{iconPacks:Material ClipboardMultiple}">
                         <fluent:Button.LargeIcon>
                             <iconPacks:PackIconMaterial Kind="ClipboardMultiple"
@@ -524,7 +567,7 @@
                     <fluent:Button Click="btnPoeUrl_Click"
                                    KeyTip="EP"
                                    Icon="{iconPacks:Material Web}"
-                                   IsEnabled="{Binding NoAsyncTaskRunning, ElementName=window}">
+                                   IsEnabled="{Binding NoAsyncTaskRunning}">
                         <fluent:Button.LargeIcon>
                             <iconPacks:PackIconMaterial Kind="Web"
                                                         Style="{StaticResource LargeRibbonIconStyle}" />
@@ -539,6 +582,211 @@
                                 </fluent:ScreenTip.Title>
                                 <fluent:ScreenTip.Text>
                                     <l:Catalog Message="Creates a PoEUrl from the current passive tree URL and copies it to the clipboard." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
+                </fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox>
+                    <fluent:RibbonGroupBox.Header>
+                        <l:Catalog Message="Tag nodes" />
+                    </fluent:RibbonGroupBox.Header>
+                    <fluent:DropDownButton KeyTip="HN"
+                                           Icon="{iconPacks:Material MapMarkerPlus}"
+                                           SizeDefinition="Middle, Middle, Small">
+                        <fluent:DropDownButton.LargeIcon>
+                            <iconPacks:PackIconMaterial Kind="MapMarkerPlus"
+                                                        Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:DropDownButton.LargeIcon>
+                        <fluent:DropDownButton.Header>
+                            <l:Catalog Message="Tag highlighted nodes" />
+                        </fluent:DropDownButton.Header>
+                        <fluent:DropDownButton.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Tag highlighted nodes" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Tag all highlighted nodes." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:DropDownButton.ToolTip>
+                        <fluent:MenuItem Click="Menu_CheckAllHighlightedNodes"
+                                         KeyTip="C"
+                                         Icon="{iconPacks:Material MapMarkerCheck}">
+                            <fluent:MenuItem.Header>
+                                <l:Catalog Message="Check-tag highlighted nodes" />
+                            </fluent:MenuItem.Header>
+                            <fluent:MenuItem.ToolTip>
+                                <fluent:ScreenTip>
+                                    <fluent:ScreenTip.Title>
+                                        <l:Catalog Message="Check-tag highlighted nodes" />
+                                    </fluent:ScreenTip.Title>
+                                    <fluent:ScreenTip.Text>
+                                        <l:Catalog Message="Check-tag all highlighted nodes." />
+                                    </fluent:ScreenTip.Text>
+                                </fluent:ScreenTip>
+                            </fluent:MenuItem.ToolTip>
+                        </fluent:MenuItem>
+                        <fluent:MenuItem Click="Menu_CrossAllHighlightedNodes"
+                                         KeyTip="X"
+                                         Icon="{iconPacks:Material MapMarkerRemoveVariant}">
+                            <fluent:MenuItem.Header>
+                                <l:Catalog Message="Cross-tag highlighted nodes" />
+                            </fluent:MenuItem.Header>
+                            <fluent:MenuItem.ToolTip>
+                                <fluent:ScreenTip>
+                                    <fluent:ScreenTip.Title>
+                                        <l:Catalog Message="Cross-tag highlighted nodes" />
+                                    </fluent:ScreenTip.Title>
+                                    <fluent:ScreenTip.Text>
+                                        <l:Catalog Message="Cross-tag all highlighted nodes." />
+                                    </fluent:ScreenTip.Text>
+                                </fluent:ScreenTip>
+                            </fluent:MenuItem.ToolTip>
+                        </fluent:MenuItem>
+                    </fluent:DropDownButton>
+                    <fluent:Button Click="Menu_UntagAllNodes"
+                                   KeyTip="HX"
+                                   Icon="{iconPacks:Material MapMarkerRemove}"
+                                   SizeDefinition="Middle, Middle, Small">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconMaterial Kind="MapMarkerRemove"
+                                                        Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Untag all nodes" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Untag all nodes" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Remove tags from all passive nodes." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
+                    <fluent:Button Click="Menu_UnhighlightAllNodes"
+                                   KeyTip="HU"
+                                   Icon="{iconPacks:Material CloseCircleOutline}"
+                                   SizeDefinition="Middle, Middle, Small">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconMaterial Kind="CloseCircleOutline"
+                                                        Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Unhighlight all nodes" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Unhighlight all nodes" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Remove all passive node highlights." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
+                </fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox>
+                    <fluent:RibbonGroupBox.Header>
+                        <l:Catalog Message="Tools" />
+                    </fluent:RibbonGroupBox.Header>
+                    <fluent:SplitButton Command="{Binding TreeGeneratorInteraction.OpenTreeGeneratorCommand}"
+                                        KeyTip="G"
+                                        Icon="{iconPacks:Material Strategy}"
+                                        dialogs:DialogParticipation.Register="{Binding TreeGeneratorInteraction}">
+                        <fluent:SplitButton.LargeIcon>
+                            <iconPacks:PackIconMaterial Kind="Strategy"
+                                                        Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:SplitButton.LargeIcon>
+                        <fluent:SplitButton.Header>
+                            <l:Catalog Message="Passive tree generator" />
+                        </fluent:SplitButton.Header>
+                        <fluent:SplitButton.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Passive tree generator (Ctrl+Shift+G)" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Open the passive tree generator. It creates optimized builds based on constraints." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:SplitButton.ToolTip>
+                        <fluent:MenuItem Command="{Binding TreeGeneratorInteraction.RunTaggedNodesCommand}"
+                                         Icon="{iconPacks:Material MapMarker}">
+                            <fluent:MenuItem.Header>
+                                <l:Catalog Message="Run 'Tagged Nodes' generator" />
+                            </fluent:MenuItem.Header>
+                            <fluent:MenuItem.ToolTip>
+                                <fluent:ScreenTip>
+                                    <fluent:ScreenTip.Title>
+                                        <l:Catalog Message="Run 'Tagged Nodes' generator (Ctrl+Shift+T)" />
+                                    </fluent:ScreenTip.Title>
+                                    <fluent:ScreenTip.Text>
+                                        <l:Catalog Message="Run the 'Tagged Nodes' generator with the current settings set in the passive tree generator window." />
+                                    </fluent:ScreenTip.Text>
+                                </fluent:ScreenTip>
+                            </fluent:MenuItem.ToolTip>
+                        </fluent:MenuItem>
+                        <fluent:MenuItem Command="{Binding TreeGeneratorInteraction.RunTaggedNodesCommand}"
+                                         Icon="{iconPacks:Material Sigma}">
+                            <fluent:MenuItem.Header>
+                                <l:Catalog Message="Run 'Advanced' generator" />
+                            </fluent:MenuItem.Header>
+                            <fluent:MenuItem.ToolTip>
+                                <fluent:ScreenTip>
+                                    <fluent:ScreenTip.Title>
+                                        <l:Catalog Message="Run 'Advanced' generator (Ctrl+Shift+A)" />
+                                    </fluent:ScreenTip.Title>
+                                    <fluent:ScreenTip.Text>
+                                        <l:Catalog Message="Run the 'Advanced' generator with the current settings set in the passive tree generator window." />
+                                    </fluent:ScreenTip.Text>
+                                </fluent:ScreenTip>
+                            </fluent:MenuItem.ToolTip>
+                        </fluent:MenuItem>
+                    </fluent:SplitButton>
+                    <fluent:Button Click="Menu_ScreenShot"
+                                   KeyTip="S"
+                                   Icon="{iconPacks:Modern Camera}">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconModern Kind="Camera"
+                                                      Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Screenshot skilled nodes" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Screenshot skilled nodes" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Take a screenshot of the passive tree area around the skilled nodes." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
+                    <fluent:Button Click="Menu_RedownloadTreeAssets"
+                                   KeyTip="D"
+                                   Icon="{iconPacks:Material FileDownload}">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconMaterial Kind="FileDownload"
+                                                        Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Download live tree data" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Download live tree data" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Delete the current passive tree data and download the official data from the latest patch." />
                                 </fluent:ScreenTip.Text>
                             </fluent:ScreenTip>
                         </fluent:Button.ToolTip>
@@ -754,12 +1002,6 @@
                 </fluent:RibbonGroupBox>
             </fluent:RibbonTabItem>
 
-            <fluent:RibbonTabItem KeyTip="T">
-                <fluent:RibbonTabItem.Header>
-                    <l:Catalog Message="Tools" />
-                </fluent:RibbonTabItem.Header>
-            </fluent:RibbonTabItem>
-
             <fluent:RibbonTabItem KeyTip="E">
                 <fluent:RibbonTabItem.Header>
                     <l:Catalog Message="Help" />
@@ -770,98 +1012,6 @@
         <Menu IsMainMenu="True" Grid.Row="0" Margin="0,0,0,2"
              dialogs:DialogParticipation.Register="{Binding PersistentData}"
              Visibility="Collapsed">
-            <MenuItem>
-                <MenuItem.Header>
-                    <l:Catalog Message="_Tools" />
-                </MenuItem.Header>
-                <MenuItem Click="Menu_ScreenShot">
-                    <MenuItem.Header>
-                        <l:Catalog Message="Take _Screenshot of Skilled Nodes…" />
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="Camera" HorizontalAlignment="Center" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <Separator />
-                <MenuItem Click="Menu_ImportCharacter">
-                    <MenuItem.Header>
-                        <l:Catalog Message="Import _Character…"/>
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="CloudDownload" HorizontalAlignment="Center" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Click="Menu_ImportStash">
-                    <MenuItem.Header>
-                        <l:Catalog Message="Import _Stash…"/>
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="CloudDownload" HorizontalAlignment="Center" />
-                    </MenuItem.Icon>
-                </MenuItem>
-                <Separator />
-                <MenuItem Click="Menu_RedownloadTreeAssets">
-                    <MenuItem.Header>
-                        <l:Catalog Message="_Redownload Live Skill Tree Data" />
-                    </MenuItem.Header>
-                    <MenuItem.Icon>
-                        <iconPacks:PackIconModern Kind="PageDownload" HorizontalAlignment="Center" />
-                    </MenuItem.Icon>
-                </MenuItem>
-            </MenuItem>
-            <MenuItem>
-                <MenuItem.Header>
-                    <l:Catalog Message="_Nodes"/>
-                </MenuItem.Header>
-                <MenuItem Command="{Binding TreeGeneratorInteraction.OpenTreeGeneratorCommand}"
-                          InputGestureText="Ctrl+Shift+G">
-                    <MenuItem.Header>
-                        <l:Catalog Message="_Skill Tree Generator…" />
-                    </MenuItem.Header>
-                </MenuItem>
-                <MenuItem Command="{Binding TreeGeneratorInteraction.RunTaggedNodesCommand}"
-                          InputGestureText="Ctrl+Shift+T"
-                          dialogs:DialogParticipation.Register="{Binding TreeGeneratorInteraction}">
-                    <MenuItem.Header>
-                        <l:Catalog Message="Run 'Tagged _Nodes' generator" />
-                    </MenuItem.Header>
-                    <MenuItem.ToolTip>
-                        <l:Catalog>Runs the 'Tagged Nodes' generator with the current settings set in the Skill Tree
-                            Generator window.</l:Catalog>
-                    </MenuItem.ToolTip>
-                </MenuItem>
-                <MenuItem Command="{Binding TreeGeneratorInteraction.RunAdvancedCommand}"
-                          InputGestureText="Ctrl+Shift+A">
-                    <MenuItem.Header>
-                        <l:Catalog Message="Run '_Advanced' generator" />
-                    </MenuItem.Header>
-                    <MenuItem.ToolTip>
-                        <l:Catalog>Runs the 'Advanced' generator with the current settings set in the Skill Tree
-                            Generator window.</l:Catalog>
-                    </MenuItem.ToolTip>
-                </MenuItem>
-                <Separator />
-                <MenuItem Click="Menu_UntagAllNodes">
-                    <MenuItem.Header>
-                        <l:Catalog Message="Un_tag All Nodes" />
-                    </MenuItem.Header>
-                </MenuItem>
-                <MenuItem Click="Menu_UnhighlightAllNodes">
-                    <MenuItem.Header>
-                        <l:Catalog Message="_Unhighlight All Nodes" />
-                    </MenuItem.Header>
-                </MenuItem>
-                <MenuItem Click="Menu_CheckAllHighlightedNodes">
-                    <MenuItem.Header>
-                        <l:Catalog Message="_Check-tag highlighted Nodes" />
-                    </MenuItem.Header>
-                </MenuItem>
-                <MenuItem Click="Menu_CrossAllHighlightedNodes">
-                    <MenuItem.Header>
-                        <l:Catalog Message="C_ross-tag highlighted Nodes" />
-                    </MenuItem.Header>
-                </MenuItem>
-            </MenuItem>
             <MenuItem>
                 <MenuItem.Header>
                     <l:Catalog Message="_Help" />
@@ -993,7 +1143,6 @@
                             <l:Catalog Message="Total Ascendancy Skill Points"/>
                         </Label.ToolTip>
                     </Label>
-                    <Button x:Name="btnReset" Click="btnReset_Click" Margin="10,0,0,0" Content="{l:Catalog Message=Reset}"/>
                 </StackPanel>
             </Grid>
         </Grid>
