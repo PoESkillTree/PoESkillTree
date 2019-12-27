@@ -385,11 +385,14 @@
                 </fluent:ApplicationMenu>
             </fluent:Ribbon.Menu>
 
-            <fluent:RibbonTabItem KeyTip="H">
+            <fluent:RibbonTabItem KeyTip="H"
+                                  ReduceOrder="PassiveTreeRibbon,CraftRibbon,ToolsRibbon,TagNodesRibbon,ImportRibbon,ExportRibbon,
+                                  PassiveTreeRibbon,CraftRibbon,ToolsRibbon,TagNodesRibbon,ImportRibbon,ExportRibbon,
+                                  PassiveTreeRibbon,CraftRibbon,ImportRibbon,ExportRibbon,TagNodesRibbon,ToolsRibbon">
                 <fluent:RibbonTabItem.Header>
                     <l:Catalog Message="Home" />
                 </fluent:RibbonTabItem.Header>
-                <fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox Name="PassiveTreeRibbon">
                     <fluent:RibbonGroupBox.Header>
                         <l:Catalog Message="Passive tree" />
                     </fluent:RibbonGroupBox.Header>
@@ -457,7 +460,7 @@
                         </fluent:Button.ToolTip>
                     </fluent:Button>
                 </fluent:RibbonGroupBox>
-                <fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox Name="CraftRibbon">
                     <fluent:RibbonGroupBox.Header>
                         <l:Catalog Message="Craft" />
                     </fluent:RibbonGroupBox.Header>
@@ -504,7 +507,7 @@
                         </fluent:Button.ToolTip>
                     </fluent:Button>
                 </fluent:RibbonGroupBox>
-                <fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox Name="ImportRibbon">
                     <fluent:RibbonGroupBox.Header>
                         <l:Catalog Message="Import" />
                     </fluent:RibbonGroupBox.Header>
@@ -575,7 +578,7 @@
                         </fluent:Button.ToolTip>
                     </fluent:Button>
                 </fluent:RibbonGroupBox>
-                <fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox Name="ExportRibbon">
                     <fluent:RibbonGroupBox.Header>
                         <l:Catalog Message="Export" />
                     </fluent:RibbonGroupBox.Header>
@@ -623,7 +626,7 @@
                         </fluent:Button.ToolTip>
                     </fluent:Button>
                 </fluent:RibbonGroupBox>
-                <fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox Name="TagNodesRibbon">
                     <fluent:RibbonGroupBox.Header>
                         <l:Catalog Message="Tag nodes" />
                     </fluent:RibbonGroupBox.Header>
@@ -727,7 +730,7 @@
                         </fluent:Button.ToolTip>
                     </fluent:Button>
                 </fluent:RibbonGroupBox>
-                <fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox Name="ToolsRibbon">
                     <fluent:RibbonGroupBox.Header>
                         <l:Catalog Message="Tools" />
                     </fluent:RibbonGroupBox.Header>
@@ -852,11 +855,14 @@
                 </fluent:RibbonGroupBox>
             </fluent:RibbonTabItem>
 
-            <fluent:RibbonTabItem KeyTip="V">
+            <fluent:RibbonTabItem KeyTip="V"
+                                  ReduceOrder="PanelsRibbon,TreeViewRibbon,BuildsViewRibbon,HelpRibbon,LinksRibbon,
+                                  PanelsRibbon,PanelsRibbon,TreeViewRibbon,TreeViewRibbon,ThemeRibbon,ThemeRibbon,HelpRibbon,
+                                  BuildsViewRibbon,BuildsViewRibbon,HelpRibbon,LinksRibbon,ThemeRibbon,LinksRibbon">
                 <fluent:RibbonTabItem.Header>
                     <l:Catalog Message="View" />
                 </fluent:RibbonTabItem.Header>
-                <fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox Name="PanelsRibbon">
                     <fluent:RibbonGroupBox.Header>
                         <l:Catalog Message="Panels" />
                     </fluent:RibbonGroupBox.Header>
@@ -903,7 +909,7 @@
                         </fluent:ToggleButton.ToolTip>
                     </fluent:ToggleButton>
                 </fluent:RibbonGroupBox>
-                <fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox Name="TreeViewRibbon">
                     <fluent:RibbonGroupBox.Header>
                         <l:Catalog Message="Passive tree" />
                     </fluent:RibbonGroupBox.Header>
@@ -950,7 +956,8 @@
                         </fluent:ToggleButton.ToolTip>
                     </fluent:ToggleButton>
                 </fluent:RibbonGroupBox>
-                <fluent:RibbonGroupBox IsEnabled="{Binding PersistentData.Options.BuildsBarOpened}">
+                <fluent:RibbonGroupBox Name="BuildsViewRibbon"
+                                       IsEnabled="{Binding PersistentData.Options.BuildsBarOpened}">
                     <fluent:RibbonGroupBox.Header>
                         <l:Catalog Message="Saved builds" />
                     </fluent:RibbonGroupBox.Header>
@@ -1003,7 +1010,7 @@
                         </fluent:Button.ToolTip>
                     </fluent:Button>
                 </fluent:RibbonGroupBox>
-                <fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox Name="ThemeRibbon">
                     <fluent:RibbonGroupBox.Header>
                         <l:Catalog Message="Theme" />
                     </fluent:RibbonGroupBox.Header>
@@ -1058,7 +1065,7 @@
                         </fluent:ComboBox.ToolTip>
                     </fluent:ComboBox>
                 </fluent:RibbonGroupBox>
-                <fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox Name="LinksRibbon">
                     <fluent:RibbonGroupBox.Header>
                         <l:Catalog Message="Links" />
                     </fluent:RibbonGroupBox.Header>
@@ -1107,7 +1114,7 @@
                         </fluent:Button.ToolTip>
                     </fluent:Button>
                 </fluent:RibbonGroupBox>
-                <fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox Name="HelpRibbon">
                     <fluent:RibbonGroupBox.Header>
                         <l:Catalog Message="Help" />
                     </fluent:RibbonGroupBox.Header>
