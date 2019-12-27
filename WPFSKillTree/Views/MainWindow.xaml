@@ -108,7 +108,6 @@
     <Grid Margin="0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="31"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
@@ -1182,70 +1181,14 @@
             </fluent:RibbonTabItem>
         </fluent:Ribbon>
 
-        <!-- grid row 1 - attirbutes, buttons, saved builds-->
-        <Grid x:Name="BtnGrid" Grid.Row="1" HorizontalAlignment="Stretch" Panel.ZIndex="99" VerticalAlignment="Center">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100*"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="100*"/>
-                </Grid.ColumnDefinitions>
-
-                <StackPanel Orientation="Horizontal" Grid.Column="1">
-                    <ToggleButton x:Name="BanditToggle" Width="50">
-                        <l:Catalog Message="Bandit" />
-                    </ToggleButton>
-                    <Popup IsOpen="{Binding IsChecked, ElementName=BanditToggle}" StaysOpen="False" Placement="Bottom" HorizontalOffset="-20" VerticalOffset="5">
-                        <Border Background="{DynamicResource MahApps.Brushes.WhiteColor}" BorderThickness="1"
-                                BorderBrush="{DynamicResource MahApps.Brushes.Accent}">
-                            <local:BanditSelection DataContext="{Binding PersistentData.CurrentBuild.Bandits}" Margin="5" />
-                        </Border>
-                    </Popup>
-                    <controls:NumericUpDown Margin="5,0,0,0" x:Name="LevelUpDown" ValueChanged="Level_ValueChanged" MinWidth="70"
-                                            Height="{Binding ActualHeight, ElementName=cbCharType}"
-                                            Value="{Binding PersistentData.CurrentBuild.Level, ValidatesOnDataErrors=True}"
-                                            Minimum="0" Maximum="100"
-                                            NumericInputMode="Numbers">
-                        <controls:NumericUpDown.ToolTip>
-                            <l:Catalog Message="Level"/>
-                        </controls:NumericUpDown.ToolTip>
-                    </controls:NumericUpDown>
-                    <ComboBox Margin="5,0,0,0" x:Name="cbCharType" Width="100" SelectionChanged="cbCharType_SelectionChanged" PreviewMouseDown="userInteraction_PreviewMouseDown"/>
-                    <ComboBox Margin="5,0,0,0" x:Name="cbAscType" Width="100" SelectionChanged="cbAscType_SelectionChanged" PreviewMouseDown="userInteraction_PreviewMouseDown"/>
-                    <Label Content="0" Margin="8,0,0,0" x:Name="NormalUsedPoints" FontSize="14">
-                        <Label.ToolTip>
-                            <l:Catalog Message="Used Passive Skill Points"/>
-                        </Label.ToolTip>
-                    </Label>
-                    <Label Content="[0]" Margin="-5,0,0,0" x:Name="AscendancyUsedPoints" FontSize="14">
-                        <Label.ToolTip>
-                            <l:Catalog Message="Used Ascendancy Skill Points"/>
-                        </Label.ToolTip>
-                    </Label>
-                    <Label Content="/" Margin="-5,0,-5,0" Opacity="0.5" FontSize="14"/>
-                    <Label Content="124" Margin="0,0,0,0" x:Name="NormalTotalPoints" Opacity="0.50" FontSize="14"
-                           Width="34" HorizontalContentAlignment="Right">
-                        <Label.ToolTip>
-                            <l:Catalog Message="Total Passive Skill Points"/>
-                        </Label.ToolTip>
-                    </Label>
-                    <Label Content="[8]" Margin="-5,0,0,0" x:Name="AscendancyTotalPoints" Opacity="0.50" FontSize="14">
-                        <Label.ToolTip>
-                            <l:Catalog Message="Total Ascendancy Skill Points"/>
-                        </Label.ToolTip>
-                    </Label>
-                </StackPanel>
-            </Grid>
-        </Grid>
-
-        <!-- grid row 2 - center part, tree and editors -->
-        <DockPanel Grid.Row="2"
+        <!-- grid row 1 - center part, tree and editors -->
+        <DockPanel Grid.Row="1"
                    LastChildFill="True">
             <Border DockPanel.Dock="Right"
                     BorderBrush="{DynamicResource MahApps.Brushes.Border.NonActive}"
                     BorderThickness="1 0 0 0"
                     Padding="4 0 3 0"
-                    Margin="0 0 2 0"
+                    Margin="0 4 2 0"
                     Visibility="{Binding PersistentData.Options.BuildsBarOpened, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <builds:BuildsControl DataContext="{Binding BuildsControlViewModel}" />
             </Border>
@@ -1254,7 +1197,7 @@
                     BorderBrush="{DynamicResource MahApps.Brushes.Border.NonActive}"
                     BorderThickness="0 0 1 0"
                     Padding="5 0"
-                    Margin="0 0 2 0"
+                    Margin="0 4 2 0"
                     Visibility="{Binding PersistentData.Options.AttributesBarOpened, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -1276,7 +1219,7 @@
                         </controls:TextBoxHelper.Watermark>
                     </TextBox>
                     <CheckBox Grid.Row="0" Grid.Column="1"
-                              Content="RegEx" Margin="5 0 0 0" x:Name="cbAttributesFilterRegEx"
+                              Content="RegEx" Margin="2 0 0 0" x:Name="cbAttributesFilterRegEx"
                               Click="cbAttributesFilterRegEx_Click" />
 
                     <ListBox x:Name="lbAttr"
@@ -1297,63 +1240,139 @@
                 </Grid>
             </Border>
 
-            <TabControl dd:DragDrop.IsDropTarget="True"
-                        controls:TabControlHelper.Underlined="TabItems"
-                        controls:HeaderedControlHelper.HeaderFontSize="18">
-                <TabItem IsSelected="True">
-                    <TabItem.Header>
-                        <l:Catalog Message="Passive tree" />
-                    </TabItem.Header>
-                    <local:ZoomBorder IsManipulationEnabled="True" x:Name="zbSkillTreeBackground" ClipToBounds="True" MouseMove="zbSkillTreeBackground_MouseMove" Click="zbSkillTreeBackground_Click"
-                                      Background="{DynamicResource MahApps.Brushes.White}"
-                                      MouseLeave="zbSkillTreeBackground_MouseLeave" Margin="0,0,0,0" Focusable="True"
-                                      PreviewMouseUp="zbSkillTreeBackground_PreviewMouseUp" StylusSystemGesture="zbSkillTreeBackground_StylusSystemGesture">
-                        <Rectangle Height="500" Width="597" IsManipulationEnabled="True" x:Name="recSkillTree" Stretch="Fill"  ClipToBounds="True"
-                                   VerticalAlignment="Center" HorizontalAlignment="Center" />
-                    </local:ZoomBorder>
-                </TabItem>
-                <TabItem>
-                    <TabItem.Header>
-                        <l:Catalog Message="Equipment" />
-                    </TabItem.Header>
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                                  VerticalScrollBarVisibility="Disabled">
-                        <StackPanel Orientation="Horizontal"
-                                    HorizontalAlignment="Center">
-                            <ScrollViewer HorizontalScrollBarVisibility="Disabled"
-                                          VerticalScrollBarVisibility="Auto"
-                                          Margin="0 0 2 0">
-                                <Grid Width="500">
-                                    <equipment:SkillTreeAreaView HorizontalAlignment="Left" VerticalAlignment="Top"
-                                                                 Margin="0 522 0 0"
-                                                                 Width="247" Height="247"
-                                                                 DataContext="{Binding SkillTreeAreaViewModel}"
-                                                                 SkillTreeVisual="{Binding Tree.SkillTreeVisual, ElementName=window}" />
-                                    <equipment:InventoryView HorizontalAlignment="Stretch" VerticalAlignment="Top"
-                                                             DataContext="{Binding InventoryViewModel}" />
+            <Grid>
+                <TabControl dd:DragDrop.IsDropTarget="True"
+                            controls:TabControlHelper.Underlined="TabItems"
+                            controls:HeaderedControlHelper.HeaderFontSize="18">
+                    <TabItem IsSelected="True">
+                        <TabItem.Header>
+                            <l:Catalog Message="Passive tree" />
+                        </TabItem.Header>
+                        <Grid>
+                            <local:ZoomBorder IsManipulationEnabled="True" x:Name="zbSkillTreeBackground"
+                                              ClipToBounds="True" MouseMove="zbSkillTreeBackground_MouseMove"
+                                              Click="zbSkillTreeBackground_Click"
+                                              Background="{DynamicResource MahApps.Brushes.White}"
+                                              MouseLeave="zbSkillTreeBackground_MouseLeave" Margin="0,0,0,0"
+                                              Focusable="True"
+                                              PreviewMouseUp="zbSkillTreeBackground_PreviewMouseUp"
+                                              StylusSystemGesture="zbSkillTreeBackground_StylusSystemGesture">
+                                <Rectangle Height="500" Width="597" IsManipulationEnabled="True" x:Name="recSkillTree"
+                                           Stretch="Fill" ClipToBounds="True"
+                                           VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            </local:ZoomBorder>
 
-                                </Grid>
-                            </ScrollViewer>
-                            <equipment:StashView Margin="2 0 0 0"
-                                                 DataContext="{Binding StashViewModel}" />
-                        </StackPanel>
-                    </ScrollViewer>
-                </TabItem>
-                <TabItem>
-                    <TabItem.Header>
-                        <l:Catalog Message="Computation" />
-                    </TabItem.Header>
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                                  VerticalScrollBarVisibility="Auto"
-                                  HorizontalAlignment="Center">
-                        <computation:ComputationView DataContext="{Binding ComputationViewModel}" />
-                    </ScrollViewer>
-                </TabItem>
-            </TabControl>
+                            <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Top">
+                                <Border Background="{DynamicResource MahApps.Brushes.Control.Background}"
+                                        Margin="0 0 1 0"
+                                        Padding="1"
+                                        BorderBrush="{DynamicResource MahApps.Brushes.Border.NonActive}"
+                                        BorderThickness="1">
+                                    <TextBlock FontSize="14">
+                                        <Run x:Name="NormalUsedPoints" Text="0">
+                                            <Run.ToolTip>
+                                                <l:Catalog Message="Used Passive Skill Points" />
+                                            </Run.ToolTip>
+                                        </Run>
+                                        /
+                                        <Run x:Name="NormalTotalPoints" Text="0">
+                                            <Run.ToolTip>
+                                                <l:Catalog Message="Total Passive Skill Points" />
+                                            </Run.ToolTip>
+                                        </Run>
+                                    </TextBlock>
+                                </Border>
+                                <Border Background="{DynamicResource MahApps.Brushes.Control.Background}"
+                                        Margin="1 0 0 0"
+                                        Padding="1"
+                                        BorderBrush="{DynamicResource MahApps.Brushes.Border.NonActive}"
+                                        BorderThickness="1">
+                                    <TextBlock FontSize="14">
+                                        <Run x:Name="AscendancyUsedPoints" Text="0">
+                                            <Run.ToolTip>
+                                                <l:Catalog Message="Used Ascendancy Skill Points" />
+                                            </Run.ToolTip>
+                                        </Run>
+                                        /
+                                        <Run x:Name="AscendancyTotalPoints" Text="0">
+                                            <Run.ToolTip>
+                                                <l:Catalog Message="Total Ascendancy Skill Points" />
+                                            </Run.ToolTip>
+                                        </Run>
+                                    </TextBlock>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <l:Catalog Message="Equipment" />
+                        </TabItem.Header>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                      VerticalScrollBarVisibility="Disabled">
+                            <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Center">
+                                <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                              VerticalScrollBarVisibility="Auto"
+                                              Margin="0 0 2 0">
+                                    <Grid Width="500">
+                                        <equipment:SkillTreeAreaView HorizontalAlignment="Left" VerticalAlignment="Top"
+                                                                     Margin="0 522 0 0"
+                                                                     Width="247" Height="247"
+                                                                     DataContext="{Binding SkillTreeAreaViewModel}"
+                                                                     SkillTreeVisual="{Binding Tree.SkillTreeVisual, ElementName=window}" />
+                                        <equipment:InventoryView HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                                                                 DataContext="{Binding InventoryViewModel}" />
+
+                                    </Grid>
+                                </ScrollViewer>
+                                <equipment:StashView Margin="2 0 0 0"
+                                                     DataContext="{Binding StashViewModel}" />
+                            </StackPanel>
+                        </ScrollViewer>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <l:Catalog Message="Computation" />
+                        </TabItem.Header>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                      VerticalScrollBarVisibility="Auto"
+                                      HorizontalAlignment="Center">
+                            <computation:ComputationView DataContext="{Binding ComputationViewModel}" />
+                        </ScrollViewer>
+                    </TabItem>
+                </TabControl>
+
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Margin="4">
+                    <ToggleButton x:Name="BanditToggle">
+                        <l:Catalog Message="Bandit" />
+                    </ToggleButton>
+                    <Popup IsOpen="{Binding IsChecked, ElementName=BanditToggle}" StaysOpen="False" Placement="Bottom" HorizontalOffset="-20" VerticalOffset="5">
+                        <local:BanditSelection DataContext="{Binding PersistentData.CurrentBuild.Bandits}" />
+                    </Popup>
+                    <controls:NumericUpDown Margin="2 0 0 0" ValueChanged="Level_ValueChanged" MinWidth="70"
+                                            Value="{Binding PersistentData.CurrentBuild.Level, ValidatesOnDataErrors=True}"
+                                            Minimum="0" Maximum="100"
+                                            NumericInputMode="Numbers">
+                        <controls:NumericUpDown.ToolTip>
+                            <l:Catalog Message="Level"/>
+                        </controls:NumericUpDown.ToolTip>
+                    </controls:NumericUpDown>
+                    <ComboBox Margin="2 0 0 0" x:Name="cbCharType" Width="90"
+                              SelectionChanged="cbCharType_SelectionChanged" PreviewMouseDown="userInteraction_PreviewMouseDown"/>
+                    <ComboBox Margin="2 0 0 0" x:Name="cbAscType" Width="100"
+                              SelectionChanged="cbAscType_SelectionChanged" PreviewMouseDown="userInteraction_PreviewMouseDown"/>
+                </StackPanel>
+            </Grid>
         </DockPanel>
 
-        <!-- grid row 3 - bottom part, search and tree -->
-        <Grid Grid.Row="3">
+        <!-- grid row 2 - bottom part, search and tree -->
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>

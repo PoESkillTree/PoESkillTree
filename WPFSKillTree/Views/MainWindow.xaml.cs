@@ -1265,10 +1265,10 @@ namespace PoESkillTree.Views
         public void UpdatePoints()
         {
             var points = Tree.GetPointCount();
-            NormalUsedPoints.Content = points["NormalUsed"].ToString();
-            NormalTotalPoints.Content = points["NormalTotal"].ToString();
-            AscendancyUsedPoints.Content = "[" + points["AscendancyUsed"].ToString() + "]";
-            AscendancyTotalPoints.Content = "[" + points["AscendancyTotal"].ToString() + "]";
+            NormalUsedPoints.Text = points["NormalUsed"].ToString();
+            NormalTotalPoints.Text = points["NormalTotal"].ToString();
+            AscendancyUsedPoints.Text = points["AscendancyUsed"].ToString();
+            AscendancyTotalPoints.Text = points["AscendancyTotal"].ToString();
         }
 
         private string InsertNumbersInAttributes(KeyValuePair<string, List<float>> attrib)
