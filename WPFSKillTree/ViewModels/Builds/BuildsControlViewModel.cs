@@ -237,7 +237,7 @@ namespace PoESkillTree.ViewModels.Builds
             NewBuildCommand = new RelayCommand<IBuildViewModel>(NewBuild);
             DeleteCommand = new AsyncRelayCommand<IBuildViewModel>(
                 Delete,
-                o => o != BuildRoot);
+                o => o != BuildRoot && o != CurrentBuild);
             OpenBuildCommand = new AsyncRelayCommand<BuildViewModel>(
                 OpenBuild,
                 b => b != null && (b != CurrentBuild || b.Build.IsDirty));

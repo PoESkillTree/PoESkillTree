@@ -111,53 +111,53 @@
                         </iconPacks:PackIconModern>
                         <TextBlock Text="{Binding Build.Name}"
                                    FontWeight="Bold"
-                                   VerticalAlignment="Center">
-                            <TextBlock.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Command="{Binding Data.EditCommand, Source={StaticResource VmProxy}}"
-                                              CommandParameter="{Binding}">
-                                        <MenuItem.Header>
-                                            <l:Catalog Message="Edit" />
-                                        </MenuItem.Header>
-                                    </MenuItem>
-                                    <MenuItem Command="{Binding Data.DeleteCommand, Source={StaticResource VmProxy}}"
-                                              CommandParameter="{Binding}"
-                                              InputGestureText="Delete">
-                                        <MenuItem.Header>
-                                            <l:Catalog Message="Delete" />
-                                        </MenuItem.Header>
-                                    </MenuItem>
-                                    <Separator />
-                                    <MenuItem Command="{Binding Data.CutCommand, Source={StaticResource VmProxy}}"
-                                              CommandParameter="{Binding}"
-                                              InputGestureText="Ctrl+X">
-                                        <MenuItem.Header>
-                                            <l:Catalog Message="Cut" />
-                                        </MenuItem.Header>
-                                    </MenuItem>
-                                    <MenuItem Command="{Binding Data.PasteCommand, Source={StaticResource VmProxy}}"
-                                              CommandParameter="{Binding}"
-                                              InputGestureText="Ctrl+V">
-                                        <MenuItem.Header>
-                                            <l:Catalog Message="Paste" />
-                                        </MenuItem.Header>
-                                    </MenuItem>
-                                    <Separator />
-                                    <MenuItem Command="{Binding Data.NewBuildCommand, Source={StaticResource VmProxy}}"
-                                              CommandParameter="{Binding}">
-                                        <MenuItem.Header>
-                                            <l:Catalog Message="New Build" />
-                                        </MenuItem.Header>
-                                    </MenuItem>
-                                    <MenuItem Command="{Binding Data.NewFolderCommand, Source={StaticResource VmProxy}}"
-                                              CommandParameter="{Binding}">
-                                        <MenuItem.Header>
-                                            <l:Catalog Message="New Folder" />
-                                        </MenuItem.Header>
-                                    </MenuItem>
-                                </ContextMenu>
-                            </TextBlock.ContextMenu>
-                        </TextBlock>
+                                   VerticalAlignment="Center"/>
+                        <StackPanel.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Command="{Binding Data.EditCommand, Source={StaticResource VmProxy}}"
+                                          CommandParameter="{Binding}"
+                                          InputGestureText="F2">
+                                    <MenuItem.Header>
+                                        <l:Catalog Message="Edit" />
+                                    </MenuItem.Header>
+                                </MenuItem>
+                                <MenuItem Command="{Binding Data.DeleteCommand, Source={StaticResource VmProxy}}"
+                                          CommandParameter="{Binding}"
+                                          InputGestureText="Delete">
+                                    <MenuItem.Header>
+                                        <l:Catalog Message="Delete" />
+                                    </MenuItem.Header>
+                                </MenuItem>
+                                <Separator />
+                                <MenuItem Command="{Binding Data.CutCommand, Source={StaticResource VmProxy}}"
+                                          CommandParameter="{Binding}"
+                                          InputGestureText="Ctrl+X">
+                                    <MenuItem.Header>
+                                        <l:Catalog Message="Cut" />
+                                    </MenuItem.Header>
+                                </MenuItem>
+                                <MenuItem Command="{Binding Data.PasteCommand, Source={StaticResource VmProxy}}"
+                                          CommandParameter="{Binding}"
+                                          InputGestureText="Ctrl+V">
+                                    <MenuItem.Header>
+                                        <l:Catalog Message="Paste" />
+                                    </MenuItem.Header>
+                                </MenuItem>
+                                <Separator />
+                                <MenuItem Command="{Binding Data.NewBuildCommand, Source={StaticResource VmProxy}}"
+                                          CommandParameter="{Binding}">
+                                    <MenuItem.Header>
+                                        <l:Catalog Message="New Build" />
+                                    </MenuItem.Header>
+                                </MenuItem>
+                                <MenuItem Command="{Binding Data.NewFolderCommand, Source={StaticResource VmProxy}}"
+                                          CommandParameter="{Binding}">
+                                    <MenuItem.Header>
+                                        <l:Catalog Message="New Folder" />
+                                    </MenuItem.Header>
+                                </MenuItem>
+                            </ContextMenu>
+                        </StackPanel.ContextMenu>
                     </StackPanel>
                 </HierarchicalDataTemplate>
                 <DataTemplate DataType="{x:Type viewModels:BuildViewModel}">
@@ -192,7 +192,8 @@
                                     </MenuItem.Header>
                                 </MenuItem>
                                 <MenuItem Command="{Binding Data.EditCommand, Source={StaticResource VmProxy}}"
-                                          CommandParameter="{Binding}">
+                                          CommandParameter="{Binding}"
+                                          InputGestureText="F2">
                                     <MenuItem.Header>
                                         <l:Catalog Message="Edit" />
                                     </MenuItem.Header>
@@ -282,6 +283,9 @@
             <TreeView.InputBindings>
                 <KeyBinding Key="Enter"
                             Command="{Binding OpenBuildCommand}"
+                            CommandParameter="{Binding SelectedBuild}"/>
+                <KeyBinding Key="F2"
+                            Command="{Binding EditCommand}"
                             CommandParameter="{Binding SelectedBuild}"/>
                 <KeyBinding Key="Delete"
                             Command="{Binding DeleteCommand}"

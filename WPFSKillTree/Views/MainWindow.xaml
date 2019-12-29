@@ -385,9 +385,9 @@
             </fluent:Ribbon.Menu>
 
             <fluent:RibbonTabItem KeyTip="H"
-                                  ReduceOrder="PassiveTreeRibbon,CraftRibbon,ToolsRibbon,TagNodesRibbon,ImportRibbon,ExportRibbon,
-                                  PassiveTreeRibbon,CraftRibbon,ToolsRibbon,TagNodesRibbon,ImportRibbon,ExportRibbon,
-                                  PassiveTreeRibbon,CraftRibbon,ImportRibbon,ExportRibbon,TagNodesRibbon,ToolsRibbon">
+                                  ReduceOrder="PassiveTreeRibbon,BuildRibbon,CraftRibbon,ImportRibbon,TagNodesRibbon,ToolsRibbon,
+                                  PassiveTreeRibbon,CraftRibbon,BuildRibbon,ImportRibbon,TagNodesRibbon,ToolsRibbon,
+                                  BuildRibbon,CraftRibbon,ImportRibbon,PassiveTreeRibbon,TagNodesRibbon,ToolsRibbon">
                 <fluent:RibbonTabItem.Header>
                     <l:Catalog Message="Home" />
                 </fluent:RibbonTabItem.Header>
@@ -506,6 +506,100 @@
                         </fluent:Button.ToolTip>
                     </fluent:Button>
                 </fluent:RibbonGroupBox>
+                <fluent:RibbonGroupBox Name="BuildRibbon">
+                    <fluent:RibbonGroupBox.Header>
+                        <l:Catalog Message="Build" />
+                    </fluent:RibbonGroupBox.Header>
+                    <fluent:Button Command="{Binding BuildsControlViewModel.EditCommand}"
+                                   CommandParameter="{Binding BuildsControlViewModel.CurrentBuild}"
+                                   KeyTip="BE"
+                                   Icon="{iconPacks:Material FileEdit}">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconMaterial Kind="FileEdit"
+                                                        Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Edit" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Edit" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Change the current build's name, note and character information." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
+                    <fluent:Button Command="{Binding BuildsControlViewModel.RevertBuildCommand}"
+                                   CommandParameter="{Binding BuildsControlViewModel.CurrentBuild}"
+                                   KeyTip="BD"
+                                   Icon="{iconPacks:Material FileUndo}">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconMaterial Kind="FileUndo"
+                                                        Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Discard changes" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Discard changes" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Discards all changes made to the current build after the last save." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
+                    <fluent:Button Command="{Binding BuildsControlViewModel.ExportCurrentToClipboardCommand}"
+                                   KeyTip="BC"
+                                   Icon="{iconPacks:Material ClipboardMultiple}">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconMaterial Kind="ClipboardMultiple"
+                                                        Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Copy (export)" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Copy (export)" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Copy/export the current build to the clipboard as a XML string." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
+                    <fluent:Button Command="{Binding BuildsControlViewModel.ImportCurrentFromClipboardCommand}"
+                                   KeyTip="BP"
+                                   Icon="{iconPacks:Modern ClipboardPaste}">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconModern Kind="ClipboardPaste"
+                                                      Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Paste (import)" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Paste (import)" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Paste/import a new build from the clipboard into the root build folder and open it." />
+                                </fluent:ScreenTip.Text>
+                                <fluent:ScreenTip.DisableReason>
+                                    <l:Catalog Message="The clipboard is empty or does not contain a build in a suitable format. Builds can only be imported as a XML string." />
+                                </fluent:ScreenTip.DisableReason>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
+                </fluent:RibbonGroupBox>
                 <fluent:RibbonGroupBox Name="ImportRibbon">
                     <fluent:RibbonGroupBox.Header>
                         <l:Catalog Message="Import" />
@@ -548,78 +642,6 @@
                                 </fluent:ScreenTip.Title>
                                 <fluent:ScreenTip.Text>
                                     <l:Catalog Message="Import stash tabs of an account." />
-                                </fluent:ScreenTip.Text>
-                            </fluent:ScreenTip>
-                        </fluent:Button.ToolTip>
-                    </fluent:Button>
-                    <fluent:Button Command="{Binding BuildsControlViewModel.ImportCurrentFromClipboardCommand}"
-                                   KeyTip="IB"
-                                   Icon="{iconPacks:Modern ClipboardPaste}">
-                        <fluent:Button.LargeIcon>
-                            <iconPacks:PackIconModern Kind="ClipboardPaste"
-                                                      Style="{StaticResource LargeRibbonIconStyle}" />
-                        </fluent:Button.LargeIcon>
-                        <fluent:Button.Header>
-                            <l:Catalog Message="Import build (clipboard)" />
-                        </fluent:Button.Header>
-                        <fluent:Button.ToolTip>
-                            <fluent:ScreenTip>
-                                <fluent:ScreenTip.Title>
-                                    <l:Catalog Message="Import build from clipboard" />
-                                </fluent:ScreenTip.Title>
-                                <fluent:ScreenTip.Text>
-                                    <l:Catalog Message="Import a new build from the clipboard and open it." />
-                                </fluent:ScreenTip.Text>
-                                <fluent:ScreenTip.DisableReason>
-                                    <l:Catalog Message="The clipboard is empty or does not contain a build in a suitable format. Builds can only be imported as a XML string." />
-                                </fluent:ScreenTip.DisableReason>
-                            </fluent:ScreenTip>
-                        </fluent:Button.ToolTip>
-                    </fluent:Button>
-                </fluent:RibbonGroupBox>
-                <fluent:RibbonGroupBox Name="ExportRibbon">
-                    <fluent:RibbonGroupBox.Header>
-                        <l:Catalog Message="Export" />
-                    </fluent:RibbonGroupBox.Header>
-                    <fluent:Button Command="{Binding BuildsControlViewModel.ExportCurrentToClipboardCommand}"
-                                   KeyTip="EB"
-                                   Icon="{iconPacks:Material ClipboardMultiple}">
-                        <fluent:Button.LargeIcon>
-                            <iconPacks:PackIconMaterial Kind="ClipboardMultiple"
-                                                        Style="{StaticResource LargeRibbonIconStyle}" />
-                        </fluent:Button.LargeIcon>
-                        <fluent:Button.Header>
-                            <l:Catalog Message="Export build (clipboard)" />
-                        </fluent:Button.Header>
-                        <fluent:Button.ToolTip>
-                            <fluent:ScreenTip>
-                                <fluent:ScreenTip.Title>
-                                    <l:Catalog Message="Export build to clipboard" />
-                                </fluent:ScreenTip.Title>
-                                <fluent:ScreenTip.Text>
-                                    <l:Catalog Message="Export the current build to the clipboard as a XML string." />
-                                </fluent:ScreenTip.Text>
-                            </fluent:ScreenTip>
-                        </fluent:Button.ToolTip>
-                    </fluent:Button>
-                    <fluent:Button Click="btnPoeUrl_Click"
-                                   KeyTip="EP"
-                                   Icon="{iconPacks:Material Web}"
-                                   IsEnabled="{Binding NoAsyncTaskRunning}">
-                        <fluent:Button.LargeIcon>
-                            <iconPacks:PackIconMaterial Kind="Web"
-                                                        Style="{StaticResource LargeRibbonIconStyle}" />
-                        </fluent:Button.LargeIcon>
-                        <fluent:Button.Header>
-                            <l:Catalog Message="Create PoEUrl of passive tree" />
-                        </fluent:Button.Header>
-                        <fluent:Button.ToolTip>
-                            <fluent:ScreenTip>
-                                <fluent:ScreenTip.Title>
-                                    <l:Catalog Message="Create PoEUrl of passive tree (Ctrl+E)" />
-                                </fluent:ScreenTip.Title>
-                                <fluent:ScreenTip.Text>
-                                    <l:Catalog Message="Creates a PoEUrl from the current passive tree URL and copies it to the clipboard." />
                                 </fluent:ScreenTip.Text>
                             </fluent:ScreenTip>
                         </fluent:Button.ToolTip>
@@ -789,7 +811,8 @@
                     </fluent:SplitButton>
                     <fluent:Button Click="Menu_ScreenShot"
                                    KeyTip="S"
-                                   Icon="{iconPacks:Modern Camera}">
+                                   Icon="{iconPacks:Modern Camera}"
+                                   SizeDefinition="Middle, Middle, Small">
                         <fluent:Button.LargeIcon>
                             <iconPacks:PackIconModern Kind="Camera"
                                                       Style="{StaticResource LargeRibbonIconStyle}" />
@@ -808,9 +831,33 @@
                             </fluent:ScreenTip>
                         </fluent:Button.ToolTip>
                     </fluent:Button>
+                    <fluent:Button Click="btnPoeUrl_Click"
+                                   KeyTip="EP"
+                                   Icon="{iconPacks:Material Web}"
+                                   IsEnabled="{Binding NoAsyncTaskRunning}"
+                                   SizeDefinition="Middle, Middle, Small">
+                        <fluent:Button.LargeIcon>
+                            <iconPacks:PackIconMaterial Kind="Web"
+                                                        Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:Button.LargeIcon>
+                        <fluent:Button.Header>
+                            <l:Catalog Message="Create PoEUrl of passive tree" />
+                        </fluent:Button.Header>
+                        <fluent:Button.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Create PoEUrl of passive tree (Ctrl+E)" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Creates a PoEUrl from the current passive tree URL and copies it to the clipboard." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:Button.ToolTip>
+                    </fluent:Button>
                     <fluent:Button Click="Menu_RedownloadTreeAssets"
                                    KeyTip="D"
-                                   Icon="{iconPacks:Material FileDownload}">
+                                   Icon="{iconPacks:Material FileDownload}"
+                                   SizeDefinition="Middle, Middle, Small">
                         <fluent:Button.LargeIcon>
                             <iconPacks:PackIconMaterial Kind="FileDownload"
                                                         Style="{StaticResource LargeRibbonIconStyle}" />
