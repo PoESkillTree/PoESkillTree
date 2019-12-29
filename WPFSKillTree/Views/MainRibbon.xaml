@@ -1,0 +1,1154 @@
+﻿<UserControl x:Class="PoESkillTree.Views.MainRibbon"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mahApps="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
+             xmlns:dialogs="clr-namespace:PoESkillTree.Controls.Dialogs"
+             xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
+             xmlns:local="clr-namespace:PoESkillTree.Views"
+             xmlns:fluent="urn:fluent-ribbon"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance local:MainWindow}">
+    <UserControl.Resources>
+        <Style x:Key="LargeRibbonIconStyle"
+               TargetType="iconPacks:PackIconBase">
+            <Setter Property="Width" Value="24" />
+            <Setter Property="Height" Value="24" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+    </UserControl.Resources>
+
+    <fluent:Ribbon AutomaticStateManagement="True"
+                   dialogs:DialogParticipation.Register="{Binding PersistentData}">
+        <fluent:Ribbon.QuickAccessItems>
+            <fluent:QuickAccessMenuItem Target="{Binding ElementName=NewTopLevelBuildMenuItem}"
+                                        IsChecked="True" />
+            <fluent:QuickAccessMenuItem Target="{Binding ElementName=NewTopLevelFolderMenuItem}" />
+            <fluent:QuickAccessMenuItem Target="{Binding ElementName=SaveMenuItem}"
+                                        IsChecked="True" />
+            <fluent:QuickAccessMenuItem Target="{Binding ElementName=SaveAsMenuItem}"
+                                        IsChecked="True" />
+            <fluent:QuickAccessMenuItem Target="{Binding ElementName=SaveAllMenuItem}"
+                                        IsChecked="True" />
+        </fluent:Ribbon.QuickAccessItems>
+
+        <fluent:Ribbon.Menu>
+            <fluent:ApplicationMenu>
+                <fluent:ApplicationMenu.Resources>
+                    <Style TargetType="iconPacks:PackIconMaterial"
+                           BasedOn="{StaticResource LargeRibbonIconStyle}" />
+                    <Style TargetType="iconPacks:PackIconModern"
+                           BasedOn="{StaticResource LargeRibbonIconStyle}" />
+                </fluent:ApplicationMenu.Resources>
+                <fluent:ApplicationMenu.Header>
+                    <l:Catalog Message="File" />
+                </fluent:ApplicationMenu.Header>
+                <fluent:MenuItem KeyTip="N">
+                    <fluent:MenuItem.Header>
+                        <l:Catalog Message="New" />
+                    </fluent:MenuItem.Header>
+                    <fluent:MenuItem x:Name="NewTopLevelBuildMenuItem"
+                                     Command="{Binding BuildsControlViewModel.NewBuildCommand}"
+                                     CommandParameter="{Binding BuildsControlViewModel.BuildRoot}"
+                                     KeyTip="BT">
+                        <fluent:MenuItem.Icon>
+                            <iconPacks:PackIconMaterial Kind="FilePlusOutline" />
+                        </fluent:MenuItem.Icon>
+                        <fluent:MenuItem.Header>
+                            <l:Catalog Message="New top level build" />
+                        </fluent:MenuItem.Header>
+                        <fluent:MenuItem.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="New top level build (Ctrl+N)" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Create a new empty build in the root build folder." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:MenuItem.ToolTip>
+                    </fluent:MenuItem>
+                    <fluent:MenuItem Command="{Binding BuildsControlViewModel.NewBuildCommand}"
+                                     CommandParameter="{Binding BuildsControlViewModel.CurrentBuild}"
+                                     KeyTip="BC">
+                        <fluent:MenuItem.Icon>
+                            <iconPacks:PackIconMaterial Kind="FilePlus" />
+                        </fluent:MenuItem.Icon>
+                        <fluent:MenuItem.Header>
+                            <l:Catalog Message="New build next to current" />
+                        </fluent:MenuItem.Header>
+                        <fluent:MenuItem.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="New build next to current" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <Binding Path="BuildsControlViewModel.CurrentBuild.Parent.Build.Name">
+                                        <Binding.StringFormat>
+                                            <l:Catalog Message="Create a new empty build in the same folder as the current build ({0})." />
+                                        </Binding.StringFormat>
+                                    </Binding>
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:MenuItem.ToolTip>
+                    </fluent:MenuItem>
+                    <fluent:MenuItem x:Name="NewTopLevelFolderMenuItem"
+                                     Command="{Binding BuildsControlViewModel.NewFolderCommand}"
+                                     CommandParameter="{Binding BuildsControlViewModel.BuildRoot}"
+                                     KeyTip="FT">
+                        <fluent:MenuItem.Icon>
+                            <iconPacks:PackIconMaterial Kind="FolderPlusOutline" />
+                        </fluent:MenuItem.Icon>
+                        <fluent:MenuItem.Header>
+                            <l:Catalog Message="New top level folder" />
+                        </fluent:MenuItem.Header>
+                        <fluent:MenuItem.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="New top level folder" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Create a new empty folder in the root build folder." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:MenuItem.ToolTip>
+                    </fluent:MenuItem>
+                    <fluent:MenuItem Command="{Binding BuildsControlViewModel.NewFolderCommand}"
+                                     CommandParameter="{Binding BuildsControlViewModel.CurrentBuild}"
+                                     KeyTip="FC">
+                        <fluent:MenuItem.Icon>
+                            <iconPacks:PackIconMaterial Kind="FolderPlus" />
+                        </fluent:MenuItem.Icon>
+                        <fluent:MenuItem.Header>
+                            <l:Catalog Message="New folder next to current" />
+                        </fluent:MenuItem.Header>
+                        <fluent:MenuItem.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="New folder next to current" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <Binding Path="BuildsControlViewModel.CurrentBuild.Parent.Build.Name">
+                                        <Binding.StringFormat>
+                                            <l:Catalog Message="Create a new empty folder in the same folder as the current build ({0})." />
+                                        </Binding.StringFormat>
+                                    </Binding>
+                                </fluent:ScreenTip.Text>
+                                <fluent:ScreenTip.DisableReason>
+                                    <l:Catalog Message="Maximum folder depth has been reached." />
+                                </fluent:ScreenTip.DisableReason>
+                            </fluent:ScreenTip>
+                        </fluent:MenuItem.ToolTip>
+                    </fluent:MenuItem>
+                </fluent:MenuItem>
+                <fluent:MenuItem KeyTip="S">
+                    <fluent:MenuItem.Header>
+                        <l:Catalog Message="Save" />
+                    </fluent:MenuItem.Header>
+                    <fluent:MenuItem x:Name="SaveMenuItem"
+                                     Command="{Binding BuildsControlViewModel.SaveBuildCommand}"
+                                     CommandParameter="{Binding BuildsControlViewModel.CurrentBuild}"
+                                     KeyTip="S">
+                        <fluent:MenuItem.Icon>
+                            <iconPacks:PackIconMaterial Kind="ContentSave" />
+                        </fluent:MenuItem.Icon>
+                        <fluent:MenuItem.Header>
+                            <l:Catalog Message="Save current build" />
+                        </fluent:MenuItem.Header>
+                        <fluent:MenuItem.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Save current build (Ctrl+S)" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Save the currently opened build." />
+                                </fluent:ScreenTip.Text>
+                                <fluent:ScreenTip.DisableReason>
+                                    <l:Catalog Message="The current build has no unsaved changes." />
+                                </fluent:ScreenTip.DisableReason>
+                            </fluent:ScreenTip>
+                        </fluent:MenuItem.ToolTip>
+                    </fluent:MenuItem>
+                    <fluent:MenuItem x:Name="SaveAsMenuItem"
+                                     Command="{Binding BuildsControlViewModel.SaveBuildAsCommand}"
+                                     CommandParameter="{Binding BuildsControlViewModel.CurrentBuild}"
+                                     KeyTip="N">
+                        <fluent:MenuItem.Icon>
+                            <iconPacks:PackIconMaterial Kind="ContentSaveEdit" />
+                        </fluent:MenuItem.Icon>
+                        <fluent:MenuItem.Header>
+                            <l:Catalog Message="Save current build as" />
+                        </fluent:MenuItem.Header>
+                        <fluent:MenuItem.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Save current build as (Ctrl+Alt+S)" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Save the currently opened build as a new build." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:MenuItem.ToolTip>
+                    </fluent:MenuItem>
+                    <fluent:MenuItem x:Name="SaveAllMenuItem"
+                                     Command="{Binding BuildsControlViewModel.SaveAllBuildsCommand}"
+                                     KeyTip="A">
+                        <fluent:MenuItem.Icon>
+                            <iconPacks:PackIconMaterial Kind="ContentSaveAll" />
+                        </fluent:MenuItem.Icon>
+                        <fluent:MenuItem.Header>
+                            <l:Catalog Message="Save all builds" />
+                        </fluent:MenuItem.Header>
+                        <fluent:MenuItem.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Save all builds (Ctrl+Shift+N)" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Save all changed builds." />
+                                </fluent:ScreenTip.Text>
+                                <fluent:ScreenTip.DisableReason>
+                                    <l:Catalog Message="No build has unsaved changes." />
+                                </fluent:ScreenTip.DisableReason>
+                            </fluent:ScreenTip>
+                        </fluent:MenuItem.ToolTip>
+                    </fluent:MenuItem>
+                </fluent:MenuItem>
+
+                <Separator />
+                <fluent:MenuItem Command="{Binding BuildsControlViewModel.ReloadCommand}"
+                                 KeyTip="R"
+                                 Icon="{iconPacks:Modern Kind=RefreshClockwiseUp}">
+                    <fluent:MenuItem.Header>
+                        <l:Catalog Message="Reload builds from file system" />
+                    </fluent:MenuItem.Header>
+                    <fluent:MenuItem.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Reload builds from file system" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Reload saved build information from file system, e.g. after manually copying builds there." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:MenuItem.ToolTip>
+                </fluent:MenuItem>
+                <fluent:MenuItem Command="{Binding BuildsControlViewModel.OpenBuildsSavePathCommand}"
+                                 KeyTip="B"
+                                 Icon="{iconPacks:Modern Kind=FolderOpen}">
+                    <fluent:MenuItem.Header>
+                        <l:Catalog Message="Open build directory" />
+                    </fluent:MenuItem.Header>
+                    <fluent:MenuItem.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Open build directory" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Open the build save path in the file explorer.&#x0a;The path can be changed in the options." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:MenuItem.ToolTip>
+                </fluent:MenuItem>
+
+                <Separator />
+                <fluent:MenuItem Click="OpenSettings"
+                                 KeyTip="O"
+                                 Icon="{iconPacks:Modern Kind=Settings}">
+                    <fluent:MenuItem.Header>
+                        <l:Catalog Message="Options" />
+                    </fluent:MenuItem.Header>
+                    <fluent:MenuItem.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Options" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Open the options." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:MenuItem.ToolTip>
+                </fluent:MenuItem>
+                <fluent:MenuItem Click="Exit"
+                                 KeyTip="X"
+                                 Icon="{iconPacks:Modern Close}">
+                    <fluent:MenuItem.Header>
+                        <l:Catalog Message="Exit" />
+                    </fluent:MenuItem.Header>
+                    <fluent:MenuItem.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Exit (Alt+F4)" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Exit the program." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:MenuItem.ToolTip>
+                </fluent:MenuItem>
+            </fluent:ApplicationMenu>
+        </fluent:Ribbon.Menu>
+
+        <fluent:RibbonTabItem KeyTip="H"
+                              ReduceOrder="PassiveTreeRibbon,BuildRibbon,CraftRibbon,ImportRibbon,TagNodesRibbon,ToolsRibbon,
+                              PassiveTreeRibbon,CraftRibbon,BuildRibbon,ImportRibbon,TagNodesRibbon,ToolsRibbon,
+                              BuildRibbon,CraftRibbon,ImportRibbon,PassiveTreeRibbon,TagNodesRibbon,ToolsRibbon">
+            <fluent:RibbonTabItem.Header>
+                <l:Catalog Message="Home" />
+            </fluent:RibbonTabItem.Header>
+            <fluent:RibbonGroupBox Name="PassiveTreeRibbon">
+                <fluent:RibbonGroupBox.Header>
+                    <l:Catalog Message="Passive tree" />
+                </fluent:RibbonGroupBox.Header>
+                <fluent:Button Click="PassiveTreeUndo"
+                               KeyTip="U"
+                               Icon="{iconPacks:Modern Undo}">
+                    <fluent:Button.LargeIcon>
+                        <iconPacks:PackIconModern Kind="Undo"
+                                                  Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:Button.LargeIcon>
+                    <fluent:Button.Header>
+                        <l:Catalog Message="Undo" />
+                    </fluent:Button.Header>
+                    <fluent:Button.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Undo (Ctrl+Z)" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Undo the last passive tree action." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:Button.ToolTip>
+                </fluent:Button>
+                <fluent:Button Click="PassiveTreeRedo"
+                               KeyTip="R"
+                               Icon="{iconPacks:Modern Redo}">
+                    <fluent:Button.LargeIcon>
+                        <iconPacks:PackIconModern Kind="Redo"
+                                                  Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:Button.LargeIcon>
+                    <fluent:Button.Header>
+                        <l:Catalog Message="Redo" />
+                    </fluent:Button.Header>
+                    <fluent:Button.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Redo (Ctrl+Y)" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Redo the last passive tree action." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:Button.ToolTip>
+                </fluent:Button>
+                <fluent:Button Click="ResetTree"
+                               KeyTip="T"
+                               Icon="{iconPacks:Modern Reset}">
+                    <fluent:Button.LargeIcon>
+                        <iconPacks:PackIconModern Kind="Reset"
+                                                  Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:Button.LargeIcon>
+                    <fluent:Button.Header>
+                        <l:Catalog Message="Reset" />
+                    </fluent:Button.Header>
+                    <fluent:Button.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Reset passive tree (Ctrl+R)" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Reset the passive tree. What is reset can be configured in the options." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:Button.ToolTip>
+                </fluent:Button>
+            </fluent:RibbonGroupBox>
+            <fluent:RibbonGroupBox Name="CraftRibbon">
+                <fluent:RibbonGroupBox.Header>
+                    <l:Catalog Message="Craft" />
+                </fluent:RibbonGroupBox.Header>
+                <fluent:Button Click="CraftItem"
+                               KeyTip="CR"
+                               Icon="{iconPacks:Material Hammer}">
+                    <fluent:Button.LargeIcon>
+                        <iconPacks:PackIconMaterial Kind="Hammer"
+                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:Button.LargeIcon>
+                    <fluent:Button.Header>
+                        <l:Catalog Message="Craft unique" />
+                    </fluent:Button.Header>
+                    <fluent:Button.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Craft unique" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Craft a new unique item and add it to the stash." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:Button.ToolTip>
+                </fluent:Button>
+                <fluent:Button Click="CraftUnique"
+                               KeyTip="CI"
+                               Icon="{iconPacks:Material Tools}">
+                    <fluent:Button.LargeIcon>
+                        <iconPacks:PackIconMaterial Kind="Tools"
+                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:Button.LargeIcon>
+                    <fluent:Button.Header>
+                        <l:Catalog Message="Craft item" />
+                    </fluent:Button.Header>
+                    <fluent:Button.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Craft item" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Craft a new non-unique item and add it to the stash." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:Button.ToolTip>
+                </fluent:Button>
+            </fluent:RibbonGroupBox>
+            <fluent:RibbonGroupBox Name="BuildRibbon">
+                <fluent:RibbonGroupBox.Header>
+                    <l:Catalog Message="Build" />
+                </fluent:RibbonGroupBox.Header>
+                <fluent:RibbonGroupBox.ToolTip>
+                    <fluent:ScreenTip>
+                        <fluent:ScreenTip.Title>
+                            <l:Catalog Message="Build" />
+                        </fluent:ScreenTip.Title>
+                        <fluent:ScreenTip.Text>
+                            <l:Catalog Message="These commands operate on the current build. For other builds and folders, use the saved builds panel's context menu." />
+                        </fluent:ScreenTip.Text>
+                    </fluent:ScreenTip>
+                </fluent:RibbonGroupBox.ToolTip>
+                <fluent:Button Command="{Binding BuildsControlViewModel.EditCommand}"
+                               CommandParameter="{Binding BuildsControlViewModel.CurrentBuild}"
+                               KeyTip="BE"
+                               Icon="{iconPacks:Material FileEdit}">
+                    <fluent:Button.LargeIcon>
+                        <iconPacks:PackIconMaterial Kind="FileEdit"
+                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:Button.LargeIcon>
+                    <fluent:Button.Header>
+                        <l:Catalog Message="Edit" />
+                    </fluent:Button.Header>
+                    <fluent:Button.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Edit" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Change the current build's name and note." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:Button.ToolTip>
+                </fluent:Button>
+                <fluent:Button Command="{Binding BuildsControlViewModel.RevertBuildCommand}"
+                               CommandParameter="{Binding BuildsControlViewModel.CurrentBuild}"
+                               KeyTip="BD"
+                               Icon="{iconPacks:Material FileUndo}">
+                    <fluent:Button.LargeIcon>
+                        <iconPacks:PackIconMaterial Kind="FileUndo"
+                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:Button.LargeIcon>
+                    <fluent:Button.Header>
+                        <l:Catalog Message="Discard changes" />
+                    </fluent:Button.Header>
+                    <fluent:Button.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Discard changes" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Discards all changes made to the current build after the last save." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:Button.ToolTip>
+                </fluent:Button>
+                <fluent:Button Command="{Binding BuildsControlViewModel.ExportCurrentToClipboardCommand}"
+                               KeyTip="BC"
+                               Icon="{iconPacks:Material ClipboardMultiple}">
+                    <fluent:Button.LargeIcon>
+                        <iconPacks:PackIconMaterial Kind="ClipboardMultiple"
+                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:Button.LargeIcon>
+                    <fluent:Button.Header>
+                        <l:Catalog Message="Copy (export)" />
+                    </fluent:Button.Header>
+                    <fluent:Button.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Copy (export)" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Copy/export the current build to the clipboard as a XML string." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:Button.ToolTip>
+                </fluent:Button>
+                <fluent:Button Command="{Binding BuildsControlViewModel.ImportCurrentFromClipboardCommand}"
+                               KeyTip="BP"
+                               Icon="{iconPacks:Modern ClipboardPaste}">
+                    <fluent:Button.LargeIcon>
+                        <iconPacks:PackIconModern Kind="ClipboardPaste"
+                                                  Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:Button.LargeIcon>
+                    <fluent:Button.Header>
+                        <l:Catalog Message="Paste (import)" />
+                    </fluent:Button.Header>
+                    <fluent:Button.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Paste (import)" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Paste/import a new build from the clipboard into the root build folder and open it." />
+                            </fluent:ScreenTip.Text>
+                            <fluent:ScreenTip.DisableReason>
+                                <l:Catalog Message="The clipboard is empty or does not contain a build in a suitable format. Builds can only be imported as a XML string." />
+                            </fluent:ScreenTip.DisableReason>
+                        </fluent:ScreenTip>
+                    </fluent:Button.ToolTip>
+                </fluent:Button>
+            </fluent:RibbonGroupBox>
+            <fluent:RibbonGroupBox Name="ImportRibbon">
+                <fluent:RibbonGroupBox.Header>
+                    <l:Catalog Message="Import" />
+                </fluent:RibbonGroupBox.Header>
+                <fluent:Button Click="ImportCharacter"
+                               KeyTip="IC"
+                               Icon="{iconPacks:Material ClipboardAccount}">
+                    <fluent:Button.LargeIcon>
+                        <iconPacks:PackIconMaterial Kind="ClipboardAccount"
+                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:Button.LargeIcon>
+                    <fluent:Button.Header>
+                        <l:Catalog Message="Import character" />
+                    </fluent:Button.Header>
+                    <fluent:Button.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Import character" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Import passive tree, items and skills of an existing character." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:Button.ToolTip>
+                </fluent:Button>
+                <fluent:Button Click="ImportStash"
+                               KeyTip="IS"
+                               Icon="{iconPacks:Material ClipboardList}">
+                    <fluent:Button.LargeIcon>
+                        <iconPacks:PackIconMaterial Kind="ClipboardList"
+                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:Button.LargeIcon>
+                    <fluent:Button.Header>
+                        <l:Catalog Message="Import stash" />
+                    </fluent:Button.Header>
+                    <fluent:Button.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Import stash" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Import stash tabs of an account." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:Button.ToolTip>
+                </fluent:Button>
+            </fluent:RibbonGroupBox>
+            <fluent:RibbonGroupBox Name="TagNodesRibbon">
+                <fluent:RibbonGroupBox.Header>
+                    <l:Catalog Message="Tag nodes" />
+                </fluent:RibbonGroupBox.Header>
+                <fluent:DropDownButton KeyTip="HN"
+                                       Icon="{iconPacks:Material MapMarkerPlus}"
+                                       SizeDefinition="Middle, Middle, Small">
+                    <fluent:DropDownButton.LargeIcon>
+                        <iconPacks:PackIconMaterial Kind="MapMarkerPlus"
+                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:DropDownButton.LargeIcon>
+                    <fluent:DropDownButton.Header>
+                        <l:Catalog Message="Tag highlighted nodes" />
+                    </fluent:DropDownButton.Header>
+                    <fluent:DropDownButton.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Tag highlighted nodes" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Tag all highlighted nodes." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:DropDownButton.ToolTip>
+                    <fluent:MenuItem Click="CheckAllHighlightedNodes"
+                                     KeyTip="C"
+                                     Icon="{iconPacks:Material MapMarkerCheck}">
+                        <fluent:MenuItem.Header>
+                            <l:Catalog Message="Check-tag highlighted nodes" />
+                        </fluent:MenuItem.Header>
+                        <fluent:MenuItem.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Check-tag highlighted nodes" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Check-tag all highlighted nodes." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:MenuItem.ToolTip>
+                    </fluent:MenuItem>
+                    <fluent:MenuItem Click="CrossAllHighlightedNodes"
+                                     KeyTip="X"
+                                     Icon="{iconPacks:Material MapMarkerRemoveVariant}">
+                        <fluent:MenuItem.Header>
+                            <l:Catalog Message="Cross-tag highlighted nodes" />
+                        </fluent:MenuItem.Header>
+                        <fluent:MenuItem.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Cross-tag highlighted nodes" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Cross-tag all highlighted nodes." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:MenuItem.ToolTip>
+                    </fluent:MenuItem>
+                </fluent:DropDownButton>
+                <fluent:Button Click="UntagAllNodes"
+                               KeyTip="HX"
+                               Icon="{iconPacks:Material MapMarkerRemove}"
+                               SizeDefinition="Middle, Middle, Small">
+                    <fluent:Button.LargeIcon>
+                        <iconPacks:PackIconMaterial Kind="MapMarkerRemove"
+                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:Button.LargeIcon>
+                    <fluent:Button.Header>
+                        <l:Catalog Message="Untag all nodes" />
+                    </fluent:Button.Header>
+                    <fluent:Button.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Untag all nodes" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Remove tags from all passive nodes." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:Button.ToolTip>
+                </fluent:Button>
+                <fluent:Button Click="UnhighlightAllNodes"
+                               KeyTip="HU"
+                               Icon="{iconPacks:Material CloseCircleOutline}"
+                               SizeDefinition="Middle, Middle, Small">
+                    <fluent:Button.LargeIcon>
+                        <iconPacks:PackIconMaterial Kind="CloseCircleOutline"
+                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:Button.LargeIcon>
+                    <fluent:Button.Header>
+                        <l:Catalog Message="Unhighlight all nodes" />
+                    </fluent:Button.Header>
+                    <fluent:Button.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Unhighlight all nodes" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Remove all passive node highlights." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:Button.ToolTip>
+                </fluent:Button>
+            </fluent:RibbonGroupBox>
+            <fluent:RibbonGroupBox Name="ToolsRibbon">
+                <fluent:RibbonGroupBox.Header>
+                    <l:Catalog Message="Tools" />
+                </fluent:RibbonGroupBox.Header>
+                <fluent:SplitButton Command="{Binding TreeGeneratorInteraction.OpenTreeGeneratorCommand}"
+                                    KeyTip="G"
+                                    Icon="{iconPacks:Material Strategy}"
+                                    dialogs:DialogParticipation.Register="{Binding TreeGeneratorInteraction}">
+                    <fluent:SplitButton.LargeIcon>
+                        <iconPacks:PackIconMaterial Kind="Strategy"
+                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:SplitButton.LargeIcon>
+                    <fluent:SplitButton.Header>
+                        <l:Catalog Message="Passive tree generator" />
+                    </fluent:SplitButton.Header>
+                    <fluent:SplitButton.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Passive tree generator (Ctrl+Shift+G)" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Open the passive tree generator. It creates optimized builds based on constraints." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:SplitButton.ToolTip>
+                    <fluent:MenuItem Command="{Binding TreeGeneratorInteraction.RunTaggedNodesCommand}"
+                                     Icon="{iconPacks:Material MapMarker}">
+                        <fluent:MenuItem.Header>
+                            <l:Catalog Message="Run 'Tagged Nodes' generator" />
+                        </fluent:MenuItem.Header>
+                        <fluent:MenuItem.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Run 'Tagged Nodes' generator (Ctrl+Shift+T)" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Run the 'Tagged Nodes' generator with the current settings set in the passive tree generator window." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:MenuItem.ToolTip>
+                    </fluent:MenuItem>
+                    <fluent:MenuItem Command="{Binding TreeGeneratorInteraction.RunTaggedNodesCommand}"
+                                     Icon="{iconPacks:Material Sigma}">
+                        <fluent:MenuItem.Header>
+                            <l:Catalog Message="Run 'Advanced' generator" />
+                        </fluent:MenuItem.Header>
+                        <fluent:MenuItem.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Run 'Advanced' generator (Ctrl+Shift+A)" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Run the 'Advanced' generator with the current settings set in the passive tree generator window." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:MenuItem.ToolTip>
+                    </fluent:MenuItem>
+                </fluent:SplitButton>
+                <fluent:Button Click="ScreenShot"
+                               KeyTip="S"
+                               Icon="{iconPacks:Modern Camera}"
+                               SizeDefinition="Middle, Middle, Small">
+                    <fluent:Button.LargeIcon>
+                        <iconPacks:PackIconModern Kind="Camera"
+                                                  Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:Button.LargeIcon>
+                    <fluent:Button.Header>
+                        <l:Catalog Message="Screenshot skilled nodes" />
+                    </fluent:Button.Header>
+                    <fluent:Button.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Screenshot skilled nodes" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Take a screenshot of the passive tree area around the skilled nodes." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:Button.ToolTip>
+                </fluent:Button>
+                <fluent:Button Click="CreatePoeUrl"
+                               KeyTip="EP"
+                               Icon="{iconPacks:Material Web}"
+                               IsEnabled="{Binding NoAsyncTaskRunning}"
+                               SizeDefinition="Middle, Middle, Small">
+                    <fluent:Button.LargeIcon>
+                        <iconPacks:PackIconMaterial Kind="Web"
+                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:Button.LargeIcon>
+                    <fluent:Button.Header>
+                        <l:Catalog Message="Create PoEUrl of passive tree" />
+                    </fluent:Button.Header>
+                    <fluent:Button.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Create PoEUrl of passive tree (Ctrl+E)" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Creates a PoEUrl from the current passive tree URL and copies it to the clipboard." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:Button.ToolTip>
+                </fluent:Button>
+                <fluent:Button Click="RedownloadTreeAssets"
+                               KeyTip="D"
+                               Icon="{iconPacks:Material FileDownload}"
+                               SizeDefinition="Middle, Middle, Small">
+                    <fluent:Button.LargeIcon>
+                        <iconPacks:PackIconMaterial Kind="FileDownload"
+                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:Button.LargeIcon>
+                    <fluent:Button.Header>
+                        <l:Catalog Message="Download live tree data" />
+                    </fluent:Button.Header>
+                    <fluent:Button.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Download live tree data" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Delete the current passive tree data and download the official data from the latest patch." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:Button.ToolTip>
+                </fluent:Button>
+                <fluent:Button Click="CheckForUpdates"
+                               KeyTip="CU"
+                               Icon="{iconPacks:Material Update}"
+                               IsEnabled="{Binding NoAsyncTaskRunning, ElementName=window}">
+                    <fluent:Button.LargeIcon>
+                        <iconPacks:PackIconMaterial Kind="Update"
+                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:Button.LargeIcon>
+                    <fluent:Button.Header>
+                        <l:Catalog Message="Check for updates" />
+                    </fluent:Button.Header>
+                    <fluent:Button.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Check for updates" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Check for updates available for PoESkillTree." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:Button.ToolTip>
+                </fluent:Button>
+            </fluent:RibbonGroupBox>
+        </fluent:RibbonTabItem>
+
+        <fluent:RibbonTabItem KeyTip="V"
+                              ReduceOrder="PanelsRibbon,TreeViewRibbon,BuildsViewRibbon,HelpRibbon,LinksRibbon,
+                              PanelsRibbon,PanelsRibbon,TreeViewRibbon,TreeViewRibbon,ThemeRibbon,ThemeRibbon,HelpRibbon,
+                              BuildsViewRibbon,BuildsViewRibbon,HelpRibbon,LinksRibbon,ThemeRibbon,LinksRibbon">
+            <fluent:RibbonTabItem.Header>
+                <l:Catalog Message="View" />
+            </fluent:RibbonTabItem.Header>
+            <fluent:RibbonGroupBox Name="PanelsRibbon">
+                <fluent:RibbonGroupBox.Header>
+                    <l:Catalog Message="Panels" />
+                </fluent:RibbonGroupBox.Header>
+                <fluent:ToggleButton IsChecked="{Binding PersistentData.Options.AttributesBarOpened}"
+                                     KeyTip="S"
+                                     Icon="{iconPacks:Material TextShort}">
+                    <fluent:ToggleButton.LargeIcon>
+                        <iconPacks:PackIconMaterial Kind="TextShort"
+                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:ToggleButton.LargeIcon>
+                    <fluent:ToggleButton.Header>
+                        <l:Catalog Message="Build summary" />
+                    </fluent:ToggleButton.Header>
+                    <fluent:ToggleButton.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Build summary (Ctrl+Q)" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Show a summary of the currently opened build." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:ToggleButton.ToolTip>
+                </fluent:ToggleButton>
+                <fluent:ToggleButton IsChecked="{Binding PersistentData.Options.BuildsBarOpened}"
+                                     KeyTip="B"
+                                     Icon="{iconPacks:Material FileTree}">
+                    <fluent:ToggleButton.LargeIcon>
+                        <iconPacks:PackIconMaterial Kind="FileTree"
+                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:ToggleButton.LargeIcon>
+                    <fluent:ToggleButton.Header>
+                        <l:Catalog Message="Saved builds" />
+                    </fluent:ToggleButton.Header>
+                    <fluent:ToggleButton.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Saved builds (Ctrl+B)" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Show the available builds in the build save path." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:ToggleButton.ToolTip>
+                </fluent:ToggleButton>
+            </fluent:RibbonGroupBox>
+            <fluent:RibbonGroupBox Name="TreeViewRibbon">
+                <fluent:RibbonGroupBox.Header>
+                    <l:Catalog Message="Passive tree" />
+                </fluent:RibbonGroupBox.Header>
+                <fluent:ToggleButton IsChecked="{Binding PersistentData.Options.ChangeSummaryEnabled}"
+                                     KeyTip="G"
+                                     Icon="{iconPacks:Material FileCompare}">
+                    <fluent:ToggleButton.LargeIcon>
+                        <iconPacks:PackIconMaterial Kind="FileCompare"
+                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:ToggleButton.LargeIcon>
+                    <fluent:ToggleButton.Header>
+                        <l:Catalog Message="Summary of changes" />
+                    </fluent:ToggleButton.Header>
+                    <fluent:ToggleButton.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Summary of changes (Ctrl+G)" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Show a summary of the total changes to the passive tree when hovering over a node." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:ToggleButton.ToolTip>
+                </fluent:ToggleButton>
+                <fluent:ToggleButton IsChecked="{Binding PersistentData.Options.TreeComparisonEnabled}"
+                                     KeyTip="P"
+                                     Icon="{iconPacks:Material SelectCompare}">
+                    <fluent:ToggleButton.LargeIcon>
+                        <iconPacks:PackIconMaterial Kind="SelectCompare"
+                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:ToggleButton.LargeIcon>
+                    <fluent:ToggleButton.Header>
+                        <l:Catalog Message="Tree comparison" />
+                    </fluent:ToggleButton.Header>
+                    <fluent:ToggleButton.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Tree comparison" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Compare the passive trees of the current and selected builds. Builds can be selected in the saved builds panel." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:ToggleButton.ToolTip>
+                </fluent:ToggleButton>
+            </fluent:RibbonGroupBox>
+            <fluent:RibbonGroupBox Name="BuildsViewRibbon"
+                                   IsEnabled="{Binding PersistentData.Options.BuildsBarOpened}">
+                <fluent:RibbonGroupBox.Header>
+                    <l:Catalog Message="Saved builds" />
+                </fluent:RibbonGroupBox.Header>
+                <fluent:Button Command="{Binding BuildsControlViewModel.ExpandAllCommand}"
+                               KeyTip="E"
+                               Icon="{iconPacks:Modern SectionExpandAll}">
+                    <fluent:Button.LargeIcon>
+                        <iconPacks:PackIconModern Kind="SectionExpandAll"
+                                                  Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:Button.LargeIcon>
+                    <fluent:Button.Header>
+                        <l:Catalog Message="Expand all folders" />
+                    </fluent:Button.Header>
+                    <fluent:Button.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Expand all folders" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Expand all build folders in the saved builds panel." />
+                            </fluent:ScreenTip.Text>
+                            <fluent:ScreenTip.DisableReason>
+                                <l:Catalog Message="The saved builds panel must be open." />
+                            </fluent:ScreenTip.DisableReason>
+                        </fluent:ScreenTip>
+                    </fluent:Button.ToolTip>
+                </fluent:Button>
+                <fluent:Button Command="{Binding BuildsControlViewModel.CollapseAllCommand}"
+                               KeyTip="C"
+                               Icon="{iconPacks:Modern SectionCollapseAll}">
+                    <fluent:Button.LargeIcon>
+                        <iconPacks:PackIconModern Kind="SectionCollapseAll"
+                                                  Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:Button.LargeIcon>
+                    <fluent:Button.Header>
+                        <l:Catalog Message="Collapse all folders" />
+                    </fluent:Button.Header>
+                    <fluent:Button.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Collapse all folders" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Collapse all build folders in the saved builds panel." />
+                            </fluent:ScreenTip.Text>
+                            <fluent:ScreenTip.DisableReason>
+                                <l:Catalog Message="The saved builds panel must be open." />
+                            </fluent:ScreenTip.DisableReason>
+                        </fluent:ScreenTip>
+                    </fluent:Button.ToolTip>
+                </fluent:Button>
+            </fluent:RibbonGroupBox>
+            <fluent:RibbonGroupBox Name="ThemeRibbon">
+                <fluent:RibbonGroupBox.Header>
+                    <l:Catalog Message="Theme" />
+                </fluent:RibbonGroupBox.Header>
+                <fluent:ComboBox ItemsSource="{x:Static mahApps:ThemeManager.BaseColors}"
+                                 SelectedItem="{Binding PersistentData.Options.Theme}"
+                                 KeyTip="T"
+                                 IsEditable="False"
+                                 InputWidth="90">
+                    <fluent:ComboBox.Header>
+                        <l:Catalog Message="Base color:" />
+                    </fluent:ComboBox.Header>
+                    <fluent:ComboBox.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Base color" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Change the base color of the theme defining the program's look." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:ComboBox.ToolTip>
+                </fluent:ComboBox>
+                <fluent:ComboBox ItemsSource="{x:Static mahApps:ThemeManager.ColorSchemes}"
+                                 SelectedValuePath="Name"
+                                 SelectedValue="{Binding PersistentData.Options.Accent}"
+                                 KeyTip="A"
+                                 IsEditable="False"
+                                 InputWidth="90">
+                    <fluent:ComboBox.Header>
+                        <l:Catalog Message="Color scheme:" />
+                    </fluent:ComboBox.Header>
+                    <fluent:ComboBox.ItemTemplate>
+                        <DataTemplate DataType="mahApps:ColorScheme">
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse Width="15"
+                                         Height="15"
+                                         Fill="{Binding ShowcaseBrush, Mode=OneWay}" />
+                                <TextBlock Text="{Binding Name}"
+                                           Margin="2 0 0 0" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </fluent:ComboBox.ItemTemplate>
+                    <fluent:ComboBox.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Color scheme" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Change the color scheme of the theme defining the program's look." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:ComboBox.ToolTip>
+                </fluent:ComboBox>
+            </fluent:RibbonGroupBox>
+            <fluent:RibbonGroupBox Name="LinksRibbon">
+                <fluent:RibbonGroupBox.Header>
+                    <l:Catalog Message="Links" />
+                </fluent:RibbonGroupBox.Header>
+                <fluent:Button Click="OpenPoEWebsite"
+                               KeyTip="P"
+                               Icon="{iconPacks:Material WebBox}"
+                               SizeDefinition="Middle,Middle,Small">
+                    <fluent:Button.LargeIcon>
+                        <iconPacks:PackIconMaterial Kind="WebBox"
+                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:Button.LargeIcon>
+                    <fluent:Button.Header>
+                        <l:Catalog Message="Path of Exile website" />
+                    </fluent:Button.Header>
+                    <fluent:Button.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Path of Exile website" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Open the official Path of Exile website in the default web browser." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:Button.ToolTip>
+                </fluent:Button>
+                <fluent:Button Click="OpenWiki"
+                               KeyTip="W"
+                               Icon="{iconPacks:Material BookOpen}"
+                               SizeDefinition="Middle,Middle,Small">
+                    <fluent:Button.LargeIcon>
+                        <iconPacks:PackIconMaterial Kind="BookOpen"
+                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:Button.LargeIcon>
+                    <fluent:Button.Header>
+                        <l:Catalog Message="Path of Exile wiki" />
+                    </fluent:Button.Header>
+                    <fluent:Button.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Path of Exile wiki" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Open the Path of Exile wiki in the default web browser." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:Button.ToolTip>
+                </fluent:Button>
+            </fluent:RibbonGroupBox>
+            <fluent:RibbonGroupBox Name="HelpRibbon">
+                <fluent:RibbonGroupBox.Header>
+                    <l:Catalog Message="Help" />
+                </fluent:RibbonGroupBox.Header>
+                <fluent:Button Click="OpenHelp"
+                               KeyTip="H"
+                               Icon="{iconPacks:Material HelpCircle}"
+                               SizeDefinition="Middle,Middle,Small">
+                    <fluent:Button.LargeIcon>
+                        <iconPacks:PackIconMaterial Kind="HelpCircle"
+                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:Button.LargeIcon>
+                    <fluent:Button.Header>
+                        <l:Catalog Message="Help" />
+                    </fluent:Button.Header>
+                    <fluent:Button.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Help" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Learn more about the program." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:Button.ToolTip>
+                </fluent:Button>
+                <fluent:Button Click="OpenHotkeys"
+                               KeyTip="K"
+                               Icon="{iconPacks:Material Keyboard}"
+                               SizeDefinition="Middle,Middle,Small">
+                    <fluent:Button.LargeIcon>
+                        <iconPacks:PackIconMaterial Kind="Keyboard"
+                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:Button.LargeIcon>
+                    <fluent:Button.Header>
+                        <l:Catalog Message="Hotkeys" />
+                    </fluent:Button.Header>
+                    <fluent:Button.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Hotkeys" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Learn more about the available hotkeys." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:Button.ToolTip>
+                </fluent:Button>
+                <fluent:Button Click="OpenAbout"
+                               KeyTip="A"
+                               Icon="{iconPacks:Material Information}"
+                               SizeDefinition="Middle,Middle,Small">
+                    <fluent:Button.LargeIcon>
+                        <iconPacks:PackIconMaterial Kind="Information"
+                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:Button.LargeIcon>
+                    <fluent:Button.Header>
+                        <l:Catalog Message="About" />
+                    </fluent:Button.Header>
+                    <fluent:Button.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="About" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="View information about the program." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:Button.ToolTip>
+                </fluent:Button>
+            </fluent:RibbonGroupBox>
+        </fluent:RibbonTabItem>
+    </fluent:Ribbon>
+</UserControl>

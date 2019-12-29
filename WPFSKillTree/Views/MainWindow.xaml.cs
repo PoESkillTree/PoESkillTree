@@ -22,7 +22,6 @@ using Fluent;
 using MahApps.Metro.Controls;
 using NLog;
 using PoESkillTree.Utils;
-using PoESkillTree.Common.ViewModels;
 using PoESkillTree.Computation;
 using PoESkillTree.Computation.ViewModels;
 using PoESkillTree.Computation.Views;
@@ -674,7 +673,7 @@ namespace PoESkillTree.Views
             }
         }
 
-        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        private async void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (Keyboard.Modifiers == ModifierKeys.Control)
             {
@@ -687,10 +686,10 @@ namespace PoESkillTree.Views
                         ToggleBuilds();
                         break;
                     case Key.R:
-                        btnReset_Click(sender, e);
+                        ResetTree();
                         break;
                     case Key.E:
-                        btnPoeUrl_Click(sender, e);
+                        await DownloadPoeUrlAsync();
                         break;
                     case Key.D1:
                         _userInteraction = true;
@@ -833,31 +832,7 @@ namespace PoESkillTree.Views
 
         #region Menu
 
-        private async void Menu_UntagAllNodes(object sender, RoutedEventArgs e)
-        {
-            var response = await this.ShowQuestionAsync(L10n.Message("Are you sure?"),
-                title: L10n.Message("Untag All Skill Nodes"), image: MessageBoxImage.None);
-            if (response == MessageBoxResult.Yes)
-                Tree.UntagAllNodes();
-        }
-
-        private void Menu_UnhighlightAllNodes(object sender, RoutedEventArgs e)
-        {
-            Tree.UnhighlightAllNodes();
-            ClearSearch();
-        }
-
-        private void Menu_CheckAllHighlightedNodes(object sender, RoutedEventArgs e)
-        {
-            Tree.CheckAllHighlightedNodes();
-        }
-
-        private void Menu_CrossAllHighlightedNodes(object sender, RoutedEventArgs e)
-        {
-            Tree.CrossAllHighlightedNodes();
-        }
-
-        private async void Menu_ScreenShot(object sender, RoutedEventArgs e)
+        public async Task ScreenShotAsync()
         {
             const int maxsize = 3000;
             Rect2D contentBounds = Tree.ActivePaths.ContentBounds;
@@ -947,19 +922,19 @@ namespace PoESkillTree.Views
             }
         }
 
-        private async void Menu_ImportCharacter(object sender, RoutedEventArgs e)
+        public async Task ImportCharacterAsync()
         {
             await this.ShowDialogAsync(_importViewModels.ImportCharacter(ItemAttributes, Tree), new ImportCharacterWindow());
             UpdateUI();
             SetCurrentBuildUrlFromTree();
         }
 
-        private async void Menu_ImportStash(object sender, RoutedEventArgs e)
+        public async Task ImportStashAsync()
         {
             await this.ShowDialogAsync(_importViewModels.ImportStash, new ImportStashWindow());
         }
 
-        private async void Menu_RedownloadTreeAssets(object sender, RoutedEventArgs e)
+        public async Task RedownloadTreeAssetsAsync()
         {
             var sMessageBoxText = L10n.Message("The existing skill tree data will be deleted. The data will " +
                                                "be downloaded from the official online skill tree and " +
@@ -1002,45 +977,7 @@ namespace PoESkillTree.Views
             }
         }
 
-        private void Menu_Exit(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
-
-        private void Menu_OpenPoEWebsite(object sender, RoutedEventArgs e)
-        {
-            Util.OpenInBrowser("https://www.pathofexile.com/");
-        }
-
-        private void Menu_OpenWiki(object sender, RoutedEventArgs e)
-        {
-            Util.OpenInBrowser("http://pathofexile.gamepedia.com/");
-        }
-
-        private async void Menu_OpenHelp(object sender, RoutedEventArgs e)
-        {
-            await this.ShowDialogAsync(new CloseableViewModel(), new HelpWindow());
-        }
-
-        private async void Menu_OpenSettings(object sender, RoutedEventArgs e)
-        {
-            await this.ShowDialogAsync(
-                new SettingsMenuViewModel(PersistentData, DialogCoordinator.Instance, BuildsControlViewModel),
-                new SettingsMenuWindow());
-        }
-
-        private async void Menu_OpenHotkeys(object sender, RoutedEventArgs e)
-        {
-            await this.ShowDialogAsync(new CloseableViewModel(), new HotkeysWindow());
-        }
-
-        private async void Menu_OpenAbout(object sender, RoutedEventArgs e)
-        {
-            await this.ShowDialogAsync(new CloseableViewModel(), new AboutWindow());
-        }
-
-        // Checks for updates.
-        private async void Menu_CheckForUpdates(object sender, RoutedEventArgs e)
+        public async Task CheckForUpdatesAsync()
         {
             try
             {
@@ -1197,7 +1134,7 @@ namespace PoESkillTree.Views
             UpdateUI();
         }
 
-        private void btnReset_Click(object sender, RoutedEventArgs e)
+        public void ResetTree()
         {
             if (Tree == null)
                 return;
@@ -1844,7 +1781,7 @@ namespace PoESkillTree.Views
             Tree.HighlightNodesBySearch(tbSearch.Text, cbRegEx.IsChecked != null && cbRegEx.IsChecked.Value, NodeHighlighter.HighlightState.FromSearch);
         }
 
-        private void ClearSearch()
+        public void ClearSearch()
         {
             tbSearch.Text = "";
             SearchUpdate();
@@ -1855,12 +1792,7 @@ namespace PoESkillTree.Views
             _undoList.Push(PersistentData.CurrentBuild.TreeUrl);
         }
 
-        private void tbSkillURL_Undo_Click(object sender, RoutedEventArgs e)
-        {
-            tbSkillURL_Undo();
-        }
-
-        private void tbSkillURL_Undo()
+        public void tbSkillURL_Undo()
         {
             if (_undoList.Count <= 0) return;
             if (_undoList.Peek() == PersistentData.CurrentBuild.TreeUrl && _undoList.Count > 1)
@@ -1876,12 +1808,7 @@ namespace PoESkillTree.Views
             }
         }
 
-        private void tbSkillURL_Redo_Click(object sender, RoutedEventArgs e)
-        {
-            tbSkillURL_Redo();
-        }
-
-        private void tbSkillURL_Redo()
+        public void tbSkillURL_Redo()
         {
             if (_redoList.Count <= 0) return;
             if (_redoList.Peek() == PersistentData.CurrentBuild.TreeUrl && _redoList.Count > 1)
@@ -1896,12 +1823,7 @@ namespace PoESkillTree.Views
             }
         }
 
-        private async void btnPoeUrl_Click(object sender, RoutedEventArgs e)
-        {
-            await DownloadPoeUrlAsync();
-        }
-
-        private async Task DownloadPoeUrlAsync()
+        public async Task DownloadPoeUrlAsync()
         {
             var regx =
                 new Regex(
@@ -1992,12 +1914,12 @@ namespace PoESkillTree.Views
             UpdateUI();
         }
 
-        private async void Button_Craft_Click(object sender, RoutedEventArgs e)
+        public async Task CraftItemAsync()
         {
             await CraftItemAsync(new CraftingViewModel(PersistentData.EquipmentData), new CraftingView());
         }
 
-        private async void Button_CraftUnique_Click(object sender, RoutedEventArgs e)
+        public async Task CraftUniqueAsync()
         {
             await CraftItemAsync(new UniqueCraftingViewModel(PersistentData.EquipmentData), new UniqueCraftingView());
         }
@@ -2041,19 +1963,6 @@ namespace PoESkillTree.Views
             try
             {
                 return await task;
-            }
-            finally
-            {
-                AsyncTaskCompleted();
-            }
-        }
-
-        private async Task AwaitAsyncTask(string infoText, Task task)
-        {
-            AsyncTaskStarted(infoText);
-            try
-            {
-                await task;
             }
             finally
             {
