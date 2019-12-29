@@ -12,8 +12,6 @@ namespace PoESkillTree.ViewModels.Builds
         private readonly BuildValidator _buildValidator;
         private string _name;
         private string? _note;
-        private string? _characterName;
-        private string? _accountName;
 
         public string Name
         {
@@ -27,18 +25,6 @@ namespace PoESkillTree.ViewModels.Builds
             set => SetProperty(ref _note, value);
         }
 
-        public string? CharacterName
-        {
-            get => _characterName;
-            set => SetProperty(ref _characterName, value);
-        }
-
-        public string? AccountName
-        {
-            get => _accountName;
-            set => SetProperty(ref _accountName, value);
-        }
-
         public DateTime LastUpdated { get; }
 
         public EditBuildViewModel(IBuildViewModel<PoEBuild> buildVm, BuildValidator buildValidator)
@@ -48,8 +34,6 @@ namespace PoESkillTree.ViewModels.Builds
             var build = buildVm.Build;
             _name = build.Name;
             _note = build.Note;
-            _characterName = build.CharacterName;
-            _accountName = build.AccountName;
             LastUpdated = build.LastUpdated;
         }
 

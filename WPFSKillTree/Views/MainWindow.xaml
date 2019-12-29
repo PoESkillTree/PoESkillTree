@@ -527,7 +527,7 @@
                                     <l:Catalog Message="Edit" />
                                 </fluent:ScreenTip.Title>
                                 <fluent:ScreenTip.Text>
-                                    <l:Catalog Message="Change the current build's name, note and character information." />
+                                    <l:Catalog Message="Change the current build's name and note." />
                                 </fluent:ScreenTip.Text>
                             </fluent:ScreenTip>
                         </fluent:Button.ToolTip>

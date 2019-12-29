@@ -40,8 +40,6 @@ namespace PoESkillTree.ViewModels
             var build = buildVm.Build;
             build.Name = vm.Name;
             build.Note = vm.Note;
-            build.AccountName = vm.AccountName;
-            build.CharacterName = vm.CharacterName;
             return true;
         }
 
