@@ -158,7 +158,7 @@
                                         <l:Catalog Message="New top level build (Ctrl+N)" />
                                     </fluent:ScreenTip.Title>
                                     <fluent:ScreenTip.Text>
-                                        <l:Catalog Message="Create a new empty build in the root build folder" />
+                                        <l:Catalog Message="Create a new empty build in the root build folder." />
                                     </fluent:ScreenTip.Text>
                                 </fluent:ScreenTip>
                             </fluent:MenuItem.ToolTip>
@@ -180,7 +180,7 @@
                                     <fluent:ScreenTip.Text>
                                         <Binding Path="BuildsControlViewModel.CurrentBuild.Parent.Build.Name">
                                             <Binding.StringFormat>
-                                                <l:Catalog Message="Create a new empty build in the same folder as the current build ({0})" />
+                                                <l:Catalog Message="Create a new empty build in the same folder as the current build ({0})." />
                                             </Binding.StringFormat>
                                         </Binding>
                                     </fluent:ScreenTip.Text>
@@ -203,7 +203,7 @@
                                         <l:Catalog Message="New top level folder" />
                                     </fluent:ScreenTip.Title>
                                     <fluent:ScreenTip.Text>
-                                        <l:Catalog Message="Create a new empty folder in the root build folder" />
+                                        <l:Catalog Message="Create a new empty folder in the root build folder." />
                                     </fluent:ScreenTip.Text>
                                 </fluent:ScreenTip>
                             </fluent:MenuItem.ToolTip>
@@ -225,7 +225,7 @@
                                     <fluent:ScreenTip.Text>
                                         <Binding Path="BuildsControlViewModel.CurrentBuild.Parent.Build.Name">
                                             <Binding.StringFormat>
-                                                <l:Catalog Message="Create a new empty folder in the same folder as the current build ({0})" />
+                                                <l:Catalog Message="Create a new empty folder in the same folder as the current build ({0})." />
                                             </Binding.StringFormat>
                                         </Binding>
                                     </fluent:ScreenTip.Text>
@@ -256,7 +256,7 @@
                                         <l:Catalog Message="Save current build (Ctrl+S)" />
                                     </fluent:ScreenTip.Title>
                                     <fluent:ScreenTip.Text>
-                                        <l:Catalog Message="Save the currently opened build" />
+                                        <l:Catalog Message="Save the currently opened build." />
                                     </fluent:ScreenTip.Text>
                                     <fluent:ScreenTip.DisableReason>
                                         <l:Catalog Message="The current build has no unsaved changes." />
@@ -280,7 +280,7 @@
                                         <l:Catalog Message="Save current build as (Ctrl+Alt+S)" />
                                     </fluent:ScreenTip.Title>
                                     <fluent:ScreenTip.Text>
-                                        <l:Catalog Message="Save the currently opened build as a new build" />
+                                        <l:Catalog Message="Save the currently opened build as a new build." />
                                     </fluent:ScreenTip.Text>
                                 </fluent:ScreenTip>
                             </fluent:MenuItem.ToolTip>
@@ -300,7 +300,7 @@
                                         <l:Catalog Message="Save all builds (Ctrl+Shift+N)" />
                                     </fluent:ScreenTip.Title>
                                     <fluent:ScreenTip.Text>
-                                        <l:Catalog Message="Save all changed builds" />
+                                        <l:Catalog Message="Save all changed builds." />
                                     </fluent:ScreenTip.Text>
                                     <fluent:ScreenTip.DisableReason>
                                         <l:Catalog Message="No build has unsaved changes." />
@@ -323,7 +323,7 @@
                                     <l:Catalog Message="Reload builds from file system" />
                                 </fluent:ScreenTip.Title>
                                 <fluent:ScreenTip.Text>
-                                    <l:Catalog Message="Reload saved build information from file system, e.g. after manually copying builds there" />
+                                    <l:Catalog Message="Reload saved build information from file system, e.g. after manually copying builds there." />
                                 </fluent:ScreenTip.Text>
                             </fluent:ScreenTip>
                         </fluent:MenuItem.ToolTip>
@@ -510,6 +510,16 @@
                     <fluent:RibbonGroupBox.Header>
                         <l:Catalog Message="Build" />
                     </fluent:RibbonGroupBox.Header>
+                    <fluent:RibbonGroupBox.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Build" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="These commands operate on the current build. For other builds and folders, use the saved builds panel's context menu." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:RibbonGroupBox.ToolTip>
                     <fluent:Button Command="{Binding BuildsControlViewModel.EditCommand}"
                                    CommandParameter="{Binding BuildsControlViewModel.CurrentBuild}"
                                    KeyTip="BE"
@@ -959,27 +969,6 @@
                     <fluent:RibbonGroupBox.Header>
                         <l:Catalog Message="Passive tree" />
                     </fluent:RibbonGroupBox.Header>
-                    <fluent:ToggleButton IsChecked="{Binding PersistentData.Options.TreeComparisonEnabled}"
-                                         KeyTip="P"
-                                         Icon="{iconPacks:Material SelectCompare}">
-                        <fluent:ToggleButton.LargeIcon>
-                            <iconPacks:PackIconMaterial Kind="SelectCompare"
-                                                        Style="{StaticResource LargeRibbonIconStyle}" />
-                        </fluent:ToggleButton.LargeIcon>
-                        <fluent:ToggleButton.Header>
-                            <l:Catalog Message="Passive tree comparison" />
-                        </fluent:ToggleButton.Header>
-                        <fluent:ToggleButton.ToolTip>
-                            <fluent:ScreenTip>
-                                <fluent:ScreenTip.Title>
-                                    <l:Catalog Message="Passive tree comparison" />
-                                </fluent:ScreenTip.Title>
-                                <fluent:ScreenTip.Text>
-                                    <l:Catalog Message="Compare the passive trees of the current and selected builds. Builds can be selected in the saved builds panel." />
-                                </fluent:ScreenTip.Text>
-                            </fluent:ScreenTip>
-                        </fluent:ToggleButton.ToolTip>
-                    </fluent:ToggleButton>
                     <fluent:ToggleButton IsChecked="{Binding PersistentData.Options.ChangeSummaryEnabled}"
                                          KeyTip="G"
                                          Icon="{iconPacks:Material FileCompare}">
@@ -988,15 +977,36 @@
                                                         Style="{StaticResource LargeRibbonIconStyle}" />
                         </fluent:ToggleButton.LargeIcon>
                         <fluent:ToggleButton.Header>
-                            <l:Catalog Message="Show summary of changes" />
+                            <l:Catalog Message="Summary of changes" />
                         </fluent:ToggleButton.Header>
                         <fluent:ToggleButton.ToolTip>
                             <fluent:ScreenTip>
                                 <fluent:ScreenTip.Title>
-                                    <l:Catalog Message="Show summary of changes (Ctrl+G)" />
+                                    <l:Catalog Message="Summary of changes (Ctrl+G)" />
                                 </fluent:ScreenTip.Title>
                                 <fluent:ScreenTip.Text>
                                     <l:Catalog Message="Show a summary of the total changes to the passive tree when hovering over a node." />
+                                </fluent:ScreenTip.Text>
+                            </fluent:ScreenTip>
+                        </fluent:ToggleButton.ToolTip>
+                    </fluent:ToggleButton>
+                    <fluent:ToggleButton IsChecked="{Binding PersistentData.Options.TreeComparisonEnabled}"
+                                         KeyTip="P"
+                                         Icon="{iconPacks:Material SelectCompare}">
+                        <fluent:ToggleButton.LargeIcon>
+                            <iconPacks:PackIconMaterial Kind="SelectCompare"
+                                                        Style="{StaticResource LargeRibbonIconStyle}" />
+                        </fluent:ToggleButton.LargeIcon>
+                        <fluent:ToggleButton.Header>
+                            <l:Catalog Message="Tree comparison" />
+                        </fluent:ToggleButton.Header>
+                        <fluent:ToggleButton.ToolTip>
+                            <fluent:ScreenTip>
+                                <fluent:ScreenTip.Title>
+                                    <l:Catalog Message="Tree comparison" />
+                                </fluent:ScreenTip.Title>
+                                <fluent:ScreenTip.Text>
+                                    <l:Catalog Message="Compare the passive trees of the current and selected builds. Builds can be selected in the saved builds panel." />
                                 </fluent:ScreenTip.Text>
                             </fluent:ScreenTip>
                         </fluent:ToggleButton.ToolTip>
