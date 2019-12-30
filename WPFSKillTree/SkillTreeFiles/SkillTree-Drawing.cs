@@ -433,7 +433,6 @@ namespace PoESkillTree.SkillTreeFiles
                     6 * backgroundBrush.ImageSource.Width / SkillTreeRect.Width,
                     6 * backgroundBrush.ImageSource.Height / SkillTreeRect.Height);
                 dc.DrawRectangle(backgroundBrush, null, SkillTreeRect);
-                dc.DrawRectangle(null, new Pen(Brushes.Gray, 50), SkillTreeRect);
                 #endregion
 
                 #region SkillNodeGroup Background Drawing

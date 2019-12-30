@@ -108,19 +108,16 @@
             <Border DockPanel.Dock="Right"
                     BorderBrush="{DynamicResource MahApps.Brushes.Border.NonActive}"
                     BorderThickness="1 0 0 0"
-                    Padding="1 0 0 0"
-                    Margin="3 3 2 3"
                     Visibility="{Binding PersistentData.Options.BuildsBarOpened, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <builds:BuildsControl DataContext="{Binding BuildsControlViewModel}" />
+                <builds:BuildsControl DataContext="{Binding BuildsControlViewModel}"
+                                      Margin="3 4 4 4" />
             </Border>
 
             <Border DockPanel.Dock="Left"
                     BorderBrush="{DynamicResource MahApps.Brushes.Border.NonActive}"
                     BorderThickness="0 0 1 0"
-                    Padding="0 0 2 0"
-                    Margin="3 3 2 3"
                     Visibility="{Binding PersistentData.Options.AttributesBarOpened, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <Grid>
+                <Grid Margin="4">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
@@ -140,13 +137,13 @@
                         </controls:TextBoxHelper.Watermark>
                     </TextBox>
                     <CheckBox Grid.Row="0" Grid.Column="1"
-                              Content="RegEx" Margin="2 0 0 0" x:Name="cbAttributesFilterRegEx"
+                              Content="RegEx" Margin="4 0 0 0" x:Name="cbAttributesFilterRegEx"
                               Click="cbAttributesFilterRegEx_Click" />
 
                     <ListBox x:Name="lbAttr"
                              Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                              Width="410"
-                             Margin="0 5 0 0"
+                             Margin="0 4 0 0"
                              ScrollViewer.VerticalScrollBarVisibility="Visible">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
@@ -164,7 +161,9 @@
             <Grid>
                 <TabControl dd:DragDrop.IsDropTarget="True"
                             controls:TabControlHelper.Underlined="TabItems"
-                            controls:HeaderedControlHelper.HeaderFontSize="18">
+                            controls:HeaderedControlHelper.HeaderFontSize="17"
+                            Padding="-1 3 3 3"
+                            Margin="4 0 0 0">
                     <TabItem IsSelected="True">
                         <TabItem.Header>
                             <l:Catalog Message="Passive tree" />
@@ -190,52 +189,9 @@
                                            VerticalAlignment="Center" HorizontalAlignment="Center" />
                             </local:ZoomBorder>
 
-                            <StackPanel Grid.Row="0"
-                                        Orientation="Horizontal"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Top">
-                                <Border Background="{DynamicResource MahApps.Brushes.Control.Background}"
-                                        Margin="0 0 1 0"
-                                        Padding="1"
-                                        BorderBrush="{DynamicResource MahApps.Brushes.Border.NonActive}"
-                                        BorderThickness="1">
-                                    <TextBlock FontSize="14">
-                                        <Run x:Name="NormalUsedPoints" Text="0">
-                                            <Run.ToolTip>
-                                                <l:Catalog Message="Used Passive Skill Points" />
-                                            </Run.ToolTip>
-                                        </Run>
-                                        /
-                                        <Run x:Name="NormalTotalPoints" Text="0">
-                                            <Run.ToolTip>
-                                                <l:Catalog Message="Total Passive Skill Points" />
-                                            </Run.ToolTip>
-                                        </Run>
-                                    </TextBlock>
-                                </Border>
-                                <Border Background="{DynamicResource MahApps.Brushes.Control.Background}"
-                                        Margin="1 0 0 0"
-                                        Padding="1"
-                                        BorderBrush="{DynamicResource MahApps.Brushes.Border.NonActive}"
-                                        BorderThickness="1">
-                                    <TextBlock FontSize="14">
-                                        <Run x:Name="AscendancyUsedPoints" Text="0">
-                                            <Run.ToolTip>
-                                                <l:Catalog Message="Used Ascendancy Skill Points" />
-                                            </Run.ToolTip>
-                                        </Run>
-                                        /
-                                        <Run x:Name="AscendancyTotalPoints" Text="0">
-                                            <Run.ToolTip>
-                                                <l:Catalog Message="Total Ascendancy Skill Points" />
-                                            </Run.ToolTip>
-                                        </Run>
-                                    </TextBlock>
-                                </Border>
-                            </StackPanel>
-
                             <DockPanel Grid.Row="1"
-                                       LastChildFill="True">
+                                       LastChildFill="True"
+                                       Margin="0 4 0 0">
                                 <TextBox x:Name="tbSearch"
                                          DockPanel.Dock="Left"
                                          controls:TextBoxHelper.ClearTextButton="True"
@@ -248,17 +204,17 @@
                                 <CheckBox x:Name="cbRegEx"
                                           DockPanel.Dock="Left"
                                           Content="RegEx"
-                                          Margin="2 0 0 0"
+                                          Margin="4 0 0 0"
                                           Click="cbRegEx_Click" />
 
                                 <controls:SplitButton DockPanel.Dock="Right"
-                                                      Margin="2 0 0 0"
+                                                      Margin="4 0 0 0"
                                                       DataContext="{Binding LoadTreeButtonViewModel}"
                                                       Command="{Binding SelectedItem.Command}"
                                                       ItemsSource="{Binding Items}"
                                                       SelectedItem="{Binding SelectedItem}"
                                                       DisplayMemberPath="Title"/>
-                                <TextBox Margin="4 0 0 0"
+                                <TextBox Margin="8 0 0 0"
                                          Text="{Binding InputTreeUrl, UpdateSourceTrigger=PropertyChanged}"
                                          TextChanged="tbSkillURL_TextChanged"
                                          controls:TextBoxHelper.SelectAllOnFocus="True">
@@ -325,7 +281,43 @@
                     <Popup IsOpen="{Binding IsChecked, ElementName=BanditToggle}" StaysOpen="False" Placement="Bottom" HorizontalOffset="-20" VerticalOffset="5">
                         <local:BanditSelection DataContext="{Binding PersistentData.CurrentBuild.Bandits}" />
                     </Popup>
-                    <controls:NumericUpDown Margin="2 0 0 0" ValueChanged="Level_ValueChanged" MinWidth="70"
+                    <Border Margin="4 0 0 0"
+                            Padding="4 2"
+                            BorderBrush="{DynamicResource MahApps.Brushes.Controls.Border}"
+                            BorderThickness="1">
+                        <TextBlock FontSize="14">
+                            <Run x:Name="NormalUsedPoints" Text="0">
+                                <Run.ToolTip>
+                                    <l:Catalog Message="Used Passive Skill Points" />
+                                </Run.ToolTip>
+                            </Run>
+                            /
+                            <Run x:Name="NormalTotalPoints" Text="0">
+                                <Run.ToolTip>
+                                    <l:Catalog Message="Total Passive Skill Points" />
+                                </Run.ToolTip>
+                            </Run>
+                        </TextBlock>
+                    </Border>
+                    <Border Margin="4 0 0 0"
+                            Padding="4 2"
+                            BorderBrush="{DynamicResource MahApps.Brushes.Controls.Border}"
+                            BorderThickness="1">
+                        <TextBlock FontSize="14">
+                            <Run x:Name="AscendancyUsedPoints" Text="0">
+                                <Run.ToolTip>
+                                    <l:Catalog Message="Used Ascendancy Skill Points" />
+                                </Run.ToolTip>
+                            </Run>
+                            /
+                            <Run x:Name="AscendancyTotalPoints" Text="0">
+                                <Run.ToolTip>
+                                    <l:Catalog Message="Total Ascendancy Skill Points" />
+                                </Run.ToolTip>
+                            </Run>
+                        </TextBlock>
+                    </Border>
+                    <controls:NumericUpDown Margin="4 0 0 0" ValueChanged="Level_ValueChanged" MinWidth="70"
                                             Value="{Binding PersistentData.CurrentBuild.Level, ValidatesOnDataErrors=True}"
                                             Minimum="0" Maximum="100"
                                             NumericInputMode="Numbers">
@@ -333,9 +325,9 @@
                             <l:Catalog Message="Level"/>
                         </controls:NumericUpDown.ToolTip>
                     </controls:NumericUpDown>
-                    <ComboBox Margin="2 0 0 0" x:Name="cbCharType" Width="90"
+                    <ComboBox Margin="4 0 0 0" x:Name="cbCharType" Width="90"
                               SelectionChanged="cbCharType_SelectionChanged" PreviewMouseDown="userInteraction_PreviewMouseDown"/>
-                    <ComboBox Margin="2 0 0 0" x:Name="cbAscType" Width="100"
+                    <ComboBox Margin="4 0 0 0" x:Name="cbAscType" Width="100"
                               SelectionChanged="cbAscType_SelectionChanged" PreviewMouseDown="userInteraction_PreviewMouseDown"/>
                 </StackPanel>
             </Grid>

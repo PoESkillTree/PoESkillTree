@@ -72,7 +72,7 @@
         </Grid.RowDefinitions>
 
         <DockPanel Grid.Row="0">
-            <controls1:SearchableComboBox Width="110" Margin="1 0 2 0"
+            <controls1:SearchableComboBox Width="110" Margin="1 0 0 0"
                                           SelectedItem="{Binding ClassFilter}"
                                           SelectedIndex="0"
                                           ItemsSource="{Binding ClassFilterItems}"
@@ -82,7 +82,8 @@
             <TextBox VerticalContentAlignment="Center"
                      controls:TextBoxHelper.ClearTextButton="True"
                      controls:TextBoxHelper.SelectAllOnFocus="True"
-                     Text="{Binding TextFilter, UpdateSourceTrigger=PropertyChanged}">
+                     Text="{Binding TextFilter, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="4 0 1 0">
                 <controls:TextBoxHelper.Watermark><l:Catalog>Filter</l:Catalog></controls:TextBoxHelper.Watermark>
             </TextBox>
         </DockPanel>
@@ -92,7 +93,8 @@
                   dd:DragDrop.IsDropTarget="True"
                   dd:DragDrop.DropHandler="{Binding DropHandler}"
                   Grid.Row="1"
-                  x:Name="TreeView">
+                  x:Name="TreeView"
+                  Margin="0 3 0 0">
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type viewModels:BuildFolderViewModel}"
                                           ItemsSource="{Binding Children}">
