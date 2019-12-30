@@ -303,7 +303,7 @@
                 <fluent:RibbonGroupBox.Header>
                     <l:Catalog Message="Passive tree" />
                 </fluent:RibbonGroupBox.Header>
-                <fluent:Button Click="PassiveTreeUndo"
+                <fluent:Button Command="{Binding UndoTreeUrlChangeCommand}"
                                KeyTip="U"
                                Icon="{iconPacks:Modern Undo}">
                     <fluent:Button.LargeIcon>
@@ -324,7 +324,7 @@
                         </fluent:ScreenTip>
                     </fluent:Button.ToolTip>
                 </fluent:Button>
-                <fluent:Button Click="PassiveTreeRedo"
+                <fluent:Button Command="{Binding RedoTreeUrlChangeCommand}"
                                KeyTip="R"
                                Icon="{iconPacks:Modern Redo}">
                     <fluent:Button.LargeIcon>

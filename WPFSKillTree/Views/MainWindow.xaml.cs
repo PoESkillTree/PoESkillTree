@@ -21,6 +21,7 @@ using EnumsNET;
 using Fluent;
 using MahApps.Metro.Controls;
 using NLog;
+using PoESkillTree.Common.ViewModels;
 using PoESkillTree.Utils;
 using PoESkillTree.Computation;
 using PoESkillTree.Computation.ViewModels;
@@ -235,6 +236,9 @@ namespace PoESkillTree.Views
             set => SetProperty(ref _inputTreeUrl, value);
         }
 
+        public ICommand UndoTreeUrlChangeCommand { get; }
+        public ICommand RedoTreeUrlChangeCommand { get; }
+
         public static readonly DependencyProperty TitleBarProperty = DependencyProperty.Register(
             "TitleBar", typeof(RibbonTitleBar), typeof(MainWindow), new PropertyMetadata(default(RibbonTitleBar)));
 
@@ -249,6 +253,9 @@ namespace PoESkillTree.Views
 #pragma warning restore
         {
             InitializeComponent();
+
+            UndoTreeUrlChangeCommand = new RelayCommand(UndoTreeUrlChange, CanUndoTreeUrlChange);
+            RedoTreeUrlChangeCommand = new RelayCommand(RedoTreeUrlChange, CanRedoTreeUrlChange);
         }
 
         private void SetProperty<T>(
@@ -735,10 +742,10 @@ namespace PoESkillTree.Views
                         zbSkillTreeBackground.ZoomOut(Mouse.PrimaryDevice);
                         break;
                     case Key.Z:
-                        tbSkillURL_Undo();
+                        UndoTreeUrlChange();
                         break;
                     case Key.Y:
-                        tbSkillURL_Redo();
+                        RedoTreeUrlChange();
                         break;
                     case Key.G:
                         ToggleShowSummary();
@@ -1688,8 +1695,7 @@ namespace PoESkillTree.Views
                     if (_undoList.Count > 1)
                     {
                         var holder = _undoList.Pop();
-                        while (_undoList.Count != 0)
-                            _undoList.Pop();
+                        _undoList.Clear();
                         _undoList.Push(holder);
                     }
                 }
@@ -1792,13 +1798,16 @@ namespace PoESkillTree.Views
             _undoList.Push(PersistentData.CurrentBuild.TreeUrl);
         }
 
-        public void tbSkillURL_Undo()
+        private bool CanUndoTreeUrlChange() =>
+            _undoList.Any(s => s != PersistentData.CurrentBuild.TreeUrl);
+
+        private void UndoTreeUrlChange()
         {
             if (_undoList.Count <= 0) return;
             if (_undoList.Peek() == PersistentData.CurrentBuild.TreeUrl && _undoList.Count > 1)
             {
                 _undoList.Pop();
-                tbSkillURL_Undo();
+                UndoTreeUrlChange();
             }
             else if (_undoList.Peek() != PersistentData.CurrentBuild.TreeUrl)
             {
@@ -1808,13 +1817,16 @@ namespace PoESkillTree.Views
             }
         }
 
-        public void tbSkillURL_Redo()
+        private bool CanRedoTreeUrlChange() =>
+            _redoList.Any(s => s != PersistentData.CurrentBuild.TreeUrl);
+
+        private void RedoTreeUrlChange()
         {
             if (_redoList.Count <= 0) return;
             if (_redoList.Peek() == PersistentData.CurrentBuild.TreeUrl && _redoList.Count > 1)
             {
                 _redoList.Pop();
-                tbSkillURL_Redo();
+                RedoTreeUrlChange();
             }
             else if (_redoList.Peek() != PersistentData.CurrentBuild.TreeUrl)
             {

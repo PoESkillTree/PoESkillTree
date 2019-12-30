@@ -31,16 +31,6 @@ namespace PoESkillTree.Views
             Application.Current.Shutdown();
         }
 
-        private void PassiveTreeUndo(object sender, RoutedEventArgs e)
-        {
-            MainWindow.tbSkillURL_Undo();
-        }
-
-        private void PassiveTreeRedo(object sender, RoutedEventArgs e)
-        {
-            MainWindow.tbSkillURL_Redo();
-        }
-
         private void ResetTree(object sender, RoutedEventArgs e)
         {
             MainWindow.ResetTree();
