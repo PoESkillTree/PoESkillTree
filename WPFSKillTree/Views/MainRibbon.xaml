@@ -15,13 +15,25 @@
              d:DataContext="{d:DesignInstance local:MainWindow}">
     <UserControl.Resources>
         <converter:FlagsToBoolConverter x:Key="FlagsToBoolConverter" />
-        <Style x:Key="LargeRibbonIconStyle"
+        <Style x:Key="IconStyle"
                TargetType="iconPacks:PackIconBase">
-            <Setter Property="Width" Value="24" />
-            <Setter Property="Height" Value="24" />
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.IdealForeground}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Size, RelativeSource={RelativeSource AncestorType=fluent:IRibbonControl}}"
+                             Value="Large">
+                    <Setter Property="Width" Value="24" />
+                    <Setter Property="Height" Value="24" />
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
+        <Style TargetType="iconPacks:PackIconMaterial"
+               BasedOn="{StaticResource IconStyle}" />
+        <Style TargetType="iconPacks:PackIconModern"
+               BasedOn="{StaticResource IconStyle}" />
+        <Style TargetType="iconPacks:PackIconTypicons"
+               BasedOn="{StaticResource IconStyle}" />
     </UserControl.Resources>
 
     <fluent:Ribbon AutomaticStateManagement="True"
@@ -40,12 +52,6 @@
 
         <fluent:Ribbon.Menu>
             <fluent:ApplicationMenu>
-                <fluent:ApplicationMenu.Resources>
-                    <Style TargetType="iconPacks:PackIconMaterial"
-                           BasedOn="{StaticResource LargeRibbonIconStyle}" />
-                    <Style TargetType="iconPacks:PackIconModern"
-                           BasedOn="{StaticResource LargeRibbonIconStyle}" />
-                </fluent:ApplicationMenu.Resources>
                 <fluent:ApplicationMenu.Header>
                     <l:Catalog Message="File" />
                 </fluent:ApplicationMenu.Header>
@@ -223,8 +229,10 @@
 
                 <Separator />
                 <fluent:MenuItem Command="{Binding BuildsControlViewModel.ReloadCommand}"
-                                 KeyTip="R"
-                                 Icon="{iconPacks:Modern Kind=RefreshClockwiseUp}">
+                                 KeyTip="R">
+                    <fluent:MenuItem.Icon>
+                        <iconPacks:PackIconModern Kind="RefreshClockwiseUp" />
+                    </fluent:MenuItem.Icon>
                     <fluent:MenuItem.Header>
                         <l:Catalog Message="Reload builds from file system" />
                     </fluent:MenuItem.Header>
@@ -240,8 +248,10 @@
                     </fluent:MenuItem.ToolTip>
                 </fluent:MenuItem>
                 <fluent:MenuItem Command="{Binding BuildsControlViewModel.OpenBuildsSavePathCommand}"
-                                 KeyTip="B"
-                                 Icon="{iconPacks:Modern Kind=FolderOpen}">
+                                 KeyTip="B">
+                    <fluent:MenuItem.Icon>
+                        <iconPacks:PackIconModern Kind="FolderOpen" />
+                    </fluent:MenuItem.Icon>
                     <fluent:MenuItem.Header>
                         <l:Catalog Message="Open build directory" />
                     </fluent:MenuItem.Header>
@@ -259,8 +269,10 @@
 
                 <Separator />
                 <fluent:MenuItem Click="OpenSettings"
-                                 KeyTip="O"
-                                 Icon="{iconPacks:Modern Kind=Settings}">
+                                 KeyTip="O">
+                    <fluent:MenuItem.Icon>
+                        <iconPacks:PackIconModern Kind="Settings" />
+                    </fluent:MenuItem.Icon>
                     <fluent:MenuItem.Header>
                         <l:Catalog Message="Options" />
                     </fluent:MenuItem.Header>
@@ -276,8 +288,10 @@
                     </fluent:MenuItem.ToolTip>
                 </fluent:MenuItem>
                 <fluent:MenuItem Click="Exit"
-                                 KeyTip="X"
-                                 Icon="{iconPacks:Modern Close}">
+                                 KeyTip="X">
+                    <fluent:MenuItem.Icon>
+                        <iconPacks:PackIconModern Kind="Close" />
+                    </fluent:MenuItem.Icon>
                     <fluent:MenuItem.Header>
                         <l:Catalog Message="Exit" />
                     </fluent:MenuItem.Header>
@@ -307,11 +321,12 @@
                     <l:Catalog Message="Passive tree" />
                 </fluent:RibbonGroupBox.Header>
                 <fluent:Button Command="{Binding UndoTreeUrlChangeCommand}"
-                               KeyTip="U"
-                               Icon="{iconPacks:Modern Undo}">
+                               KeyTip="U">
+                    <fluent:Button.Icon>
+                        <iconPacks:PackIconModern Kind="Undo" Style="{StaticResource IconStyle}" />
+                    </fluent:Button.Icon>
                     <fluent:Button.LargeIcon>
-                        <iconPacks:PackIconModern Kind="Undo"
-                                                  Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconModern Kind="Undo" />
                     </fluent:Button.LargeIcon>
                     <fluent:Button.Header>
                         <l:Catalog Message="Undo" />
@@ -328,11 +343,12 @@
                     </fluent:Button.ToolTip>
                 </fluent:Button>
                 <fluent:Button Command="{Binding RedoTreeUrlChangeCommand}"
-                               KeyTip="R"
-                               Icon="{iconPacks:Modern Redo}">
+                               KeyTip="R">
+                    <fluent:Button.Icon>
+                        <iconPacks:PackIconModern Kind="Redo" Style="{StaticResource IconStyle}" />
+                    </fluent:Button.Icon>
                     <fluent:Button.LargeIcon>
-                        <iconPacks:PackIconModern Kind="Redo"
-                                                  Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconModern Kind="Redo" />
                     </fluent:Button.LargeIcon>
                     <fluent:Button.Header>
                         <l:Catalog Message="Redo" />
@@ -349,11 +365,12 @@
                     </fluent:Button.ToolTip>
                 </fluent:Button>
                 <fluent:SplitButton Click="ResetTree"
-                               KeyTip="T"
-                               Icon="{iconPacks:Modern Reset}">
+                               KeyTip="T">
+                    <fluent:SplitButton.Icon>
+                        <iconPacks:PackIconModern Kind="Reset" />
+                    </fluent:SplitButton.Icon>
                     <fluent:SplitButton.LargeIcon>
-                        <iconPacks:PackIconModern Kind="Reset"
-                                                  Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconModern Kind="Reset" />
                     </fluent:SplitButton.LargeIcon>
                     <fluent:SplitButton.Header>
                         <l:Catalog Message="Reset" />
@@ -399,11 +416,12 @@
                     <l:Catalog Message="Craft" />
                 </fluent:RibbonGroupBox.Header>
                 <fluent:Button Click="CraftItem"
-                               KeyTip="CR"
-                               Icon="{iconPacks:Material Hammer}">
+                               KeyTip="CR">
+                    <fluent:Button.Icon>
+                        <iconPacks:PackIconMaterial Kind="Hammer" Style="{StaticResource IconStyle}" />
+                    </fluent:Button.Icon>
                     <fluent:Button.LargeIcon>
-                        <iconPacks:PackIconMaterial Kind="Hammer"
-                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconMaterial Kind="Hammer" />
                     </fluent:Button.LargeIcon>
                     <fluent:Button.Header>
                         <l:Catalog Message="Craft unique" />
@@ -420,11 +438,12 @@
                     </fluent:Button.ToolTip>
                 </fluent:Button>
                 <fluent:Button Click="CraftUnique"
-                               KeyTip="CI"
-                               Icon="{iconPacks:Material Tools}">
+                               KeyTip="CI">
+                    <fluent:Button.Icon>
+                        <iconPacks:PackIconMaterial Kind="Tools" Style="{StaticResource IconStyle}" />
+                    </fluent:Button.Icon>
                     <fluent:Button.LargeIcon>
-                        <iconPacks:PackIconMaterial Kind="Tools"
-                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconMaterial Kind="Tools" />
                     </fluent:Button.LargeIcon>
                     <fluent:Button.Header>
                         <l:Catalog Message="Craft item" />
@@ -457,11 +476,12 @@
                 </fluent:RibbonGroupBox.ToolTip>
                 <fluent:Button Command="{Binding BuildsControlViewModel.EditCommand}"
                                CommandParameter="{Binding BuildsControlViewModel.CurrentBuild}"
-                               KeyTip="BE"
-                               Icon="{iconPacks:Material FileEdit}">
+                               KeyTip="BE">
+                    <fluent:Button.Icon>
+                        <iconPacks:PackIconMaterial Kind="FileEdit" Style="{StaticResource IconStyle}" />
+                    </fluent:Button.Icon>
                     <fluent:Button.LargeIcon>
-                        <iconPacks:PackIconMaterial Kind="FileEdit"
-                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconMaterial Kind="FileEdit" />
                     </fluent:Button.LargeIcon>
                     <fluent:Button.Header>
                         <l:Catalog Message="Edit" />
@@ -479,11 +499,12 @@
                 </fluent:Button>
                 <fluent:Button Command="{Binding BuildsControlViewModel.RevertBuildCommand}"
                                CommandParameter="{Binding BuildsControlViewModel.CurrentBuild}"
-                               KeyTip="BD"
-                               Icon="{iconPacks:Material FileUndo}">
+                               KeyTip="BD">
+                    <fluent:Button.Icon>
+                        <iconPacks:PackIconMaterial Kind="FileUndo" Style="{StaticResource IconStyle}" />
+                    </fluent:Button.Icon>
                     <fluent:Button.LargeIcon>
-                        <iconPacks:PackIconMaterial Kind="FileUndo"
-                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconMaterial Kind="FileUndo" />
                     </fluent:Button.LargeIcon>
                     <fluent:Button.Header>
                         <l:Catalog Message="Discard changes" />
@@ -500,11 +521,12 @@
                     </fluent:Button.ToolTip>
                 </fluent:Button>
                 <fluent:Button Command="{Binding BuildsControlViewModel.ExportCurrentToClipboardCommand}"
-                               KeyTip="BC"
-                               Icon="{iconPacks:Material ClipboardMultiple}">
+                               KeyTip="BC">
+                    <fluent:Button.Icon>
+                        <iconPacks:PackIconMaterial Kind="ClipboardMultiple" Style="{StaticResource IconStyle}" />
+                    </fluent:Button.Icon>
                     <fluent:Button.LargeIcon>
-                        <iconPacks:PackIconMaterial Kind="ClipboardMultiple"
-                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconMaterial Kind="ClipboardMultiple" />
                     </fluent:Button.LargeIcon>
                     <fluent:Button.Header>
                         <l:Catalog Message="Copy (export)" />
@@ -521,11 +543,12 @@
                     </fluent:Button.ToolTip>
                 </fluent:Button>
                 <fluent:Button Command="{Binding BuildsControlViewModel.ImportCurrentFromClipboardCommand}"
-                               KeyTip="BP"
-                               Icon="{iconPacks:Modern ClipboardPaste}">
+                               KeyTip="BP">
+                    <fluent:Button.Icon>
+                        <iconPacks:PackIconModern Kind="ClipboardPaste" Style="{StaticResource IconStyle}" />
+                    </fluent:Button.Icon>
                     <fluent:Button.LargeIcon>
-                        <iconPacks:PackIconModern Kind="ClipboardPaste"
-                                                  Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconModern Kind="ClipboardPaste" />
                     </fluent:Button.LargeIcon>
                     <fluent:Button.Header>
                         <l:Catalog Message="Paste (import)" />
@@ -550,11 +573,12 @@
                     <l:Catalog Message="Import" />
                 </fluent:RibbonGroupBox.Header>
                 <fluent:Button Click="ImportCharacter"
-                               KeyTip="IC"
-                               Icon="{iconPacks:Material ClipboardAccount}">
+                               KeyTip="IC">
+                    <fluent:Button.Icon>
+                        <iconPacks:PackIconMaterial Kind="ClipboardAccount" Style="{StaticResource IconStyle}" />
+                    </fluent:Button.Icon>
                     <fluent:Button.LargeIcon>
-                        <iconPacks:PackIconMaterial Kind="ClipboardAccount"
-                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconMaterial Kind="ClipboardAccount" />
                     </fluent:Button.LargeIcon>
                     <fluent:Button.Header>
                         <l:Catalog Message="Import character" />
@@ -571,11 +595,12 @@
                     </fluent:Button.ToolTip>
                 </fluent:Button>
                 <fluent:Button Click="ImportStash"
-                               KeyTip="IS"
-                               Icon="{iconPacks:Material ClipboardList}">
+                               KeyTip="IS">
+                    <fluent:Button.Icon>
+                        <iconPacks:PackIconMaterial Kind="ClipboardList" Style="{StaticResource IconStyle}" />
+                    </fluent:Button.Icon>
                     <fluent:Button.LargeIcon>
-                        <iconPacks:PackIconMaterial Kind="ClipboardList"
-                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconMaterial Kind="ClipboardList" />
                     </fluent:Button.LargeIcon>
                     <fluent:Button.Header>
                         <l:Catalog Message="Import stash" />
@@ -597,11 +622,12 @@
                     <l:Catalog Message="Tag nodes" />
                 </fluent:RibbonGroupBox.Header>
                 <fluent:DropDownButton KeyTip="HN"
-                                       Icon="{iconPacks:Material MapMarkerPlus}"
                                        SizeDefinition="Middle, Middle, Small">
+                    <fluent:DropDownButton.Icon>
+                        <iconPacks:PackIconMaterial Kind="MapMarkerPlus" />
+                    </fluent:DropDownButton.Icon>
                     <fluent:DropDownButton.LargeIcon>
-                        <iconPacks:PackIconMaterial Kind="MapMarkerPlus"
-                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconMaterial Kind="MapMarkerPlus" />
                     </fluent:DropDownButton.LargeIcon>
                     <fluent:DropDownButton.Header>
                         <l:Catalog Message="Tag highlighted nodes" />
@@ -617,8 +643,10 @@
                         </fluent:ScreenTip>
                     </fluent:DropDownButton.ToolTip>
                     <fluent:MenuItem Click="CheckAllHighlightedNodes"
-                                     KeyTip="C"
-                                     Icon="{iconPacks:Material MapMarkerCheck}">
+                                     KeyTip="C">
+                        <fluent:MenuItem.Icon>
+                            <iconPacks:PackIconMaterial Kind="MapMarkerCheck" />
+                        </fluent:MenuItem.Icon>
                         <fluent:MenuItem.Header>
                             <l:Catalog Message="Check-tag highlighted nodes" />
                         </fluent:MenuItem.Header>
@@ -634,8 +662,10 @@
                         </fluent:MenuItem.ToolTip>
                     </fluent:MenuItem>
                     <fluent:MenuItem Click="CrossAllHighlightedNodes"
-                                     KeyTip="X"
-                                     Icon="{iconPacks:Material MapMarkerRemoveVariant}">
+                                     KeyTip="X">
+                        <fluent:MenuItem.Icon>
+                            <iconPacks:PackIconMaterial Kind="MapMarkerRemoveVariant" />
+                        </fluent:MenuItem.Icon>
                         <fluent:MenuItem.Header>
                             <l:Catalog Message="Cross-tag highlighted nodes" />
                         </fluent:MenuItem.Header>
@@ -653,11 +683,12 @@
                 </fluent:DropDownButton>
                 <fluent:Button Click="UntagAllNodes"
                                KeyTip="HX"
-                               Icon="{iconPacks:Material MapMarkerRemove}"
                                SizeDefinition="Middle, Middle, Small">
+                    <fluent:Button.Icon>
+                        <iconPacks:PackIconMaterial Kind="MapMarkerRemove" Style="{StaticResource IconStyle}" />
+                    </fluent:Button.Icon>
                     <fluent:Button.LargeIcon>
-                        <iconPacks:PackIconMaterial Kind="MapMarkerRemove"
-                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconMaterial Kind="MapMarkerRemove" />
                     </fluent:Button.LargeIcon>
                     <fluent:Button.Header>
                         <l:Catalog Message="Untag all nodes" />
@@ -675,11 +706,12 @@
                 </fluent:Button>
                 <fluent:Button Click="UnhighlightAllNodes"
                                KeyTip="HU"
-                               Icon="{iconPacks:Material CloseCircleOutline}"
                                SizeDefinition="Middle, Middle, Small">
+                    <fluent:Button.Icon>
+                        <iconPacks:PackIconMaterial Kind="CloseCircleOutline" Style="{StaticResource IconStyle}" />
+                    </fluent:Button.Icon>
                     <fluent:Button.LargeIcon>
-                        <iconPacks:PackIconMaterial Kind="CloseCircleOutline"
-                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconMaterial Kind="CloseCircleOutline" />
                     </fluent:Button.LargeIcon>
                     <fluent:Button.Header>
                         <l:Catalog Message="Unhighlight all nodes" />
@@ -702,11 +734,12 @@
                 </fluent:RibbonGroupBox.Header>
                 <fluent:SplitButton Command="{Binding TreeGeneratorInteraction.OpenTreeGeneratorCommand}"
                                     KeyTip="G"
-                                    Icon="{iconPacks:Material Strategy}"
                                     dialogs:DialogParticipation.Register="{Binding TreeGeneratorInteraction}">
+                    <fluent:SplitButton.Icon>
+                        <iconPacks:PackIconMaterial Kind="Strategy" />
+                    </fluent:SplitButton.Icon>
                     <fluent:SplitButton.LargeIcon>
-                        <iconPacks:PackIconMaterial Kind="Strategy"
-                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconMaterial Kind="Strategy" />
                     </fluent:SplitButton.LargeIcon>
                     <fluent:SplitButton.Header>
                         <l:Catalog Message="Passive tree generator" />
@@ -721,8 +754,10 @@
                             </fluent:ScreenTip.Text>
                         </fluent:ScreenTip>
                     </fluent:SplitButton.ToolTip>
-                    <fluent:MenuItem Command="{Binding TreeGeneratorInteraction.RunTaggedNodesCommand}"
-                                     Icon="{iconPacks:Material MapMarker}">
+                    <fluent:MenuItem Command="{Binding TreeGeneratorInteraction.RunTaggedNodesCommand}">
+                        <fluent:MenuItem.Icon>
+                            <iconPacks:PackIconMaterial Kind="MapMarker" />
+                        </fluent:MenuItem.Icon>
                         <fluent:MenuItem.Header>
                             <l:Catalog Message="Run 'Tagged Nodes' generator" />
                         </fluent:MenuItem.Header>
@@ -737,8 +772,10 @@
                             </fluent:ScreenTip>
                         </fluent:MenuItem.ToolTip>
                     </fluent:MenuItem>
-                    <fluent:MenuItem Command="{Binding TreeGeneratorInteraction.RunTaggedNodesCommand}"
-                                     Icon="{iconPacks:Material Sigma}">
+                    <fluent:MenuItem Command="{Binding TreeGeneratorInteraction.RunTaggedNodesCommand}">
+                        <fluent:MenuItem.Icon>
+                            <iconPacks:PackIconMaterial Kind="Sigma" />
+                        </fluent:MenuItem.Icon>
                         <fluent:MenuItem.Header>
                             <l:Catalog Message="Run 'Advanced' generator" />
                         </fluent:MenuItem.Header>
@@ -756,11 +793,12 @@
                 </fluent:SplitButton>
                 <fluent:Button Click="ScreenShot"
                                KeyTip="S"
-                               Icon="{iconPacks:Modern Camera}"
                                SizeDefinition="Middle, Middle, Small">
+                    <fluent:Button.Icon>
+                        <iconPacks:PackIconModern Kind="Camera" Style="{StaticResource IconStyle}" />
+                    </fluent:Button.Icon>
                     <fluent:Button.LargeIcon>
-                        <iconPacks:PackIconModern Kind="Camera"
-                                                  Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconModern Kind="Camera" />
                     </fluent:Button.LargeIcon>
                     <fluent:Button.Header>
                         <l:Catalog Message="Screenshot skilled nodes" />
@@ -778,12 +816,13 @@
                 </fluent:Button>
                 <fluent:Button Click="CreatePoeUrl"
                                KeyTip="EP"
-                               Icon="{iconPacks:Material Web}"
                                IsEnabled="{Binding NoAsyncTaskRunning}"
                                SizeDefinition="Middle, Middle, Small">
+                    <fluent:Button.Icon>
+                        <iconPacks:PackIconMaterial Kind="Web" Style="{StaticResource IconStyle}" />
+                    </fluent:Button.Icon>
                     <fluent:Button.LargeIcon>
-                        <iconPacks:PackIconMaterial Kind="Web"
-                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconMaterial Kind="Web" />
                     </fluent:Button.LargeIcon>
                     <fluent:Button.Header>
                         <l:Catalog Message="Create PoEUrl of passive tree" />
@@ -801,11 +840,12 @@
                 </fluent:Button>
                 <fluent:Button Click="RedownloadTreeAssets"
                                KeyTip="D"
-                               Icon="{iconPacks:Material FileDownload}"
                                SizeDefinition="Middle, Middle, Small">
+                    <fluent:Button.Icon>
+                        <iconPacks:PackIconMaterial Kind="FileDownload" Style="{StaticResource IconStyle}" />
+                    </fluent:Button.Icon>
                     <fluent:Button.LargeIcon>
-                        <iconPacks:PackIconMaterial Kind="FileDownload"
-                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconMaterial Kind="FileDownload" />
                     </fluent:Button.LargeIcon>
                     <fluent:Button.Header>
                         <l:Catalog Message="Download live tree data" />
@@ -823,11 +863,12 @@
                 </fluent:Button>
                 <fluent:Button Click="CheckForUpdates"
                                KeyTip="CU"
-                               Icon="{iconPacks:Material Update}"
                                IsEnabled="{Binding NoAsyncTaskRunning, ElementName=window}">
+                    <fluent:Button.Icon>
+                        <iconPacks:PackIconMaterial Kind="Update" Style="{StaticResource IconStyle}" />
+                    </fluent:Button.Icon>
                     <fluent:Button.LargeIcon>
-                        <iconPacks:PackIconMaterial Kind="Update"
-                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconMaterial Kind="Update" />
                     </fluent:Button.LargeIcon>
                     <fluent:Button.Header>
                         <l:Catalog Message="Check for updates" />
@@ -858,11 +899,12 @@
                     <l:Catalog Message="Panels" />
                 </fluent:RibbonGroupBox.Header>
                 <fluent:ToggleButton IsChecked="{Binding PersistentData.Options.AttributesBarOpened}"
-                                     KeyTip="S"
-                                     Icon="{iconPacks:Material TextShort}">
+                                     KeyTip="S">
+                    <fluent:ToggleButton.Icon>
+                        <iconPacks:PackIconMaterial Kind="TextShort" Style="{StaticResource IconStyle}" />
+                    </fluent:ToggleButton.Icon>
                     <fluent:ToggleButton.LargeIcon>
-                        <iconPacks:PackIconMaterial Kind="TextShort"
-                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconMaterial Kind="TextShort" />
                     </fluent:ToggleButton.LargeIcon>
                     <fluent:ToggleButton.Header>
                         <l:Catalog Message="Build summary" />
@@ -879,11 +921,12 @@
                     </fluent:ToggleButton.ToolTip>
                 </fluent:ToggleButton>
                 <fluent:ToggleButton IsChecked="{Binding PersistentData.Options.BuildsBarOpened}"
-                                     KeyTip="B"
-                                     Icon="{iconPacks:Material FileTree}">
+                                     KeyTip="B">
+                    <fluent:ToggleButton.Icon>
+                        <iconPacks:PackIconMaterial Kind="FileTree" Style="{StaticResource IconStyle}" />
+                    </fluent:ToggleButton.Icon>
                     <fluent:ToggleButton.LargeIcon>
-                        <iconPacks:PackIconMaterial Kind="FileTree"
-                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconMaterial Kind="FileTree" />
                     </fluent:ToggleButton.LargeIcon>
                     <fluent:ToggleButton.Header>
                         <l:Catalog Message="Saved builds" />
@@ -905,11 +948,12 @@
                     <l:Catalog Message="Passive tree" />
                 </fluent:RibbonGroupBox.Header>
                 <fluent:ToggleButton IsChecked="{Binding PersistentData.Options.ChangeSummaryEnabled}"
-                                     KeyTip="G"
-                                     Icon="{iconPacks:Material FileCompare}">
+                                     KeyTip="G">
+                    <fluent:ToggleButton.Icon>
+                        <iconPacks:PackIconMaterial Kind="FileCompare" Style="{StaticResource IconStyle}" />
+                    </fluent:ToggleButton.Icon>
                     <fluent:ToggleButton.LargeIcon>
-                        <iconPacks:PackIconMaterial Kind="FileCompare"
-                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconMaterial Kind="FileCompare" />
                     </fluent:ToggleButton.LargeIcon>
                     <fluent:ToggleButton.Header>
                         <l:Catalog Message="Summary of changes" />
@@ -926,11 +970,12 @@
                     </fluent:ToggleButton.ToolTip>
                 </fluent:ToggleButton>
                 <fluent:ToggleButton IsChecked="{Binding PersistentData.Options.TreeComparisonEnabled}"
-                                     KeyTip="P"
-                                     Icon="{iconPacks:Material SelectCompare}">
+                                     KeyTip="P">
+                    <fluent:ToggleButton.Icon>
+                        <iconPacks:PackIconMaterial Kind="SelectCompare" Style="{StaticResource IconStyle}" />
+                    </fluent:ToggleButton.Icon>
                     <fluent:ToggleButton.LargeIcon>
-                        <iconPacks:PackIconMaterial Kind="SelectCompare"
-                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconMaterial Kind="SelectCompare" />
                     </fluent:ToggleButton.LargeIcon>
                     <fluent:ToggleButton.Header>
                         <l:Catalog Message="Tree comparison" />
@@ -947,11 +992,12 @@
                     </fluent:ToggleButton.ToolTip>
                 </fluent:ToggleButton>
                 <fluent:ToggleButton IsChecked="{Binding PersistentData.Options.ShowAllAscendancyClasses}"
-                                     KeyTip="AS"
-                                     Icon="{iconPacks:Typicons ThSmall}">
+                                     KeyTip="AS">
+                    <fluent:ToggleButton.Icon>
+                        <iconPacks:PackIconTypicons Kind="ThSmall" Style="{StaticResource IconStyle}" />
+                    </fluent:ToggleButton.Icon>
                     <fluent:ToggleButton.LargeIcon>
-                        <iconPacks:PackIconTypicons Kind="ThSmall"
-                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconTypicons Kind="ThSmall" />
                     </fluent:ToggleButton.LargeIcon>
                     <fluent:ToggleButton.Header>
                         <l:Catalog Message="Show all ascendancies" />
@@ -974,11 +1020,12 @@
                     <l:Catalog Message="Saved builds" />
                 </fluent:RibbonGroupBox.Header>
                 <fluent:Button Command="{Binding BuildsControlViewModel.ExpandAllCommand}"
-                               KeyTip="E"
-                               Icon="{iconPacks:Modern SectionExpandAll}">
+                               KeyTip="E">
+                    <fluent:Button.Icon>
+                        <iconPacks:PackIconModern Kind="SectionExpandAll" Style="{StaticResource IconStyle}" />
+                    </fluent:Button.Icon>
                     <fluent:Button.LargeIcon>
-                        <iconPacks:PackIconModern Kind="SectionExpandAll"
-                                                  Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconModern Kind="SectionExpandAll" />
                     </fluent:Button.LargeIcon>
                     <fluent:Button.Header>
                         <l:Catalog Message="Expand all folders" />
@@ -998,11 +1045,12 @@
                     </fluent:Button.ToolTip>
                 </fluent:Button>
                 <fluent:Button Command="{Binding BuildsControlViewModel.CollapseAllCommand}"
-                               KeyTip="C"
-                               Icon="{iconPacks:Modern SectionCollapseAll}">
+                               KeyTip="C">
+                    <fluent:Button.Icon>
+                        <iconPacks:PackIconModern Kind="SectionCollapseAll" Style="{StaticResource IconStyle}" />
+                    </fluent:Button.Icon>
                     <fluent:Button.LargeIcon>
-                        <iconPacks:PackIconModern Kind="SectionCollapseAll"
-                                                  Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconModern Kind="SectionCollapseAll" />
                     </fluent:Button.LargeIcon>
                     <fluent:Button.Header>
                         <l:Catalog Message="Collapse all folders" />
@@ -1083,11 +1131,12 @@
                 </fluent:RibbonGroupBox.Header>
                 <fluent:Button Click="OpenPoEWebsite"
                                KeyTip="P"
-                               Icon="{iconPacks:Material WebBox}"
                                SizeDefinition="Middle,Middle,Small">
+                    <fluent:Button.Icon>
+                        <iconPacks:PackIconMaterial Kind="WebBox" Style="{StaticResource IconStyle}" />
+                    </fluent:Button.Icon>
                     <fluent:Button.LargeIcon>
-                        <iconPacks:PackIconMaterial Kind="WebBox"
-                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconMaterial Kind="WebBox" />
                     </fluent:Button.LargeIcon>
                     <fluent:Button.Header>
                         <l:Catalog Message="Path of Exile website" />
@@ -1105,11 +1154,12 @@
                 </fluent:Button>
                 <fluent:Button Click="OpenWiki"
                                KeyTip="W"
-                               Icon="{iconPacks:Material BookOpen}"
                                SizeDefinition="Middle,Middle,Small">
+                    <fluent:Button.Icon>
+                        <iconPacks:PackIconMaterial Kind="BookOpen" Style="{StaticResource IconStyle}" />
+                    </fluent:Button.Icon>
                     <fluent:Button.LargeIcon>
-                        <iconPacks:PackIconMaterial Kind="BookOpen"
-                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconMaterial Kind="BookOpen" />
                     </fluent:Button.LargeIcon>
                     <fluent:Button.Header>
                         <l:Catalog Message="Path of Exile wiki" />
@@ -1132,11 +1182,12 @@
                 </fluent:RibbonGroupBox.Header>
                 <fluent:Button Click="OpenHelp"
                                KeyTip="H"
-                               Icon="{iconPacks:Material HelpCircle}"
                                SizeDefinition="Middle,Middle,Small">
+                    <fluent:Button.Icon>
+                        <iconPacks:PackIconMaterial Kind="HelpCircle" Style="{StaticResource IconStyle}" />
+                    </fluent:Button.Icon>
                     <fluent:Button.LargeIcon>
-                        <iconPacks:PackIconMaterial Kind="HelpCircle"
-                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconMaterial Kind="HelpCircle" />
                     </fluent:Button.LargeIcon>
                     <fluent:Button.Header>
                         <l:Catalog Message="Help" />
@@ -1154,11 +1205,12 @@
                 </fluent:Button>
                 <fluent:Button Click="OpenHotkeys"
                                KeyTip="K"
-                               Icon="{iconPacks:Material Keyboard}"
                                SizeDefinition="Middle,Middle,Small">
+                    <fluent:Button.Icon>
+                        <iconPacks:PackIconMaterial Kind="Keyboard" Style="{StaticResource IconStyle}" />
+                    </fluent:Button.Icon>
                     <fluent:Button.LargeIcon>
-                        <iconPacks:PackIconMaterial Kind="Keyboard"
-                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconMaterial Kind="Keyboard" />
                     </fluent:Button.LargeIcon>
                     <fluent:Button.Header>
                         <l:Catalog Message="Hotkeys" />
@@ -1176,11 +1228,12 @@
                 </fluent:Button>
                 <fluent:Button Click="OpenAbout"
                                KeyTip="AB"
-                               Icon="{iconPacks:Material Information}"
                                SizeDefinition="Middle,Middle,Small">
+                    <fluent:Button.Icon>
+                        <iconPacks:PackIconMaterial Kind="Information" Style="{StaticResource IconStyle}" />
+                    </fluent:Button.Icon>
                     <fluent:Button.LargeIcon>
-                        <iconPacks:PackIconMaterial Kind="Information"
-                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                        <iconPacks:PackIconMaterial Kind="Information" />
                     </fluent:Button.LargeIcon>
                     <fluent:Button.Header>
                         <l:Catalog Message="About" />
