@@ -12,6 +12,7 @@
                       xmlns:equipment="clr-namespace:PoESkillTree.Views.Equipment"
                       xmlns:fluent="urn:fluent-ribbon"
                       xmlns:dd="urn:gong-wpf-dragdrop"
+                      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                       mc:Ignorable="d"
                       x:Class="PoESkillTree.Views.MainWindow"
                       x:Name="window"
@@ -136,9 +137,16 @@
                             <l:Catalog>Filter</l:Catalog>
                         </controls:TextBoxHelper.Watermark>
                     </TextBox>
-                    <CheckBox Grid.Row="0" Grid.Column="1"
-                              Content="RegEx" Margin="4 0 0 0" x:Name="cbAttributesFilterRegEx"
-                              Click="cbAttributesFilterRegEx_Click" />
+                    <ToggleButton Grid.Row="0" Grid.Column="1"
+                                  x:Name="cbAttributesFilterRegEx"
+                                  Margin="4 0 0 0"
+                                  Padding="4"
+                                  Content="{iconPacks:Material Kind=Regex}"
+                                  Click="cbAttributesFilterRegEx_Click">
+                        <ToggleButton.ToolTip>
+                            <l:Catalog Message="Use regular expressions" />
+                        </ToggleButton.ToolTip>
+                    </ToggleButton>
 
                     <ListBox x:Name="lbAttr"
                              Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
@@ -201,11 +209,16 @@
                                         <l:Catalog>Search</l:Catalog>
                                     </controls:TextBoxHelper.Watermark>
                                 </TextBox>
-                                <CheckBox x:Name="cbRegEx"
-                                          DockPanel.Dock="Left"
-                                          Content="RegEx"
-                                          Margin="4 0 0 0"
-                                          Click="cbRegEx_Click" />
+                                <ToggleButton x:Name="cbRegEx"
+                                              DockPanel.Dock="Left"
+                                              Margin="4 0 0 0"
+                                              Padding="4"
+                                              Content="{iconPacks:Material Regex}"
+                                              Click="cbRegEx_Click">
+                                    <ToggleButton.ToolTip>
+                                        <l:Catalog Message="Use regular expressions" />
+                                    </ToggleButton.ToolTip>
+                                </ToggleButton>
 
                                 <controls:SplitButton DockPanel.Dock="Right"
                                                       Margin="4 0 0 0"
