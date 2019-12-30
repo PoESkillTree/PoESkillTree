@@ -6,13 +6,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
     xmlns:viewModels="clr-namespace:PoESkillTree.ViewModels"
     xmlns:dialogs="clr-namespace:PoESkillTree.Controls.Dialogs"
-    xmlns:model="clr-namespace:PoESkillTree.Model"
-    xmlns:converter="clr-namespace:PoESkillTree.Utils.Converter"
     xmlns:localization="clr-namespace:PoESkillTree.Localization"
     d:DataContext="{d:DesignInstance viewModels:SettingsMenuViewModel}"
     MaxContentWidth="550">
     <ContentControl.Resources>
-        <converter:FlagsToBoolConverter x:Key="FlagsToBoolConverter" />
         <ObjectDataProvider ObjectType="{x:Type localization:L10n}"
                             MethodName="GetLanguages"
                             x:Key="Languages" />
@@ -56,36 +53,26 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="30" />
                 <RowDefinition Height="30" />
-                <RowDefinition Height="30" />
             </Grid.RowDefinitions>
 
             <Label Style="{StaticResource SettingLabel}"
                    Grid.Row="0" Grid.Column="0">
                 <Label.Content>
-                    <l:Catalog Message="Show All Ascendancy Classes" />
-                </Label.Content>
-            </Label>
-            <CheckBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
-                      IsChecked="{Binding Options.ShowAllAscendancyClasses}" />
-
-            <Label Style="{StaticResource SettingLabel}"
-                   Grid.Row="1" Grid.Column="0">
-                <Label.Content>
                     <l:Catalog Message="Language" />
                 </Label.Content>
             </Label>
-            <ComboBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"
+            <ComboBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
                       ItemsSource="{Binding Source={StaticResource Languages}}"
                       DisplayMemberPath="Value" SelectedValuePath="Key"
                       SelectedValue="{Binding Options.Language, TargetNullValue={x:Static localization:L10n.Language}}" />
 
             <Label Style="{StaticResource SettingLabel}"
-                   Grid.Row="2" Grid.Column="0">
+                   Grid.Row="1" Grid.Column="0">
                 <Label.Content>
                     <l:Catalog Message="Build save path" />
                 </Label.Content>
             </Label>
-            <Grid Grid.Row="2" Grid.Column="1">
+            <Grid Grid.Row="1" Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
@@ -173,50 +160,6 @@
             </Label>
             <CheckBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
                       IsChecked="{Binding Options.DownloadMissingItemImages}" />
-        </Grid>
-
-        <Label Style="{StaticResource SectionLabel}">
-            <Label.Content>
-                <l:Catalog Message="Reset button preferences:" />
-            </Label.Content>
-        </Label>
-        <Grid Margin="20 0 5 0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="250"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30" />
-                <RowDefinition Height="30" />
-                <RowDefinition Height="30" />
-            </Grid.RowDefinitions>
-
-            <Label Style="{StaticResource SettingLabel}"
-                   Grid.Row="0" Grid.Column="0">
-                <Label.Content>
-                    <l:Catalog Message="Reset main skill tree" />
-                </Label.Content>
-            </Label>
-            <CheckBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
-                      IsChecked="{Binding Options.ResetPreferences, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static model:ResetPreferences.MainTree}}" />
-
-            <Label Style="{StaticResource SettingLabel}"
-                   Grid.Row="1" Grid.Column="0">
-                <Label.Content>
-                    <l:Catalog Message="Reset ascendancy skill tree" />
-                </Label.Content>
-            </Label>
-            <CheckBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"
-                      IsChecked="{Binding Options.ResetPreferences, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static model:ResetPreferences.AscendancyTree}}" />
-
-            <Label Style="{StaticResource SettingLabel}"
-                   Grid.Row="2" Grid.Column="0">
-                <Label.Content>
-                    <l:Catalog Message="Reset selected bandits" />
-                </Label.Content>
-            </Label>
-            <CheckBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"
-                      IsChecked="{Binding Options.ResetPreferences, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static model:ResetPreferences.Bandits}}" />
         </Grid>
     </StackPanel>
 </dialogs:CloseableBaseDialog>

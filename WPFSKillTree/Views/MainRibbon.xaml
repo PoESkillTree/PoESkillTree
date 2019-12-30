@@ -9,9 +9,12 @@
              xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
              xmlns:local="clr-namespace:PoESkillTree.Views"
              xmlns:fluent="urn:fluent-ribbon"
+             xmlns:converter="clr-namespace:PoESkillTree.Utils.Converter"
+             xmlns:model="clr-namespace:PoESkillTree.Model"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance local:MainWindow}">
     <UserControl.Resources>
+        <converter:FlagsToBoolConverter x:Key="FlagsToBoolConverter" />
         <Style x:Key="LargeRibbonIconStyle"
                TargetType="iconPacks:PackIconBase">
             <Setter Property="Width" Value="24" />
@@ -345,17 +348,17 @@
                         </fluent:ScreenTip>
                     </fluent:Button.ToolTip>
                 </fluent:Button>
-                <fluent:Button Click="ResetTree"
+                <fluent:SplitButton Click="ResetTree"
                                KeyTip="T"
                                Icon="{iconPacks:Modern Reset}">
-                    <fluent:Button.LargeIcon>
+                    <fluent:SplitButton.LargeIcon>
                         <iconPacks:PackIconModern Kind="Reset"
                                                   Style="{StaticResource LargeRibbonIconStyle}" />
-                    </fluent:Button.LargeIcon>
-                    <fluent:Button.Header>
+                    </fluent:SplitButton.LargeIcon>
+                    <fluent:SplitButton.Header>
                         <l:Catalog Message="Reset" />
-                    </fluent:Button.Header>
-                    <fluent:Button.ToolTip>
+                    </fluent:SplitButton.Header>
+                    <fluent:SplitButton.ToolTip>
                         <fluent:ScreenTip>
                             <fluent:ScreenTip.Title>
                                 <l:Catalog Message="Reset passive tree (Ctrl+R)" />
@@ -364,8 +367,32 @@
                                 <l:Catalog Message="Reset the passive tree. What is reset can be configured in the options." />
                             </fluent:ScreenTip.Text>
                         </fluent:ScreenTip>
-                    </fluent:Button.ToolTip>
-                </fluent:Button>
+                    </fluent:SplitButton.ToolTip>
+                    <Label>
+                        <l:Catalog Message="Reset preferences" />
+                    </Label>
+                    <fluent:MenuItem IsCheckable="True"
+                                     IsDefinitive="False"
+                                     IsChecked="{Binding PersistentData.Options.ResetPreferences, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static model:ResetPreferences.MainTree}}">
+                        <fluent:MenuItem.Header>
+                            <l:Catalog Message="Non-ascendancy passive nodes" />
+                        </fluent:MenuItem.Header>
+                    </fluent:MenuItem>
+                    <fluent:MenuItem IsCheckable="True"
+                                     IsDefinitive="False"
+                                     IsChecked="{Binding PersistentData.Options.ResetPreferences, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static model:ResetPreferences.AscendancyTree}}">
+                        <fluent:MenuItem.Header>
+                            <l:Catalog Message="Ascendancy passive nodes" />
+                        </fluent:MenuItem.Header>
+                    </fluent:MenuItem>
+                    <fluent:MenuItem IsCheckable="True"
+                                     IsDefinitive="False"
+                                     IsChecked="{Binding PersistentData.Options.ResetPreferences, Converter={StaticResource FlagsToBoolConverter}, ConverterParameter={x:Static model:ResetPreferences.Bandits}}">
+                        <fluent:MenuItem.Header>
+                            <l:Catalog Message="Selected bandit" />
+                        </fluent:MenuItem.Header>
+                    </fluent:MenuItem>
+                </fluent:SplitButton>
             </fluent:RibbonGroupBox>
             <fluent:RibbonGroupBox Name="CraftRibbon">
                 <fluent:RibbonGroupBox.Header>
@@ -821,8 +848,8 @@
 
         <fluent:RibbonTabItem KeyTip="V"
                               ReduceOrder="PanelsRibbon,TreeViewRibbon,BuildsViewRibbon,HelpRibbon,LinksRibbon,
-                              PanelsRibbon,PanelsRibbon,TreeViewRibbon,TreeViewRibbon,ThemeRibbon,ThemeRibbon,HelpRibbon,
-                              BuildsViewRibbon,BuildsViewRibbon,HelpRibbon,LinksRibbon,ThemeRibbon,LinksRibbon">
+                              PanelsRibbon,PanelsRibbon,TreeViewRibbon,ThemeRibbon,ThemeRibbon,HelpRibbon,
+                              BuildsViewRibbon,BuildsViewRibbon,HelpRibbon,LinksRibbon,LinksRibbon,TreeViewRibbon,ThemeRibbon">
             <fluent:RibbonTabItem.Header>
                 <l:Catalog Message="View" />
             </fluent:RibbonTabItem.Header>
@@ -919,6 +946,27 @@
                         </fluent:ScreenTip>
                     </fluent:ToggleButton.ToolTip>
                 </fluent:ToggleButton>
+                <fluent:ToggleButton IsChecked="{Binding PersistentData.Options.ShowAllAscendancyClasses}"
+                                     KeyTip="AS"
+                                     Icon="{iconPacks:Typicons ThSmall}">
+                    <fluent:ToggleButton.LargeIcon>
+                        <iconPacks:PackIconTypicons Kind="ThSmall"
+                                                    Style="{StaticResource LargeRibbonIconStyle}" />
+                    </fluent:ToggleButton.LargeIcon>
+                    <fluent:ToggleButton.Header>
+                        <l:Catalog Message="Show all ascendancies" />
+                    </fluent:ToggleButton.Header>
+                    <fluent:ToggleButton.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Show all ascendancies" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Show all ascendancy class passive nodes instead of just your current ascendancy." />
+                            </fluent:ScreenTip.Text>
+                        </fluent:ScreenTip>
+                    </fluent:ToggleButton.ToolTip>
+                </fluent:ToggleButton>
             </fluent:RibbonGroupBox>
             <fluent:RibbonGroupBox Name="BuildsViewRibbon"
                                    IsEnabled="{Binding PersistentData.Options.BuildsBarOpened}">
@@ -980,7 +1028,7 @@
                 </fluent:RibbonGroupBox.Header>
                 <fluent:ComboBox ItemsSource="{x:Static mahApps:ThemeManager.BaseColors}"
                                  SelectedItem="{Binding PersistentData.Options.Theme}"
-                                 KeyTip="T"
+                                 KeyTip="TB"
                                  IsEditable="False"
                                  InputWidth="90">
                     <fluent:ComboBox.Header>
@@ -1000,7 +1048,7 @@
                 <fluent:ComboBox ItemsSource="{x:Static mahApps:ThemeManager.ColorSchemes}"
                                  SelectedValuePath="Name"
                                  SelectedValue="{Binding PersistentData.Options.Accent}"
-                                 KeyTip="A"
+                                 KeyTip="TS"
                                  IsEditable="False"
                                  InputWidth="90">
                     <fluent:ComboBox.Header>
@@ -1127,7 +1175,7 @@
                     </fluent:Button.ToolTip>
                 </fluent:Button>
                 <fluent:Button Click="OpenAbout"
-                               KeyTip="A"
+                               KeyTip="AB"
                                Icon="{iconPacks:Material Information}"
                                SizeDefinition="Middle,Middle,Small">
                     <fluent:Button.LargeIcon>
