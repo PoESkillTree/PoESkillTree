@@ -8,168 +8,176 @@
     <dialogs:CloseableBaseDialog.Title>
         <l:Catalog Message="Hotkeys"/>
     </dialogs:CloseableBaseDialog.Title>
-    <Grid Background="{DynamicResource MahApps.Brushes.WhiteColor}" Margin="2">
+    <Grid>
         <Grid.Resources>
             <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-                <Setter Property="Padding" Value="5 0"></Setter>
+                <Setter Property="Padding" Value="2" />
             </Style>
         </Grid.Resources>
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" FontWeight="Bold">
-            <l:Catalog Message="Key combination"/>
+
+        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+               FontSize="{DynamicResource MahApps.Font.Size.Dialog.Message}">
+            <l:Catalog Message="Ribbon menu elements" />
         </Label>
-        <Label Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" FontWeight="Bold">
-            <l:Catalog Message="Function"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+            <l:Catalog Message="See their tooltips"/>
+        </TextBlock>
+
+        <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+               FontSize="{DynamicResource MahApps.Font.Size.Dialog.Message}">
+            <l:Catalog Message="Change character class"/>
         </Label>
-        <TextBlock Grid.Row="1" Grid.Column="0" Background="{DynamicResource MahApps.Brushes.Accent}">Ctrl + + / Shift + Click</TextBlock>
-        <TextBlock Grid.Row="1" Grid.Column="1" Background="{DynamicResource MahApps.Brushes.Accent}">
-            <l:Catalog Message="Zoom In"/>
+        <TextBlock Grid.Row="3" Grid.Column="0">
+            <l:Catalog Message="Ctrl + 1"/>
         </TextBlock>
-        <TextBlock Grid.Row="2" Grid.Column="0">Ctrl + - / Ctrl + Click</TextBlock>
-        <TextBlock Grid.Row="2" Grid.Column="1">
-            <l:Catalog Message="Zoom Out"/>
-        </TextBlock>
-        <TextBlock Grid.Row="3" Grid.Column="0" Background="{DynamicResource MahApps.Brushes.Accent}">Ctrl + 1</TextBlock>
-        <TextBlock Grid.Row="3" Grid.Column="1" Background="{DynamicResource MahApps.Brushes.Accent}">
+        <TextBlock Grid.Row="3" Grid.Column="1">
             <l:Catalog Message="Scion"/>
         </TextBlock>
-        <TextBlock Grid.Row="4" Grid.Column="0">Ctrl + 2</TextBlock>
-        <TextBlock Grid.Row="4" Grid.Column="1">
+        <TextBlock Grid.Row="4" Grid.Column="0" Background="{DynamicResource MahApps.Brushes.Accent3}">
+            <l:Catalog Message="Ctrl + 2"/>
+        </TextBlock>
+        <TextBlock Grid.Row="4" Grid.Column="1" Background="{DynamicResource MahApps.Brushes.Accent3}">
             <l:Catalog Message="Marauder"/>
         </TextBlock>
-        <TextBlock Grid.Row="5" Grid.Column="0" Background="{DynamicResource MahApps.Brushes.Accent}">Ctrl + 3</TextBlock>
-        <TextBlock Grid.Row="5" Grid.Column="1" Background="{DynamicResource MahApps.Brushes.Accent}">
+        <TextBlock Grid.Row="5" Grid.Column="0">
+            <l:Catalog Message="Ctrl + 3"/>
+        </TextBlock>
+        <TextBlock Grid.Row="5" Grid.Column="1">
             <l:Catalog Message="Ranger"/>
         </TextBlock>
-        <TextBlock Grid.Row="6" Grid.Column="0">Ctrl + 4</TextBlock>
-        <TextBlock Grid.Row="6" Grid.Column="1">
+        <TextBlock Grid.Row="6" Grid.Column="0" Background="{DynamicResource MahApps.Brushes.Accent3}">
+            <l:Catalog Message="Ctrl + 4"/>
+        </TextBlock>
+        <TextBlock Grid.Row="6" Grid.Column="1" Background="{DynamicResource MahApps.Brushes.Accent3}">
             <l:Catalog Message="Witch"/>
         </TextBlock>
-        <TextBlock Grid.Row="7" Grid.Column="0" Background="{DynamicResource MahApps.Brushes.Accent}">Ctrl + 5</TextBlock>
-        <TextBlock Grid.Row="7" Grid.Column="1" Background="{DynamicResource MahApps.Brushes.Accent}">
+        <TextBlock Grid.Row="7" Grid.Column="0">
+            <l:Catalog Message="Ctrl + 5"/>
+        </TextBlock>
+        <TextBlock Grid.Row="7" Grid.Column="1">
             <l:Catalog Message="Duelist"/>
         </TextBlock>
-        <TextBlock Grid.Row="8" Grid.Column="0">Ctrl + 6</TextBlock>
-        <TextBlock Grid.Row="8" Grid.Column="1">
+        <TextBlock Grid.Row="8" Grid.Column="0" Background="{DynamicResource MahApps.Brushes.Accent3}">
+            <l:Catalog Message="Ctrl + 6"/>
+        </TextBlock>
+        <TextBlock Grid.Row="8" Grid.Column="1" Background="{DynamicResource MahApps.Brushes.Accent3}">
             <l:Catalog Message="Templar"/>
         </TextBlock>
-        <TextBlock Grid.Row="9" Grid.Column="0" Background="{DynamicResource MahApps.Brushes.Accent}">Ctrl + 7</TextBlock>
-        <TextBlock Grid.Row="9" Grid.Column="1" Background="{DynamicResource MahApps.Brushes.Accent}">
+        <TextBlock Grid.Row="9" Grid.Column="0">
+            <l:Catalog Message="Ctrl + 7"/>
+        </TextBlock>
+        <TextBlock Grid.Row="9" Grid.Column="1">
             <l:Catalog Message="Shadow"/>
         </TextBlock>
-        <TextBlock Grid.Row="10" Grid.Column="0">Ctrl + Q</TextBlock>
-        <TextBlock Grid.Row="10" Grid.Column="1">
-            <l:Catalog Message="Toggle Attributes sidebar"/>
+        
+        <Label Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2"
+               FontSize="{DynamicResource MahApps.Font.Size.Dialog.Message}">
+            <l:Catalog Message="Passive tree"/>
+        </Label>
+        <TextBlock Grid.Row="11" Grid.Column="0">
+            <l:Catalog Message="Ctrl + F" />
         </TextBlock>
-        <TextBlock Grid.Row="11" Grid.Column="0" Background="{DynamicResource MahApps.Brushes.Accent}" />
-        <TextBlock Grid.Row="11" Grid.Column="1" Background="{DynamicResource MahApps.Brushes.Accent}" />
-        <TextBlock Grid.Row="12" Grid.Column="0">Ctrl + B</TextBlock>
-        <TextBlock Grid.Row="12" Grid.Column="1">
-            <l:Catalog Message="Toggle Saved Builds sidebar"/>
-        </TextBlock>
-        <TextBlock Grid.Row="13" Grid.Column="0" Background="{DynamicResource MahApps.Brushes.Accent}">Ctrl + E</TextBlock>
-        <TextBlock Grid.Row="13" Grid.Column="1" Background="{DynamicResource MahApps.Brushes.Accent}">
-            <l:Catalog Message="Copy PoEUrl link to Clipboard"/>
-        </TextBlock>
-        <TextBlock Grid.Row="14" Grid.Column="0">Ctrl + R</TextBlock>
-        <TextBlock Grid.Row="14" Grid.Column="1">
-            <l:Catalog Message="Reset Skill tree"/>
-        </TextBlock>
-        <TextBlock Grid.Row="15" Grid.Column="0" Background="{DynamicResource MahApps.Brushes.Accent}">
-            <l:Catalog Message="Ctrl + Up/Down"/>
-        </TextBlock>
-        <TextBlock Grid.Row="15" Grid.Column="1" Background="{DynamicResource MahApps.Brushes.Accent}">
-            <l:Catalog Message="(Saved Builds) Move build up and down"/>
-        </TextBlock>
-        <TextBlock Grid.Row="16" Grid.Column="0">Ctrl + Z</TextBlock>
-        <TextBlock Grid.Row="16" Grid.Column="1">
-            <l:Catalog Message="Undo last Skill tree change"/>
-        </TextBlock>
-        <TextBlock Grid.Row="17" Grid.Column="0" Background="{DynamicResource MahApps.Brushes.Accent}">Ctrl + Y</TextBlock>
-        <TextBlock Grid.Row="17" Grid.Column="1" Background="{DynamicResource MahApps.Brushes.Accent}">
-            <l:Catalog Message="Redo last Skill tree change"/>
-        </TextBlock>
-        <TextBlock Grid.Row="18" Grid.Column="0">Ctrl + N</TextBlock>
-        <TextBlock Grid.Row="18" Grid.Column="1">
-            <l:Catalog Message="New build"/>
-        </TextBlock>
-        <TextBlock Grid.Row="19" Grid.Column="0" Background="{DynamicResource MahApps.Brushes.Accent}">Ctrl + S</TextBlock>
-        <TextBlock Grid.Row="19" Grid.Column="1" Background="{DynamicResource MahApps.Brushes.Accent}">
-            <l:Catalog Message="Save build"/>
-        </TextBlock>
-        <TextBlock Grid.Row="20" Grid.Column="0">Ctrl + Alt + S</TextBlock>
-        <TextBlock Grid.Row="20" Grid.Column="1">
-            <l:Catalog Message="Save build as"/>
-        </TextBlock>
-        <TextBlock Grid.Row="21" Grid.Column="0" Background="{DynamicResource MahApps.Brushes.Accent}">Ctrl + F</TextBlock>
-        <TextBlock Grid.Row="21" Grid.Column="1" Background="{DynamicResource MahApps.Brushes.Accent}">
+        <TextBlock Grid.Row="11" Grid.Column="1">
             <l:Catalog Message="Search"/>
         </TextBlock>
-        <TextBlock Grid.Row="22" Grid.Column="0">Ctrl + G</TextBlock>
-        <TextBlock Grid.Row="22" Grid.Column="1">
-            <l:Catalog Message="Show summary of changes"/>
+        <TextBlock Grid.Row="12" Grid.Column="0" Background="{DynamicResource MahApps.Brushes.Accent3}">
+            <l:Catalog Message="Ctrl + + / Shift + Left Click" />
         </TextBlock>
-        <TextBlock Grid.Row="23" Grid.Column="0" Background="{DynamicResource MahApps.Brushes.Accent}">
+        <TextBlock Grid.Row="12" Grid.Column="1" Background="{DynamicResource MahApps.Brushes.Accent3}">
+            <l:Catalog Message="Zoom in"/>
+        </TextBlock>
+        <TextBlock Grid.Row="13" Grid.Column="0">
+            <l:Catalog Message="Ctrl + - / Ctrl + Left Click" />
+        </TextBlock>
+        <TextBlock Grid.Row="13" Grid.Column="1">
+            <l:Catalog Message="Zoom out"/>
+        </TextBlock>
+        <TextBlock Grid.Row="14" Grid.Column="0" Background="{DynamicResource MahApps.Brushes.Accent3}">
+            <l:Catalog Message="Right Click outside of tree area"/>
+        </TextBlock>
+        <TextBlock Grid.Row="14" Grid.Column="1" Background="{DynamicResource MahApps.Brushes.Accent3}">
+            <l:Catalog Message="Center tree and reset zoom"/>
+        </TextBlock>
+        <TextBlock Grid.Row="15" Grid.Column="0">
+            <l:Catalog Message="Right Click on node"/>
+        </TextBlock>
+        <TextBlock Grid.Row="15" Grid.Column="1">
+            <l:Catalog Message="Toggle passive node tag"/>
+        </TextBlock>
+        <TextBlock Grid.Row="16" Grid.Column="0" Background="{DynamicResource MahApps.Brushes.Accent3}">
+            <l:Catalog Message="Shift + Right Click on node"/>
+        </TextBlock>
+        <TextBlock Grid.Row="16" Grid.Column="1" Background="{DynamicResource MahApps.Brushes.Accent3}">
+            <l:Catalog Message="Toggle passive node tag (reversed)"/>
+        </TextBlock>
+        <TextBlock Grid.Row="17" Grid.Column="0">
+            <l:Catalog Message="Shift + Hover over node"/>
+        </TextBlock>
+        <TextBlock Grid.Row="17" Grid.Column="1">
+            <l:Catalog Message="Highlight similar nodes"/>
+        </TextBlock>
+        
+        <Label Grid.Row="18" Grid.Column="0" Grid.ColumnSpan="2"
+               FontSize="{DynamicResource MahApps.Font.Size.Dialog.Message}">
+            <l:Catalog Message="Equipment"/>
+        </Label>
+        <TextBlock Grid.Row="19" Grid.Column="0">
+            <l:Catalog Message="Double click on an item slot"/>
+        </TextBlock>
+        <TextBlock Grid.Row="19" Grid.Column="1">
+            <l:Catalog Message="Edit socketed gems"/>
+        </TextBlock>
+        
+        <Label Grid.Row="20" Grid.Column="0" Grid.ColumnSpan="2"
+               FontSize="{DynamicResource MahApps.Font.Size.Dialog.Message}">
+            <l:Catalog Message="Saved builds"/>
+        </Label>
+        <TextBlock Grid.Row="21" Grid.Column="0">
+            <l:Catalog Message="Ctrl + Up/Down Arrow"/>
+        </TextBlock>
+        <TextBlock Grid.Row="21" Grid.Column="1">
+            <l:Catalog Message="Move build up and down"/>
+        </TextBlock>
+        
+        <Label Grid.Row="22" Grid.Column="0" Grid.ColumnSpan="2"
+               FontSize="{DynamicResource MahApps.Font.Size.Dialog.Message}">
+            <l:Catalog Message="Build summary"/>
+        </Label>
+        <TextBlock Grid.Row="23" Grid.Column="0">
             <l:Catalog Message="Right Click"/>
         </TextBlock>
-        <TextBlock Grid.Row="23" Grid.Column="1" Background="{DynamicResource MahApps.Brushes.Accent}">
-            <l:Catalog Message="(Skill tree) Center Skill tree and reset zoom"/></TextBlock>
-        <TextBlock Grid.Row="24" Grid.Column="0">
-            <l:Catalog Message="Right Click"/>
-        </TextBlock>
-        <TextBlock Grid.Row="24" Grid.Column="1">
-            <l:Catalog Message="(Attributes) Highlight corresponding nodes in Skill tree"/>
-        </TextBlock>
-        <TextBlock Grid.Row="25" Grid.Column="0" Background="{DynamicResource MahApps.Brushes.Accent}">
-            <l:Catalog Message="Right Click"/>
-        </TextBlock>
-        <TextBlock Grid.Row="25" Grid.Column="1" Background="{DynamicResource MahApps.Brushes.Accent}">
-            <l:Catalog Message="(Skill node) Toggle skill node highlighting"/>
-        </TextBlock>
-        <TextBlock Grid.Row="26" Grid.Column="0">
-            <l:Catalog Message="Shift + Right Click"/>
-        </TextBlock>
-        <TextBlock Grid.Row="26" Grid.Column="1">
-            <l:Catalog Message="(Skill node) Toggle skill node highlighting (reversed)"/>
-        </TextBlock>
-        <TextBlock Grid.Row="27" Grid.Column="0" Background="{DynamicResource MahApps.Brushes.Accent}">
-            <l:Catalog Message="Shift + Hover"/>
-        </TextBlock>
-        <TextBlock Grid.Row="27" Grid.Column="1" Background="{DynamicResource MahApps.Brushes.Accent}">
-            <l:Catalog Message="(Skill node) Highlight similar skill nodes"/>
+        <TextBlock Grid.Row="23" Grid.Column="1">
+            <l:Catalog Message="Highlight corresponding nodes in passive tree"/>
         </TextBlock>
     </Grid>
 </dialogs:CloseableBaseDialog>
