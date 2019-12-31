@@ -41,8 +41,8 @@
         <TextBlock Grid.Row="1" Grid.Column="1" Margin="0,0,0,10">
             <l:Catalog Message="See the GitHub page for new versions and source code:"/>
             <LineBreak/>
-            <Hyperlink NavigateUri="https://github.com/EmmittJ/PoESkillTree">
-                https://github.com/EmmittJ/PoESkillTree
+            <Hyperlink NavigateUri="https://github.com/PoESkillTree/PoESkillTree">
+                https://github.com/PoESkillTree/PoESkillTree
             </Hyperlink>
         </TextBlock>
         <Separator Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom"/>
@@ -63,7 +63,10 @@
             Ttxman<LineBreak/>
             yazilliclick<LineBreak/>
             MauranKilom<LineBreak/>
-            brather1ng
+            brather1ng<LineBreak/>
+            <Hyperlink NavigateUri="https://github.com/PoESkillTree/PoESkillTree/graphs/contributors">
+                and 15+ more
+            </Hyperlink><LineBreak/>
         </TextBlock>
         <Separator Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom"/>
         
@@ -71,11 +74,23 @@
             <l:Catalog Message="Legal"/>
         </Label>
         <TextBlock Grid.Row="3" Grid.Column="1" TextWrapping="Wrap">
-            <l:Catalog Message="Skill tree assets, item images and game data belong to"/> <Bold>Grinding Gear Games</Bold>.<LineBreak/>
-            <l:Catalog Message="Information about base item types and unique items and their images are retrieved from"/>
+            <l:Catalog Message="Skill tree assets, item images and game data belong to" /> <Bold>Grinding Gear Games</Bold>.<LineBreak/>
+            <l:Catalog Message="Unique item data and item images are retrieved from" />
             <Hyperlink NavigateUri="http://pathofexile.gamepedia.com/Path_of_Exile_Wiki:Copyrights">
                 Path of Exile Wiki
             </Hyperlink>.<LineBreak/>
+            <l:Catalog Message="Other game data is retrieved using" />
+            <Hyperlink NavigateUri="https://github.com/OmegaK2/PyPoE">
+                PyPoE
+            </Hyperlink>
+            and
+            <Hyperlink NavigateUri="https://github.com/brather1ng/RePoE">
+                RePoE
+            </Hyperlink>.<LineBreak/>
+            <l:Catalog Message="The build calculation engine used in PoESkillTree is located in a separate repository:"/>
+            <Hyperlink NavigateUri="https://github.com/PoESkillTree/PoESkillTree.Engine">
+                https://github.com/PoESkillTree/PoESkillTree.Engine
+            </Hyperlink>
         </TextBlock>
     </Grid>
 </dialogs:CloseableBaseDialog>
