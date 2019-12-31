@@ -13,24 +13,30 @@
     <dialogs:CloseableBaseDialog.Resources>
         <Style x:Key="DocumentStyle" TargetType="FlowDocument">
             <Setter Property="TextAlignment" Value="Left" />
+            <Setter Property="FontSize" Value="{StaticResource MahApps.Font.Size.Content}" />
+            <Setter Property="FontFamily" Value="{StaticResource MahApps.Fonts.Family.Control}" />
+            <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Text}" />
         </Style>
 
         <Style x:Key="Heading1Style" TargetType="Paragraph">
-            <Setter Property="FontSize" Value="36" />
-            <Setter Property="Foreground" Value="#ffcc8888" />
-            <Setter Property="FontWeight" Value="Light" />
+            <Setter Property="FontSize" Value="{StaticResource MahApps.Font.Size.SubHeader}" />
+            <Setter Property="FontFamily" Value="{StaticResource MahApps.Fonts.Family.Header}" />
+            <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Label.Text}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
         </Style>
 
         <Style x:Key="Heading2Style" TargetType="Paragraph">
-            <Setter Property="FontSize" Value="20" />
-            <Setter Property="Foreground" Value="#ff88cc88" />
-            <Setter Property="FontWeight" Value="Light" />
+            <Setter Property="FontSize" Value="{StaticResource MahApps.Font.Size.Dialog.Message}" />
+            <Setter Property="FontFamily" Value="{StaticResource MahApps.Fonts.Family.Header}" />
+            <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Label.Text}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
         </Style>
 
         <Style x:Key="Heading3Style" TargetType="Paragraph">
-            <Setter Property="FontSize" Value="20" />
-            <Setter Property="Foreground" Value="#ff8888cc" />
-            <Setter Property="FontWeight" Value="Light" />
+            <Setter Property="FontSize" Value="{StaticResource MahApps.Font.Size.Default}" />
+            <Setter Property="FontFamily" Value="{StaticResource MahApps.Fonts.Family.Header}" />
+            <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Label.Text}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
         </Style>
 
         <md:Markdown x:Key="Markdown"
@@ -40,7 +46,7 @@
                      Heading3Style="{StaticResource Heading3Style}"/>
         <md:TextToFlowDocumentConverter x:Key="TextToFlowDocumentConverter" Markdown="{StaticResource Markdown}"/>
     </dialogs:CloseableBaseDialog.Resources>
-    <FlowDocumentScrollViewer Zoom="80" Document="{Binding Document, ElementName=Window, Converter={StaticResource TextToFlowDocumentConverter}}"
+    <FlowDocumentScrollViewer Document="{Binding Document, ElementName=Window, Converter={StaticResource TextToFlowDocumentConverter}}"
                               wpf:Helper.MainWindowRelativeMaxHeight="300"/>
 </dialogs:CloseableBaseDialog>
 

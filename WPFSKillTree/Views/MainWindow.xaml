@@ -232,10 +232,10 @@
                                          TextChanged="tbSkillURL_TextChanged"
                                          controls:TextBoxHelper.SelectAllOnFocus="True">
                                     <TextBox.ToolTip>
-                                        <l:Catalog Message="Skill tree link"/>
+                                        <l:Catalog Message="Passive tree link"/>
                                     </TextBox.ToolTip>
                                     <controls:TextBoxHelper.Watermark>
-                                        <l:Catalog Message="Skill tree link"/>
+                                        <l:Catalog Message="Passive tree link"/>
                                     </controls:TextBoxHelper.Watermark>
                                     <TextBox.InputBindings>
                                         <KeyBinding Key="Enter"

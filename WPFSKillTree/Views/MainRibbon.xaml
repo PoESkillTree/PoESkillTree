@@ -19,7 +19,7 @@
                TargetType="iconPacks:PackIconBase">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.IdealForeground}" />
+            <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Black}" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Size, RelativeSource={RelativeSource AncestorType=fluent:IRibbonControl}}"
                              Value="Large">
