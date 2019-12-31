@@ -14,7 +14,7 @@ namespace PoESkillTree.ViewModels
         {
             var attr = value as Attribute;
             if (attr == null)
-                throw new NotSupportedException();
+                return new TextBlock();
 
             var tb = new TextBlock { TextWrapping = TextWrapping.Wrap };
             var txt = new Run(attr.Text);

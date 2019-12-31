@@ -412,9 +412,8 @@ namespace PoESkillTree.SkillTreeFiles
                     }
                 }
 
-                const int padding = 500; //This is to account for jewel range circles. Might need to find a better way to do it.
-                SkillTreeRect = new Rect2D(new Vector2D(PoESkillTree.min_x * 1.1 - padding, PoESkillTree.min_y * 1.1 - padding),
-                    new Vector2D(PoESkillTree.max_x * 1.1 + padding, PoESkillTree.max_y * 1.1 + padding));
+                SkillTreeRect = new Rect2D(new Vector2D(PoESkillTree.min_x * 1.1, PoESkillTree.min_y * 1.1),
+                    new Vector2D(PoESkillTree.max_x * 1.1, PoESkillTree.max_y * 1.1));
             }
 
             if (_persistentData.Options.ShowAllAscendancyClasses)

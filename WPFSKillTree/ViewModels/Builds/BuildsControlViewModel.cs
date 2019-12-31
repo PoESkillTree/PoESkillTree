@@ -233,13 +233,11 @@ namespace PoESkillTree.ViewModels.Builds
             PersistentData.PropertyChanged += PersistentDataOnPropertyChanged;
             PersistentData.Options.PropertyChanged += OptionsOnPropertyChanged;
 
-            NewFolderCommand = new AsyncRelayCommand<IBuildFolderViewModel>(
-                NewFolder,
-                vm => vm != null && _buildValidator.CanHaveSubfolder(vm));
-            NewBuildCommand = new RelayCommand<IBuildFolderViewModel>(NewBuild);
+            NewFolderCommand = new AsyncRelayCommand<IBuildViewModel>(NewFolder, CanCreateNewFolder);
+            NewBuildCommand = new RelayCommand<IBuildViewModel>(NewBuild);
             DeleteCommand = new AsyncRelayCommand<IBuildViewModel>(
                 Delete,
-                o => o != BuildRoot);
+                o => o != BuildRoot && o != CurrentBuild);
             OpenBuildCommand = new AsyncRelayCommand<BuildViewModel>(
                 OpenBuild,
                 b => b != null && (b != CurrentBuild || b.Build.IsDirty));
@@ -365,8 +363,9 @@ namespace PoESkillTree.ViewModels.Builds
 
         #region Command methods
 
-        private async Task NewFolder(IBuildFolderViewModel folder)
+        private async Task NewFolder(IBuildViewModel relatedBuild)
         {
+            var folder = relatedBuild as IBuildFolderViewModel ?? relatedBuild.Parent!;
             var name = await _dialogCoordinator.ShowValidatingInputDialogAsync(this,
                 L10n.Message("New Folder"),
                 L10n.Message("Enter the name of the new folder."),
@@ -379,8 +378,17 @@ namespace PoESkillTree.ViewModels.Builds
             await SaveBuildToFile(newFolder);
         }
 
-        public void NewBuild(IBuildFolderViewModel folder)
+        private bool CanCreateNewFolder(IBuildViewModel? relatedBuild)
         {
+            if (relatedBuild is null)
+                return false;
+            var folder = relatedBuild as IBuildFolderViewModel ?? relatedBuild.Parent;
+            return folder != null && _buildValidator.CanHaveSubfolder(folder);
+        }
+
+        public void NewBuild(IBuildViewModel relatedBuild)
+        {
+            var folder = relatedBuild as IBuildFolderViewModel ?? relatedBuild.Parent!;
             var name = Util.FindDistinctName(SerializationConstants.DefaultBuildName,
                 folder.Children.Select(b => b.Build.Name));
             var build = new BuildViewModel(new PoEBuild { Name = name }, Filter);

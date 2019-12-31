@@ -31,25 +31,9 @@
         </Label>
         <TextBox Margin="4,2,4,4" TextWrapping="Wrap"
                  VerticalScrollBarVisibility="Auto" AcceptsReturn="True" AcceptsTab="True"
+                 MinHeight="55"
                  wpf:Helper.MainWindowRelativeMaxHeight="500"
                  Text="{Binding Note}"/>
-        <GroupBox Margin="4">
-            <GroupBox.Header>
-                <l:Catalog Message="Character Information"/>
-            </GroupBox.Header>
-            <StackPanel Margin="0">
-                <Label Margin="4,4,4,2">
-                    <l:Catalog Message="Character name"/>
-                </Label>
-                <TextBox Height="23" Margin="4,2,4,4" MaxLength="24"
-                         Text="{Binding CharacterName}"/>
-                <Label Margin="4,4,4,2">
-                    <l:Catalog Message="Account name"/>
-                </Label>
-                <TextBox Height="23" Margin="4,2,4,4" MaxLength="31"
-                         Text="{Binding AccountName}"/>
-            </StackPanel>
-        </GroupBox>
         <Label Content="{Binding LastUpdated, Converter={StaticResource LastUpdatedStringConverter}}" />
 
         <StackPanel Style="{StaticResource DialogPanel}">

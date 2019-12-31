@@ -27,7 +27,7 @@ namespace PoESkillTree.ViewModels
             _dialogCoordinator = dialogCoordinator;
             _buildsControlViewModel = buildsControlViewModel;
             Options = persistentData.Options;
-            DisplayName = L10n.Message("Settings");
+            DisplayName = L10n.Message("Options");
             ChangeBuildsSavePathCommand = new AsyncRelayCommand(ChangeBuildsSavePath);
 
             Options.PropertyChanged += OptionsOnPropertyChanged;

@@ -18,11 +18,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using EnumsNET;
-using MahApps.Metro;
+using Fluent;
 using MahApps.Metro.Controls;
 using NLog;
-using PoESkillTree.Utils;
 using PoESkillTree.Common.ViewModels;
+using PoESkillTree.Utils;
 using PoESkillTree.Computation;
 using PoESkillTree.Computation.ViewModels;
 using PoESkillTree.Computation.Views;
@@ -47,14 +47,18 @@ using PoESkillTree.ViewModels.Import;
 using PoESkillTree.Views.Crafting;
 using PoESkillTree.Views.Import;
 using Attribute = PoESkillTree.ViewModels.Attribute;
+using ContextMenu = System.Windows.Controls.ContextMenu;
 using Item = PoESkillTree.Model.Items.Item;
+using MenuItem = System.Windows.Controls.MenuItem;
+using OnThemeChangedEventArgs = MahApps.Metro.OnThemeChangedEventArgs;
+using ThemeManager = MahApps.Metro.ThemeManager;
 
 namespace PoESkillTree.Views
 {
     /// <summary>
     ///     Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : INotifyPropertyChanged
+    public partial class MainWindow : INotifyPropertyChanged, IRibbonWindow
     {
         private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
@@ -214,8 +218,6 @@ namespace PoESkillTree.Views
             private set => SetProperty(ref _treeGeneratorInteraction, value);
         }
 
-        public string MainWindowTitle { get; } = AppData.ProductName;
-
         /// <summary>
         /// Set to true when CurrentBuild.TreeUrl was set after direct SkillTree changes so the SkillTree
         /// doesn't need to be reloaded.
@@ -234,11 +236,26 @@ namespace PoESkillTree.Views
             set => SetProperty(ref _inputTreeUrl, value);
         }
 
+        public ICommand UndoTreeUrlChangeCommand { get; }
+        public ICommand RedoTreeUrlChangeCommand { get; }
+
+        public static readonly DependencyProperty TitleBarProperty = DependencyProperty.Register(
+            "TitleBar", typeof(RibbonTitleBar), typeof(MainWindow), new PropertyMetadata(default(RibbonTitleBar)));
+
+        public RibbonTitleBar TitleBar
+        {
+            get => (RibbonTitleBar) GetValue(TitleBarProperty);
+            private set => SetValue(TitleBarProperty, value);
+        }
+
 #pragma warning disable CS8618 // Initialized in Window_Loaded
         public MainWindow()
 #pragma warning restore
         {
             InitializeComponent();
+
+            UndoTreeUrlChangeCommand = new RelayCommand(UndoTreeUrlChange, CanUndoTreeUrlChange);
+            RedoTreeUrlChangeCommand = new RelayCommand(RedoTreeUrlChange, CanRedoTreeUrlChange);
         }
 
         private void SetProperty<T>(
@@ -507,6 +524,10 @@ namespace PoESkillTree.Views
 
         private void InitializeIndependentUI()
         {
+            TitleBar = this.FindChild<RibbonTitleBar>("RibbonTitleBar");
+            TitleBar.InvalidateArrange();
+            TitleBar.UpdateLayout();
+
             var cmHighlight = new MenuItem
             {
                 Header = L10n.Message("Highlight nodes by attribute")
@@ -558,9 +579,7 @@ namespace PoESkillTree.Views
             RegisterPersistentDataHandlers();
             StashViewModel.Initialize(_dialogCoordinator, PersistentData);
             _importViewModels = new ImportViewModels(_dialogCoordinator, PersistentData, StashViewModel);
-            // Set theme & accent.
-            SetTheme(PersistentData.Options.Theme);
-            SetAccent(PersistentData.Options.Accent);
+            InitializeTheme();
         }
 
         private void InitializeTreeDependentUI()
@@ -641,6 +660,10 @@ namespace PoESkillTree.Views
                 case nameof(Options.TreeComparisonEnabled):
                     UpdateTreeComparison();
                     break;
+                case nameof(Options.Theme):
+                case nameof(Options.Accent):
+                    SetTheme();
+                    break;
             }
             SearchUpdate();
         }
@@ -657,7 +680,7 @@ namespace PoESkillTree.Views
             }
         }
 
-        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        private async void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (Keyboard.Modifiers == ModifierKeys.Control)
             {
@@ -670,10 +693,10 @@ namespace PoESkillTree.Views
                         ToggleBuilds();
                         break;
                     case Key.R:
-                        btnReset_Click(sender, e);
+                        ResetTree();
                         break;
                     case Key.E:
-                        btnPoeUrl_Click(sender, e);
+                        await DownloadPoeUrlAsync();
                         break;
                     case Key.D1:
                         _userInteraction = true;
@@ -719,10 +742,10 @@ namespace PoESkillTree.Views
                         zbSkillTreeBackground.ZoomOut(Mouse.PrimaryDevice);
                         break;
                     case Key.Z:
-                        tbSkillURL_Undo();
+                        UndoTreeUrlChange();
                         break;
                     case Key.Y:
-                        tbSkillURL_Redo();
+                        RedoTreeUrlChange();
                         break;
                     case Key.G:
                         ToggleShowSummary();
@@ -816,31 +839,7 @@ namespace PoESkillTree.Views
 
         #region Menu
 
-        private async void Menu_UntagAllNodes(object sender, RoutedEventArgs e)
-        {
-            var response = await this.ShowQuestionAsync(L10n.Message("Are you sure?"),
-                title: L10n.Message("Untag All Skill Nodes"), image: MessageBoxImage.None);
-            if (response == MessageBoxResult.Yes)
-                Tree.UntagAllNodes();
-        }
-
-        private void Menu_UnhighlightAllNodes(object sender, RoutedEventArgs e)
-        {
-            Tree.UnhighlightAllNodes();
-            ClearSearch();
-        }
-
-        private void Menu_CheckAllHighlightedNodes(object sender, RoutedEventArgs e)
-        {
-            Tree.CheckAllHighlightedNodes();
-        }
-
-        private void Menu_CrossAllHighlightedNodes(object sender, RoutedEventArgs e)
-        {
-            Tree.CrossAllHighlightedNodes();
-        }
-
-        private async void Menu_ScreenShot(object sender, RoutedEventArgs e)
+        public async Task ScreenShotAsync()
         {
             const int maxsize = 3000;
             Rect2D contentBounds = Tree.ActivePaths.ContentBounds;
@@ -930,36 +929,19 @@ namespace PoESkillTree.Views
             }
         }
 
-        private async void Menu_ImportCharacter(object sender, RoutedEventArgs e)
+        public async Task ImportCharacterAsync()
         {
             await this.ShowDialogAsync(_importViewModels.ImportCharacter(ItemAttributes, Tree), new ImportCharacterWindow());
             UpdateUI();
             SetCurrentBuildUrlFromTree();
         }
 
-        private async void Menu_ImportStash(object sender, RoutedEventArgs e)
+        public async Task ImportStashAsync()
         {
             await this.ShowDialogAsync(_importViewModels.ImportStash, new ImportStashWindow());
         }
 
-        private async void Menu_CopyStats(object sender, RoutedEventArgs e)
-        {
-            var sb = new StringBuilder();
-            foreach (var at in _attiblist)
-            {
-                sb.AppendLine(at.ToString());
-            }
-            try
-            {
-                Clipboard.SetText(sb.ToString());
-            }
-            catch (Exception ex)
-            {
-                await this.ShowErrorAsync(L10n.Message("An error occurred while copying to Clipboard."), ex.Message);
-            }
-        }
-
-        private async void Menu_RedownloadTreeAssets(object sender, RoutedEventArgs e)
+        public async Task RedownloadTreeAssetsAsync()
         {
             var sMessageBoxText = L10n.Message("The existing skill tree data will be deleted. The data will " +
                                                "be downloaded from the official online skill tree and " +
@@ -1002,45 +984,7 @@ namespace PoESkillTree.Views
             }
         }
 
-        private void Menu_Exit(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
-
-        private void Menu_OpenPoEWebsite(object sender, RoutedEventArgs e)
-        {
-            Util.OpenInBrowser("https://www.pathofexile.com/");
-        }
-
-        private void Menu_OpenWiki(object sender, RoutedEventArgs e)
-        {
-            Util.OpenInBrowser("http://pathofexile.gamepedia.com/");
-        }
-
-        private async void Menu_OpenHelp(object sender, RoutedEventArgs e)
-        {
-            await this.ShowDialogAsync(new CloseableViewModel(), new HelpWindow());
-        }
-
-        private async void Menu_OpenSettings(object sender, RoutedEventArgs e)
-        {
-            await this.ShowDialogAsync(
-                new SettingsMenuViewModel(PersistentData, DialogCoordinator.Instance, BuildsControlViewModel),
-                new SettingsMenuWindow());
-        }
-
-        private async void Menu_OpenHotkeys(object sender, RoutedEventArgs e)
-        {
-            await this.ShowDialogAsync(new CloseableViewModel(), new HotkeysWindow());
-        }
-
-        private async void Menu_OpenAbout(object sender, RoutedEventArgs e)
-        {
-            await this.ShowDialogAsync(new CloseableViewModel(), new AboutWindow());
-        }
-
-        // Checks for updates.
-        private async void Menu_CheckForUpdates(object sender, RoutedEventArgs e)
+        public async Task CheckForUpdatesAsync()
         {
             try
             {
@@ -1197,7 +1141,7 @@ namespace PoESkillTree.Views
             UpdateUI();
         }
 
-        private void btnReset_Click(object sender, RoutedEventArgs e)
+        public void ResetTree()
         {
             if (Tree == null)
                 return;
@@ -1265,10 +1209,10 @@ namespace PoESkillTree.Views
         public void UpdatePoints()
         {
             var points = Tree.GetPointCount();
-            NormalUsedPoints.Content = points["NormalUsed"].ToString();
-            NormalTotalPoints.Content = points["NormalTotal"].ToString();
-            AscendancyUsedPoints.Content = "[" + points["AscendancyUsed"].ToString() + "]";
-            AscendancyTotalPoints.Content = "[" + points["AscendancyTotal"].ToString() + "]";
+            NormalUsedPoints.Text = points["NormalUsed"].ToString();
+            NormalTotalPoints.Text = points["NormalTotal"].ToString();
+            AscendancyUsedPoints.Text = points["AscendancyUsed"].ToString();
+            AscendancyTotalPoints.Text = points["AscendancyTotal"].ToString();
         }
 
         private string InsertNumbersInAttributes(KeyValuePair<string, List<float>> attrib)
@@ -1332,11 +1276,6 @@ namespace PoESkillTree.Views
             Tree.HighlightNodesBySearch("", true, NodeHighlighter.HighlightState.FromAttrib);
         }
 
-        private void expAttributes_MouseLeave(object sender, MouseEventArgs e)
-        {
-            SearchUpdate();
-        }
-
         private void ToggleBuilds()
         {
             PersistentData.Options.BuildsBarOpened = !PersistentData.Options.BuildsBarOpened;
@@ -1357,14 +1296,6 @@ namespace PoESkillTree.Views
             if (cbAttributesFilterRegEx.IsChecked == true && !RegexTools.IsValidRegex(tbAttributesFilter.Text)) return;
             UpdateAttributeList();
             RefreshAttributeLists();
-        }
-
-        private void tabControl1_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (tabItem1.IsSelected)
-                gAttributesFilter.Visibility = Visibility.Visible;
-            else
-                gAttributesFilter.Visibility = Visibility.Collapsed;
         }
 
 #endregion
@@ -1764,8 +1695,7 @@ namespace PoESkillTree.Views
                     if (_undoList.Count > 1)
                     {
                         var holder = _undoList.Pop();
-                        while (_undoList.Count != 0)
-                            _undoList.Pop();
+                        _undoList.Clear();
                         _undoList.Push(holder);
                     }
                 }
@@ -1857,7 +1787,7 @@ namespace PoESkillTree.Views
             Tree.HighlightNodesBySearch(tbSearch.Text, cbRegEx.IsChecked != null && cbRegEx.IsChecked.Value, NodeHighlighter.HighlightState.FromSearch);
         }
 
-        private void ClearSearch()
+        public void ClearSearch()
         {
             tbSearch.Text = "";
             SearchUpdate();
@@ -1868,18 +1798,16 @@ namespace PoESkillTree.Views
             _undoList.Push(PersistentData.CurrentBuild.TreeUrl);
         }
 
-        private void tbSkillURL_Undo_Click(object sender, RoutedEventArgs e)
-        {
-            tbSkillURL_Undo();
-        }
+        private bool CanUndoTreeUrlChange() =>
+            _undoList.Any(s => s != PersistentData.CurrentBuild.TreeUrl);
 
-        private void tbSkillURL_Undo()
+        private void UndoTreeUrlChange()
         {
             if (_undoList.Count <= 0) return;
             if (_undoList.Peek() == PersistentData.CurrentBuild.TreeUrl && _undoList.Count > 1)
             {
                 _undoList.Pop();
-                tbSkillURL_Undo();
+                UndoTreeUrlChange();
             }
             else if (_undoList.Peek() != PersistentData.CurrentBuild.TreeUrl)
             {
@@ -1889,18 +1817,16 @@ namespace PoESkillTree.Views
             }
         }
 
-        private void tbSkillURL_Redo_Click(object sender, RoutedEventArgs e)
-        {
-            tbSkillURL_Redo();
-        }
+        private bool CanRedoTreeUrlChange() =>
+            _redoList.Any(s => s != PersistentData.CurrentBuild.TreeUrl);
 
-        private void tbSkillURL_Redo()
+        private void RedoTreeUrlChange()
         {
             if (_redoList.Count <= 0) return;
             if (_redoList.Peek() == PersistentData.CurrentBuild.TreeUrl && _redoList.Count > 1)
             {
                 _redoList.Pop();
-                tbSkillURL_Redo();
+                RedoTreeUrlChange();
             }
             else if (_redoList.Peek() != PersistentData.CurrentBuild.TreeUrl)
             {
@@ -1909,12 +1835,7 @@ namespace PoESkillTree.Views
             }
         }
 
-        private async void btnPoeUrl_Click(object sender, RoutedEventArgs e)
-        {
-            await DownloadPoeUrlAsync();
-        }
-
-        private async Task DownloadPoeUrlAsync()
+        public async Task DownloadPoeUrlAsync()
         {
             var regx =
                 new Regex(
@@ -1964,34 +1885,22 @@ namespace PoESkillTree.Views
 
 #region Theme
 
-        private void mnuSetTheme_Click(object? sender, RoutedEventArgs e)
+        private void InitializeTheme()
         {
-            var menuItem = sender as MenuItem;
-            if (menuItem == null) return;
-
-            SetTheme((string) menuItem.Tag);
+            SetTheme();
+            SyncThemeManagers(null, null);
+            ThemeManager.IsThemeChanged += SyncThemeManagers;
         }
 
-        private void SetTheme(string sTheme)
+        private void SetTheme()
         {
-            ThemeManager.ChangeTheme(Application.Current, sTheme, PersistentData.Options.Accent);
-            ((MenuItem)NameScope.GetNameScope(this).FindName("mnuViewTheme" + sTheme)).IsChecked = true;
-            PersistentData.Options.Theme = sTheme;
+            ThemeManager.ChangeTheme(Application.Current, PersistentData.Options.Theme, PersistentData.Options.Accent);
         }
 
-        private void mnuSetAccent_Click(object? sender, RoutedEventArgs e)
+        private void SyncThemeManagers(object? sender, OnThemeChangedEventArgs? args)
         {
-            var menuItem = sender as MenuItem;
-            if (menuItem == null) return;
-
-            SetAccent((string) menuItem.Tag);
-        }
-
-        private void SetAccent(string sAccent)
-        {
-            ThemeManager.ChangeTheme(Application.Current, PersistentData.Options.Theme, sAccent);
-            ((MenuItem)NameScope.GetNameScope(this).FindName("mnuViewAccent" + sAccent)).IsChecked = true;
-            PersistentData.Options.Accent = sAccent;
+            var mahAppsTheme = args?.Theme ?? ThemeManager.DetectTheme();
+            Fluent.ThemeManager.ChangeTheme(this, mahAppsTheme.Name);
         }
 #endregion
 
@@ -2017,12 +1926,12 @@ namespace PoESkillTree.Views
             UpdateUI();
         }
 
-        private async void Button_Craft_Click(object sender, RoutedEventArgs e)
+        public async Task CraftItemAsync()
         {
             await CraftItemAsync(new CraftingViewModel(PersistentData.EquipmentData), new CraftingView());
         }
 
-        private async void Button_CraftUnique_Click(object sender, RoutedEventArgs e)
+        public async Task CraftUniqueAsync()
         {
             await CraftItemAsync(new UniqueCraftingViewModel(PersistentData.EquipmentData), new UniqueCraftingView());
         }
@@ -2066,19 +1975,6 @@ namespace PoESkillTree.Views
             try
             {
                 return await task;
-            }
-            finally
-            {
-                AsyncTaskCompleted();
-            }
-        }
-
-        private async Task AwaitAsyncTask(string infoText, Task task)
-        {
-            AsyncTaskStarted(infoText);
-            try
-            {
-                await task;
             }
             finally
             {

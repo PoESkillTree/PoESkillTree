@@ -69,13 +69,10 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <DockPanel Grid.Row="0">
-            <controls1:SearchableComboBox Width="110" Margin="5 0"
+            <controls1:SearchableComboBox Width="110" Margin="1 0 0 0"
                                           SelectedItem="{Binding ClassFilter}"
                                           SelectedIndex="0"
                                           ItemsSource="{Binding ClassFilterItems}"
@@ -85,7 +82,8 @@
             <TextBox VerticalContentAlignment="Center"
                      controls:TextBoxHelper.ClearTextButton="True"
                      controls:TextBoxHelper.SelectAllOnFocus="True"
-                     Text="{Binding TextFilter, UpdateSourceTrigger=PropertyChanged}">
+                     Text="{Binding TextFilter, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="4 0 1 0">
                 <controls:TextBoxHelper.Watermark><l:Catalog>Filter</l:Catalog></controls:TextBoxHelper.Watermark>
             </TextBox>
         </DockPanel>
@@ -95,7 +93,8 @@
                   dd:DragDrop.IsDropTarget="True"
                   dd:DragDrop.DropHandler="{Binding DropHandler}"
                   Grid.Row="1"
-                  x:Name="TreeView">
+                  x:Name="TreeView"
+                  Margin="0 3 0 0">
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type viewModels:BuildFolderViewModel}"
                                           ItemsSource="{Binding Children}">
@@ -114,53 +113,53 @@
                         </iconPacks:PackIconModern>
                         <TextBlock Text="{Binding Build.Name}"
                                    FontWeight="Bold"
-                                   VerticalAlignment="Center">
-                            <TextBlock.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Command="{Binding Data.EditCommand, Source={StaticResource VmProxy}}"
-                                              CommandParameter="{Binding}">
-                                        <MenuItem.Header>
-                                            <l:Catalog Message="Edit" />
-                                        </MenuItem.Header>
-                                    </MenuItem>
-                                    <MenuItem Command="{Binding Data.DeleteCommand, Source={StaticResource VmProxy}}"
-                                              CommandParameter="{Binding}"
-                                              InputGestureText="Delete">
-                                        <MenuItem.Header>
-                                            <l:Catalog Message="Delete" />
-                                        </MenuItem.Header>
-                                    </MenuItem>
-                                    <Separator />
-                                    <MenuItem Command="{Binding Data.CutCommand, Source={StaticResource VmProxy}}"
-                                              CommandParameter="{Binding}"
-                                              InputGestureText="Ctrl+X">
-                                        <MenuItem.Header>
-                                            <l:Catalog Message="Cut" />
-                                        </MenuItem.Header>
-                                    </MenuItem>
-                                    <MenuItem Command="{Binding Data.PasteCommand, Source={StaticResource VmProxy}}"
-                                              CommandParameter="{Binding}"
-                                              InputGestureText="Ctrl+V">
-                                        <MenuItem.Header>
-                                            <l:Catalog Message="Paste" />
-                                        </MenuItem.Header>
-                                    </MenuItem>
-                                    <Separator />
-                                    <MenuItem Command="{Binding Data.NewBuildCommand, Source={StaticResource VmProxy}}"
-                                              CommandParameter="{Binding}">
-                                        <MenuItem.Header>
-                                            <l:Catalog Message="New Build" />
-                                        </MenuItem.Header>
-                                    </MenuItem>
-                                    <MenuItem Command="{Binding Data.NewFolderCommand, Source={StaticResource VmProxy}}"
-                                              CommandParameter="{Binding}">
-                                        <MenuItem.Header>
-                                            <l:Catalog Message="New Folder" />
-                                        </MenuItem.Header>
-                                    </MenuItem>
-                                </ContextMenu>
-                            </TextBlock.ContextMenu>
-                        </TextBlock>
+                                   VerticalAlignment="Center"/>
+                        <StackPanel.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Command="{Binding Data.EditCommand, Source={StaticResource VmProxy}}"
+                                          CommandParameter="{Binding}"
+                                          InputGestureText="F2">
+                                    <MenuItem.Header>
+                                        <l:Catalog Message="Edit" />
+                                    </MenuItem.Header>
+                                </MenuItem>
+                                <MenuItem Command="{Binding Data.DeleteCommand, Source={StaticResource VmProxy}}"
+                                          CommandParameter="{Binding}"
+                                          InputGestureText="Delete">
+                                    <MenuItem.Header>
+                                        <l:Catalog Message="Delete" />
+                                    </MenuItem.Header>
+                                </MenuItem>
+                                <Separator />
+                                <MenuItem Command="{Binding Data.CutCommand, Source={StaticResource VmProxy}}"
+                                          CommandParameter="{Binding}"
+                                          InputGestureText="Ctrl+X">
+                                    <MenuItem.Header>
+                                        <l:Catalog Message="Cut" />
+                                    </MenuItem.Header>
+                                </MenuItem>
+                                <MenuItem Command="{Binding Data.PasteCommand, Source={StaticResource VmProxy}}"
+                                          CommandParameter="{Binding}"
+                                          InputGestureText="Ctrl+V">
+                                    <MenuItem.Header>
+                                        <l:Catalog Message="Paste" />
+                                    </MenuItem.Header>
+                                </MenuItem>
+                                <Separator />
+                                <MenuItem Command="{Binding Data.NewBuildCommand, Source={StaticResource VmProxy}}"
+                                          CommandParameter="{Binding}">
+                                    <MenuItem.Header>
+                                        <l:Catalog Message="New Build" />
+                                    </MenuItem.Header>
+                                </MenuItem>
+                                <MenuItem Command="{Binding Data.NewFolderCommand, Source={StaticResource VmProxy}}"
+                                          CommandParameter="{Binding}">
+                                    <MenuItem.Header>
+                                        <l:Catalog Message="New Folder" />
+                                    </MenuItem.Header>
+                                </MenuItem>
+                            </ContextMenu>
+                        </StackPanel.ContextMenu>
                     </StackPanel>
                 </HierarchicalDataTemplate>
                 <DataTemplate DataType="{x:Type viewModels:BuildViewModel}">
@@ -195,7 +194,8 @@
                                     </MenuItem.Header>
                                 </MenuItem>
                                 <MenuItem Command="{Binding Data.EditCommand, Source={StaticResource VmProxy}}"
-                                          CommandParameter="{Binding}">
+                                          CommandParameter="{Binding}"
+                                          InputGestureText="F2">
                                     <MenuItem.Header>
                                         <l:Catalog Message="Edit" />
                                     </MenuItem.Header>
@@ -286,6 +286,9 @@
                 <KeyBinding Key="Enter"
                             Command="{Binding OpenBuildCommand}"
                             CommandParameter="{Binding SelectedBuild}"/>
+                <KeyBinding Key="F2"
+                            Command="{Binding EditCommand}"
+                            CommandParameter="{Binding SelectedBuild}"/>
                 <KeyBinding Key="Delete"
                             Command="{Binding DeleteCommand}"
                             CommandParameter="{Binding SelectedBuild}"/>
@@ -312,57 +315,5 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </TreeView>
-
-        <controls:ToggleSwitch Grid.Row="2" Margin="0 0 5 0"
-                               IsChecked="{Binding PersistentData.Options.TreeComparisonEnabled}"
-                               ContentDirection="RightToLeft"
-                               HorizontalContentAlignment="Left">
-            <controls:ToggleSwitch.OnLabel>
-                <l:Catalog Message="Skill Tree comparison enabled" />
-            </controls:ToggleSwitch.OnLabel>
-            <controls:ToggleSwitch.OffLabel>
-                <l:Catalog Message="Skill Tree comparison disabled" />
-            </controls:ToggleSwitch.OffLabel>
-        </controls:ToggleSwitch>
-        
-        <UniformGrid Grid.Row="3" Rows="1" Margin="5 0">
-            <Button Command="{Binding SaveBuildCommand}"
-                    CommandParameter="{Binding CurrentBuild}"
-                    Margin="0 0 5 0" Height="30" MinWidth="55"
-                    ToolTipService.ShowOnDisabled="True">
-                <l:Catalog Message="Save" />
-                <Button.ToolTip>
-                    <l:Catalog Message="Saves the currently opened build" />
-                </Button.ToolTip>
-            </Button>
-            <Button Command="{Binding SaveBuildAsCommand}"
-                    CommandParameter="{Binding CurrentBuild}"
-                    Margin="0 0 5 0" Height="30" MinWidth="55"
-                    ToolTipService.ShowOnDisabled="True">
-                <l:Catalog Message="Save As" />
-                <Button.ToolTip>
-                    <l:Catalog Message="Saves the currently opened build as a new build" />
-                </Button.ToolTip>
-            </Button>
-            <Button Command="{Binding SaveAllBuildsCommand}"
-                    Margin="0" Height="30" MinWidth="55">
-                <l:Catalog Message="Save All" />
-                <Button.ToolTip>
-                    <l:Catalog Message="Saves all changed builds" />
-                </Button.ToolTip>
-            </Button>
-        </UniformGrid>
-        <UniformGrid Grid.Row="4" Rows="1" Margin="5 5 5 0">
-            <Button Command="{Binding NewBuildCommand}"
-                    CommandParameter="{Binding BuildRoot}"
-                    Margin="0 0 5 0" Height="30">
-                <l:Catalog Message="New top level build" />
-            </Button>
-            <Button Command="{Binding NewFolderCommand}"
-                    CommandParameter="{Binding BuildRoot}"
-                    Margin="0" Height="30">
-                <l:Catalog Message="New top level folder" />
-            </Button>
-        </UniformGrid>
     </Grid>
 </UserControl>

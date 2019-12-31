@@ -421,8 +421,7 @@ namespace PoESkillTree.SkillTreeFiles
                     new ImageBrush(Assets["PSGroupBackground2"]),
                     new ImageBrush(Assets["PSGroupBackground3"])
                 };
-                var imageBrush = groupOrbitBrush[2] as ImageBrush;
-                if (imageBrush != null)
+                if (groupOrbitBrush[2] is ImageBrush imageBrush)
                 {
                     imageBrush.TileMode = TileMode.FlipXY;
                     imageBrush.Viewport = new Rect(0, 0, 1, .5f);
@@ -434,28 +433,8 @@ namespace PoESkillTree.SkillTreeFiles
                     6 * backgroundBrush.ImageSource.Width / SkillTreeRect.Width,
                     6 * backgroundBrush.ImageSource.Height / SkillTreeRect.Height);
                 dc.DrawRectangle(backgroundBrush, null, SkillTreeRect);
-
-                LinearGradientBrush[] linearGradientBrushes =
-                {
-                    new LinearGradientBrush(new Color(), Colors.Black, new Point(0, 1), new Point(0, 0)), //top
-                    new LinearGradientBrush(new Color(), Colors.Black, new Point(0, 0), new Point(1, 0)), //right
-                    new LinearGradientBrush(new Color(), Colors.Black, new Point(0, 0), new Point(0, 1)), //bottom
-                    new LinearGradientBrush(new Color(), Colors.Black, new Point(1, 0), new Point(0, 0))  //left
-                };
-                var GradientSize = 250;
-                Rect2D[] gradientRect =
-                {
-                    new Rect2D(SkillTreeRect.Left, SkillTreeRect.Top, SkillTreeRect.Width, GradientSize), //top
-                    new Rect2D(SkillTreeRect.Right - GradientSize, SkillTreeRect.Top, GradientSize, SkillTreeRect.Height), //right
-                    new Rect2D(SkillTreeRect.Left, SkillTreeRect.Bottom - GradientSize, SkillTreeRect.Width, GradientSize), //bottom
-                    new Rect2D(SkillTreeRect.Left, SkillTreeRect.Top, GradientSize, SkillTreeRect.Height) //left
-                };
-
-                if (linearGradientBrushes.Length != gradientRect.Length)
-                    throw new Exception("Gradient must have a Rectangle for each Brush");
-                for (var i = 0; i < linearGradientBrushes.Length; i++)
-                    dc.DrawRectangle(linearGradientBrushes[i], null, gradientRect[i]);
                 #endregion
+
                 #region SkillNodeGroup Background Drawing
 
                 foreach (var i in PoESkillTree.Groups)
