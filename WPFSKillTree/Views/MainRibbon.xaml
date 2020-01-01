@@ -616,6 +616,31 @@
                         </fluent:ScreenTip>
                     </fluent:Button.ToolTip>
                 </fluent:Button>
+                <fluent:Button Command="{Binding BuildsControlViewModel.ImportCurrentFromPoBClipboardComment}"
+                               KeyTip="IP">
+                    <fluent:Button.Icon>
+                        <iconPacks:PackIconMaterial Kind="ClipboardFile" Style="{StaticResource IconStyle}" />
+                    </fluent:Button.Icon>
+                    <fluent:Button.LargeIcon>
+                        <iconPacks:PackIconMaterial Kind="ClipboardFile" />
+                    </fluent:Button.LargeIcon>
+                    <fluent:Button.Header>
+                        <l:Catalog Message="Import PoB" />
+                    </fluent:Button.Header>
+                    <fluent:Button.ToolTip>
+                        <fluent:ScreenTip>
+                            <fluent:ScreenTip.Title>
+                                <l:Catalog Message="Import PoB" />
+                            </fluent:ScreenTip.Title>
+                            <fluent:ScreenTip.Text>
+                                <l:Catalog Message="Import a new build from the clipboard in Path of Building's format (build code or pastebin URL) into the root folder and open it." />
+                            </fluent:ScreenTip.Text>
+                            <fluent:ScreenTip.DisableReason>
+                                <l:Catalog Message="The clipboard is empty or does not contain a build in a suitable format. Builds can only be imported from a build code or pastebin URL." />
+                            </fluent:ScreenTip.DisableReason>
+                        </fluent:ScreenTip>
+                    </fluent:Button.ToolTip>
+                </fluent:Button>
             </fluent:RibbonGroupBox>
             <fluent:RibbonGroupBox Name="TagNodesRibbon">
                 <fluent:RibbonGroupBox.Header>

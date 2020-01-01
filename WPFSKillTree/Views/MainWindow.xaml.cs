@@ -82,6 +82,8 @@ namespace PoESkillTree.Views
         private ContextMenu _attributeContextMenu;
         private MenuItem cmAddToGroup, cmDeleteGroup;
 
+        private readonly HttpClient _httpClient = new HttpClient();
+
         private GameData _gameData;
 
         private ItemAttributes _itemAttributes;
@@ -592,7 +594,7 @@ namespace PoESkillTree.Views
         {
             PersistentData.Options.PropertyChanged += Options_PropertyChanged;
             PopulateAscendancySelectionList();
-            BuildsControlViewModel = new BuildsControlViewModel(_dialogCoordinator, PersistentData, Tree);
+            BuildsControlViewModel = new BuildsControlViewModel(_dialogCoordinator, PersistentData, Tree, _httpClient);
             UpdateTreeComparison();
             TreeGeneratorInteraction =
                 new TreeGeneratorInteraction(SettingsDialogCoordinator.Instance, PersistentData, Tree);
@@ -955,7 +957,7 @@ namespace PoESkillTree.Views
                     var controller = await ExtendedDialogManager.ShowProgressAsync(this, L10n.Message("Downloading skill tree assets ..."), null);
                     controller.Maximum = 1;
                     controller.SetProgress(0);
-                    var assetLoader = new AssetLoader(new HttpClient(), AppData.GetFolder("Data", true), false);
+                    var assetLoader = new AssetLoader(_httpClient, AppData.GetFolder("Data", true), false);
                     try
                     {
                         assetLoader.MoveToBackup();
@@ -1858,7 +1860,7 @@ namespace PoESkillTree.Views
 
                     var result =
                         await AwaitAsyncTask(L10n.Message("Generating PoEUrl of Skill tree"),
-                            new HttpClient().GetStringAsync("http://poeurl.com/shrink.php?url=" + url));
+                            _httpClient.GetStringAsync("http://poeurl.com/shrink.php?url=" + url));
                     await ShowPoeUrlMessageAndAddToClipboard("http://poeurl.com/" + result.Trim());
                 }
                 catch (Exception ex)
