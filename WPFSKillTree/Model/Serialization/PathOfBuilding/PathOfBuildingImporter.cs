@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -17,7 +17,7 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
             _httpClient = httpClient;
         }
 
-        public async Task<PoEBuild?> FromPastebinAsync(string pastebinUrl)
+        public async Task<IBuild?> FromPastebinAsync(string pastebinUrl)
         {
             var url = pastebinUrl.Replace("pastebin.com/", "pastebin.com/raw/");
             var response = await _httpClient.GetAsync(url);
@@ -26,7 +26,7 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
             return await FromBase64Async(base64);
         }
 
-        public async Task<PoEBuild?> FromBase64Async(string input)
+        public async Task<IBuild?> FromBase64Async(string input)
         {
             var compressed = Convert.FromBase64String(input.Replace('-', '+').Replace('_', '/'));
             await using var ms = new MemoryStream(compressed);

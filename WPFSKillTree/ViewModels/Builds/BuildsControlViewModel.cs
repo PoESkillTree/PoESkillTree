@@ -690,7 +690,8 @@ namespace PoESkillTree.ViewModels.Builds
         private Task<PoEBuild?> PasteFromClipboardAsync(IBuildFolderViewModel targetFolder)
             => ImportBuildFromClipboardAsync(targetFolder, PersistentData.ImportBuildAsync);
 
-        private static async Task<PoEBuild?> ImportBuildFromClipboardAsync(IBuildFolderViewModel targetFolder, Func<string, Task<PoEBuild?>> import)
+        private static async Task<T?> ImportBuildFromClipboardAsync<T>(IBuildFolderViewModel targetFolder, Func<string, Task<T?>> import)
+            where T: class, IBuild
         {
             var str = Clipboard.GetText();
             var newBuild = await import(str);
@@ -723,13 +724,22 @@ namespace PoESkillTree.ViewModels.Builds
         private async Task ImportCurrentFromPoBClipboardAsync()
         {
             var build = await ImportBuildFromClipboardAsync(BuildRoot, ImportPoBAsync);
-            if (build != null)
+            if (build is PoEBuild poEBuild)
             {
-                CreateCurrentBuildFrom(build);
+                CreateCurrentBuildFrom(poEBuild);
+            }
+            else if (build is BuildFolder buildFolder)
+            {
+                var folderVm = new BuildFolderViewModel(buildFolder, Filter, BuildOnCollectionChanged);
+                BuildRoot.Children.Add(folderVm);
+                if (TreeFind<BuildViewModel>(_ => true, folderVm) is BuildViewModel current)
+                {
+                    CurrentBuild = current;
+                }
             }
         }
 
-        private async Task<PoEBuild?> ImportPoBAsync(string s)
+        private async Task<IBuild?> ImportPoBAsync(string s)
         {
             try
             {
