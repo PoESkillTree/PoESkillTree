@@ -1,9 +1,10 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Net.Http;
 using System.Threading.Tasks;
+using PoESkillTree.Engine.Utils;
 using PoESkillTree.Model.Builds;
 
 namespace PoESkillTree.Model.Serialization.PathOfBuilding
@@ -33,10 +34,7 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
             // Skip compression type header
             ms.Seek(2, SeekOrigin.Begin);
             await using var deflateStream = new DeflateStream(ms, CompressionMode.Decompress);
-            using var deflateReader = new StreamReader(deflateStream);
-            var decompressed = await deflateReader.ReadToEndAsync();
-
-            Debug.WriteLine(decompressed);
+            var xmlBuild = await XmlSerializationUtils.DeserializeAsync<XmlPathOfBuilding>(new StreamReader(deflateStream));
             return null;
         }
     }
