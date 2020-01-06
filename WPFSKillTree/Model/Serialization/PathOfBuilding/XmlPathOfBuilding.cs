@@ -8,7 +8,6 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
     public class XmlPathOfBuilding
     {
         public XmlPathOfBuildingBuild Build { get; set; } = default!;
-        public XmlPathOfBuildingImport Import { get; set; } = default!;
         public XmlPathOfBuildingSkills Skills { get; set; } = default!;
         public XmlPathOfBuildingTree Tree { get; set; } = default!;
         public string? Notes { get; set; }
@@ -30,16 +29,6 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
         public int MainSocketGroup { get; set; }
     }
 
-    public class XmlPathOfBuildingImport
-    {
-        [XmlAttribute("lastAccountHash")]
-        public string? LastAccountHash { get; set; }
-        [XmlAttribute("lastRealm")]
-        public string? LastRealm { get; set; }
-        [XmlAttribute("lastCharacterName")]
-        public string? LastCharacterHash { get; set; }
-    }
-
     public class XmlPathOfBuildingSkills
     {
         [XmlElement("Skill")]
@@ -52,6 +41,10 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
         public bool Enabled { get; set; }
         [XmlAttribute("slot")]
         public string? Slot { get; set; }
+        [XmlAttribute("source")]
+        public string? Source { get; set; }
+        [XmlAttribute("mainActiveSkill")]
+        public int MainActiveSkill { get; set; }
         [XmlElement("Gem")]
         public List<XmlPathOfBuildingGem> Gems { get; } = new List<XmlPathOfBuildingGem>();
     }
@@ -62,10 +55,12 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
         public int Quality { get; set; }
         [XmlAttribute("level")]
         public int Level { get; set; }
-        [XmlAttribute("gemId")]
-        public string MetadataId { get; set; } = default!;
+        [XmlAttribute("skillId")]
+        public string SkillId { get; set; } = default!;
         [XmlAttribute("enabled")]
         public bool Enabled { get; set; }
+        [XmlAttribute("skillPart")]
+        public int SkillPart { get; set; }
     }
 
     public class XmlPathOfBuildingTree
@@ -133,10 +128,8 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
         public string Name { get; set; } = default!;
         [XmlAttribute("boolean")]
         public bool Boolean { get; set; }
-        public bool BooleanSpecified { get; set; }
         [XmlAttribute("number")]
         public double Number { get; set; }
-        public bool NumberSpecified { get; set; }
         [XmlAttribute("string")]
         public string? String { get; set; }
     }

@@ -736,6 +736,7 @@ namespace PoESkillTree.ViewModels.Builds
                 {
                     CurrentBuild = current;
                 }
+                await SaveBuildToFile(folderVm);
             }
         }
 
