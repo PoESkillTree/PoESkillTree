@@ -41,7 +41,8 @@
         <fluent:Ribbon.QuickAccessItems>
             <fluent:QuickAccessMenuItem Target="{Binding ElementName=NewTopLevelBuildMenuItem}"
                                         IsChecked="True" />
-            <fluent:QuickAccessMenuItem Target="{Binding ElementName=NewTopLevelFolderMenuItem}" />
+            <fluent:QuickAccessMenuItem Target="{Binding ElementName=NewTopLevelFolderMenuItem}"
+                                        IsChecked="True" />
             <fluent:QuickAccessMenuItem Target="{Binding ElementName=SaveMenuItem}"
                                         IsChecked="True" />
             <fluent:QuickAccessMenuItem Target="{Binding ElementName=SaveAsMenuItem}"
@@ -117,7 +118,7 @@
                         <fluent:MenuItem.ToolTip>
                             <fluent:ScreenTip>
                                 <fluent:ScreenTip.Title>
-                                    <l:Catalog Message="New top level folder" />
+                                    <l:Catalog Message="New top level folder (Ctrl+Shift+N)" />
                                 </fluent:ScreenTip.Title>
                                 <fluent:ScreenTip.Text>
                                     <l:Catalog Message="Create a new empty folder in the root build folder." />

@@ -86,6 +86,9 @@
         <KeyBinding Modifiers="Control" Key="N"
                     Command="{Binding BuildsControlViewModel.NewBuildCommand}"
                     CommandParameter="{Binding BuildsControlViewModel.BuildRoot}"/>
+        <KeyBinding Modifiers="Control+Shift" Key="N"
+                    Command="{Binding BuildsControlViewModel.NewFolderCommand}"
+                    CommandParameter="{Binding BuildsControlViewModel.BuildRoot}"/>
 
         <KeyBinding Modifiers="Control+Shift" Key="G"
                     Command="{Binding TreeGeneratorInteraction.OpenTreeGeneratorCommand}" />
