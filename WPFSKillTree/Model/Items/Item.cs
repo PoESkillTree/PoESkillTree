@@ -521,31 +521,31 @@ namespace PoESkillTree.Model.Items
             if (Properties.Count > 0)
             {
                 j.Add(new JProperty("properties",
-                    new JArray(Properties.Select(p => p.ToJobject()).ToArray())));
+                    new JArray(Properties.Select(p => p.ToJObject()).ToArray())));
             }
 
             if (Requirements.Count > 0)
             {
                 j.Add(new JProperty("requirements",
-                        new JArray(Requirements.Select(p => p.ToJobject()).ToArray())));
+                        new JArray(Requirements.Select(p => p.ToJObject()).ToArray())));
             }
 
             if (ImplicitMods.Count > 0)
             {
                 j.Add(new JProperty("implicitMods",
-                            new JArray(ImplicitMods.Select(p => p.ToJobject(true)).ToArray())));
+                            new JArray(ImplicitMods.Select(p => p.ToJObject(true)).ToArray())));
             }
 
             if (ExplicitMods.Count > 0)
             {
                 j.Add(new JProperty("explicitMods",
-                            new JArray(ExplicitMods.Select(p => p.ToJobject(true)).ToArray())));
+                            new JArray(ExplicitMods.Select(p => p.ToJObject(true)).ToArray())));
             }
 
             if (CraftedMods.Count > 0)
             {
                 j.Add(new JProperty("craftedMods",
-                            new JArray(CraftedMods.Select(p => p.ToJobject(true)).ToArray())));
+                            new JArray(CraftedMods.Select(p => p.ToJObject(true)).ToArray())));
             }
 
             if (HaveFlavourText)

@@ -169,10 +169,10 @@ namespace PoESkillTree.ViewModels.Equipment
                 Source = _socketedGems
             };
             SocketedGemsViewSource.SortDescriptions.Add(new SortDescription(
-                nameof(SocketedGemViewModel.GemBase) + "." + nameof(GemBaseViewModel.Name),
+                nameof(SocketedGemViewModel.Group),
                 ListSortDirection.Ascending));
             SocketedGemsViewSource.SortDescriptions.Add(new SortDescription(
-                nameof(SocketedGemViewModel.Group),
+                nameof(SocketedGemViewModel.GemBase) + "." + nameof(GemBaseViewModel.Name),
                 ListSortDirection.Ascending));
 
             // convert currently socketed gem Items into SocketedGemViewModels

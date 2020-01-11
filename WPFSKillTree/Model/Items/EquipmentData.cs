@@ -90,8 +90,6 @@ namespace PoESkillTree.Model.Items
 
             if (ms.Count == 0)
                 return null;
-            if (ms.Count > 1)
-                throw new NotSupportedException("duplicate type match");
             return ItemBaseDictionary[ms[0].ToString()];
         }
 

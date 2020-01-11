@@ -69,7 +69,7 @@ namespace PoESkillTree.Model.Items.Mods
             return tokens.Select(t => new JArray(InsertValues(t, ref valueIndex), ValueColors[valueIndex - 1])).ToArray();
         }
 
-        public JToken ToJobject(bool asMod = false)
+        public JToken ToJObject(bool asMod = false)
         {
             if (asMod)
             {

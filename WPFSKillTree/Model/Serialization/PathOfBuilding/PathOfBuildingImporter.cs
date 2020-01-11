@@ -4,12 +4,14 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Engine.GameModel.Skills;
 using PoESkillTree.Engine.Utils;
 using PoESkillTree.Engine.Utils.Extensions;
 using PoESkillTree.Model.Builds;
+using PoESkillTree.Model.Items;
 using PoESkillTree.SkillTreeFiles;
 using Item = PoESkillTree.Model.Items.Item;
 
@@ -18,10 +20,14 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
     public class PathOfBuildingImporter
     {
         private readonly HttpClient _httpClient;
+        private readonly EquipmentData _equipmentData;
+        private readonly ItemConverter _itemConverter;
 
-        public PathOfBuildingImporter(HttpClient httpClient)
+        public PathOfBuildingImporter(HttpClient httpClient, EquipmentData equipmentData)
         {
             _httpClient = httpClient;
+            _equipmentData = equipmentData;
+            _itemConverter = new ItemConverter(equipmentData);
         }
 
         public async Task<IBuild?> FromPastebinAsync(string pastebinUrl)
@@ -44,10 +50,10 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
             return ConvertXmlBuild(xmlBuild);
         }
 
-        private static IBuild ConvertXmlBuild(XmlPathOfBuilding xmlBuild)
+        private IBuild ConvertXmlBuild(XmlPathOfBuilding xmlBuild)
         {
             var items = ConvertItems(xmlBuild.Items.Items);
-            var skills = ConvertSkills(xmlBuild.Skills.Skills);
+            var skills = ConvertSkills(xmlBuild.Skills.Skills).ToList();
             var specs = xmlBuild.Tree.Specs;
             if (specs.IsEmpty())
             {
@@ -69,19 +75,34 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
             }
         }
 
-        private static IReadOnlyDictionary<int, Item> ConvertItems(IEnumerable<XmlPathOfBuildingItem> xmlItems)
+        private IReadOnlyDictionary<int, Item> ConvertItems(IEnumerable<XmlPathOfBuildingItem> xmlItems)
+            => xmlItems.ToDictionary(x => x.Id, _itemConverter.Convert);
+
+        private static IEnumerable<Skill> ConvertSkills(IEnumerable<XmlPathOfBuildingSkill> xmlSkills)
         {
-            // TODO
-            return new Dictionary<int, Item>();
+            var socketIndex = 0;
+            var gemGroup = 0;
+            foreach (var xmlSkill in xmlSkills)
+            {
+                if (xmlSkill.Source != null)
+                {
+                    // item-inherent skill
+                    continue;
+                }
+
+                var slot = ConvertItemSlot(xmlSkill.Slot, ItemSlot.Amulet);
+                foreach (var xmlGem in xmlSkill.Gems)
+                {
+                    var isEnabled = xmlSkill.Enabled && xmlGem.Enabled;
+                    yield return new Skill(xmlGem.SkillId, xmlGem.Level, xmlGem.Quality, slot, socketIndex, gemGroup, isEnabled);
+                    socketIndex++;
+                }
+
+                gemGroup++;
+            }
         }
 
-        private static IReadOnlyList<Skill> ConvertSkills(IEnumerable<XmlPathOfBuildingSkill> xmlSkills)
-        {
-            // TODO
-            return new Skill[0];
-        }
-
-        private static PoEBuild ConvertXmlBuild(
+        private PoEBuild ConvertXmlBuild(
             XmlPathOfBuilding xmlBuild, XmlPathOfBuildingTreeSpec treeSpec, IReadOnlyDictionary<int, Item> items, IEnumerable<Skill> skills,
             bool addTreeVersionToName = false)
         {
@@ -112,7 +133,7 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
                 yield break;
 
             var xmlSkill = xmlBuild.Skills.Skills[xmlBuild.Build.MainSocketGroup - 1];
-            var slot = xmlSkill.Slot is null ? ItemSlot.Flask1 : ConvertItemSlot(xmlSkill.Slot);
+            var slot = ConvertItemSlot(xmlSkill.Slot, ItemSlot.Amulet);
             yield return ("Character.MainSkillItemSlot", (int) slot);
 
             if (xmlSkill.Gems.Count < xmlSkill.MainActiveSkill)
@@ -126,14 +147,41 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
             }
         }
 
-        private static string? ConvertItemData(
+        private string ConvertItemData(
             XmlPathOfBuilding xmlBuild, IReadOnlyDictionary<int, Item> items, IEnumerable<Skill> skills, IEnumerable<XmlPathOfBuildingTreeSocket> sockets)
         {
-            // TODO
-            return null;
+            var itemSerializer = new ItemAttributes(_equipmentData, null!);
+
+            foreach (var (slot, group) in skills.GroupBy(s => s.ItemSlot))
+            {
+                itemSerializer.SetSkillsInSlot(group.ToList(), slot);
+            }
+
+            foreach (var xmlSlot in xmlBuild.Items.Slots)
+            {
+                var (slotString, socket) = ConvertItemSocket(xmlSlot.Name);
+                var slot = ConvertItemSlot(slotString);
+                if (slot == ItemSlot.Unequipable)
+                    continue;
+                var item = new Item(items[xmlSlot.ItemId])
+                {
+                    IsEnabled = xmlSlot.Active || !slot.IsFlask()
+                };
+                itemSerializer.SetItemInSlot(item, slot, socket);
+            }
+
+            foreach (var xmlTreeSocket in sockets)
+            {
+                if (items.TryGetValue(xmlTreeSocket.ItemId, out var item))
+                {
+                    itemSerializer.SetItemInSlot(new Item(item), ItemSlot.SkillTree, (ushort) xmlTreeSocket.NodeId);
+                }
+            }
+
+            return itemSerializer.ToJsonString();
         }
 
-        private static ItemSlot ConvertItemSlot(string slot) =>
+        private static ItemSlot ConvertItemSlot(string? slot, ItemSlot nullSlot = ItemSlot.Unequipable) =>
             slot switch
             {
                 "Body Armour" => ItemSlot.BodyArmour,
@@ -151,7 +199,16 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
                 "Flask 3" => ItemSlot.Flask3,
                 "Flask 4" => ItemSlot.Flask4,
                 "Flask 5" => ItemSlot.Flask5,
+                null => nullSlot,
                 _ => ItemSlot.Unequipable,
             };
+
+        private static (string slotWithoutSocket, ushort? socket) ConvertItemSocket(string slot)
+        {
+            var match = Regex.Match(slot, @"^(.+) Abyssal Socket (\d+)$");
+            if (match.Success)
+                return (match.Groups[1].Value, ushort.Parse(match.Groups[2].Value));
+            return (slot, null);
+        }
     }
 }

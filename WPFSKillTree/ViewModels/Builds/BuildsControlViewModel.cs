@@ -207,7 +207,7 @@ namespace PoESkillTree.ViewModels.Builds
         {
             _dialogCoordinator = dialogCoordinator;
             PersistentData = persistentData;
-            _pathOfBuildingImporter = new PathOfBuildingImporter(httpClient);
+            _pathOfBuildingImporter = new PathOfBuildingImporter(httpClient, persistentData.EquipmentData);
             DropHandler = new CustomDropHandler(this);
             _buildValidator = new BuildValidator(PersistentData.Options);
             BuildRoot = new BuildFolderViewModel(persistentData.RootBuild, Filter, BuildOnCollectionChanged);
