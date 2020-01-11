@@ -361,7 +361,7 @@ namespace PoESkillTree.SkillTreeFiles
     public class PoESkillTreeOptions
     {
         [JsonProperty("ascClasses")]
-        public Dictionary<int, CharacterToAscendancyOption> CharacterToAscendancy { get; set; } = default!;
+        public List<CharacterToAscendancyOption> CharacterToAscendancy { get; set; } = default!;
 
         [JsonProperty("zoomLevels")]
         public double[]? ZoomLevels { get; set; }

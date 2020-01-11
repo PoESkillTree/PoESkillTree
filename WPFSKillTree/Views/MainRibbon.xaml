@@ -415,7 +415,7 @@
                 <fluent:RibbonGroupBox.Header>
                     <l:Catalog Message="Craft" />
                 </fluent:RibbonGroupBox.Header>
-                <fluent:Button Click="CraftItem"
+                <fluent:Button Click="CraftUnique"
                                KeyTip="CR">
                     <fluent:Button.Icon>
                         <iconPacks:PackIconMaterial Kind="Hammer" Style="{StaticResource IconStyle}" />
@@ -437,7 +437,7 @@
                         </fluent:ScreenTip>
                     </fluent:Button.ToolTip>
                 </fluent:Button>
-                <fluent:Button Click="CraftUnique"
+                <fluent:Button Click="CraftItem"
                                KeyTip="CI">
                     <fluent:Button.Icon>
                         <iconPacks:PackIconMaterial Kind="Tools" Style="{StaticResource IconStyle}" />

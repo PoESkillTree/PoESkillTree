@@ -13,16 +13,16 @@ namespace PoESkillTree.SkillTreeFiles
         private readonly Dictionary<CharacterClass, List<Class>> _classes =
             new Dictionary<CharacterClass, List<Class>>();
 
-        internal AscendancyClasses(Dictionary<int, CharacterToAscendancyOption> ascClasses)
+        internal AscendancyClasses(IReadOnlyCollection<CharacterToAscendancyOption> ascClasses)
         {
             if (ascClasses == null) return;
 
             _classes.Clear();
 
-            foreach (KeyValuePair<int, CharacterToAscendancyOption> ascClass in ascClasses)
+            foreach (CharacterToAscendancyOption ascClass in ascClasses)
             {
                 var classes = new List<Class>();
-                foreach (KeyValuePair<int, AscendancyClassOption> asc in ascClass.Value.AscendancyClasses)
+                foreach (KeyValuePair<int, AscendancyClassOption> asc in ascClass.AscendancyClasses)
                 {
                     int[] tempPointList = asc.Value.FlavourTextRect.Split(',').Select(int.Parse).ToArray();
                     var newClass = new Class(asc.Key, asc.Value.DisplayName, asc.Value.Name,
@@ -32,7 +32,7 @@ namespace PoESkillTree.SkillTreeFiles
 
                 }
 
-                var characterClass = Enums.Parse<CharacterClass>(ascClass.Value.CharacterName);
+                var characterClass = Enums.Parse<CharacterClass>(ascClass.CharacterName);
                 _classes[characterClass] = classes;
             }
         }

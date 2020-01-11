@@ -1,9 +1,9 @@
+using PoESkillTree.Engine.GameModel;
+using PoESkillTree.SkillTreeFiles;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.RegularExpressions;
-using PoESkillTree.Engine.GameModel;
-using PoESkillTree.SkillTreeFiles;
 
 namespace PoESkillTree.Utils.UrlProcessing
 {
@@ -88,12 +88,16 @@ namespace PoESkillTree.Utils.UrlProcessing
         private byte[] GetRawData()
         {
             if (_rawData != null)
+            {
                 return _rawData;
+            }
 
             var buildSegment = BuildUrl.Split('/').LastOrDefault();
 
             if (buildSegment == null)
+            {
                 return new byte[0];
+            }
 
             buildSegment = buildSegment
                 .Replace("-", "+")
@@ -135,22 +139,28 @@ namespace PoESkillTree.Utils.UrlProcessing
             // There is a small bug in poeplanner, where class and ascendancy bytes are missing, when no one node was selected.
             // Need to check length
             if (data.NodesData.Length == 0)
+            {
                 return result;
+            }
 
-            result.CharacterClass = (CharacterClass) (data.NodesData[0] & 15);
-            result.AscendancyClassId = data.NodesData[0] >> 4 & 15;
-
-            if (data.NodesData.Length < 2)
-                return result;
-
-            result.Bandit = ConvertBanditId(data.NodesData[1] & 3);
+            result.CharacterClass = (CharacterClass)(data.NodesData[2] & 15);
+            result.AscendancyClassId = data.NodesData[2] >> 4 & 15;
 
             if (data.NodesData.Length < 4)
+            {
                 return result;
+            }
 
-            var skilledNodesCount = data.NodesData[2] << 8 | data.NodesData[3];
-            int i = 4;
-            while (i < 2 * skilledNodesCount + 4)
+            result.Bandit = ConvertBanditId(data.NodesData[3] & 3);
+
+            if (data.NodesData.Length < 6)
+            {
+                return result;
+            }
+
+            var skilledNodesCount = data.NodesData[4] << 8 | data.NodesData[5];
+            int i = 6;
+            while (i < 2 * skilledNodesCount + 6)
             {
                 result.SkilledNodesIds.Add((ushort)(data.NodesData[i++] << 8 | data.NodesData[i++]));
             }
