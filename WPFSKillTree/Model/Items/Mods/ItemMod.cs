@@ -13,7 +13,7 @@ namespace PoESkillTree.Model.Items.Mods
     public class ItemMod
     {
 
-        public static readonly Regex Numberfilter = new Regex(@"[0-9]*\.?[0-9]+");
+        public static readonly Regex Numberfilter = new Regex(@"-?\d*\.?\d+");
 
         public string Attribute { get; }
 
@@ -49,7 +49,7 @@ namespace PoESkillTree.Model.Items.Mods
             ValueColors = valueColors?.ToList() ?? new List<ValueColoring>();
         }
 
-        public string ToModifierString()
+        public override string ToString()
         {
             var index = 0;
             return InsertValues(Attribute, ref index);
@@ -73,7 +73,7 @@ namespace PoESkillTree.Model.Items.Mods
         {
             if (asMod)
             {
-                return new JValue(ToModifierString());
+                return new JValue(ToString());
             }
 
             const string allowedTokens = @"(#|#%|\+#%|#-#|#/#)";

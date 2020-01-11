@@ -31,7 +31,7 @@ namespace PoESkillTree.Model
             var levelMod = oldItem.Requirements.FirstOrDefault(m => m.Attribute.Contains("Level #"));
             var level = (int) (levelMod?.Values.FirstOrDefault() ?? 0);
             var isCorrupted = oldItem.Mods.Any(m => m.Attribute == "Corrupted");
-            var mods = oldItem.Mods.Select(m => m.ToModifierString()).ToList();
+            var mods = oldItem.Mods.Select(m => m.ToString()).ToList();
             return new Item(
                 oldItem.BaseType.MetadataId,
                 oldItem.Name,

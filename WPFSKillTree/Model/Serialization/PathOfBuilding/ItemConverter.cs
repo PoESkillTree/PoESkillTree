@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using PoESkillTree.Engine.GameModel.Items;
@@ -62,9 +61,7 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
 
             ConvertMods(xmlItem, lines, i + 1, item, implicitCount);
 
-            item.Properties = new ObservableCollection<ItemMod>(item.BaseType.GetRawProperties(quality));
-            // TODO apply locals
-            // TODO apply elemental mods if weapon
+            item.UpdateProperties(quality);
             item.UpdateRequirements(levelRequirement);
 
             return item;
@@ -189,10 +186,10 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
 
         private static ItemMod CreateItemMod(Tags itemTags, string modifierLine, float valueRange)
         {
-            var regex = new Regex(@"(\d*\.?\d+)|\((\d*\.?\d+)-(\d*\.?\d+)\)");
+            var regex = new Regex(@"(-?\d*\.?\d+)|\((-?\d*\.?\d+)-(-?\d*\.?\d+)\)");
 
             var modifier = regex.Replace(modifierLine, "#");
-            var isLocal = ModifierLocalityTester.IsLocal(modifierLine, itemTags);
+            var isLocal = ModifierLocalityTester.IsLocal(modifier, itemTags);
             
             var matches = regex.Matches(modifierLine);
             var values = new List<float>();
