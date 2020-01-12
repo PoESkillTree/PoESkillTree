@@ -521,31 +521,31 @@ namespace PoESkillTree.Model.Items
             if (Properties.Count > 0)
             {
                 j.Add(new JProperty("properties",
-                    new JArray(Properties.Select(p => p.ToJobject()).ToArray())));
+                    new JArray(Properties.Select(p => p.ToJObject()).ToArray())));
             }
 
             if (Requirements.Count > 0)
             {
                 j.Add(new JProperty("requirements",
-                        new JArray(Requirements.Select(p => p.ToJobject()).ToArray())));
+                        new JArray(Requirements.Select(p => p.ToJObject()).ToArray())));
             }
 
             if (ImplicitMods.Count > 0)
             {
                 j.Add(new JProperty("implicitMods",
-                            new JArray(ImplicitMods.Select(p => p.ToJobject(true)).ToArray())));
+                            new JArray(ImplicitMods.Select(p => p.ToJObject(true)).ToArray())));
             }
 
             if (ExplicitMods.Count > 0)
             {
                 j.Add(new JProperty("explicitMods",
-                            new JArray(ExplicitMods.Select(p => p.ToJobject(true)).ToArray())));
+                            new JArray(ExplicitMods.Select(p => p.ToJObject(true)).ToArray())));
             }
 
             if (CraftedMods.Count > 0)
             {
                 j.Add(new JProperty("craftedMods",
-                            new JArray(CraftedMods.Select(p => p.ToJobject(true)).ToArray())));
+                            new JArray(CraftedMods.Select(p => p.ToJObject(true)).ToArray())));
             }
 
             if (HaveFlavourText)
@@ -559,11 +559,129 @@ namespace PoESkillTree.Model.Items
             return Regex.Replace(json, @"<<[a-zA-Z0-9:]+>>", "");
         }
 
+        public void UpdateProperties(int quality, params ItemMod[] additionalProperties)
+        {
+            var baseProperties = BaseType.GetRawProperties(quality);
+            Properties = new ObservableCollection<ItemMod>(baseProperties.Concat(additionalProperties));
+            ApplyLocalModsToProperties();
+            if (IsWeapon)
+            {
+                AddElementalDamageProperties();
+            }
+        }
+
+        private void ApplyLocalModsToProperties()
+        {
+            foreach (var pair in GetModsAffectingProperties())
+            {
+                ItemMod prop = pair.Key;
+                List<ItemMod> applymods = pair.Value;
+
+                List<ItemMod> percm = applymods.Where(m => Regex.IsMatch(m.Attribute, @"(?<!\+)#%")).ToList();
+                List<ItemMod> valuem = applymods.Except(percm).ToList();
+
+                if (valuem.Count > 0)
+                {
+                    IReadOnlyList<float> val = valuem
+                        .Select(m => m.Values)
+                        .Aggregate((l1, l2) => l1.Zip(l2, (f1, f2) => f1 + f2)
+                            .ToList());
+                    IReadOnlyList<float> nval = prop.Values
+                        .Zip(val, (f1, f2) => f1 + f2)
+                        .ToList();
+                    prop.ValueColors = prop.ValueColors
+                        .Select((c, i) => val[i] == nval[i] ? prop.ValueColors[i] : ValueColoring.LocallyAffected)
+                        .ToList();
+                    prop.Values = nval;
+                }
+
+                if (percm.Count > 0)
+                {
+                    Func<float, float> roundf = val => (float)Math.Round(val);
+                    if (prop.Attribute.Contains("Critical"))
+                    {
+                        roundf = f => (float)(Math.Round(f * 10) / 10);
+                    }
+                    else if (prop.Attribute.Contains("per Second"))
+                    {
+                        roundf = f => (float)(Math.Round(f * 100) / 100);
+                    }
+
+                    var perc = 1f + percm.Select(m => m.Values[0]).Sum() / 100f;
+                    prop.ValueColors = prop.ValueColors.Select(_ => ValueColoring.LocallyAffected).ToList();
+                    prop.Values = prop.Values.Select(v => roundf(v * perc)).ToList();
+                }
+            }
+        }
+
+        private void AddElementalDamageProperties()
+        {
+            var elementalMods = new List<ItemMod>();
+            var chaosMods = new List<ItemMod>();
+            foreach (var mod in Mods)
+            {
+                string attr = mod.Attribute;
+                if (attr.StartsWith("Adds") && !attr.Contains("in Main Hand") && !attr.Contains("in Off Hand"))
+                {
+                    if (attr.Contains("Fire") || attr.Contains("Cold") || attr.Contains("Lightning"))
+                    {
+                        elementalMods.Add(mod);
+                    }
+                    if (attr.Contains("Chaos"))
+                    {
+                        chaosMods.Add(mod);
+                    }
+                }
+            }
+
+            if (elementalMods.Any())
+            {
+                var values = new List<float>();
+                var mods = new List<string>();
+                var cols = new List<ValueColoring>();
+
+                var fmod = elementalMods.FirstOrDefault(m => m.Attribute.Contains("Fire"));
+                if (fmod != null)
+                {
+                    values.AddRange(fmod.Values);
+                    mods.Add("#-#");
+                    cols.Add(ValueColoring.Fire);
+                    cols.Add(ValueColoring.Fire);
+                }
+
+                var cmod = elementalMods.FirstOrDefault(m => m.Attribute.Contains("Cold"));
+                if (cmod != null)
+                {
+                    values.AddRange(cmod.Values);
+                    mods.Add("#-#");
+                    cols.Add(ValueColoring.Cold);
+                    cols.Add(ValueColoring.Cold);
+                }
+
+                var lmod = elementalMods.FirstOrDefault(m => m.Attribute.Contains("Lightning"));
+                if (lmod != null)
+                {
+                    values.AddRange(lmod.Values);
+                    mods.Add("#-#");
+                    cols.Add(ValueColoring.Lightning);
+                    cols.Add(ValueColoring.Lightning);
+                }
+
+                Properties.Add(new ItemMod("Elemental Damage: " + string.Join(", ", mods), true, values, cols));
+            }
+
+            if (chaosMods.Any())
+            {
+                Properties.Add(new ItemMod("Chaos Damage: #-#", true, chaosMods[0].Values,
+                    new[] { ValueColoring.Chaos, ValueColoring.Chaos }));
+            }
+        }
+
         /// <summary>
         /// Key: Property
         /// Value: Mods affecting the Property
         /// </summary>
-        public Dictionary<ItemMod, List<ItemMod>> GetModsAffectingProperties()
+        private Dictionary<ItemMod, List<ItemMod>> GetModsAffectingProperties()
         {
             var qualityMod = Properties.FirstOrDefault(m => m.Attribute == "Quality: +#%");
             // Quality with "+#%" in name is not recognized as percentage increase.

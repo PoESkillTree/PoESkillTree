@@ -55,12 +55,11 @@
                                NumericInputMode="Numbers"
                                Value="{Binding NewSocketedGem.Level}" />
         <mahapps:NumericUpDown Grid.Row="0" Grid.Column="2"
-                               Minimum="0" Maximum="23"
+                               Minimum="0" Maximum="30"
                                NumericInputMode="Numbers"
                                Value="{Binding NewSocketedGem.Quality}" />
         <mahapps:NumericUpDown Grid.Row="0" Grid.Column="3"
                                Minimum="1"
-                               Maximum="{Binding NumberOfSockets}"
                                NumericInputMode="Numbers"
                                Value="{Binding NewSocketedGem.Group}" />
         <CheckBox Grid.Row="0" Grid.Column="4"
@@ -114,7 +113,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="viewModels:SocketedGemViewModel">
                             <mahapps:NumericUpDown Style="{StaticResource UpDownInDataGridStyle}"
-                                                   Minimum="0" Maximum="23"
+                                                   Minimum="0" Maximum="30"
                                                    NumericInputMode="Numbers"
                                                    Value="{Binding Quality, UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>
@@ -128,7 +127,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="viewModels:SocketedGemViewModel">
                             <mahapps:NumericUpDown Style="{StaticResource UpDownInDataGridStyle}"
-                                                   Minimum="1" Maximum="{Binding Data.NumberOfSockets, Source={StaticResource VmProxy}}"
+                                                   Minimum="1"
                                                    NumericInputMode="Numbers"
                                                    Value="{Binding Group, UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>

@@ -2,8 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,6 +24,7 @@ using PoESkillTree.Utils.Wpf;
 using EnumsNET;
 using NLog;
 using PoESkillTree.Engine.GameModel;
+using PoESkillTree.Model.Serialization.PathOfBuilding;
 using PoESkillTree.Utils;
 
 namespace PoESkillTree.ViewModels.Builds
@@ -59,6 +63,8 @@ namespace PoESkillTree.ViewModels.Builds
         private readonly IExtendedDialogCoordinator _dialogCoordinator;
 
         private readonly BuildValidator _buildValidator;
+
+        private readonly PathOfBuildingImporter _pathOfBuildingImporter;
 
         private readonly FileSystemWatcher _fileSystemWatcher;
         private readonly SynchronizationContext _synchronizationContext = SynchronizationContext.Current!;
@@ -113,6 +119,8 @@ namespace PoESkillTree.ViewModels.Builds
 
         public ICommand ExportCurrentToClipboardCommand { get; }
         public ICommand ImportCurrentFromClipboardCommand { get; }
+
+        public ICommand ImportCurrentFromPoBClipboardComment { get; }
 
         public IPersistentData PersistentData { get; }
 
@@ -194,10 +202,12 @@ namespace PoESkillTree.ViewModels.Builds
 
         public IReadOnlyList<ClassFilterItem> ClassFilterItems { get; }
 
-        public BuildsControlViewModel(IExtendedDialogCoordinator dialogCoordinator, IPersistentData persistentData, ISkillTree skillTree)
+        public BuildsControlViewModel(
+            IExtendedDialogCoordinator dialogCoordinator, IPersistentData persistentData, ISkillTree skillTree, HttpClient httpClient)
         {
             _dialogCoordinator = dialogCoordinator;
             PersistentData = persistentData;
+            _pathOfBuildingImporter = new PathOfBuildingImporter(httpClient, persistentData.EquipmentData);
             DropHandler = new CustomDropHandler(this);
             _buildValidator = new BuildValidator(PersistentData.Options);
             BuildRoot = new BuildFolderViewModel(persistentData.RootBuild, Filter, BuildOnCollectionChanged);
@@ -269,6 +279,7 @@ namespace PoESkillTree.ViewModels.Builds
             CollapseAllCommand = new RelayCommand(CollapseAll);
             ExportCurrentToClipboardCommand = new RelayCommand(() => CopyToClipboard(CurrentBuild.Build));
             ImportCurrentFromClipboardCommand = new AsyncRelayCommand(ImportCurrentFromClipboard, CanPasteFromClipboard);
+            ImportCurrentFromPoBClipboardComment = new AsyncRelayCommand(ImportCurrentFromPoBClipboardAsync, CanImportFromPoBClipboard);
 
             _skillTree = skillTree;
             BuildRoot.SkillTree = skillTree;
@@ -558,7 +569,7 @@ namespace PoESkillTree.ViewModels.Builds
 
             if (CanPasteFromClipboard() && !CanPasteNonClipboard(target))
             {
-                var b = await PasteFromClipboard(BuildRoot);
+                var b = await PasteFromClipboardAsync(BuildRoot);
                 if (b == null)
                     return;
                 pasted = new BuildViewModel(b, Filter);
@@ -647,14 +658,27 @@ namespace PoESkillTree.ViewModels.Builds
 
         private static bool CanPasteFromClipboard()
         {
+            if (TryGetClipboardText(out var str))
+            {
+                return str.StartsWith("<?xml ") && str.Contains("<PoEBuild ") && str.Contains("</PoEBuild>");
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private static bool TryGetClipboardText([NotNullWhen(true)] out string? text)
+        {
+            text = null;
             if (!Clipboard.ContainsText())
             {
                 return false;
             }
             try
             {
-                var str = Clipboard.GetText();
-                return str.StartsWith("<?xml ") && str.Contains("<PoEBuild ") && str.Contains("</PoEBuild>");
+                text = Clipboard.GetText();
+                return true;
             }
             catch (System.Runtime.InteropServices.COMException e)
             {
@@ -663,10 +687,14 @@ namespace PoESkillTree.ViewModels.Builds
             }
         }
 
-        private async Task<PoEBuild?> PasteFromClipboard(IBuildFolderViewModel targetFolder)
+        private Task<PoEBuild?> PasteFromClipboardAsync(IBuildFolderViewModel targetFolder)
+            => ImportBuildFromClipboardAsync(targetFolder, PersistentData.ImportBuildAsync);
+
+        private static async Task<T?> ImportBuildFromClipboardAsync<T>(IBuildFolderViewModel targetFolder, Func<string, Task<T?>> import)
+            where T: class, IBuild
         {
             var str = Clipboard.GetText();
-            var newBuild = await PersistentData.ImportBuildAsync(str);
+            var newBuild = await import(str);
             if (newBuild == null)
                 return null;
             newBuild.Name = Util.FindDistinctName(newBuild.Name, targetFolder.Children.Select(b => b.Build.Name));
@@ -675,12 +703,67 @@ namespace PoESkillTree.ViewModels.Builds
 
         private async Task ImportCurrentFromClipboard()
         {
-            var pasted = await PasteFromClipboard(BuildRoot);
+            var pasted = await PasteFromClipboardAsync(BuildRoot);
             if (pasted == null)
                 return;
-            var build = new BuildViewModel(pasted, Filter);
-            BuildRoot.Children.Add(build);
-            CurrentBuild = build;
+            CreateCurrentBuildFrom(pasted);
+        }
+
+        private bool CanImportFromPoBClipboard()
+        {
+            if (TryGetClipboardText(out var str))
+            {
+                return str.StartsWith("https://pastebin.com/") || Regex.IsMatch(str, "^[a-zA-Z0-9-_=]{100,}$");
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private async Task ImportCurrentFromPoBClipboardAsync()
+        {
+            var build = await ImportBuildFromClipboardAsync(BuildRoot, ImportPoBAsync);
+            if (build is PoEBuild poEBuild)
+            {
+                CreateCurrentBuildFrom(poEBuild);
+            }
+            else if (build is BuildFolder buildFolder)
+            {
+                var folderVm = new BuildFolderViewModel(buildFolder, Filter, BuildOnCollectionChanged);
+                BuildRoot.Children.Add(folderVm);
+                if (TreeFind<BuildViewModel>(_ => true, folderVm) is BuildViewModel current)
+                {
+                    CurrentBuild = current;
+                }
+                await SaveBuildToFile(folderVm);
+            }
+        }
+
+        private async Task<IBuild?> ImportPoBAsync(string s)
+        {
+            try
+            {
+                if (s.StartsWith("https://pastebin.com/"))
+                    return await _pathOfBuildingImporter.FromPastebinAsync(s);
+                return await _pathOfBuildingImporter.FromBase64Async(s);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "PoB Import failed");
+                await _dialogCoordinator.ShowErrorAsync(this,
+                    L10n.Message("Could not import a build in PoB format from the clipboard."),
+                    e.Message,
+                    L10n.Message("Import failed"));
+                return null;
+            }
+        }
+
+        private void CreateCurrentBuildFrom(PoEBuild build)
+        {
+            var buildVm = new BuildViewModel(build, Filter);
+            BuildRoot.Children.Add(buildVm);
+            CurrentBuild = buildVm;
         }
 
         #endregion
