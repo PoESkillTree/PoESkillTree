@@ -41,7 +41,7 @@
                 </MenuItem>
                 <MenuItem Command="{Binding EditSocketedGemsCommand}">
                     <MenuItem.Header>
-                        <l:Catalog>Edit Socketed Gems</l:Catalog>
+                        <l:Catalog>Edit Socketed Skills</l:Catalog>
                     </MenuItem.Header>
                 </MenuItem>
             </ContextMenu>

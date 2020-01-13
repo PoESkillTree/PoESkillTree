@@ -51,7 +51,7 @@ namespace PoESkillTree.ViewModels
             await ShowDialogAsync(context,
                 new SkillsInSlotEditingViewModel(skills, _persistentData.EquipmentData.ItemImageService,
                     itemAttributes, itemSlot),
-                new SkillsInSlotEditingView());
+                new SkillsInSlotEditingDialog());
         }
 
         public async Task<TabPickerResult> EditStashTabAsync(object context, TabPickerViewModel tabPickerViewModel)

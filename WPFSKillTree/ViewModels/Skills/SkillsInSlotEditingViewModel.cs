@@ -17,9 +17,9 @@ namespace PoESkillTree.ViewModels.Skills
     }
 
     /// <summary>
-    /// View model for editing gems socketed in an item.
+    /// View model for editing skills socketed in an item.
     /// </summary>
-    public class SkillsInSlotEditingViewModel : CloseableViewModel<bool>
+    public class SkillsInSlotEditingViewModel : CloseableViewModel
     {
         private readonly ItemAttributes _itemAttributes;
         private readonly ItemSlot _slot;
@@ -31,15 +31,15 @@ namespace PoESkillTree.ViewModels.Skills
         private readonly ObservableCollection<SkillViewModel> _skills
             = new ObservableCollection<SkillViewModel>();
 
-        public ICommand AddGemCommand { get; }
-        public ICommand RemoveGemCommand { get; }
+        public ICommand AddSkillCommand { get; }
+        public ICommand RemoveSkillCommand { get; }
 
         public int NumberOfSockets
             => _itemAttributes.GetItemInSlot(_slot, null)?.BaseType.MaximumNumberOfSockets ?? 0;
 
         private SkillViewModel _newSkill;
         /// <summary>
-        /// Gets the currently edited gem that can be socketed into the item with AddGemCommand.
+        /// Gets the currently edited skill that can be socketed into the item with AddSkillCommand.
         /// </summary>
         public SkillViewModel NewSkill
         {
@@ -67,8 +67,8 @@ namespace PoESkillTree.ViewModels.Skills
                 GemGroup = 1,
                 IsEnabled = true,
             };
-            AddGemCommand = new RelayCommand(AddGem);
-            RemoveGemCommand = new RelayCommand<SkillViewModel>(RemoveGem);
+            AddSkillCommand = new RelayCommand(AddSkill);
+            RemoveSkillCommand = new RelayCommand<SkillViewModel>(RemoveSkill);
 
             SkillsViewSource = new CollectionViewSource
             {
@@ -102,18 +102,20 @@ namespace PoESkillTree.ViewModels.Skills
             }
         }
 
-        private void AddGem()
+        private void AddSkill()
         {
             var addedGem = NewSkill.Clone();
             addedGem.PropertyChanged += SocketedGemsOnPropertyChanged;
             _skills.Add(addedGem);
+            SetSkillsInSlot();
         }
 
-        private void RemoveGem(SkillViewModel gem)
+        private void RemoveSkill(SkillViewModel skill)
         {
-            gem.PropertyChanged -= SocketedGemsOnPropertyChanged;
-            _skills.Remove(gem);
-            NewSkill = gem;
+            skill.PropertyChanged -= SocketedGemsOnPropertyChanged;
+            _skills.Remove(skill);
+            NewSkill = skill;
+            SetSkillsInSlot();
         }
 
         private void SocketedGemsOnPropertyChanged(object sender, PropertyChangedEventArgs args)
@@ -122,23 +124,21 @@ namespace PoESkillTree.ViewModels.Skills
             {
                 SkillsViewSource.View.Refresh();
             }
+            SetSkillsInSlot();
         }
 
-        protected override void OnClose(bool param)
+        private void SetSkillsInSlot()
         {
-            if (param)
+            var skills = new List<Skill>();
+            for (var i = 0; i < _skills.Count; i++)
             {
-                // replace gems in the edited item with SocketedGems if dialog is accepted
-                var skills = new List<Skill>();
-                for (var i = 0; i < _skills.Count; i++)
-                {
-                    var gem = _skills[i];
-                    var skill = new Skill(gem.Definition.Id, gem.Level, gem.Quality, _slot, i, gem.GemGroup - 1,
-                        gem.IsEnabled);
-                    skills.Add(skill);
-                }
-                _itemAttributes.SetSkillsInSlot(skills, _slot);
+                var gem = _skills[i];
+                var skill = new Skill(gem.Definition.Id, gem.Level, gem.Quality, _slot, i, gem.GemGroup - 1,
+                    gem.IsEnabled);
+                skills.Add(skill);
             }
+
+            _itemAttributes.SetSkillsInSlot(skills, _slot);
         }
     }
 }

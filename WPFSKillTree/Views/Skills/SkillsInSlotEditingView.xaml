@@ -1,24 +1,18 @@
-﻿<dialogs:CloseableBaseDialog x:Class="PoESkillTree.Views.Skills.SkillsInSlotEditingView"
-                             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                             xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
-                             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                             xmlns:controls="clr-namespace:PoESkillTree.Controls"
-                             xmlns:dialogs="clr-namespace:PoESkillTree.Controls.Dialogs"
-                             xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
-                             xmlns:viewModels="clr-namespace:PoESkillTree.ViewModels.Skills"
-                             mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:SkillsInSlotEditingViewModel}"
-                             CloseButtonVisibility="Collapsed"
-                             MaxContentWidth="590">
-    <dialogs:CloseableBaseDialog.Title>
-        <l:Catalog>Edit Socketed Gems</l:Catalog>
-    </dialogs:CloseableBaseDialog.Title>
-
-    <dialogs:CloseableBaseDialog.Resources>
+﻿<UserControl x:Class="PoESkillTree.Views.Skills.SkillsInSlotEditingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:PoESkillTree.Controls"
+             xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
+             xmlns:viewModels="clr-namespace:PoESkillTree.ViewModels.Skills"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewModels:SkillsInSlotEditingViewModel}">
+    <UserControl.Resources>
         <viewModels:SkillsInSlotEditingViewModelProxy x:Key="VmProxy" Data="{Binding}" />
-    </dialogs:CloseableBaseDialog.Resources>
+    </UserControl.Resources>
     
     <Grid Margin="0 5 0 0">
         <Grid.RowDefinitions>
@@ -66,7 +60,7 @@
                   HorizontalAlignment="Center"
                   IsChecked="{Binding NewSkill.IsEnabled}" />
         <Button Grid.Row="0" Grid.Column="5"
-                Command="{Binding AddGemCommand}">
+                Command="{Binding AddSkillCommand}">
             <l:Catalog>Add</l:Catalog>
         </Button>
 
@@ -88,7 +82,7 @@
                                     IsReadOnly="True"
                                     Width="230">
                     <DataGridTextColumn.Header>
-                        <l:Catalog>Gem Name</l:Catalog>
+                        <l:Catalog>Skill Name</l:Catalog>
                     </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 
@@ -149,7 +143,7 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="viewModels:SkillViewModel">
-                            <Button Command="{Binding Data.RemoveGemCommand, Source={StaticResource VmProxy}}"
+                            <Button Command="{Binding Data.RemoveSkillCommand, Source={StaticResource VmProxy}}"
                                     CommandParameter="{Binding}"
                                     Width="20" Height="20"
                                     Style="{DynamicResource MahApps.Styles.Button.Circle}">
@@ -165,23 +159,8 @@
             <Run><l:Catalog Message="Equipped item's maximum number of sockets:" /></Run>
             <Run Text="{Binding NumberOfSockets, Mode=OneWay}" />
         </TextBlock>
-
-        <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="6"
-                    Style="{StaticResource DialogPanel}"
-                    Height="45" Margin="0 0 0 20">
-            <Button Style="{StaticResource DynamicDialogPanelButton}"
-                    Command="{Binding CloseCommand}" CommandParameter="{StaticResource True}"
-                    IsDefault="True">
-                <l:Catalog Message="Save socketed gems"/>
-            </Button>
-            <Button Style="{StaticResource DynamicDialogPanelButton}"
-                    Command="{Binding CloseCommand}" CommandParameter="{StaticResource False}"
-                    IsCancel="True">
-                <l:Catalog Message="Cancel"/>
-            </Button>
-        </StackPanel>
     </Grid>
-</dialogs:CloseableBaseDialog>
+</UserControl>
 
 
 
