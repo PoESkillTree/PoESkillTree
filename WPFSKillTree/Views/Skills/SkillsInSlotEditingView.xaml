@@ -1,4 +1,4 @@
-﻿<dialogs:CloseableBaseDialog x:Class="PoESkillTree.Views.Equipment.SocketedGemsEditingView"
+﻿<dialogs:CloseableBaseDialog x:Class="PoESkillTree.Views.Skills.SkillsInSlotEditingView"
                              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                              xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
                              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
@@ -8,8 +8,8 @@
                              xmlns:controls="clr-namespace:PoESkillTree.Controls"
                              xmlns:dialogs="clr-namespace:PoESkillTree.Controls.Dialogs"
                              xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
-                             xmlns:viewModels="clr-namespace:PoESkillTree.ViewModels.Equipment"
-                             mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:SocketedGemsEditingViewModel}"
+                             xmlns:viewModels="clr-namespace:PoESkillTree.ViewModels.Skills"
+                             mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:SkillsInSlotEditingViewModel}"
                              CloseButtonVisibility="Collapsed"
                              MaxContentWidth="590">
     <dialogs:CloseableBaseDialog.Title>
@@ -17,7 +17,7 @@
     </dialogs:CloseableBaseDialog.Title>
 
     <dialogs:CloseableBaseDialog.Resources>
-        <viewModels:SocketedGemsEditingViewModelProxy x:Key="VmProxy" Data="{Binding}" />
+        <viewModels:SkillsInSlotEditingViewModelProxy x:Key="VmProxy" Data="{Binding}" />
     </dialogs:CloseableBaseDialog.Resources>
     
     <Grid Margin="0 5 0 0">
@@ -37,11 +37,11 @@
         </Grid.ColumnDefinitions>
 
         <controls:SearchableComboBox Grid.Row="0" Grid.Column="0"
-                                     ItemsSource="{Binding AvailableGems}"
-                                     SelectedItem="{Binding NewSocketedGem.GemBase}"
+                                     ItemsSource="{Binding AvailableSkills}"
+                                     SelectedItem="{Binding NewSkill.Definition}"
                                      SearchValuePath="Name">
             <controls:SearchableComboBox.ItemTemplate>
-                <DataTemplate DataType="viewModels:GemBaseViewModel">
+                <DataTemplate DataType="viewModels:SkillDefinitionViewModel">
                     <StackPanel Orientation="Horizontal">
                         <Image Width="18" Margin="0 0 2 0"
                                Source="{Binding Icon.ImageSource.Result}" />
@@ -51,20 +51,20 @@
             </controls:SearchableComboBox.ItemTemplate>
         </controls:SearchableComboBox>
         <mahapps:NumericUpDown Grid.Row="0" Grid.Column="1"
-                               Minimum="1" Maximum="{Binding NewSocketedGem.GemBase.MaxLevel}"
+                               Minimum="1" Maximum="{Binding NewSkill.Definition.MaxLevel}"
                                NumericInputMode="Numbers"
-                               Value="{Binding NewSocketedGem.Level}" />
+                               Value="{Binding NewSkill.Level}" />
         <mahapps:NumericUpDown Grid.Row="0" Grid.Column="2"
                                Minimum="0" Maximum="30"
                                NumericInputMode="Numbers"
-                               Value="{Binding NewSocketedGem.Quality}" />
+                               Value="{Binding NewSkill.Quality}" />
         <mahapps:NumericUpDown Grid.Row="0" Grid.Column="3"
                                Minimum="1"
                                NumericInputMode="Numbers"
-                               Value="{Binding NewSocketedGem.Group}" />
+                               Value="{Binding NewSkill.GemGroup}" />
         <CheckBox Grid.Row="0" Grid.Column="4"
                   HorizontalAlignment="Center"
-                  IsChecked="{Binding NewSocketedGem.IsEnabled}" />
+                  IsChecked="{Binding NewSkill.IsEnabled}" />
         <Button Grid.Row="0" Grid.Column="5"
                 Command="{Binding AddGemCommand}">
             <l:Catalog>Add</l:Catalog>
@@ -74,17 +74,17 @@
                   AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
                   CanUserResizeColumns="False"
                   HorizontalScrollBarVisibility="Hidden"
-                  ItemsSource="{Binding SocketedGemsViewSource.View}">
+                  ItemsSource="{Binding SkillsViewSource.View}">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="16">
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="viewModels:SocketedGemViewModel">
-                            <Image Source="{Binding GemBase.Icon.ImageSource.Result}" />
+                        <DataTemplate DataType="viewModels:SkillViewModel">
+                            <Image Source="{Binding Definition.Icon.ImageSource.Result}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn Binding="{Binding GemBase.Name}"
+                <DataGridTextColumn Binding="{Binding Definition.Name}"
                                     IsReadOnly="True"
                                     Width="230">
                     <DataGridTextColumn.Header>
@@ -97,9 +97,9 @@
                         <l:Catalog>Level</l:Catalog>
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="viewModels:SocketedGemViewModel">
+                        <DataTemplate DataType="viewModels:SkillViewModel">
                             <mahapps:NumericUpDown Style="{StaticResource UpDownInDataGridStyle}"
-                                                   Minimum="1" Maximum="{Binding GemBase.MaxLevel}"
+                                                   Minimum="1" Maximum="{Binding Definition.MaxLevel}"
                                                    NumericInputMode="Numbers"
                                                    Value="{Binding Level, UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>
@@ -111,7 +111,7 @@
                         <l:Catalog>Quality</l:Catalog>
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="viewModels:SocketedGemViewModel">
+                        <DataTemplate DataType="viewModels:SkillViewModel">
                             <mahapps:NumericUpDown Style="{StaticResource UpDownInDataGridStyle}"
                                                    Minimum="0" Maximum="30"
                                                    NumericInputMode="Numbers"
@@ -125,11 +125,11 @@
                         <l:Catalog>Group</l:Catalog>
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="viewModels:SocketedGemViewModel">
+                        <DataTemplate DataType="viewModels:SkillViewModel">
                             <mahapps:NumericUpDown Style="{StaticResource UpDownInDataGridStyle}"
                                                    Minimum="1"
                                                    NumericInputMode="Numbers"
-                                                   Value="{Binding Group, UpdateSourceTrigger=PropertyChanged}" />
+                                                   Value="{Binding GemGroup, UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -139,7 +139,7 @@
                         <l:Catalog>Enabled</l:Catalog>
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="viewModels:SocketedGemViewModel">
+                        <DataTemplate DataType="viewModels:SkillViewModel">
                             <CheckBox IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}"
                                       HorizontalAlignment="Center" />
                         </DataTemplate>
@@ -148,7 +148,7 @@
 
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="viewModels:SocketedGemViewModel">
+                        <DataTemplate DataType="viewModels:SkillViewModel">
                             <Button Command="{Binding Data.RemoveGemCommand, Source={StaticResource VmProxy}}"
                                     CommandParameter="{Binding}"
                                     Width="20" Height="20"

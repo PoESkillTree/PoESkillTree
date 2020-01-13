@@ -7,8 +7,10 @@ using PoESkillTree.Model.Builds;
 using PoESkillTree.Model.Items;
 using PoESkillTree.ViewModels.Builds;
 using PoESkillTree.ViewModels.Equipment;
+using PoESkillTree.ViewModels.Skills;
 using PoESkillTree.Views.Builds;
 using PoESkillTree.Views.Equipment;
+using PoESkillTree.Views.Skills;
 
 namespace PoESkillTree.ViewModels
 {
@@ -47,9 +49,9 @@ namespace PoESkillTree.ViewModels
         {
             var skills = await _gameData.Skills;
             await ShowDialogAsync(context,
-                new SocketedGemsEditingViewModel(skills, _persistentData.EquipmentData.ItemImageService,
+                new SkillsInSlotEditingViewModel(skills, _persistentData.EquipmentData.ItemImageService,
                     itemAttributes, itemSlot),
-                new SocketedGemsEditingView());
+                new SkillsInSlotEditingView());
         }
 
         public async Task<TabPickerResult> EditStashTabAsync(object context, TabPickerViewModel tabPickerViewModel)
