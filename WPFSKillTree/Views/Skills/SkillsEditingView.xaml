@@ -6,21 +6,20 @@
              xmlns:viewModels="clr-namespace:PoESkillTree.ViewModels.Skills"
              xmlns:local="clr-namespace:PoESkillTree.Views.Skills"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:converter="clr-namespace:PoESkillTree.Utils.Converter"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:SkillsEditingViewModel}">
+    <UserControl.Resources>
+        <converter:ItemSlotToStringConverter x:Key="ItemSlotToStringConverter" />
+    </UserControl.Resources>
     <TabControl ItemsSource="{Binding SkillsInSlots}"
                 mah:TabControlHelper.Underlined="TabItems"
                 TabStripPlacement="Left">
-        <TabControl.Resources>
-            <Style TargetType="mah:Underline">
-                <Setter Property="Placement" Value="Bottom" />
-            </Style>
-        </TabControl.Resources>
         <TabControl.ItemTemplate>
             <DataTemplate DataType="viewModels:SkillsInSlotEditingViewModel">
                 <StackPanel MaxWidth="150"
                             ToolTip="{Binding LongSummary}">
-                    <TextBlock Text="{Binding Slot}"
+                    <TextBlock Text="{Binding Slot, Converter={StaticResource ItemSlotToStringConverter}}"
                                TextAlignment="Right"
                                FontSize="17" />
                     <TextBlock Text="{Binding Summary}"
