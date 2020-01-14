@@ -9,11 +9,24 @@
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:SkillsEditingViewModel}">
     <TabControl ItemsSource="{Binding SkillsInSlots}"
-                mah:HeaderedControlHelper.HeaderFontSize="16"
+                mah:TabControlHelper.Underlined="TabItems"
                 TabStripPlacement="Left">
+        <TabControl.Resources>
+            <Style TargetType="mah:Underline">
+                <Setter Property="Placement" Value="Bottom" />
+            </Style>
+        </TabControl.Resources>
         <TabControl.ItemTemplate>
             <DataTemplate DataType="viewModels:SkillsInSlotEditingViewModel">
-                <TextBlock Text="{Binding Slot}" />
+                <StackPanel MaxWidth="150"
+                            ToolTip="{Binding LongSummary}">
+                    <TextBlock Text="{Binding Slot}"
+                               TextAlignment="Right"
+                               FontSize="17" />
+                    <TextBlock Text="{Binding Summary}"
+                               TextAlignment="Right"
+                               FontSize="{StaticResource MahApps.Font.Size.Default}" />
+                </StackPanel>
             </DataTemplate>
         </TabControl.ItemTemplate>
         <TabControl.ContentTemplate>

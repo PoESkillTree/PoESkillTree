@@ -11,8 +11,9 @@ namespace PoESkillTree.ViewModels.Skills
     {
         private static readonly IReadOnlyList<ItemSlot> SlotsWithSkills = new[]
         {
-            ItemSlot.BodyArmour, ItemSlot.MainHand, ItemSlot.OffHand, ItemSlot.Ring, ItemSlot.Ring2,
-            ItemSlot.Amulet, ItemSlot.Helm, ItemSlot.Gloves, ItemSlot.Boots, ItemSlot.Belt,
+            ItemSlot.MainHand, ItemSlot.OffHand,
+            ItemSlot.Helm, ItemSlot.BodyArmour, ItemSlot.Gloves, ItemSlot.Boots,
+            ItemSlot.Belt, ItemSlot.Ring, ItemSlot.Ring2, ItemSlot.Amulet,
         };
 
         public IReadOnlyList<SkillsInSlotEditingViewModel> SkillsInSlots { get; }

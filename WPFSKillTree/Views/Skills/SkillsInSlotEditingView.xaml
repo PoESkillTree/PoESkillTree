@@ -71,7 +71,6 @@
         <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="8"
                   AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
                   CanUserResizeColumns="False"
-                  HorizontalScrollBarVisibility="Hidden"
                   VerticalScrollBarVisibility="Visible"
                   ItemsSource="{Binding SkillsViewSource.View}">
             <DataGrid.Columns>

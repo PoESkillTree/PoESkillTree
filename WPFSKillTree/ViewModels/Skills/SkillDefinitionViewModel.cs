@@ -7,18 +7,18 @@ namespace PoESkillTree.ViewModels.Skills
 {
     public class SkillDefinitionViewModel
     {
-        private readonly SkillDefinition _skill;
-        public string Id => _skill.Id;
-        public string Name => _skill.BaseItem?.DisplayName ?? "";
-        public int MaxLevel => _skill.Levels.Keys.Max();
+        public SkillDefinition Model { get; }
+        public string Id => Model.Id;
+        public string Name => Model.BaseItem?.DisplayName ?? "";
+        public int MaxLevel => Model.Levels.Keys.Max();
 
         public ItemImage Icon { get; }
 
-        public SkillDefinitionViewModel(ItemImageService itemImageService, SkillDefinition skill)
+        public SkillDefinitionViewModel(ItemImageService itemImageService, SkillDefinition model)
         {
-            _skill = skill;
+            Model = model;
             Icon = new ItemImage(itemImageService, Name,
-                skill.IsSupport ? ItemClass.SupportSkillGem : ItemClass.ActiveSkillGem);
+                model.IsSupport ? ItemClass.SupportSkillGem : ItemClass.ActiveSkillGem);
         }
     }
 }
