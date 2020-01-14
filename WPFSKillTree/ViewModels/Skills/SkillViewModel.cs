@@ -8,8 +8,15 @@ namespace PoESkillTree.ViewModels.Skills
         private int _quality;
         private int? _gemGroup;
         private int _socketIndex;
-        private SkillDefinitionViewModel _definition = default!;
+        private SkillDefinitionViewModel _definition;
         private bool _isEnabled;
+        private string? _toolTip;
+
+        public SkillViewModel(SkillDefinitionViewModel definition)
+        {
+            _definition = definition;
+            UpdateToolTip();
+        }
 
         /// <summary>
         /// Gets or sets the level of this skill.
@@ -56,17 +63,42 @@ namespace PoESkillTree.ViewModels.Skills
             set => SetProperty(ref _isEnabled, value);
         }
 
-        public SkillViewModel Clone()
+        public string? ToolTip
         {
-            return new SkillViewModel
+            get => _toolTip;
+            private set => SetProperty(ref _toolTip, value);
+        }
+
+        public SkillViewModel Clone() =>
+            new SkillViewModel(Definition)
             {
-                Definition = Definition,
                 GemGroup = GemGroup,
                 SocketIndex = SocketIndex,
                 Quality = Quality,
                 Level = Level,
                 IsEnabled = IsEnabled,
+                ToolTip = ToolTip,
             };
+
+        protected override void OnPropertyChanged(string propertyName)
+        {
+            if (propertyName != nameof(ToolTip))
+            {
+                UpdateToolTip();
+            }
+            base.OnPropertyChanged(propertyName);
+        }
+
+        private void UpdateToolTip()
+        {
+            if (Definition.Model.Levels.TryGetValue(Level, out var levelDefinition))
+            {
+                ToolTip = levelDefinition.Tooltip.Name;
+            }
+            else
+            {
+                ToolTip = null;
+            }
         }
     }
 }

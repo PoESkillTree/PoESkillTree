@@ -21,7 +21,6 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20" />
             <ColumnDefinition Width="4*" />
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="1*" />
@@ -32,10 +31,11 @@
             <ColumnDefinition Width="15" />
         </Grid.ColumnDefinitions>
 
-        <controls:SearchableComboBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+        <controls:SearchableComboBox Grid.Row="0" Grid.Column="0"
                                      ItemsSource="{Binding AvailableSkills}"
                                      SelectedItem="{Binding NewSkill.Definition}"
-                                     SearchValuePath="Name">
+                                     SearchValuePath="Name"
+                                     ToolTip="{Binding NewSkill.ToolTip}">
             <controls:SearchableComboBox.ItemTemplate>
                 <DataTemplate DataType="viewModels:SkillDefinitionViewModel">
                     <StackPanel Orientation="Horizontal">
@@ -46,49 +46,50 @@
                 </DataTemplate>
             </controls:SearchableComboBox.ItemTemplate>
         </controls:SearchableComboBox>
-        <mahapps:NumericUpDown Grid.Row="0" Grid.Column="2"
+        <mahapps:NumericUpDown Grid.Row="0" Grid.Column="1"
                                Minimum="1" Maximum="{Binding NewSkill.Definition.MaxLevel}"
                                NumericInputMode="Numbers"
                                Value="{Binding NewSkill.Level}" />
-        <mahapps:NumericUpDown Grid.Row="0" Grid.Column="3"
+        <mahapps:NumericUpDown Grid.Row="0" Grid.Column="2"
                                Minimum="0" Maximum="30"
                                NumericInputMode="Numbers"
                                Value="{Binding NewSkill.Quality}" />
-        <mahapps:NumericUpDown Grid.Row="0" Grid.Column="4"
+        <mahapps:NumericUpDown Grid.Row="0" Grid.Column="3"
                                Minimum="1"
                                NumericInputMode="Numbers"
                                Value="{Binding NewSkill.GemGroup}" />
-        <CheckBox Grid.Row="0" Grid.Column="5"
+        <CheckBox Grid.Row="0" Grid.Column="4"
                   HorizontalAlignment="Left"
                   Margin="10 0 0 0"
                   IsChecked="{Binding NewSkill.IsEnabled}" />
-        <Button Grid.Row="0" Grid.Column="6"
+        <Button Grid.Row="0" Grid.Column="5"
                 HorizontalAlignment="Center"
                 Command="{Binding AddSkillCommand}">
             <l:Catalog>Add</l:Catalog>
         </Button>
 
-        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="8"
+        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="7"
                   AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
                   CanUserResizeColumns="False"
                   VerticalScrollBarVisibility="Visible"
                   ItemsSource="{Binding SkillsViewSource.View}">
             <DataGrid.Columns>
-                <DataGridTemplateColumn Width="16">
+                <DataGridTemplateColumn IsReadOnly="True"
+                                        Width="4*">
+                    <DataGridTemplateColumn.Header>
+                        <l:Catalog>Skill Name</l:Catalog>
+                    </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="viewModels:SkillViewModel">
-                            <Image Source="{Binding Definition.Icon.ImageSource.Result}" />
+                            <StackPanel Orientation="Horizontal"
+                                        ToolTip="{Binding ToolTip}">
+                                <Image Width="18" Margin="0 0 2 0"
+                                       Source="{Binding Definition.Icon.ImageSource.Result}" />
+                                <TextBlock Text="{Binding Definition.Name}" />
+                            </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-
-                <DataGridTextColumn Binding="{Binding Definition.Name}"
-                                    IsReadOnly="True"
-                                    Width="4*">
-                    <DataGridTextColumn.Header>
-                        <l:Catalog>Skill Name</l:Catalog>
-                    </DataGridTextColumn.Header>
-                </DataGridTextColumn>
                 
                 <DataGridTemplateColumn Width="1*">
                     <DataGridTemplateColumn.Header>
@@ -162,7 +163,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="8">
+        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="7">
             <Run><l:Catalog Message="Equipped item's maximum number of sockets:" /></Run>
             <Run Text="{Binding NumberOfSockets, Mode=OneWay}" />
         </TextBlock>

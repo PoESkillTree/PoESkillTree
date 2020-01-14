@@ -84,9 +84,8 @@ namespace PoESkillTree.ViewModels.Skills
                             d.BaseItem.ReleaseState == ReleaseState.Legacy)
                 .OrderBy(d => d.BaseItem!.DisplayName)
                 .Select(d => new SkillDefinitionViewModel(itemImageService, d)).ToList();
-            _newSkill = new SkillViewModel
+            _newSkill = new SkillViewModel(AvailableSkills[0])
             {
-                Definition = AvailableSkills[0],
                 Level = 20,
                 Quality = 0,
                 GemGroup = 1,
@@ -122,9 +121,8 @@ namespace PoESkillTree.ViewModels.Skills
                 {
                     continue;
                 }
-                var socketedGem = new SkillViewModel
+                var socketedGem = new SkillViewModel(gemBase)
                 {
-                    Definition = gemBase,
                     Level = skill.Level,
                     Quality = skill.Quality,
                     GemGroup = skill.GemGroup + 1,
