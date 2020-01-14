@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="PoESkillTree.Views.Skills.SkillsEditingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewModels="clr-namespace:PoESkillTree.ViewModels.Skills"
+             xmlns:local="clr-namespace:PoESkillTree.Views.Skills"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewModels:SkillsEditingViewModel}">
+    <TabControl ItemsSource="{Binding SkillsInSlots}"
+                mah:HeaderedControlHelper.HeaderFontSize="16"
+                TabStripPlacement="Left">
+        <TabControl.ItemTemplate>
+            <DataTemplate DataType="viewModels:SkillsInSlotEditingViewModel">
+                <TextBlock Text="{Binding Slot}" />
+            </DataTemplate>
+        </TabControl.ItemTemplate>
+        <TabControl.ContentTemplate>
+            <DataTemplate DataType="viewModels:SkillsInSlotEditingViewModel">
+                <local:SkillsInSlotEditingView DataContext="{Binding}" />
+            </DataTemplate>
+        </TabControl.ContentTemplate>
+    </TabControl>
+</UserControl>

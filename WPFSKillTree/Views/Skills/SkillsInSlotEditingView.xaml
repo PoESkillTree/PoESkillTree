@@ -14,23 +14,25 @@
         <viewModels:SkillsInSlotEditingViewModelProxy x:Key="VmProxy" Data="{Binding}" />
     </UserControl.Resources>
     
-    <Grid Margin="0 5 0 0">
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition />
+            <RowDefinition Height="Auto" />
             <RowDefinition MinHeight="200" />
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250" />
-            <ColumnDefinition Width="75" />
-            <ColumnDefinition Width="75" />
-            <ColumnDefinition Width="75" />
-            <ColumnDefinition Width="70" />
-            <ColumnDefinition />
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*"
+                              MaxWidth="60" />
+            <ColumnDefinition Width="15" />
         </Grid.ColumnDefinitions>
 
-        <controls:SearchableComboBox Grid.Row="0" Grid.Column="0"
+        <controls:SearchableComboBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                                      ItemsSource="{Binding AvailableSkills}"
                                      SelectedItem="{Binding NewSkill.Definition}"
                                      SearchValuePath="Name">
@@ -44,30 +46,33 @@
                 </DataTemplate>
             </controls:SearchableComboBox.ItemTemplate>
         </controls:SearchableComboBox>
-        <mahapps:NumericUpDown Grid.Row="0" Grid.Column="1"
+        <mahapps:NumericUpDown Grid.Row="0" Grid.Column="2"
                                Minimum="1" Maximum="{Binding NewSkill.Definition.MaxLevel}"
                                NumericInputMode="Numbers"
                                Value="{Binding NewSkill.Level}" />
-        <mahapps:NumericUpDown Grid.Row="0" Grid.Column="2"
+        <mahapps:NumericUpDown Grid.Row="0" Grid.Column="3"
                                Minimum="0" Maximum="30"
                                NumericInputMode="Numbers"
                                Value="{Binding NewSkill.Quality}" />
-        <mahapps:NumericUpDown Grid.Row="0" Grid.Column="3"
+        <mahapps:NumericUpDown Grid.Row="0" Grid.Column="4"
                                Minimum="1"
                                NumericInputMode="Numbers"
                                Value="{Binding NewSkill.GemGroup}" />
-        <CheckBox Grid.Row="0" Grid.Column="4"
-                  HorizontalAlignment="Center"
+        <CheckBox Grid.Row="0" Grid.Column="5"
+                  HorizontalAlignment="Left"
+                  Margin="10 0 0 0"
                   IsChecked="{Binding NewSkill.IsEnabled}" />
-        <Button Grid.Row="0" Grid.Column="5"
+        <Button Grid.Row="0" Grid.Column="6"
+                HorizontalAlignment="Center"
                 Command="{Binding AddSkillCommand}">
             <l:Catalog>Add</l:Catalog>
         </Button>
 
-        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="6"
+        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="8"
                   AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
                   CanUserResizeColumns="False"
                   HorizontalScrollBarVisibility="Hidden"
+                  VerticalScrollBarVisibility="Visible"
                   ItemsSource="{Binding SkillsViewSource.View}">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="16">
@@ -80,13 +85,13 @@
 
                 <DataGridTextColumn Binding="{Binding Definition.Name}"
                                     IsReadOnly="True"
-                                    Width="230">
+                                    Width="4*">
                     <DataGridTextColumn.Header>
                         <l:Catalog>Skill Name</l:Catalog>
                     </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 
-                <DataGridTemplateColumn Width="75">
+                <DataGridTemplateColumn Width="1*">
                     <DataGridTemplateColumn.Header>
                         <l:Catalog>Level</l:Catalog>
                     </DataGridTemplateColumn.Header>
@@ -100,7 +105,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="75">
+                <DataGridTemplateColumn Width="1*">
                     <DataGridTemplateColumn.Header>
                         <l:Catalog>Quality</l:Catalog>
                     </DataGridTemplateColumn.Header>
@@ -114,7 +119,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="75">
+                <DataGridTemplateColumn Width="1*">
                     <DataGridTemplateColumn.Header>
                         <l:Catalog>Group</l:Catalog>
                     </DataGridTemplateColumn.Header>
@@ -128,24 +133,27 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="70">
+                <DataGridTemplateColumn Width="1*">
                     <DataGridTemplateColumn.Header>
                         <l:Catalog>Enabled</l:Catalog>
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="viewModels:SkillViewModel">
                             <CheckBox IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}"
-                                      HorizontalAlignment="Center" />
+                                      HorizontalAlignment="Left"
+                                      Margin="10 0 0 0" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="1*"
+                                        MaxWidth="60">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="viewModels:SkillViewModel">
                             <Button Command="{Binding Data.RemoveSkillCommand, Source={StaticResource VmProxy}}"
                                     CommandParameter="{Binding}"
                                     Width="20" Height="20"
+                                    HorizontalAlignment="Center"
                                     Style="{DynamicResource MahApps.Styles.Button.Circle}">
                                 <iconPacks:PackIconModern Kind="Close" Height="8" Width="8" />
                             </Button>
@@ -155,7 +163,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6">
+        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="8">
             <Run><l:Catalog Message="Equipped item's maximum number of sockets:" /></Run>
             <Run Text="{Binding NumberOfSockets, Mode=OneWay}" />
         </TextBlock>

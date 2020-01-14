@@ -22,7 +22,7 @@ namespace PoESkillTree.ViewModels.Skills
     public class SkillsInSlotEditingViewModel : CloseableViewModel
     {
         private readonly ItemAttributes _itemAttributes;
-        private readonly ItemSlot _slot;
+        public ItemSlot Slot { get; }
 
         public IReadOnlyList<SkillDefinitionViewModel> AvailableSkills { get; }
 
@@ -35,7 +35,7 @@ namespace PoESkillTree.ViewModels.Skills
         public ICommand RemoveSkillCommand { get; }
 
         public int NumberOfSockets
-            => _itemAttributes.GetItemInSlot(_slot, null)?.BaseType.MaximumNumberOfSockets ?? 0;
+            => _itemAttributes.GetItemInSlot(Slot, null)?.BaseType.MaximumNumberOfSockets ?? 0;
 
         private SkillViewModel _newSkill;
         /// <summary>
@@ -52,7 +52,7 @@ namespace PoESkillTree.ViewModels.Skills
             ItemSlot slot)
         {
             _itemAttributes = itemAttributes;
-            _slot = slot;
+            Slot = slot;
             AvailableSkills = skillDefinitions.Skills
                 .Where(d => d.BaseItem != null)
                 .Where(d => d.BaseItem!.ReleaseState == ReleaseState.Released ||
@@ -82,7 +82,7 @@ namespace PoESkillTree.ViewModels.Skills
                 ListSortDirection.Ascending));
 
             // convert currently socketed gem Items into SocketedGemViewModels
-            foreach (var skill in _itemAttributes.GetSkillsInSlot(_slot))
+            foreach (var skill in _itemAttributes.GetSkillsInSlot(Slot))
             {
                 var gemBase = AvailableSkills.FirstOrDefault(g => g.Id == skill.Id);
                 if (gemBase == null)
@@ -133,12 +133,12 @@ namespace PoESkillTree.ViewModels.Skills
             for (var i = 0; i < _skills.Count; i++)
             {
                 var gem = _skills[i];
-                var skill = new Skill(gem.Definition.Id, gem.Level, gem.Quality, _slot, i, gem.GemGroup - 1,
+                var skill = new Skill(gem.Definition.Id, gem.Level, gem.Quality, Slot, i, gem.GemGroup - 1,
                     gem.IsEnabled);
                 skills.Add(skill);
             }
 
-            _itemAttributes.SetSkillsInSlot(skills, _slot);
+            _itemAttributes.SetSkillsInSlot(skills, Slot);
         }
     }
 }

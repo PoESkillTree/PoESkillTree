@@ -8,10 +8,10 @@
                              xmlns:skills="clr-namespace:PoESkillTree.ViewModels.Skills"
                              xmlns:local="clr-namespace:PoESkillTree.Views.Skills"
                              mc:Ignorable="d"
-                             d:DataContext="{d:DesignInstance skills:SkillsInSlotEditingViewModel}"
-                             MaxContentWidth="590">
+                             d:DataContext="{d:DesignInstance skills:SkillsInSlotEditingViewModel}">
     <dialogs:CloseableBaseDialog.Title>
         <l:Catalog Message="Edit Socketed Skills" />
     </dialogs:CloseableBaseDialog.Title>
-    <local:SkillsInSlotEditingView DataContext="{Binding}" />
+    <local:SkillsInSlotEditingView Margin="0 5 0 0"
+                                   DataContext="{Binding}" />
 </dialogs:CloseableBaseDialog>

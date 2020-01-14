@@ -13,6 +13,7 @@
                       xmlns:fluent="urn:fluent-ribbon"
                       xmlns:dd="urn:gong-wpf-dragdrop"
                       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                      xmlns:skills="clr-namespace:PoESkillTree.Views.Skills"
                       mc:Ignorable="d"
                       x:Class="PoESkillTree.Views.MainWindow"
                       x:Name="window"
@@ -274,6 +275,12 @@
                                                      DataContext="{Binding StashViewModel}" />
                             </StackPanel>
                         </ScrollViewer>
+                    </TabItem>
+                    <TabItem>
+                        <TabItem.Header>
+                            <l:Catalog Message="Skills" />
+                        </TabItem.Header>
+                        <skills:SkillsEditingView DataContext="{Binding SkillsEditingViewModel}" />
                     </TabItem>
                     <TabItem>
                         <TabItem.Header>
