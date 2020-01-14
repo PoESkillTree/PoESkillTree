@@ -7,6 +7,7 @@ namespace PoESkillTree.ViewModels.Skills
         private int _level;
         private int _quality;
         private int? _gemGroup;
+        private int _socketIndex;
         private SkillDefinitionViewModel _definition = default!;
         private bool _isEnabled;
 
@@ -37,6 +38,12 @@ namespace PoESkillTree.ViewModels.Skills
             set => SetProperty(ref _gemGroup, value);
         }
 
+        public int SocketIndex
+        {
+            get => _socketIndex;
+            set => SetProperty(ref _socketIndex, value);
+        }
+
         public SkillDefinitionViewModel Definition
         {
             get => _definition;
@@ -55,6 +62,7 @@ namespace PoESkillTree.ViewModels.Skills
             {
                 Definition = Definition,
                 GemGroup = GemGroup,
+                SocketIndex = SocketIndex,
                 Quality = Quality,
                 Level = Level,
                 IsEnabled = IsEnabled,

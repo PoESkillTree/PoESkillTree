@@ -48,10 +48,10 @@ namespace PoESkillTree.ViewModels
         public async Task EditSocketedGemsAsync(object context, ItemAttributes itemAttributes, ItemSlot itemSlot)
         {
             var skills = await _gameData.Skills;
-            await ShowDialogAsync(context,
-                new SkillsInSlotEditingViewModel(skills, _persistentData.EquipmentData.ItemImageService,
-                    itemAttributes, itemSlot),
-                new SkillsInSlotEditingDialog());
+            var vm = new SkillsInSlotEditingViewModel(skills, _persistentData.EquipmentData.ItemImageService,
+                itemAttributes, itemSlot);
+            await ShowDialogAsync(context, vm, new SkillsInSlotEditingDialog());
+            vm.Dispose();
         }
 
         public async Task<TabPickerResult> EditStashTabAsync(object context, TabPickerViewModel tabPickerViewModel)

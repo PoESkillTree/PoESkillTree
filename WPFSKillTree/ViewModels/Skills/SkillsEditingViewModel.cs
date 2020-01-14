@@ -27,6 +27,10 @@ namespace PoESkillTree.ViewModels.Skills
 
         public void Dispose()
         {
+            foreach (var slotViewModel in SkillsInSlots)
+            {
+                slotViewModel.Dispose();
+            }
         }
     }
 }
