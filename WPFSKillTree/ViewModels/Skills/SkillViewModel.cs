@@ -9,11 +9,11 @@ namespace PoESkillTree.ViewModels.Skills
         private int _quality;
         private int? _gemGroup;
         private int _socketIndex;
-        private SkillDefinitionViewModel _definition;
+        private SkillDefinitionViewModel? _definition;
         private bool _isEnabled;
         private IHasItemToolTip _toolTip;
 
-        public SkillViewModel(SkillDefinitionViewModel definition)
+        public SkillViewModel(SkillDefinitionViewModel? definition)
         {
             _definition = definition;
             _toolTip = CreateToolTip();
@@ -52,21 +52,28 @@ namespace PoESkillTree.ViewModels.Skills
             set => SetProperty(ref _socketIndex, value);
         }
 
-        public SkillDefinitionViewModel Definition
+        public SkillDefinitionViewModel? Definition
         {
             get => _definition;
-            set
-            {
-                if (value is null)
-                    return;
-                SetProperty(ref _definition, value);
-            }
+            set => SetProperty(ref _definition, value);
         }
 
         public bool IsEnabled
         {
             get => _isEnabled;
             set => SetProperty(ref _isEnabled, value);
+        }
+
+        public string DisplayName
+        {
+            get
+            {
+                if (Definition is null)
+                    return "";
+                return Definition.Model.IsSupport
+                    ? Definition.Model.BaseItem?.DisplayName ?? ""
+                    : Definition.Model.ActiveSkill.DisplayName;
+            }
         }
 
         public IHasItemToolTip ToolTip
@@ -88,6 +95,10 @@ namespace PoESkillTree.ViewModels.Skills
 
         protected override void OnPropertyChanged(string propertyName)
         {
+            if (propertyName == nameof(Definition) && Level > Definition?.MaxLevel)
+            {
+                Level = Definition.MaxLevel;
+            }
             if (propertyName != nameof(ToolTip))
             {
                 ToolTip = CreateToolTip();
@@ -97,16 +108,13 @@ namespace PoESkillTree.ViewModels.Skills
 
         private IHasItemToolTip CreateToolTip()
         {
-            if (Definition.Model.Levels.TryGetValue(Level, out var levelDefinition))
+            if (Definition != null && Definition.Model.Levels.TryGetValue(Level, out var levelDefinition))
             {
                 return new SkillItem(levelDefinition.Tooltip, Quality);
             }
             else
             {
-                var name = Definition.Model.IsSupport
-                    ? Definition.Model.BaseItem?.DisplayName ?? ""
-                    : Definition.Model.ActiveSkill.DisplayName;
-                return new SkillItem(name);
+                return new SkillItem(DisplayName);
             }
         }
     }

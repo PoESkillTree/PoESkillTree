@@ -173,6 +173,8 @@ namespace PoESkillTree.ViewModels.Skills
                 {
                     skillVm.SocketIndex = nextSocketIndex++;
                 }
+                if (skillVm.Definition is null)
+                    continue;
                 var skill = new Skill(skillVm.Definition.Id, skillVm.Level, skillVm.Quality, Slot,
                     skillVm.SocketIndex, skillVm.GemGroup - 1, skillVm.IsEnabled);
                 skills.Add(skill);
@@ -194,7 +196,8 @@ namespace PoESkillTree.ViewModels.Skills
         private void UpdateSummary()
         {
             var activeSkills = _skills
-                .Where(s => !s.Definition.Model.IsSupport)
+                .Where(s => s.Definition != null)
+                .Where(s => !s.Definition!.Model.IsSupport)
                 .ToList();
 
             if (activeSkills.IsEmpty())
@@ -205,10 +208,10 @@ namespace PoESkillTree.ViewModels.Skills
             else
             {
                 Summary = activeSkills
-                    .Select(s => s.Definition.Model.ActiveSkill.DisplayName)
+                    .Select(s => s.DisplayName)
                     .ToDelimitedString(", ");
                 LongSummary = activeSkills
-                    .Select(s => $"{s.Definition.Model.ActiveSkill.DisplayName} ({s.Level}/{s.Quality})")
+                    .Select(s => $"{s.DisplayName} ({s.Level}/{s.Quality})")
                     .ToDelimitedString("\n");
             }
         }
