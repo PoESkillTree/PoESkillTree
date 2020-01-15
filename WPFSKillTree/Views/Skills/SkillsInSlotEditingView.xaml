@@ -25,7 +25,8 @@
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*"
+                              MaxWidth="80" />
             <ColumnDefinition Width="1*"
                               MaxWidth="60" />
             <ColumnDefinition Width="15" />
@@ -35,7 +36,16 @@
                                      ItemsSource="{Binding AvailableSkills}"
                                      SelectedItem="{Binding NewSkill.Definition}"
                                      SearchValuePath="Name"
-                                     ToolTip="{Binding NewSkill.ToolTip}">
+                                     ToolTipService.InitialShowDelay="100"
+                                     ToolTipService.ShowDuration="60000">
+            <controls:SearchableComboBox.ToolTip>
+                <ToolTip Padding="0"
+                         BorderThickness="0">
+                    <ToolTip.Content>
+                        <controls:ItemTooltip DataContext="{Binding NewSkill.ToolTip}" />
+                    </ToolTip.Content>
+                </ToolTip>
+            </controls:SearchableComboBox.ToolTip>
             <controls:SearchableComboBox.ItemTemplate>
                 <DataTemplate DataType="viewModels:SkillDefinitionViewModel">
                     <StackPanel Orientation="Horizontal">
@@ -81,12 +91,20 @@
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="viewModels:SkillViewModel">
-                            <StackPanel Orientation="Horizontal"
-                                        ToolTip="{Binding ToolTip}">
+                            <DockPanel ToolTipService.InitialShowDelay="100"
+                                       ToolTipService.ShowDuration="60000">
+                                <DockPanel.ToolTip>
+                                    <ToolTip Padding="0"
+                                             BorderThickness="0">
+                                        <ToolTip.Content>
+                                            <controls:ItemTooltip DataContext="{Binding ToolTip}" />
+                                        </ToolTip.Content>
+                                    </ToolTip>
+                                </DockPanel.ToolTip>
                                 <Image Width="18" Margin="0 0 2 0"
                                        Source="{Binding Definition.Icon.ImageSource.Result}" />
                                 <TextBlock Text="{Binding Definition.Name}" />
-                            </StackPanel>
+                            </DockPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -133,7 +151,8 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="1*">
+                <DataGridTemplateColumn Width="1*"
+                                        MaxWidth="80">
                     <DataGridTemplateColumn.Header>
                         <l:Catalog>Enabled</l:Catalog>
                     </DataGridTemplateColumn.Header>

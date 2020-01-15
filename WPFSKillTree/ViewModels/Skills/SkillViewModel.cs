@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Utils;
+﻿using PoESkillTree.Model.Items;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.ViewModels.Skills
 {
@@ -10,12 +11,12 @@ namespace PoESkillTree.ViewModels.Skills
         private int _socketIndex;
         private SkillDefinitionViewModel _definition;
         private bool _isEnabled;
-        private string? _toolTip;
+        private IHasItemToolTip _toolTip;
 
         public SkillViewModel(SkillDefinitionViewModel definition)
         {
             _definition = definition;
-            UpdateToolTip();
+            _toolTip = CreateToolTip();
         }
 
         /// <summary>
@@ -54,7 +55,12 @@ namespace PoESkillTree.ViewModels.Skills
         public SkillDefinitionViewModel Definition
         {
             get => _definition;
-            set => SetProperty(ref _definition, value);
+            set
+            {
+                if (value is null)
+                    return;
+                SetProperty(ref _definition, value);
+            }
         }
 
         public bool IsEnabled
@@ -63,7 +69,7 @@ namespace PoESkillTree.ViewModels.Skills
             set => SetProperty(ref _isEnabled, value);
         }
 
-        public string? ToolTip
+        public IHasItemToolTip ToolTip
         {
             get => _toolTip;
             private set => SetProperty(ref _toolTip, value);
@@ -84,20 +90,23 @@ namespace PoESkillTree.ViewModels.Skills
         {
             if (propertyName != nameof(ToolTip))
             {
-                UpdateToolTip();
+                ToolTip = CreateToolTip();
             }
             base.OnPropertyChanged(propertyName);
         }
 
-        private void UpdateToolTip()
+        private IHasItemToolTip CreateToolTip()
         {
             if (Definition.Model.Levels.TryGetValue(Level, out var levelDefinition))
             {
-                ToolTip = levelDefinition.Tooltip.Name;
+                return new SkillItem(levelDefinition.Tooltip, Quality);
             }
             else
             {
-                ToolTip = null;
+                var name = Definition.Model.IsSupport
+                    ? Definition.Model.BaseItem?.DisplayName ?? ""
+                    : Definition.Model.ActiveSkill.DisplayName;
+                return new SkillItem(name);
             }
         }
     }

@@ -8,7 +8,7 @@
              xmlns:enums1="clr-namespace:PoESkillTree.Engine.GameModel.Items;assembly=PoESkillTree.Engine.GameModel"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
-             d:DataContext="{d:DesignInstance items:Item}"
+             d:DataContext="{d:DesignInstance items:IHasItemToolTip}"
              FontSize="14" FontWeight="Medium">
     <Control.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
@@ -189,7 +189,7 @@
                                         <Setter Property="Height" Value="*"/>
                                     </Style.Setters>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding HaveName}" Value="False">
+                                        <DataTrigger Binding="{Binding HasNameLine}" Value="False">
                                             <Setter Property="Height" Value="0"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -198,7 +198,8 @@
                         </RowDefinition>
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <TextBlock FontSize="16" Style="{StaticResource qualitycoloredTextblock}" VerticalAlignment="Center" Grid.Row="0" Text="{Binding NameLine}" Visibility="{Binding HaveName, Converter={StaticResource BoolToVisConverter}}"/>
+                    <TextBlock FontSize="16" Style="{StaticResource qualitycoloredTextblock}" VerticalAlignment="Center" Grid.Row="0" Text="{Binding NameLine}"
+                               Visibility="{Binding HasNameLine, Converter={StaticResource BoolToVisConverter}}"/>
                     <TextBlock FontSize="16" Style="{StaticResource qualitycoloredTextblock}" VerticalAlignment="Center" Margin="0,0,0,4" Grid.Row="1" Text="{Binding TypeLine}"/>
                 </Grid>
             </Grid>
@@ -342,7 +343,7 @@
         </ItemsControl>
 
         <!--9 flavour text separator-->
-        <Image Grid.Row="9" Visibility="{Binding HaveFlavourText, Converter={StaticResource BoolToVisConverter}}">
+        <Image Grid.Row="9" Visibility="{Binding HasFlavourText, Converter={StaticResource BoolToVisConverter}}">
             <Image.Style>
                 <Style TargetType="{x:Type Image}" BasedOn="{StaticResource spacerBase}">
                     <Style.Triggers>
@@ -362,7 +363,7 @@
         </Image>
 
         <TextBlock Margin="3,0" Grid.Row="10" FontStyle="Oblique" Style="{StaticResource qualitycoloredTextblock}"
-                   Visibility="{Binding HaveFlavourText, Converter={StaticResource BoolToVisConverter}}"
+                   Visibility="{Binding HasFlavourText, Converter={StaticResource BoolToVisConverter}}"
                    Text="{Binding FlavourText}" />
 
     </Grid>
