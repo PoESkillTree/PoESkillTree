@@ -1,0 +1,193 @@
+﻿<UserControl x:Class="PoESkillTree.Views.Skills.SkillsInSlotEditingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:PoESkillTree.Controls"
+             xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
+             xmlns:viewModels="clr-namespace:PoESkillTree.ViewModels.Skills"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewModels:SkillsInSlotEditingViewModel}">
+    <UserControl.Resources>
+        <viewModels:SkillsInSlotEditingViewModelProxy x:Key="VmProxy" Data="{Binding}" />
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition MinHeight="200" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*"
+                              MaxWidth="80" />
+            <ColumnDefinition Width="1*"
+                              MaxWidth="60" />
+            <ColumnDefinition Width="15" />
+        </Grid.ColumnDefinitions>
+
+        <controls:SearchableComboBox Grid.Row="0" Grid.Column="0"
+                                     ItemsSource="{Binding AvailableSkills}"
+                                     SelectedItem="{Binding NewSkill.Definition}"
+                                     SearchValuePath="Name"
+                                     ToolTipService.InitialShowDelay="100"
+                                     ToolTipService.ShowDuration="60000">
+            <controls:SearchableComboBox.ToolTip>
+                <ToolTip Padding="0"
+                         BorderThickness="0">
+                    <ToolTip.Content>
+                        <controls:ItemTooltip DataContext="{Binding NewSkill.ToolTip}" />
+                    </ToolTip.Content>
+                </ToolTip>
+            </controls:SearchableComboBox.ToolTip>
+            <controls:SearchableComboBox.ItemTemplate>
+                <DataTemplate DataType="viewModels:SkillDefinitionViewModel">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="18" Margin="0 0 2 0"
+                               Source="{Binding Icon.ImageSource.Result}" />
+                        <TextBlock Text="{Binding Name}" />
+                    </StackPanel>
+                </DataTemplate>
+            </controls:SearchableComboBox.ItemTemplate>
+        </controls:SearchableComboBox>
+        <mahapps:NumericUpDown Grid.Row="0" Grid.Column="1"
+                               Minimum="1" Maximum="{Binding NewSkill.Definition.MaxLevel}"
+                               NumericInputMode="Numbers"
+                               Value="{Binding NewSkill.Level}" />
+        <mahapps:NumericUpDown Grid.Row="0" Grid.Column="2"
+                               Minimum="0" Maximum="30"
+                               NumericInputMode="Numbers"
+                               Value="{Binding NewSkill.Quality}" />
+        <mahapps:NumericUpDown Grid.Row="0" Grid.Column="3"
+                               Minimum="1"
+                               NumericInputMode="Numbers"
+                               Value="{Binding NewSkill.GemGroup}" />
+        <CheckBox Grid.Row="0" Grid.Column="4"
+                  HorizontalAlignment="Left"
+                  Margin="10 0 0 0"
+                  IsChecked="{Binding NewSkill.IsEnabled}" />
+        <Button Grid.Row="0" Grid.Column="5"
+                HorizontalAlignment="Center"
+                Command="{Binding AddSkillCommand}">
+            <l:Catalog>Add</l:Catalog>
+        </Button>
+
+        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="7"
+                  AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
+                  CanUserResizeColumns="False"
+                  VerticalScrollBarVisibility="Visible"
+                  ItemsSource="{Binding SkillsViewSource.View}">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn IsReadOnly="True"
+                                        Width="4*">
+                    <DataGridTemplateColumn.Header>
+                        <l:Catalog>Skill Name</l:Catalog>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="viewModels:SkillViewModel">
+                            <DockPanel ToolTipService.InitialShowDelay="100"
+                                       ToolTipService.ShowDuration="60000">
+                                <DockPanel.ToolTip>
+                                    <ToolTip Padding="0"
+                                             BorderThickness="0">
+                                        <ToolTip.Content>
+                                            <controls:ItemTooltip DataContext="{Binding ToolTip}" />
+                                        </ToolTip.Content>
+                                    </ToolTip>
+                                </DockPanel.ToolTip>
+                                <Image Width="18" Margin="0 0 2 0"
+                                       Source="{Binding Definition.Icon.ImageSource.Result}" />
+                                <TextBlock Text="{Binding Definition.Name}" />
+                            </DockPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                
+                <DataGridTemplateColumn Width="1*">
+                    <DataGridTemplateColumn.Header>
+                        <l:Catalog>Level</l:Catalog>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="viewModels:SkillViewModel">
+                            <mahapps:NumericUpDown Style="{StaticResource UpDownInDataGridStyle}"
+                                                   Minimum="1" Maximum="{Binding Definition.MaxLevel}"
+                                                   NumericInputMode="Numbers"
+                                                   Value="{Binding Level, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="1*">
+                    <DataGridTemplateColumn.Header>
+                        <l:Catalog>Quality</l:Catalog>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="viewModels:SkillViewModel">
+                            <mahapps:NumericUpDown Style="{StaticResource UpDownInDataGridStyle}"
+                                                   Minimum="0" Maximum="30"
+                                                   NumericInputMode="Numbers"
+                                                   Value="{Binding Quality, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="1*">
+                    <DataGridTemplateColumn.Header>
+                        <l:Catalog>Group</l:Catalog>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="viewModels:SkillViewModel">
+                            <mahapps:NumericUpDown Style="{StaticResource UpDownInDataGridStyle}"
+                                                   Minimum="1"
+                                                   NumericInputMode="Numbers"
+                                                   Value="{Binding GemGroup, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="1*"
+                                        MaxWidth="80">
+                    <DataGridTemplateColumn.Header>
+                        <l:Catalog>Enabled</l:Catalog>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="viewModels:SkillViewModel">
+                            <CheckBox IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}"
+                                      HorizontalAlignment="Left"
+                                      Margin="10 0 0 0" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="1*"
+                                        MaxWidth="60">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="viewModels:SkillViewModel">
+                            <Button Command="{Binding Data.RemoveSkillCommand, Source={StaticResource VmProxy}}"
+                                    CommandParameter="{Binding}"
+                                    Width="20" Height="20"
+                                    HorizontalAlignment="Center"
+                                    Style="{DynamicResource MahApps.Styles.Button.Circle}">
+                                <iconPacks:PackIconModern Kind="Close" Height="8" Width="8" />
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="7">
+            <Run><l:Catalog Message="Equipped item's maximum number of sockets:" /></Run>
+            <Run Text="{Binding NumberOfSockets, Mode=OneWay}" />
+        </TextBlock>
+    </Grid>
+</UserControl>
+
+
+

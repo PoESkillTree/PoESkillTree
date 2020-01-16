@@ -1,0 +1,17 @@
+﻿<dialogs:CloseableBaseDialog x:Class="PoESkillTree.Views.Skills.SkillsInSlotEditingDialog"
+                             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                             xmlns:dialogs="clr-namespace:PoESkillTree.Controls.Dialogs"
+                             xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
+                             xmlns:skills="clr-namespace:PoESkillTree.ViewModels.Skills"
+                             xmlns:local="clr-namespace:PoESkillTree.Views.Skills"
+                             mc:Ignorable="d"
+                             d:DataContext="{d:DesignInstance skills:SkillsInSlotEditingViewModel}">
+    <dialogs:CloseableBaseDialog.Title>
+        <l:Catalog Message="Edit Socketed Skills" />
+    </dialogs:CloseableBaseDialog.Title>
+    <local:SkillsInSlotEditingView Margin="0 5 0 0"
+                                   DataContext="{Binding}" />
+</dialogs:CloseableBaseDialog>

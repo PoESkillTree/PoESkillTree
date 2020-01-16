@@ -126,6 +126,10 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
 
         private static void ConvertMods(XmlPathOfBuildingItem xmlItem, IReadOnlyList<string> lines, int startIndex, Item item, int implicitCount)
         {
+            var implicitMods = new List<ItemMod>();
+            var craftedMods = new List<ItemMod>();
+            var explicitMods = new List<ItemMod>();
+
             for (var i = startIndex; i < lines.Count; i++)
             {
                 var line = lines[i];
@@ -139,17 +143,21 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
 
                 if (i < implicitCount)
                 {
-                    item.ImplicitMods.Add(itemMod);
+                    implicitMods.Add(itemMod);
                 }
                 else if (isCrafted)
                 {
-                    item.CraftedMods.Add(itemMod);
+                    craftedMods.Add(itemMod);
                 }
                 else
                 {
-                    item.ExplicitMods.Add(itemMod);
+                    explicitMods.Add(itemMod);
                 }
             }
+
+            item.ImplicitMods = implicitMods;
+            item.CraftedMods = craftedMods;
+            item.ExplicitMods = explicitMods;
         }
 
         private static bool IsCorrectVariant(XmlPathOfBuildingItem xmlItem, ref string modifierLine)

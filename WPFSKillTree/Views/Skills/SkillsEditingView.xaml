@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="PoESkillTree.Views.Skills.SkillsEditingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewModels="clr-namespace:PoESkillTree.ViewModels.Skills"
+             xmlns:local="clr-namespace:PoESkillTree.Views.Skills"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:converter="clr-namespace:PoESkillTree.Utils.Converter"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewModels:SkillsEditingViewModel}">
+    <UserControl.Resources>
+        <converter:ItemSlotToStringConverter x:Key="ItemSlotToStringConverter" />
+    </UserControl.Resources>
+    <TabControl ItemsSource="{Binding SkillsInSlots}"
+                mah:TabControlHelper.Underlined="TabItems"
+                TabStripPlacement="Left">
+        <TabControl.ItemTemplate>
+            <DataTemplate DataType="viewModels:SkillsInSlotEditingViewModel">
+                <StackPanel MaxWidth="150"
+                            ToolTip="{Binding LongSummary}">
+                    <TextBlock Text="{Binding Slot, Converter={StaticResource ItemSlotToStringConverter}}"
+                               TextAlignment="Right"
+                               FontSize="17" />
+                    <TextBlock Text="{Binding Summary}"
+                               TextAlignment="Right"
+                               FontSize="{StaticResource MahApps.Font.Size.Default}" />
+                </StackPanel>
+            </DataTemplate>
+        </TabControl.ItemTemplate>
+        <TabControl.ContentTemplate>
+            <DataTemplate DataType="viewModels:SkillsInSlotEditingViewModel">
+                <local:SkillsInSlotEditingView DataContext="{Binding}" />
+            </DataTemplate>
+        </TabControl.ContentTemplate>
+    </TabControl>
+</UserControl>

@@ -18,7 +18,7 @@ using PoESkillTree.Utils;
 
 namespace PoESkillTree.Model.Items
 {
-    public class Item : Notifier, IRangeProvider<int>
+    public class Item : Notifier, IRangeProvider<int>, IHasItemToolTip
     {
         private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
@@ -55,11 +55,13 @@ namespace PoESkillTree.Model.Items
             set => SetProperty(ref _frame, value);
         }
 
-        private ObservableCollection<ItemMod> _properties = new ObservableCollection<ItemMod>();
-        public ObservableCollection<ItemMod> Properties
+        private ObservableCollection<ItemMod> _observableProperties = new ObservableCollection<ItemMod>();
+        public IReadOnlyList<ItemMod> Properties => _observableProperties;
+
+        private ObservableCollection<ItemMod> ObservableProperties
         {
-            get => _properties;
-            set => SetProperty(ref _properties, value);
+            get => _observableProperties;
+            set => SetProperty(ref _observableProperties, value, () => OnPropertyChanged(nameof(Properties)));
         }
 
         public JewelRadius JewelRadius
@@ -81,22 +83,22 @@ namespace PoESkillTree.Model.Items
         private readonly ObservableCollection<ItemMod> _requirements = new ObservableCollection<ItemMod>();
         public IReadOnlyList<ItemMod> Requirements => _requirements;
 
-        private List<ItemMod> _implicitMods = new List<ItemMod>();
-        public List<ItemMod> ImplicitMods
+        private IReadOnlyList<ItemMod> _implicitMods = new List<ItemMod>();
+        public IReadOnlyList<ItemMod> ImplicitMods
         {
             get => _implicitMods;
             set => SetProperty(ref _implicitMods, value);
         }
 
-        private List<ItemMod> _explicitMods = new List<ItemMod>();
-        public List<ItemMod> ExplicitMods
+        private IReadOnlyList<ItemMod> _explicitMods = new List<ItemMod>();
+        public IReadOnlyList<ItemMod> ExplicitMods
         {
             get => _explicitMods;
             set => SetProperty(ref _explicitMods, value);
         }
 
-        private List<ItemMod> _craftedMods = new List<ItemMod>();
-        public List<ItemMod> CraftedMods
+        private IReadOnlyList<ItemMod> _craftedMods = new List<ItemMod>();
+        public IReadOnlyList<ItemMod> CraftedMods
         {
             get => _craftedMods;
             set => SetProperty(ref _craftedMods, value);
@@ -106,10 +108,11 @@ namespace PoESkillTree.Model.Items
         public string? FlavourText
         {
             get => _flavourText;
-            set => SetProperty(ref _flavourText, value, () => OnPropertyChanged(nameof(HaveFlavourText)));
+            set => SetProperty(ref _flavourText, value, () => OnPropertyChanged(nameof(HasFlavourText)));
         }
-        public bool HaveFlavourText
-            => !string.IsNullOrEmpty(_flavourText);
+
+        public bool HasFlavourText =>
+            !string.IsNullOrEmpty(FlavourText);
 
         public IEnumerable<ItemMod> Mods
             => ImplicitMods.Union(ExplicitMods).Union(CraftedMods);
@@ -121,9 +124,11 @@ namespace PoESkillTree.Model.Items
         public string NameLine
         {
             get => _nameLine;
-            set => SetProperty(ref _nameLine, value, () => OnPropertyChanged(nameof(HaveName)));
+            set => SetProperty(ref _nameLine, value, () => OnPropertyChanged(nameof(IHasItemToolTip.HasNameLine)));
         }
-        public bool HaveName => !string.IsNullOrEmpty(NameLine);
+
+        public bool HasNameLine =>
+            !string.IsNullOrEmpty(NameLine);
 
         private string _typeLine = "";
         public string TypeLine
@@ -171,7 +176,7 @@ namespace PoESkillTree.Model.Items
             Height = itemBase.InventoryHeight;
             RequirementsFromBase();
             Image = itemBase.Image;
-            Properties = new ObservableCollection<ItemMod>(itemBase.GetRawProperties());
+            ObservableProperties = new ObservableCollection<ItemMod>(itemBase.GetRawProperties());
         }
 
         public Item(Item source)
@@ -183,7 +188,7 @@ namespace PoESkillTree.Model.Items
             _frame = source._frame;
             _isEnabled = source._isEnabled;
 
-            _properties = new ObservableCollection<ItemMod>(source._properties);
+            _observableProperties = new ObservableCollection<ItemMod>(source._observableProperties);
             _requirements = new ObservableCollection<ItemMod>(source._requirements);
             _explicitMods = source._explicitMods.ToList();
             _implicitMods = source._implicitMods.ToList();
@@ -259,7 +264,7 @@ namespace PoESkillTree.Model.Items
             {
                 foreach (var obj in propertiesToken)
                 {
-                    Properties.Add(ItemModFromJson(obj, false));
+                    ObservableProperties.Add(ItemModFromJson(obj, false));
                 }
             }
 
@@ -286,27 +291,26 @@ namespace PoESkillTree.Model.Items
                 _requirements.AddRange(mods);
             }
 
-
             if (val.TryGetValue("implicitMods", out var implicitModsToken))
-                foreach (var s in implicitModsToken.Values<string>())
-                {
-                    _implicitMods.Add(ItemModFromString(s));
-                }
+            {
+                ImplicitMods = implicitModsToken.Values<string>().Select(s => ItemModFromString(s)).ToList();
+            }
+
             if (val.TryGetValue("fracturedMods", out var fracturedModsToken))
-                foreach (var s in fracturedModsToken.Values<string>())
-                {
-                    ExplicitMods.Add(ItemModFromString(s));
-                }
+            {
+                ExplicitMods = fracturedModsToken.Values<string>().Select(s => ItemModFromString(s)).ToList();
+            }
+
             if (val.TryGetValue("explicitMods", out var explicitModsToken))
-                foreach (var s in explicitModsToken.Values<string>())
-                {
-                    ExplicitMods.Add(ItemModFromString(s));
-                }
+            {
+                var additionalExplicitMods = explicitModsToken.Values<string>().Select(s => ItemModFromString(s));
+                ExplicitMods = ExplicitMods.Concat(additionalExplicitMods).ToList();
+            }
+
             if (val.TryGetValue("craftedMods", out var craftedModsToken))
-                foreach (var s in craftedModsToken.Values<string>())
-                {
-                    CraftedMods.Add(ItemModFromString(s));
-                }
+            {
+                CraftedMods = craftedModsToken.Values<string>().Select(s => ItemModFromString(s)).ToList();
+            }
 
             if (val.TryGetValue("flavourText", out var flavourTextToken) && flavourTextToken.HasValues)
                 FlavourText = string.Join("\r\n", flavourTextToken.Values<string>().Select(s => s.Replace("\r", "")));
@@ -548,7 +552,7 @@ namespace PoESkillTree.Model.Items
                             new JArray(CraftedMods.Select(p => p.ToJObject(true)).ToArray())));
             }
 
-            if (HaveFlavourText)
+            if (HasFlavourText)
                 j.Add("flavourText", new JArray(FlavourText!));
 
             return j;
@@ -562,7 +566,7 @@ namespace PoESkillTree.Model.Items
         public void UpdateProperties(int quality, params ItemMod[] additionalProperties)
         {
             var baseProperties = BaseType.GetRawProperties(quality);
-            Properties = new ObservableCollection<ItemMod>(baseProperties.Concat(additionalProperties));
+            ObservableProperties = new ObservableCollection<ItemMod>(baseProperties.Concat(additionalProperties));
             ApplyLocalModsToProperties();
             if (IsWeapon)
             {
@@ -667,12 +671,12 @@ namespace PoESkillTree.Model.Items
                     cols.Add(ValueColoring.Lightning);
                 }
 
-                Properties.Add(new ItemMod("Elemental Damage: " + string.Join(", ", mods), true, values, cols));
+                ObservableProperties.Add(new ItemMod("Elemental Damage: " + string.Join(", ", mods), true, values, cols));
             }
 
             if (chaosMods.Any())
             {
-                Properties.Add(new ItemMod("Chaos Damage: #-#", true, chaosMods[0].Values,
+                ObservableProperties.Add(new ItemMod("Chaos Damage: #-#", true, chaosMods[0].Values,
                     new[] { ValueColoring.Chaos, ValueColoring.Chaos }));
             }
         }

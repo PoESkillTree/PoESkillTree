@@ -44,6 +44,7 @@ using PoESkillTree.ViewModels.Builds;
 using PoESkillTree.ViewModels.Crafting;
 using PoESkillTree.ViewModels.Equipment;
 using PoESkillTree.ViewModels.Import;
+using PoESkillTree.ViewModels.Skills;
 using PoESkillTree.Views.Crafting;
 using PoESkillTree.Views.Import;
 using Attribute = PoESkillTree.ViewModels.Attribute;
@@ -131,6 +132,14 @@ namespace PoESkillTree.Views
                 value.SharedConfiguration.SetBandit(PersistentData.CurrentBuild.Bandits.Choice);
                 SetProperty(ref _computationViewModel, value);
             }
+        }
+
+        private SkillsEditingViewModel _skillsEditingViewModel;
+
+        public SkillsEditingViewModel SkillsEditingViewModel
+        {
+            get => _skillsEditingViewModel;
+            private set => SetProperty(ref _skillsEditingViewModel, value);
         }
 
         private SkillTree _tree;
@@ -1605,6 +1614,7 @@ namespace PoESkillTree.Views
                 ItemAttributes.ItemDataChanged -= ItemAttributesOnItemDataChanged;
                 ItemAttributes.Dispose();
             }
+            SkillsEditingViewModel?.Dispose();
             SkillTreeAreaViewModel?.Dispose();
             InventoryViewModel?.Dispose();
 
@@ -1629,6 +1639,7 @@ namespace PoESkillTree.Views
             InventoryViewModel =
                 new InventoryViewModel(_dialogCoordinator, itemAttributes, await GetJewelPassiveNodesAsync());
             SkillTreeAreaViewModel = new SkillTreeAreaViewModel(SkillTree.Skillnodes, InventoryViewModel.TreeJewels);
+            SkillsEditingViewModel = new SkillsEditingViewModel(skillDefinitions, equipmentData.ItemImageService, itemAttributes);
             _abyssalSocketObserver?.SetItemJewelViewModels(InventoryViewModel.ItemJewels);
             Tree.JewelViewModels = InventoryViewModel.TreeJewels;
             UpdateUI();
