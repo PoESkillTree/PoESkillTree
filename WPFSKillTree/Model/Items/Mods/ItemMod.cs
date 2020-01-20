@@ -13,7 +13,7 @@ namespace PoESkillTree.Model.Items.Mods
     public class ItemMod
     {
 
-        public static readonly Regex Numberfilter = new Regex(@"-?\d*\.?\d+");
+        public static readonly Regex Numberfilter = new Regex(@"((?<!\d)-)?\d*\.?\d+");
 
         public string Attribute { get; }
 
