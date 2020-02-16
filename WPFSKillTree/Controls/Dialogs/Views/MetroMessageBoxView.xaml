@@ -36,7 +36,7 @@
                 <TextBlock Margin="0 5 0 0"
                            Text="{Binding Message}"
                            TextWrapping="Wrap"
-                           FontSize="{DynamicResource MahApps.Sizes.Font.DialogMessage}" />
+                           FontSize="{DynamicResource MahApps.Font.Size.Dialog.Message}" />
             </ScrollViewer>
             <GroupBox Visibility="{Binding Details, Converter={StaticResource StringToVisibilityConverter}}"
                       Margin="0 5 0 0">

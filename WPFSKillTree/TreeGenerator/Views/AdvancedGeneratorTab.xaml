@@ -403,7 +403,7 @@
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="5" TextWrapping="Wrap" MaxWidth="600" Margin="5"
-                               FontSize="{DynamicResource MahApps.Sizes.Font.Normal}">
+                               FontSize="{DynamicResource MahApps.Font.Size.Default}">
                         <Run>
                             <l:Catalog>These settings define which attributes influence pseudo attributes.</l:Catalog>
                         </Run>

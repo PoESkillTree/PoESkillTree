@@ -19,12 +19,12 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0"
                    Margin="0 5 0 0"
-                   FontSize="{DynamicResource MahApps.Sizes.Font.DialogMessage}"
+                   FontSize="{DynamicResource MahApps.Font.Size.Dialog.Message}"
                    Text="{Binding Message}"
                    TextWrapping="Wrap" />
         <TextBox Grid.Row="1"
                  Margin="0 5 0 0"
-                 FontSize="{DynamicResource MahApps.Sizes.Font.DialogMessage}"
+                 FontSize="{DynamicResource MahApps.Font.Size.Dialog.Message}"
                  controls:ControlsHelper.FocusBorderBrush="{DynamicResource MahApps.Brushes.Accent}"
                  controls:TextBoxHelper.SelectAllOnFocus="True"
                  Text="{Binding Input, UpdateSourceTrigger=PropertyChanged}"

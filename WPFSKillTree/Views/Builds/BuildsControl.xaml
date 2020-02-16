@@ -34,7 +34,7 @@
                     <Style TargetType="TextBlock">
                         <Setter Property="Text" Value="{Binding AscendancyClass}" />
                         <Setter Property="Margin" Value="10 0 0 0" />
-                        <Setter Property="Foreground" Value="{DynamicResource MahApps.Sizes.Font.DialogMessage}" />
+                        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Text}" />
                         <Style.Triggers>
                             <!-- AscendancyClass == null -->
                             <DataTrigger Binding="{Binding AscendancyClass}" Value="{x:Null}">
