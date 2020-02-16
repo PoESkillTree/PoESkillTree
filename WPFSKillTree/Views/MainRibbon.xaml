@@ -782,7 +782,8 @@
                     </fluent:SplitButton.ToolTip>
                     <fluent:MenuItem Command="{Binding TreeGeneratorInteraction.RunTaggedNodesCommand}">
                         <fluent:MenuItem.Icon>
-                            <iconPacks:PackIconMaterial Kind="MapMarker" />
+                            <iconPacks:PackIconMaterial Kind="MapMarker"
+                                                        Width="Auto" Height="Auto" />
                         </fluent:MenuItem.Icon>
                         <fluent:MenuItem.Header>
                             <l:Catalog Message="Run 'Tagged Nodes' generator" />
@@ -798,9 +799,10 @@
                             </fluent:ScreenTip>
                         </fluent:MenuItem.ToolTip>
                     </fluent:MenuItem>
-                    <fluent:MenuItem Command="{Binding TreeGeneratorInteraction.RunTaggedNodesCommand}">
+                    <fluent:MenuItem Command="{Binding TreeGeneratorInteraction.RunAdvancedCommand}">
                         <fluent:MenuItem.Icon>
-                            <iconPacks:PackIconMaterial Kind="Sigma" />
+                            <iconPacks:PackIconMaterial Kind="Sigma"
+                                                        Width="Auto" Height="Auto" />
                         </fluent:MenuItem.Icon>
                         <fluent:MenuItem.Header>
                             <l:Catalog Message="Run 'Advanced' generator" />
