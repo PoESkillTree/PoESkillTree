@@ -18,22 +18,22 @@ namespace PoESkillTree.Utils.UrlProcessing
         private static IEnumerable<TestCaseData> CreateNodeCountData()
         {
             yield return new TestCaseData(
-                    "http://poeplanner.com/AAQAAPcTEAB534rpAkuuGyXZW20ZEVA1uacrHU-X9FJTPV-XlUyz0B_v6yBuUDARD6yY99eESFxrw23i9wFvi3oi9GwLkyd_xsHF7Bgsv4_60NBfakcG2-e0xcM6KjhcQFS9Fe2Wi9W5h8unm3WezxXYdrk-rGYs4X3j8uFjQ2wI8YrviPk3189Jsb6KoS8RlpAbcFaaE9vUieDmWJMfSRPK07QM6roNfBXXhq5WYw5IXfIqC3BSoqMPxDt8uMrw1UlROw32_Kc0YqxsjJ2qES_rY7VI1EKEb3X9Fr8PqySLNj1W9dtul9COihpI9Ch88JEHu_wVfn6hadgAAAAAAA==")
-                .Returns(121);
+                    "https://poeplanner.com/ABMAAOkAExMAAHHfiukCS64bJdlbbRkRUDW5pysdT5f0UlM9X5eVTLPQH-_rIG5QMBEPrJj314RIXGvDbeL3AW-LeiL0bAuTJ3_GwcXsGCy_j_rQ0F9qRwbb57TFwzpcQFS9Fe2Wi9W5h8unm3WezxXYdrk-rGYs4fLhY0NsCPGK74j5N9fPSbG-iqEvEZaJ4OZYkx9JE8rTtAzqug18Dkhd8ioLcFKiow_EO3y4yvDVSVE7Dfb8pzRirGyMnarrY7VI1EKEb3X9Fr8PqySLNj1W9dtul9COim1sItgaSPQofPCRB7v8fqFp2JJ0AAAAAAA=")
+                .Returns(113);
             yield return new TestCaseData(
                     "https://pathofexile.com/fullscreen-passive-skill-tree/AAAABAMBAQFvDXwOSA-rD8QRDxEvEVARlhV-FdcV7Ra_GkgbJR1PIG4i9CSLKgsqOCy_LOE1uTY9Ow07fD1fRwZJE0lRSbFLrkyzUDBSU1S9VmNW9VxAXGtd8l9qYqxjQ2nYbAhsC2yMbRlwUnBWdZ51_XzwfeN-oX_GhEiEb4auh8uJ4It6joqP-pAbkQeTH5MnlouXlZfQl_SaE52qoS-io6crpzSnm6xmrJi0DLTFtUi4yrk-u_y-isHFwzrDbcrTzxXQH9DQ1ELVudfP2HbZW9tu29Tb59-K4vfmWOkC6rrrY-wY74jv6_DV8Yry4fQo9vz31_k3")
                 .Returns(121);
             yield return new TestCaseData(
-                    "http://poeplanner.com/AAQAACITAAAI37CSwY6-ES18g-vuHNyPGgGPGgoCFQIAAAEAAAAAAAAAAA==")
+                    "https://poeplanner.com/ABMAACgAExMAAAjfsJLBjr4RLXyD6-4c3I8aAY8aDgIZAQAAAQEBAAAAAAAAAAAAAA==")
                 .Returns(8);
             yield return new TestCaseData(
                     "http://poedb.tw/us/passive-skill-tree/AAAABAMBAAFvDXwOSA-rD8QRDxEvEVARlhV-FdcV7Ra_GkgbJR1PIG4i9CSLKgsqOCy_LOE1uTY9Ow07fD1fRwZJE0lRSbFLrkyzUDBSU1S9VmNW9VxAXGtd8l9qYqxjQ2nYbAhsC2yMbRlwUnBWdZ51_XzwfeN-oX_GhEiEb4auh8uJ4It6joqP-pAbkQeTH5MnlouXlZfQl_SaE52qoS-io6crpzSnm6xmrJi0DLTFtUi4yrk-u_y-isHFwzrDbcrTzxXQH9DQ1ELVudfP2HbZW9tu29Tb59-K4vfmWOkC6rrrY-wY74jv6_DV8Yry4fQo9vz31_k3")
                 .Returns(121);
             yield return new TestCaseData(
-                    "http://poeplanner.com/AAQCAAAAIgEBAQACAAfQAQH0AQkACxEADBAACwUJBw0KAwAABwEABgIAAA==")
+                    "https://poeplanner.com/ABMAAAAAIgEBAQACAAfQAQH0AQkACxEADBAACwUJBw0KAwAABwEABgIAAA==")
                 .Returns(0);
             yield return new TestCaseData(
-                    "http://poeplanner.com/AAQBAAAAAAAkAAAACQDOABQAAAQHAAwAAAAUAQF4AAADAwAAAAAAAAAAAAAA")
+                    "https://poeplanner.com/ABMAAAAAAAAnAAAACQBwAhQAAAQHAA8AywAUAQEBDAAAAAADAwAAAAAAAAAAAAAA")
                 .Returns(0);
             yield return new TestCaseData(
                     "https://poebuilder.com/character/AAAAAgUAfA6nVVugQ8hPBGjyogDwH5o74XPvfDwFgpuQVScv7Dhj_XrmcYXAGho4RtexQtq51abtPBps5CI26eNqFm8kqnF5FxwSaZ2upwismPFs7FUqjUkbNtiD21XGOlhMswQHPV9SU5eVwfOVIC0f2wuCHl8q6-QRln_GoqO3dR7wDkjljp1jXfKMNqSxJpVh4lVLFr9Om9ngm7VTNQ-rRitTUkWdmuDr7riT-ejYvf4Ktz5Bh9gkNsUfAodlr7cyNDwtxq7E9gn21HwGDiftU6UMXxyn7hVJUfDVlS4HHoLHxp4Qfwx9KPo=")
