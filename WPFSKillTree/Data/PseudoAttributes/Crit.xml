@@ -36,7 +36,7 @@
 	</PseudoAttribute>
 	<PseudoAttribute Name="+#% to Critical Strike Multiplier" Group="Critical Strike">
 		<Attribute Name="+#% to Critical Strike Multiplier" />
-		<Attribute Name="+#% to Critical Strike Multiplier with {0}">
+		<Attribute Name="\+#% to Critical Strike Multiplier with {0}">
 			<Conditions>
 				<AndComposition>
 					<WeaponClass>{0}</WeaponClass>
