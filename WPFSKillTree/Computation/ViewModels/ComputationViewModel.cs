@@ -54,6 +54,7 @@ namespace PoESkillTree.Computation.ViewModels
 
             ConfigurationStats = await ConfigurationStatsViewModel.CreateAsync(_observableCalculator, _nodeFactory);
             AddConfigurationStat(f.StatBuilders.Level, Entity.Enemy);
+            AddConfigurationStat(f.StatBuilders.Armour, Entity.Enemy);
 
             GainOnActionStats = await GainOnActionStatsViewModel.CreateAsync(_observableCalculator, _nodeFactory);
             SharedConfiguration = SharedConfigurationViewModel.Create(_nodeFactory, f);
@@ -79,6 +80,16 @@ namespace PoESkillTree.Computation.ViewModels
                 t => AddAvailableStats(OffensiveStats, f.MetaStatBuilders.EnemyResistanceAgainstCrits(t)));
             ForEachDamageType(
                 t => AddAvailableStats(OffensiveStats, f.MetaStatBuilders.EnemyResistanceAgainstNonCrits(t)));
+            ForEachDamageType(
+                t => AddAvailableStats(OffensiveStats, f.MetaStatBuilders.EffectiveDamageMultiplierWithCrits(t)));
+            ForEachDamageType(
+                t => AddAvailableStats(OffensiveStats, f.MetaStatBuilders.EffectiveDamageMultiplierWithNonCrits(t)));
+            ForEachDamageType(
+                t => AddAvailableStats(OffensiveStats, f.DamageTypeBuilders.From(t).DamageMultiplierWithCrits));
+            ForEachDamageType(
+                t => AddAvailableStats(OffensiveStats, f.DamageTypeBuilders.From(t).DamageMultiplierWithNonCrits));
+            ForEachDamageType(
+                t => AddAvailableStats(OffensiveStats, f.DamageTypeBuilders.From(t).Damage.Taken, Entity.Enemy));
             AddStats(OffensiveStats,
                 f.MetaStatBuilders.Damage(DamageType.Physical).WithSkills.With(DamageSource.Attack));
             AddStats(OffensiveStats,
@@ -102,6 +113,9 @@ namespace PoESkillTree.Computation.ViewModels
 
             AddStats(OffensiveStats, f.StatBuilders.ChanceToHit);
             AddAvailableStats(OffensiveStats, f.StatBuilders.Accuracy);
+            AddAvailableStats(OffensiveStats, f.StatBuilders.Evasion, Entity.Enemy);
+            AddAvailableStats(OffensiveStats, f.MetaStatBuilders.EnemyResistanceFromArmourAgainstNonCrits);
+            AddAvailableStats(OffensiveStats, f.StatBuilders.Armour, Entity.Enemy);
 
             ForEachDamagingAilment(
                 a => AddAvailableStats(OffensiveStats, f.MetaStatBuilders.AilmentInstanceLifetimeDamage(a)));
