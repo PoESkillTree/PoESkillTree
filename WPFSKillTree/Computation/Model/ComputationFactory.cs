@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using PoESkillTree.Engine.Computation.Builders;
 using PoESkillTree.Engine.Computation.Common.Builders;
 using PoESkillTree.Engine.Computation.Core;
+using PoESkillTree.Engine.Computation.Core.Nodes;
 using PoESkillTree.Engine.Computation.Data;
 using PoESkillTree.Engine.Computation.Data.Steps;
 using PoESkillTree.Engine.Computation.Parsing;
@@ -12,20 +13,23 @@ namespace PoESkillTree.Computation.Model
 {
     public class ComputationFactory
     {
+        private readonly Lazy<ICalculator> _calculator;
         private readonly Lazy<Task<IBuilderFactories>> _builderFactories;
         private readonly Lazy<Task<IParser>> _parser;
 
         public ComputationFactory(GameData gameData)
         {
+            _calculator = new Lazy<ICalculator>(Calculator.Create);
             _builderFactories = new Lazy<Task<IBuilderFactories>>(
                 () => BuilderFactories.CreateAsync(gameData));
             _parser = new Lazy<Task<IParser>>(
-                () => Parser<ParsingStep>.CreateAsync(gameData, _builderFactories.Value,
-                    ParsingData.CreateAsync(gameData, _builderFactories.Value)));
+                async () => await Parser<ParsingStep>.CreateAsync(gameData, _builderFactories.Value,
+                    ParsingData.CreateAsync(gameData, _builderFactories.Value),
+                    new SimpleValueCalculationContext(_calculator.Value.NodeRepository)));
         }
 
         public ICalculator CreateCalculator()
-            => Calculator.Create();
+            => _calculator.Value;
 
         public Task<IBuilderFactories> CreateBuilderFactoriesAsync()
             => _builderFactories.Value;

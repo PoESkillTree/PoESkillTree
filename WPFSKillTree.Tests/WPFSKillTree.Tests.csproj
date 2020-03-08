@@ -11,14 +11,17 @@
     <WarningsAsErrors>8600;8601;8602;8603;8604;8613;8619;8620;8625</WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Enums.NET" Version="3.0.2" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
+    <PackageReference Include="Enums.NET" Version="3.0.3" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
     <PackageReference Include="Moq" Version="4.13.1" />
-    <PackageReference Include="morelinq" Version="3.3.1" />
+    <PackageReference Include="morelinq" Version="3.3.2" />
     <PackageReference Include="NUnit" Version="3.12.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
-    <PackageReference Include="PoESkillTree.Engine" Version="0.1.10" />
-    <PackageReference Include="System.Reactive" Version="4.3.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.16.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="PoESkillTree.Engine" Version="0.2.0" />
+    <PackageReference Include="System.Reactive" Version="4.3.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WPFSKillTree\WPFSKillTree.csproj" />

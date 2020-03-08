@@ -94,7 +94,7 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
                 foreach (var xmlGem in xmlSkill.Gems)
                 {
                     var isEnabled = xmlSkill.Enabled && xmlGem.Enabled;
-                    yield return new Skill(xmlGem.SkillId, xmlGem.Level, xmlGem.Quality, slot, socketIndex, gemGroup, isEnabled);
+                    yield return Skill.FromGem(new Gem(xmlGem.SkillId, xmlGem.Level, xmlGem.Quality, slot, socketIndex, gemGroup, isEnabled), true);
                     socketIndex++;
                 }
 

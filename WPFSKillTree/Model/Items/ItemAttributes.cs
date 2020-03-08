@@ -243,10 +243,47 @@ namespace PoESkillTree.Model.Items
             if (!itemData.TryGetValue("skills", out var skillJson))
                 return;
 
-            var skillList = skillJson.ToObject<IReadOnlyList<Skill>>();
+            var skillList = skillJson.Select(DeserializeSkill);
             foreach (var (slot, group) in skillList.GroupBy(s => s.ItemSlot))
             {
                 AddSkillsToSlot(group, slot);
+            }
+        }
+
+        private static Skill DeserializeSkill(JToken skillJson)
+        {
+            var id = skillJson.Value<string>("Id");
+            var isEnabled = skillJson.Value<bool>("IsEnabled");
+            if (skillJson["Gem"]?.ToObject<Gem>() is Gem gem)
+            {
+                if (skillJson.Value<int>("SkillIndex") > 0)
+                {
+                    return Skill.SecondaryFromGem(id, gem, isEnabled);
+                }
+                else
+                {
+                    return Skill.FromGem(gem, isEnabled);
+                }
+            }
+            else if (skillJson["GemGroup"] != null)
+            {
+                gem = new Gem(id,
+                    skillJson.Value<int>("Level"),
+                    skillJson.Value<int>("Quality"),
+                    (ItemSlot) skillJson.Value<int>("ItemSlot"),
+                    skillJson.Value<int>("SocketIndex"),
+                    skillJson.Value<int>("GemGroup"),
+                    isEnabled);
+                return Skill.FromGem(gem, true);
+            }
+            else
+            {
+                return Skill.FromItem(id,
+                    skillJson.Value<int>("Level"),
+                    skillJson.Value<int>("Quality"),
+                    (ItemSlot) skillJson.Value<int>("ItemSlot"),
+                    skillJson.Value<int>("SkillIndex"),
+                    isEnabled);
             }
         }
 

@@ -125,7 +125,7 @@ namespace PoESkillTree.ViewModels.Skills
                 {
                     Level = skill.Level,
                     Quality = skill.Quality,
-                    GemGroup = skill.GemGroup + 1,
+                    GemGroup = skill.Gem?.Group + 1,
                     SocketIndex = skill.SocketIndex,
                     IsEnabled = skill.IsEnabled,
                 };
@@ -175,8 +175,17 @@ namespace PoESkillTree.ViewModels.Skills
                 }
                 if (skillVm.Definition is null)
                     continue;
-                var skill = new Skill(skillVm.Definition.Id, skillVm.Level, skillVm.Quality, Slot,
-                    skillVm.SocketIndex, skillVm.GemGroup - 1, skillVm.IsEnabled);
+                Skill skill;
+                if (skillVm.GemGroup is null)
+                {
+                    skill = Skill.FromItem(skillVm.Definition.Id, skillVm.Level, skillVm.Quality, Slot,
+                        skillVm.SocketIndex, skillVm.IsEnabled);
+                }
+                else
+                {
+                    skill = Skill.FromGem(new Gem(skillVm.Definition.Id, skillVm.Level, skillVm.Quality, Slot,
+                        skillVm.SocketIndex, skillVm.GemGroup.Value - 1, skillVm.IsEnabled), true);
+                }
                 skills.Add(skill);
             }
 

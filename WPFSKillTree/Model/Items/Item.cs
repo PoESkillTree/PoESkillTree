@@ -387,7 +387,7 @@ namespace PoESkillTree.Model.Items
                 level = (int) properties.First("Level: # (Max)", 0, 1);
             }
             var quality = (int) properties.First("Quality: +#%", 0, 0);
-            skill = new Skill(definition.Id, (int) level, quality, Slot, socketIndex, socketGroups[socketIndex]);
+            skill = Skill.FromGem(new Gem(definition.Id, (int) level, quality, Slot, socketIndex, socketGroups[socketIndex], true), true);
             return true;
         }
 
