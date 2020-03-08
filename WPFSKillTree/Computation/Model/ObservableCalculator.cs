@@ -126,18 +126,14 @@ namespace PoESkillTree.Computation.Model
             => _calculator.NodeRepository.GetNode(stat, nodeType, path);
 
         public async Task<IEnumerable<(ICalculationNode node, Modifier modifier)>> GetFormNodeCollectionAsync(
-            IStat stat, Form form, PathDefinition path)
-            => await _calculator.NodeRepository.GetFormNodeCollection(stat, form, path)
-                .ToObservable().SubscribeOn(_calculationScheduler)
-                .ToList().SingleAsync();
+            IStat stat, Form form, PathDefinition path) =>
+            await _calculationScheduler.ScheduleAsync(() => _calculator.NodeRepository.GetFormNodeCollection(stat, form, path));
 
-        public async Task<IEnumerable<PathDefinition>> GetPathsAsync(IStat stat)
-            => await _calculator.NodeRepository.GetPaths(stat)
-                .ToObservable().SubscribeOn(_calculationScheduler)
-                .ToList().SingleAsync();
+        public async Task<IEnumerable<PathDefinition>> GetPathsAsync(IStat stat) =>
+            await _calculationScheduler.ScheduleAsync(() => _calculator.NodeRepository.GetPaths(stat));
 
         public IDisposable PeriodicallyRemoveUnusedNodes(Action<Exception> onError)
-            => Observable.Interval(TimeSpan.FromMilliseconds(250))
+            => Observable.Interval(TimeSpan.FromMilliseconds(250), _calculationScheduler)
                 .ObserveOn(_calculationScheduler)
                 .Subscribe(_ => _calculator.RemoveUnusedNodes(), onError);
     }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
 using NLog;
 using PoESkillTree.Computation.Model;
@@ -68,7 +67,7 @@ namespace PoESkillTree.Computation
             _parser = await computationFactory.CreateParserAsync();
 
             _schedulers = new ComputationSchedulerProvider();
-            _observables = new ComputationObservables(_parser);
+            _observables = new ComputationObservables(_parser, _schedulers.CalculationThread);
             _calculator = new ObservableCalculator(_iCalculator, _schedulers.CalculationThread);
         }
 
@@ -76,9 +75,7 @@ namespace PoESkillTree.Computation
         {
             var parserInitializationTask = _schedulers.NewThread.ScheduleAsync(_parser.Initialize);
             var passiveTree = await GameData.PassiveTree;
-            var initialObservable = _observables
-                .InitialParse(passiveTree, TimeSpan.FromMilliseconds(500), _schedulers.TaskPool)
-                .SubscribeOn(_schedulers.TaskPool);
+            var initialObservable = _observables.InitialParse(passiveTree, TimeSpan.FromMilliseconds(500));
             await _calculator.ForEachUpdateCalculatorAsync(initialObservable);
             await parserInitializationTask;
         }
@@ -118,8 +115,7 @@ namespace PoESkillTree.Computation
         private async Task ConnectAsync(
             IObservable<CalculatorUpdate> initialObservable, IObservable<CalculatorUpdate> changeObservable)
         {
-            await _calculator.ForEachUpdateCalculatorAsync(
-                initialObservable.SubscribeOn(_schedulers.TaskPool));
+            await _calculator.ForEachUpdateCalculatorAsync(initialObservable);
             _calculator.SubscribeTo(changeObservable);
         }
 

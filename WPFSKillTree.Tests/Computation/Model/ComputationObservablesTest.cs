@@ -42,7 +42,7 @@ namespace PoESkillTree.Computation.Model
             var sut = CreateSut(parser);
 
             var actual =
-                await AggregateAsync(sut.InitialParse(passiveTree, TimeSpan.Zero, ImmediateScheduler.Instance));
+                await AggregateAsync(sut.InitialParse(passiveTree, TimeSpan.Zero));
 
             Assert.That(actual.AddedModifiers, Is.EquivalentTo(expected));
             Assert.IsEmpty(actual.RemovedModifiers);
@@ -251,7 +251,7 @@ namespace PoESkillTree.Computation.Model
             };
 
         private static ComputationObservables CreateSut(IParser parser)
-            => new ComputationObservables(parser);
+            => new ComputationObservables(parser, ImmediateScheduler.Instance);
 
         private static async Task<CalculatorUpdate> AggregateAsync(IObservable<CalculatorUpdate> observable)
             => await observable

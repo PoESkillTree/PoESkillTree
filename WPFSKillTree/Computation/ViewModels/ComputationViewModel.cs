@@ -66,6 +66,7 @@ namespace PoESkillTree.Computation.ViewModels
         private void InitializeOffensiveStats(IBuilderFactories f)
         {
             AddStats(OffensiveStats, f.MetaStatBuilders.SkillDpsWithHits);
+            AddStats(OffensiveStats, f.MetaStatBuilders.SkillDpsWithHitsCalculationMode);
             AddStats(OffensiveStats, f.MetaStatBuilders.SkillDpsWithDoTs);
             ForEachDamagingAilment(a => AddStats(OffensiveStats, f.MetaStatBuilders.AilmentDps(a)));
 
