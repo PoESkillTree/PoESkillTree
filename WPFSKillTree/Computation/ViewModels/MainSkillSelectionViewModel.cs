@@ -44,13 +44,13 @@ namespace PoESkillTree.Computation.ViewModels
             _skillDefinitions = skillDefinitions;
             var selectedSkillItemSlotStat = builderFactories.MetaStatBuilders.MainSkillItemSlot
                 .BuildToStats(Entity.Character).Single();
-            _selectedSkillItemSlot = nodeFactory.CreateConfiguration(selectedSkillItemSlotStat, new NodeValue(0));
+            _selectedSkillItemSlot = nodeFactory.CreateConfiguration(selectedSkillItemSlotStat, new NodeValue((int) Skill.Default.ItemSlot));
             var selectedSkillSocketIndexStat = builderFactories.MetaStatBuilders.MainSkillSocketIndex
                 .BuildToStats(Entity.Character).Single();
-            _selectedSkillSocketIndex = nodeFactory.CreateConfiguration(selectedSkillSocketIndexStat, new NodeValue(0));
+            _selectedSkillSocketIndex = nodeFactory.CreateConfiguration(selectedSkillSocketIndexStat, new NodeValue(Skill.Default.SocketIndex));
             var selectedSkillSkillIndexStat = builderFactories.MetaStatBuilders.MainSkillSkillIndex
                 .BuildToStats(Entity.Character).Single();
-            _selectedSkillSkillIndex = nodeFactory.CreateConfiguration(selectedSkillSkillIndexStat, new NodeValue(0));
+            _selectedSkillSkillIndex = nodeFactory.CreateConfiguration(selectedSkillSkillIndexStat, new NodeValue(Skill.Default.SkillIndex));
             var selectedSkillPartStat = builderFactories.StatBuilders.MainSkillPart
                 .BuildToStats(Entity.Character).Single();
             _selectedSkillPart = nodeFactory.CreateConfiguration(selectedSkillPartStat, new NodeValue(0));
