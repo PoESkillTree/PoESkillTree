@@ -333,10 +333,10 @@ namespace PoESkillTree.Model.Items
             }
         }
 
-        public IReadOnlyList<Skill> DeserializeSocketedSkills(SkillDefinitions skillDefinitions, JObject itemJson)
+        public IReadOnlyList<Gem> DeserializeSocketedGems(SkillDefinitions skillDefinitions, JObject itemJson)
         {
             if (!itemJson.TryGetValue("socketedItems", out var skillJson))
-                return new Skill[0];
+                return Array.Empty<Gem>();
 
             var sockets = new List<int>();
             if (itemJson.TryGetValue("sockets", out var socketsJson))
@@ -347,23 +347,23 @@ namespace PoESkillTree.Model.Items
                 }
             }
 
-            var skills = new List<Skill>();
+            var gems = new List<Gem>();
             foreach (var obj in skillJson.Values<JObject>())
             {
                 var frameType = obj.Value<int>("frameType");
                 if ((FrameType) frameType == FrameType.Gem)
                 {
-                    if (TryDeserializeSocketedSkill(skillDefinitions, obj, sockets, out var skill))
+                    if (TryDeserializeSocketedGem(skillDefinitions, obj, sockets, out var gem))
                     {
-                        skills.Add(skill);
+                        gems.Add(gem);
                     }
                 }
             }
-            return skills;
+            return gems;
         }
 
-        private bool TryDeserializeSocketedSkill(
-            SkillDefinitions skillDefinitions, JObject jObject, IReadOnlyList<int> socketGroups, [NotNullWhen(true)] out Skill? skill)
+        private bool TryDeserializeSocketedGem(
+            SkillDefinitions skillDefinitions, JObject jObject, IReadOnlyList<int> socketGroups, [NotNullWhen(true)] out Gem? gem)
         {
             var baseItemSkills = skillDefinitions.Skills
                 .Where(d => d.BaseItem != null)
@@ -373,11 +373,11 @@ namespace PoESkillTree.Model.Items
             var socketIndex = jObject.Value<int>("socket");
             var name = jObject.Value<string>("typeLine");
             var definition = baseItemSkills.FirstOrDefault(d => d.BaseItem?.DisplayName == name)
-                ?? baseItemSkills.FirstOrDefault(d => d.BaseItem?.DisplayName == name + " Support");
+                             ?? baseItemSkills.FirstOrDefault(d => d.BaseItem?.DisplayName == name + " Support");
             if (definition is null)
             {
                 Log.Error($"Unknown skill: {name}");
-                skill = null;
+                gem = null;
                 return false;
             }
 
@@ -387,7 +387,7 @@ namespace PoESkillTree.Model.Items
                 level = (int) properties.First("Level: # (Max)", 0, 1);
             }
             var quality = (int) properties.First("Quality: +#%", 0, 0);
-            skill = Skill.FromGem(new Gem(definition.Id, (int) level, quality, Slot, socketIndex, socketGroups[socketIndex], true), true);
+            gem = new Gem(definition.Id, (int) level, quality, Slot, socketIndex, socketGroups[socketIndex], true);
             return true;
         }
 

@@ -53,15 +53,15 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
         private IBuild ConvertXmlBuild(XmlPathOfBuilding xmlBuild)
         {
             var items = ConvertItems(xmlBuild.Items.Items);
-            var skills = ConvertSkills(xmlBuild.Skills.Skills).ToList();
+            var gems = ConvertSkills(xmlBuild.Skills.Skills).ToList();
             var specs = xmlBuild.Tree.Specs;
             if (specs.IsEmpty())
             {
-                return ConvertXmlBuild(xmlBuild, new XmlPathOfBuildingTreeSpec {Url = Constants.DefaultTree}, items, skills);
+                return ConvertXmlBuild(xmlBuild, new XmlPathOfBuildingTreeSpec {Url = Constants.DefaultTree}, items, gems);
             }
             else if (specs.Count == 1)
             {
-                return ConvertXmlBuild(xmlBuild, specs.Single(), items, skills);
+                return ConvertXmlBuild(xmlBuild, specs.Single(), items, gems);
             }
             else
             {
@@ -69,7 +69,7 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
                 var folder = new BuildFolder {Name = "PoB Import"};
                 foreach (var spec in specs)
                 {
-                    folder.Builds.Add(ConvertXmlBuild(xmlBuild, spec, items, skills, hasDifferentTreeVersions));
+                    folder.Builds.Add(ConvertXmlBuild(xmlBuild, spec, items, gems, hasDifferentTreeVersions));
                 }
                 return folder;
             }
@@ -78,7 +78,7 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
         private IReadOnlyDictionary<int, Item> ConvertItems(IEnumerable<XmlPathOfBuildingItem> xmlItems)
             => xmlItems.ToDictionary(x => x.Id, _itemConverter.Convert);
 
-        private static IEnumerable<Skill> ConvertSkills(IEnumerable<XmlPathOfBuildingSkill> xmlSkills)
+        private static IEnumerable<PoBGem> ConvertSkills(IEnumerable<XmlPathOfBuildingSkill> xmlSkills)
         {
             var socketIndex = 0;
             var gemGroup = 0;
@@ -94,7 +94,8 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
                 foreach (var xmlGem in xmlSkill.Gems)
                 {
                     var isEnabled = xmlSkill.Enabled && xmlGem.Enabled;
-                    yield return Skill.FromGem(new Gem(xmlGem.SkillId, xmlGem.Level, xmlGem.Quality, slot, socketIndex, gemGroup, isEnabled), true);
+                    var gem = new Gem(xmlGem.SkillId, xmlGem.Level, xmlGem.Quality, slot, socketIndex, gemGroup, isEnabled);
+                    yield return new PoBGem(gem, xmlGem.PrimarySkillEnabled, xmlGem.SecondarySkillEnabled);
                     socketIndex++;
                 }
 
@@ -103,7 +104,7 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
         }
 
         private PoEBuild ConvertXmlBuild(
-            XmlPathOfBuilding xmlBuild, XmlPathOfBuildingTreeSpec treeSpec, IReadOnlyDictionary<int, Item> items, IEnumerable<Skill> skills,
+            XmlPathOfBuilding xmlBuild, XmlPathOfBuildingTreeSpec treeSpec, IReadOnlyDictionary<int, Item> items, IEnumerable<PoBGem> gems,
             bool addTreeVersionToName = false)
         {
             var name = treeSpec.Title ?? "Default";
@@ -119,7 +120,7 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
                 ConfigurationStatConverter.Convert(xmlBuild.Config).Concat(ConvertMainSkillConfiguration(xmlBuild)),
                 null)
             {
-                ItemData = ConvertItemData(xmlBuild, items, skills, treeSpec.Sockets),
+                ItemData = ConvertItemData(xmlBuild, items, gems, treeSpec.Sockets),
                 Level = xmlBuild.Build.Level,
                 Name = name,
                 Note = xmlBuild.Notes?.Trim(),
@@ -148,13 +149,19 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
         }
 
         private string ConvertItemData(
-            XmlPathOfBuilding xmlBuild, IReadOnlyDictionary<int, Item> items, IEnumerable<Skill> skills, IEnumerable<XmlPathOfBuildingTreeSocket> sockets)
+            XmlPathOfBuilding xmlBuild, IReadOnlyDictionary<int, Item> items, IEnumerable<PoBGem> gems, IEnumerable<XmlPathOfBuildingTreeSocket> sockets)
         {
             var itemSerializer = new ItemAttributes(_equipmentData, null!);
 
-            foreach (var (slot, group) in skills.GroupBy(s => s.ItemSlot))
+            foreach (var (slot, group) in gems.GroupBy(s => s.Gem.ItemSlot))
             {
-                itemSerializer.SetSkillsInSlot(group.ToList(), slot);
+                var groupAsList = group.ToList();
+                itemSerializer.SetGemsInSlot(groupAsList.Select(g => g.Gem).ToList(), slot);
+                foreach (var poBGem in groupAsList)
+                {
+                    itemSerializer.SkillEnabler.SetIsEnabled(poBGem.Gem, 0, poBGem.PrimarySkillIsEnabled);
+                    itemSerializer.SkillEnabler.SetIsEnabled(poBGem.Gem, 0, poBGem.SecondarySkillIsEnabled);
+                }
             }
 
             foreach (var xmlSlot in xmlBuild.Items.Slots)
@@ -209,6 +216,22 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
             if (match.Success)
                 return (match.Groups[1].Value, ushort.Parse(match.Groups[2].Value));
             return (slot, null);
+        }
+
+        private class PoBGem
+        {
+            public PoBGem(Gem gem, bool primarySkillIsEnabled, bool secondarySkillIsEnabled)
+            {
+                Gem = gem;
+                PrimarySkillIsEnabled = primarySkillIsEnabled;
+                SecondarySkillIsEnabled = secondarySkillIsEnabled;
+            }
+
+            public Gem Gem { get; }
+
+            public bool PrimarySkillIsEnabled { get; }
+
+            public bool SecondarySkillIsEnabled { get; }
         }
     }
 }

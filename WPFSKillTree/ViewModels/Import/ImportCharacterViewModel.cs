@@ -213,17 +213,13 @@ namespace PoESkillTree.ViewModels.Import
             }
             if (importSkills)
             {
-                var toRemove = _itemAttributes.Skills.Where(ss => ss.First().ItemSlot != ItemSlot.Unequipable).ToList();
-                foreach (var skills in toRemove)
-                {
-                    _itemAttributes.RemoveSkills(skills);
-                }
+                _itemAttributes.Gems.Clear();
             }
 
             var importJson = JObject.Parse(importString);
             if (importItems || importSkills)
             {
-                _itemAttributes.DeserializeItemsWithSkills(importJson, importItems, importSkills);
+                _itemAttributes.DeserializeItemsWithGems(importJson, importItems, importSkills);
             }
             if (importLevel && importJson.TryGetValue("character", out var characterToken))
             {

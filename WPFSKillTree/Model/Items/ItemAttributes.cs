@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Engine.GameModel.Skills;
+using PoESkillTree.Engine.Utils;
 using PoESkillTree.Engine.Utils.Extensions;
 using PoESkillTree.Utils;
 
@@ -123,40 +124,39 @@ namespace PoESkillTree.Model.Items
             return ((int) item.ItemClass.ItemSlots() & (int) slot) != 0;
         }
 
-        public IReadOnlyList<Skill> GetSkillsInSlot(ItemSlot slot) =>
-            Skills.FirstOrDefault(ss => ss.First().ItemSlot == slot) ?? Array.Empty<Skill>();
+        public IReadOnlyList<Gem> GetGemsInSlot(ItemSlot slot) =>
+            Gems.FirstOrDefault(gs => gs.First().ItemSlot == slot) ?? Array.Empty<Gem>();
 
-        public void RemoveSkills(IReadOnlyList<Skill> value) =>
-            SetSkillsInSlot(Array.Empty<Skill>(), value.First().ItemSlot);
-
-        public void SetSkillsInSlot(IReadOnlyList<Skill> value, ItemSlot slot)
+        public void SetGemsInSlot(IReadOnlyList<Gem> value, ItemSlot slot)
         {
             if (value.Any(s => s.ItemSlot != slot))
-                throw new ArgumentException("Skills for a slot must all have that slot as ItemSlot", nameof(value));
+                throw new ArgumentException("Gems for a slot must all have that slot as ItemSlot", nameof(value));
 
-            var oldValue = GetSkillsInSlot(slot);
+            var oldValue = GetGemsInSlot(slot);
             if (oldValue.Any() && value.Any())
             {
-                Skills.RemoveAndAdd(oldValue, value);
+                Gems.RemoveAndAdd(oldValue, value);
             }
-            if (value.Any())
+            else if (value.Any())
             {
-                Skills.Add(value);
+                Gems.Add(value);
             }
             else if (oldValue.Any())
             {
-                Skills.Remove(oldValue);
+                Gems.Remove(oldValue);
             }
         }
 
-        private void AddSkillsToSlot(IEnumerable<Skill> skills, ItemSlot slot)
-            => SetSkillsInSlot(GetSkillsInSlot(slot).Concat(skills).ToList(), slot);
+        public IReadOnlyList<Skill> GetSkillsInSlot(ItemSlot slot) =>
+            Skills.FirstOrDefault(ss => ss.First().ItemSlot == slot) ?? Array.Empty<Skill>();
 
         #endregion
 
         public ObservableSet<Item> Equip { get; } = new ObservableSet<Item>();
-
+        
+        public ObservableSet<IReadOnlyList<Gem>> Gems { get; } = new ObservableSet<IReadOnlyList<Gem>>();
         public ObservableSet<IReadOnlyList<Skill>> Skills { get; } = new ObservableSet<IReadOnlyList<Skill>>();
+        public SkillEnabler SkillEnabler { get; } = new SkillEnabler();
 
         private readonly EquipmentData _equipmentData;
         private readonly SkillDefinitions _skillDefinitions;
@@ -169,29 +169,32 @@ namespace PoESkillTree.Model.Items
             _equipmentData = equipmentData;
             _skillDefinitions = skillDefinitions;
             Equip.CollectionChanged += OnCollectionChanged;
-            SetSkillsInSlot(new[] { Skill.Default, }, ItemSlot.Unequipable);
-            Skills.CollectionChanged += OnCollectionChanged;
+            Gems.CollectionChanged += OnCollectionChanged;
+            SkillEnabler.JsonRepresentationChanged += OnCollectionChanged;
+            Skills.Add(new[] {Skill.Default});
+            Skills.CollectionChanged += SkillsOnCollectionChanged;
 
             if (!string.IsNullOrEmpty(itemData))
             {
                 var jObject = JObject.Parse(itemData);
-                DeserializeItemsWithSkills(jObject);
-                DeserializeSkills(jObject);
+                DeserializeItemsWithGems(jObject);
+                DeserializeGems(jObject);
+                DeserializeEnabledSkills(jObject);
             }
         }
 
-        public void DeserializeItemsWithSkills(JObject itemData, bool addItems = true, bool addSkills = true)
+        public void DeserializeItemsWithGems(JObject itemData, bool addItems = true, bool addGems = true)
         {
             if (!itemData.TryGetValue("items", out var itemsJson))
                 return;
 
             foreach (var itemJson in itemsJson.Values<JObject>())
             {
-                DeserializeItemWithSkills(itemJson, addItems, addSkills);
+                DeserializeItemWithSkills(itemJson, addItems, addGems);
             }
         }
 
-        private void DeserializeItemWithSkills(JObject itemJson, bool addItem, bool addSkills)
+        private void DeserializeItemWithSkills(JObject itemJson, bool addItem, bool addGems)
         {
             var inventoryId = itemJson.Value<string>("inventoryId");
             switch (inventoryId)
@@ -218,9 +221,9 @@ namespace PoESkillTree.Model.Items
                         SetItemInSlot(socketedItem, slot, socketedItem.Socket);
                     }
                 }
-                if (addSkills)
+                if (addGems)
                 {
-                    SetSkillsInSlot(item.DeserializeSocketedSkills(_skillDefinitions, itemJson), slot);
+                    SetGemsInSlot(item.DeserializeSocketedGems(_skillDefinitions, itemJson), slot);
                 }
             }
         }
@@ -238,52 +241,42 @@ namespace PoESkillTree.Model.Items
             }
         }
 
-        private void DeserializeSkills(JObject itemData)
+        private void DeserializeGems(JObject itemData)
         {
-            if (!itemData.TryGetValue("skills", out var skillJson))
-                return;
-
-            var skillList = skillJson.Select(DeserializeSkill);
-            foreach (var (slot, group) in skillList.GroupBy(s => s.ItemSlot))
+            IEnumerable<Gem> gems;
+            if (itemData.TryGetValue("skills", out var skillsJson))
             {
-                AddSkillsToSlot(group, slot);
+                gems = skillsJson.Select(DeserializeGemFromSkill);
             }
-        }
-
-        private static Skill DeserializeSkill(JToken skillJson)
-        {
-            var id = skillJson.Value<string>("Id");
-            var isEnabled = skillJson.Value<bool>("IsEnabled");
-            if (skillJson["Gem"]?.ToObject<Gem>() is Gem gem)
+            else if (itemData.TryGetValue("gems", out var gemsJson))
             {
-                if (skillJson.Value<int>("SkillIndex") > 0)
-                {
-                    return Skill.SecondaryFromGem(id, gem, isEnabled);
-                }
-                else
-                {
-                    return Skill.FromGem(gem, isEnabled);
-                }
-            }
-            else if (skillJson["GemGroup"] != null)
-            {
-                gem = new Gem(id,
-                    skillJson.Value<int>("Level"),
-                    skillJson.Value<int>("Quality"),
-                    (ItemSlot) skillJson.Value<int>("ItemSlot"),
-                    skillJson.Value<int>("SocketIndex"),
-                    skillJson.Value<int>("GemGroup"),
-                    isEnabled);
-                return Skill.FromGem(gem, true);
+                gems = gemsJson.ToObject<IReadOnlyList<Gem>>()!;
             }
             else
             {
-                return Skill.FromItem(id,
-                    skillJson.Value<int>("Level"),
-                    skillJson.Value<int>("Quality"),
-                    (ItemSlot) skillJson.Value<int>("ItemSlot"),
-                    skillJson.Value<int>("SkillIndex"),
-                    isEnabled);
+                return;
+            }
+
+            foreach (var (slot, group) in gems.GroupBy(g => g.ItemSlot))
+            {
+                SetGemsInSlot(GetGemsInSlot(slot).Concat(group).ToList(), slot);
+            }
+        }
+
+        private static Gem DeserializeGemFromSkill(JToken skillJson) =>
+            new Gem(skillJson.Value<string>("Id"),
+                skillJson.Value<int>("Level"),
+                skillJson.Value<int>("Quality"),
+                (ItemSlot) skillJson.Value<int>("ItemSlot"),
+                skillJson.Value<int>("SocketIndex"),
+                skillJson.Value<int>("GemGroup"),
+                skillJson.Value<bool>("IsEnabled"));
+
+        private void DeserializeEnabledSkills(JObject itemData)
+        {
+            if (itemData.TryGetValue("enabledSkills", out var json))
+            {
+                SkillEnabler.FromJson(json);
             }
         }
 
@@ -297,14 +290,13 @@ namespace PoESkillTree.Model.Items
                 items.Add(jItem);
             }
 
-            var skillEnumerable = Skills.Flatten()
-                .Where(s => s.ItemSlot != ItemSlot.Unequipable);
-            var skills = JArray.FromObject(skillEnumerable);
+            var gems = JArray.FromObject(Gems.Flatten());
 
             var jObj = new JObject
             {
                 {"items", items},
-                {"skills", skills},
+                {"gems", gems},
+                {"enabledSkills", SkillEnabler.ToJsonString()},
             };
             return jObj.ToString(Formatting.None);
         }
@@ -316,11 +308,18 @@ namespace PoESkillTree.Model.Items
                 item.PropertyChanged -= SlottedItemOnPropertyChanged;
             }
             Equip.CollectionChanged -= OnCollectionChanged;
-            Skills.CollectionChanged -= OnCollectionChanged;
+            Gems.CollectionChanged -= OnCollectionChanged;
+            SkillEnabler.JsonRepresentationChanged -= OnCollectionChanged;
+            Skills.CollectionChanged -= SkillsOnCollectionChanged;
         }
 
-        private void OnCollectionChanged(object sender, EventArgs args)
+        private void OnCollectionChanged(object? sender, EventArgs args)
             => OnItemDataChanged();
+
+        private void SkillsOnCollectionChanged(object sender, CollectionChangedEventArgs<IReadOnlyList<Skill>> args)
+        {
+            SkillEnabler.Store(args.AddedItems, args.RemovedItems);
+        }
 
         private void SlottedItemOnPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
