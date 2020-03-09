@@ -67,8 +67,10 @@ namespace PoESkillTree.ViewModels.Skills
         public IReadOnlyList<SkillViewModel> Skills
         {
             get => _skills;
-            set => SetProperty(ref _skills, value);
+            set => SetProperty(ref _skills, value, () => OnPropertyChanged(nameof(DisplaySkills)));
         }
+
+        public bool DisplaySkills => Skills.Count(s => !s.Definition.Model.IsSupport) > 1;
 
         public bool IsEnabled
         {

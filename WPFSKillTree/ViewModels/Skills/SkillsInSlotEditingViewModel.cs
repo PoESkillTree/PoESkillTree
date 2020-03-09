@@ -199,10 +199,16 @@ namespace PoESkillTree.ViewModels.Skills
 
         private void GemViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
-            if (args.PropertyName != nameof(GemViewModel.Skills) && args.PropertyName != nameof(GemViewModel.ToolTip))
+            if (args.PropertyName == nameof(GemViewModel.Definition)
+                || args.PropertyName == nameof(GemViewModel.Level)
+                || args.PropertyName == nameof(GemViewModel.Quality)
+                || args.PropertyName == nameof(GemViewModel.SocketIndex)
+                || args.PropertyName == nameof(GemViewModel.Group)
+                || args.PropertyName == nameof(GemViewModel.IsEnabled))
             {
                 UpdateItemAttributes();
             }
+
             if (args.PropertyName == nameof(GemViewModel.Group) || args.PropertyName == nameof(GemViewModel.SocketIndex))
             {
                 GemsViewSource.View.Refresh();

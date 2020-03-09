@@ -91,20 +91,52 @@
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="viewModels:GemViewModel">
-                            <DockPanel ToolTipService.InitialShowDelay="100"
-                                       ToolTipService.ShowDuration="60000">
-                                <DockPanel.ToolTip>
-                                    <ToolTip Padding="0"
-                                             BorderThickness="0">
-                                        <ToolTip.Content>
-                                            <controls:ItemTooltip DataContext="{Binding ToolTip}" />
-                                        </ToolTip.Content>
-                                    </ToolTip>
-                                </DockPanel.ToolTip>
-                                <Image Width="18" Margin="0 0 2 0"
-                                       Source="{Binding Definition.Icon.ImageSource.Result}" />
-                                <TextBlock Text="{Binding Definition.Name}" />
-                            </DockPanel>
+                            <StackPanel Orientation="Vertical">
+                                <DockPanel ToolTipService.InitialShowDelay="100"
+                                           ToolTipService.ShowDuration="60000">
+                                    <DockPanel.ToolTip>
+                                        <ToolTip Padding="0"
+                                                 BorderThickness="0">
+                                            <ToolTip.Content>
+                                                <controls:ItemTooltip DataContext="{Binding ToolTip}" />
+                                            </ToolTip.Content>
+                                        </ToolTip>
+                                    </DockPanel.ToolTip>
+                                    <Image Width="18" Margin="0 0 2 0"
+                                           Source="{Binding Definition.Icon.ImageSource.Result}" />
+                                    <TextBlock Text="{Binding Definition.Name}" />
+                                </DockPanel>
+                                <ItemsControl ItemsSource="{Binding Skills}"
+                                              Visibility="{Binding DisplaySkills, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                              Margin="10 2 0 2">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate DataType="viewModels:SkillViewModel">
+                                            <DockPanel Margin="0 2 0 0">
+                                                <CheckBox DockPanel.Dock="Left"
+                                                          
+                                                          IsChecked="{Binding IsEnabled}">
+                                                    <CheckBox.LayoutTransform>
+                                                        <ScaleTransform ScaleX="0.8" ScaleY="0.8" />
+                                                    </CheckBox.LayoutTransform>
+                                                </CheckBox>
+                                                <TextBlock Text="{Binding DisplayName}"
+                                                           VerticalAlignment="Center"
+                                                           ToolTipService.InitialShowDelay="100"
+                                                           ToolTipService.ShowDuration="60000">
+                                                    <TextBlock.ToolTip>
+                                                        <ToolTip Padding="0"
+                                                                 BorderThickness="0">
+                                                            <ToolTip.Content>
+                                                                <controls:ItemTooltip DataContext="{Binding ToolTip}" />
+                                                            </ToolTip.Content>
+                                                        </ToolTip>
+                                                    </TextBlock.ToolTip>
+                                                </TextBlock>
+                                            </DockPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
