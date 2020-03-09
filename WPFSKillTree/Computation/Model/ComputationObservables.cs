@@ -21,9 +21,14 @@ namespace PoESkillTree.Computation.Model
     {
         private readonly IParser _parser;
         private readonly IScheduler _parsingScheduler;
+        private readonly IScheduler _calculationScheduler;
 
-        public ComputationObservables(IParser parser, IScheduler parsingScheduler)
-            => (_parser, _parsingScheduler) = (parser, parsingScheduler);
+        public ComputationObservables(IParser parser, IScheduler parsingScheduler, IScheduler calculationScheduler)
+        {
+            _parser = parser;
+            _parsingScheduler = parsingScheduler;
+            _calculationScheduler = calculationScheduler;
+        }
 
         public IObservable<CalculatorUpdate> InitialParse(PassiveTreeDefinition passiveTreeDefinition, TimeSpan bufferTimeSpan)
         {
@@ -39,12 +44,12 @@ namespace PoESkillTree.Computation.Model
                 .Select(ms => new CalculatorUpdate(ms.ToList(), Array.Empty<Modifier>()));
         }
 
-        public Task<CalculatorUpdate> ParseSkilledPassiveNodesAsync(IEnumerable<SkillNode> skilledNodes)
-            => ParseCollectionAsync(skilledNodes, ParseSkilledNode);
+        public Task<CalculatorUpdate> ParseSkilledPassiveNodesAsync(IEnumerable<SkillNode> skilledNodes) =>
+            _parsingScheduler.ScheduleAsync(() => ParseCollection(skilledNodes, ParseSkilledNode));
 
         public IObservable<CalculatorUpdate> ObserveSkilledPassiveNodes(
             INotifyCollectionChanged<SkillNode> skilledNodes)
-            => ObserveCollection(skilledNodes, ParseSkilledNode);
+            => ObserveCollection(skilledNodes, ParseSkilledNode, _parsingScheduler);
 
         private IReadOnlyList<Modifier> ParseSkilledNode(SkillNode node)
             => _parser.ParseSkilledPassiveNode(node.Id).Modifiers;
@@ -55,22 +60,22 @@ namespace PoESkillTree.Computation.Model
             var itemsAndSlots = Enums.GetValues<ItemSlot>()
                 .Where(s => itemsBySlot.ContainsKey(s))
                 .Select(s => (itemsBySlot[s], s));
-            return ParseCollectionAsync(itemsAndSlots, ParseItem);
+            return _parsingScheduler.ScheduleAsync(() => ParseCollection(itemsAndSlots, ParseItem));
         }
 
         public IObservable<CalculatorUpdate> ObserveItems(INotifyCollectionChanged<(Item item, ItemSlot slot)> items)
-            => ObserveCollection(items, ParseItem);
+            => ObserveCollection(items, ParseItem, _parsingScheduler);
 
         private IReadOnlyList<Modifier> ParseItem((Item item, ItemSlot slot) t) =>
             _parser.ParseItem(t.item, t.slot).Modifiers;
 
         public Task<CalculatorUpdate> ParseJewelsAsync(
-            IEnumerable<(Item item, ItemSlot slot, ushort socket, JewelRadius radius)> jewels)
-            => ParseCollectionAsync(jewels, ParseJewel);
+            IEnumerable<(Item item, ItemSlot slot, ushort socket, JewelRadius radius)> jewels) =>
+            _parsingScheduler.ScheduleAsync(() => ParseCollection(jewels, ParseJewel));
 
         public IObservable<CalculatorUpdate> ObserveJewels(
             INotifyCollectionChanged<(Item item, ItemSlot slot, ushort socket, JewelRadius radius)> jewels)
-            => ObserveCollection(jewels, ParseJewel);
+            => ObserveCollection(jewels, ParseJewel, _parsingScheduler);
 
         private IReadOnlyList<Modifier> ParseJewel((Item item, ItemSlot slot, ushort socket, JewelRadius radius) jewel)
         {
@@ -127,17 +132,14 @@ namespace PoESkillTree.Computation.Model
             return (modifiers, skills);
         }
 
-        public Task<CalculatorUpdate> ParseSkillsAsync(IEnumerable<IReadOnlyList<Skill>> skills)
-            => ParseCollectionAsync(skills, ParseSkills);
+        public Task<CalculatorUpdate> ParseSkillsAsync(IEnumerable<IReadOnlyList<Skill>> skills) =>
+            _calculationScheduler.ScheduleAsync(() => ParseCollection(skills, ParseSkills));
 
-        public IObservable<CalculatorUpdate> ObserveSkills(INotifyCollectionChanged<IReadOnlyList<Skill>> skills)
-            => ObserveCollection(skills, ParseSkills);
+        public IObservable<CalculatorUpdate> ObserveSkills(INotifyCollectionChanged<IReadOnlyList<Skill>> skills) =>
+            ObserveCollection(skills, ParseSkills, _calculationScheduler);
 
         private IReadOnlyList<Modifier> ParseSkills(IReadOnlyList<Skill> skills)
             => _parser.ParseSkills(skills).Modifiers;
-
-        private Task<CalculatorUpdate> ParseCollectionAsync<T>(IEnumerable<T> collection, Func<T, IReadOnlyList<Modifier>> parse) =>
-            _parsingScheduler.ScheduleAsync(() => ParseCollection(collection, parse));
 
         private static CalculatorUpdate ParseCollection<T>(IEnumerable<T> collection, Func<T, IReadOnlyList<Modifier>> parse)
         {
@@ -145,25 +147,18 @@ namespace PoESkillTree.Computation.Model
             return new CalculatorUpdate(modifiers, Array.Empty<Modifier>());
         }
 
-        private IObservable<CalculatorUpdate> ObserveCollection<T>(
-            INotifyCollectionChanged<T> collection, Func<T, IReadOnlyList<Modifier>> parse)
-            => ObserveCollection(collection, t => new CalculatorUpdate(parse(t), new Modifier[0]));
-
-        private IObservable<CalculatorUpdate> ObserveCollection<T>(
-            INotifyCollectionChanged<T> collection, Func<T, CalculatorUpdate> parse)
+        private static IObservable<CalculatorUpdate> ObserveCollection<T>(
+            INotifyCollectionChanged<T> collection, Func<T, IReadOnlyList<Modifier>> parse, IScheduler scheduler)
         {
             return CreateObservableFromCollection(collection)
-                .ObserveOn(_parsingScheduler)
+                .ObserveOn(scheduler)
                 .Select(args =>
                 {
-                    var addUpdate = Parse(args.AddedItems);
-                    var removeUpdate = Parse(args.RemovedItems).Invert();
-                    return CalculatorUpdate.Accumulate(addUpdate, removeUpdate);
+                    var addedModifiers = args.AddedItems.SelectMany(parse).ToList();
+                    var removedModifiers = args.RemovedItems.SelectMany(parse).ToList();
+                    return new CalculatorUpdate(addedModifiers, removedModifiers);
                 })
                 .Where(UpdateIsNotEmpty);
-
-            CalculatorUpdate Parse(IEnumerable<T> changedItems)
-                => changedItems.Select(parse).Aggregate(CalculatorUpdate.Empty, CalculatorUpdate.Accumulate);
         }
 
         private static IObservable<CollectionChangedEventArgs<T>> CreateObservableFromCollection<T>(
