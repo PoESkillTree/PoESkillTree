@@ -651,6 +651,7 @@ namespace PoESkillTree.Views
                 Tree.SkilledNodes,
                 _equipmentConverter.Equipment,
                 _equipmentConverter.Jewels,
+                _equipmentConverter.Gems,
                 _equipmentConverter.Skills);
             computationInitializer.SetupPeriodicActions();
             ComputationViewModel = await computationInitializer.CreateComputationViewModelAsync(PersistentData);

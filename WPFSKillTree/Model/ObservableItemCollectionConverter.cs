@@ -14,7 +14,7 @@ namespace PoESkillTree.Model
     public class ObservableItemCollectionConverter
     {
         private ObservableSet<OldItem>? _itemAttributesEquip;
-        private ObservableSet<IReadOnlyList<Skill>>? _itemAttributesSkills;
+        private ObservableSet<IReadOnlyList<Gem>>? _itemAttributesGems;
 
         private readonly Dictionary<(ItemSlot, ushort?), OldItem> _oldItems =
             new Dictionary<(ItemSlot, ushort?), OldItem>();
@@ -24,30 +24,37 @@ namespace PoESkillTree.Model
         public ObservableSet<(Item, ItemSlot, ushort, JewelRadius)> Jewels { get; } =
             new ObservableSet<(Item, ItemSlot, ushort, JewelRadius)>();
 
-        public ObservableSet<IReadOnlyList<Skill>> Skills { get; } = new ObservableSet<IReadOnlyList<Skill>>();
+        public ObservableSet<IReadOnlyList<Gem>> Gems { get; } = new ObservableSet<IReadOnlyList<Gem>>();
+        public ObservableSkillCollection Skills { get; }
+
+        public ObservableItemCollectionConverter()
+        {
+            Skills = new ObservableSkillCollection(Gems);
+        }
 
         public void ConvertFrom(ItemAttributes itemAttributes)
         {
             if (_itemAttributesEquip != null)
                 _itemAttributesEquip.CollectionChanged -= ItemAttributesEquipOnCollectionChanged;
-            if (_itemAttributesSkills != null)
-                _itemAttributesSkills.CollectionChanged -= ItemAttributesSkillsOnCollectionChanged;
+            if (_itemAttributesGems != null)
+                _itemAttributesGems.CollectionChanged -= ItemAttributesGemsOnCollectionChanged;
             _itemAttributesEquip = itemAttributes.Equip;
-            _itemAttributesSkills = itemAttributes.Skills;
+            _itemAttributesGems = itemAttributes.Gems;
 
             ChangeItems(_oldItems.Values.ToList(), _itemAttributesEquip);
-            Skills.ExceptAndUnionWith(Skills.ToList(), _itemAttributesSkills);
+            Gems.ResetTo(_itemAttributesGems);
+            Skills.ConnectTo(itemAttributes);
 
             _itemAttributesEquip.CollectionChanged += ItemAttributesEquipOnCollectionChanged;
-            _itemAttributesSkills.CollectionChanged += ItemAttributesSkillsOnCollectionChanged;
+            _itemAttributesGems.CollectionChanged += ItemAttributesGemsOnCollectionChanged;
         }
 
         private void ItemAttributesEquipOnCollectionChanged(object sender, CollectionChangedEventArgs<OldItem> args)
             => ChangeItems(args.RemovedItems, args.AddedItems);
 
-        private void ItemAttributesSkillsOnCollectionChanged(
-            object sender, CollectionChangedEventArgs<IReadOnlyList<Skill>> args)
-            => Skills.ExceptAndUnionWith(args.RemovedItems, args.AddedItems);
+        private void ItemAttributesGemsOnCollectionChanged(
+            object sender, CollectionChangedEventArgs<IReadOnlyList<Gem>> args) =>
+            Gems.ExceptAndUnionWith(args.RemovedItems, args.AddedItems);
 
         private void ChangeItems(IEnumerable<OldItem> oldToRemove, IEnumerable<OldItem> oldToAdd)
         {

@@ -163,7 +163,10 @@ namespace PoESkillTree.ViewModels.Skills
                 foreach (var skill in skills)
                 {
                     var definition = CreateSkillDefinitionViewModel(_skillDefinitions.GetSkillById(skill.Id));
-                    var skillVm = new SkillViewModel(gemVm, skill.SkillIndex, definition);
+                    var skillVm = new SkillViewModel(gemVm, skill.SkillIndex, definition)
+                    {
+                        IsEnabled = skill.IsEnabled
+                    };
                     skillVm.PropertyChanged += SkillViewModelOnPropertyChanged;
                     skillVms.Add(skillVm);
                 }
@@ -179,7 +182,7 @@ namespace PoESkillTree.ViewModels.Skills
             var addedGem = NewGem.Clone();
             if (addedGem.SocketIndex < 0)
             {
-                addedGem.SocketIndex = _gems.Max(g => g.SocketIndex) + 1;
+                addedGem.SocketIndex = _gems.Any() ? _gems.Max(g => g.SocketIndex) + 1 : 1;
             }
             addedGem.PropertyChanged += GemViewModelOnPropertyChanged;
             _gems.Add(addedGem);
@@ -196,7 +199,10 @@ namespace PoESkillTree.ViewModels.Skills
 
         private void GemViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
-            UpdateItemAttributes();
+            if (args.PropertyName != nameof(GemViewModel.Skills) && args.PropertyName != nameof(GemViewModel.ToolTip))
+            {
+                UpdateItemAttributes();
+            }
             if (args.PropertyName == nameof(GemViewModel.Group) || args.PropertyName == nameof(GemViewModel.SocketIndex))
             {
                 GemsViewSource.View.Refresh();

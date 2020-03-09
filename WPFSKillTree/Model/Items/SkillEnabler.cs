@@ -6,7 +6,6 @@ using Newtonsoft.Json.Linq;
 using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Engine.GameModel.Skills;
 using PoESkillTree.Engine.Utils;
-using PoESkillTree.Engine.Utils.Extensions;
 
 namespace PoESkillTree.Model.Items
 {
@@ -35,42 +34,28 @@ namespace PoESkillTree.Model.Items
             return skill;
         }
 
-        public void Store(IReadOnlyCollection<IReadOnlyList<Skill>> skillsToAdd, IReadOnlyCollection<IReadOnlyList<Skill>> skillsToRemove)
-        {
-            var storedKeys = new HashSet<DictKey>();
-            foreach (var skill in skillsToAdd.Flatten())
-            {
-                var key = new DictKey(skill);
-                _enabledDict[key] = skill.IsEnabled;
-                storedKeys.Add(key);
-            }
-            foreach (var skill in skillsToRemove.Flatten())
-            {
-                var key = new DictKey(skill);
-                if (!storedKeys.Contains(key))
-                {
-                    _enabledDict.Remove(key);
-                }
-            }
-            JsonRepresentationChanged?.Invoke(this, EventArgs.Empty);
-        }
-
         public void SetIsEnabled(Gem gem, int skillIndex, bool isEnabled)
         {
-            _enabledDict[new DictKey(gem, skillIndex)] = isEnabled;
+            var key = new DictKey(gem, skillIndex);
+            if (_enabledDict.TryGetValue(key, out var value) && value == isEnabled)
+                return;
+            _enabledDict[key] = isEnabled;
+            EnabledChangedForSlots?.Invoke(this, new[] {key.Tuple.itemSlot});
         }
 
         public void FromJson(JToken json)
         {
+            var slots = _enabledDict.Keys.Select(k => k.Tuple.itemSlot).ToHashSet();
             _enabledDict.Clear();
             foreach (var representation in json.ToObject<JsonRepresentation[]>()!)
             {
+                slots.Add(representation.ItemSlot);
                 _enabledDict[new DictKey(representation)] = representation.IsEnabled;
             }
-            JsonRepresentationChanged?.Invoke(this, EventArgs.Empty);
+            EnabledChangedForSlots?.Invoke(this, slots);
         }
 
-        public event EventHandler? JsonRepresentationChanged;
+        public event EventHandler<IReadOnlyCollection<ItemSlot>>? EnabledChangedForSlots;
 
         public string ToJsonString()
         {

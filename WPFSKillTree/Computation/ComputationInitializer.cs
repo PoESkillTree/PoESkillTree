@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using NLog;
 using PoESkillTree.Computation.Model;
@@ -82,14 +83,16 @@ namespace PoESkillTree.Computation
 
         public async Task InitializeAfterBuildLoadAsync(
             ObservableSet<SkillNode> skilledNodes, ObservableSet<(Item, ItemSlot)> items,
-            ObservableSet<(Item, ItemSlot, ushort, JewelRadius)> jewels, ObservableSet<IReadOnlyList<Skill>> skills)
+            ObservableSet<(Item, ItemSlot, ushort, JewelRadius)> jewels,
+            ObservableSet<IReadOnlyList<Gem>> gems, ObservableSkillCollection skills)
         {
-            _skills = skills;
+            _skills = skills.Collection;
             await Task.WhenAll(_initialParseTask,
                 ConnectToSkilledPassiveNodesAsync(skilledNodes),
                 ConnectToEquipmentAsync(items),
                 ConnectToJewelsAsync(jewels),
-                ConnectToSkillsAsync(skills));
+                ConnectToGemsAsync(gems, skills));
+            await ConnectToSkillsAsync(skills.Collection);
         }
 
         private async Task ConnectToSkilledPassiveNodesAsync(ObservableSet<SkillNode> skilledNodes)
@@ -107,14 +110,27 @@ namespace PoESkillTree.Computation
                 _observables.ParseJewelsAsync(jewels),
                 _observables.ObserveJewels(jewels));
 
+        private async Task ConnectToGemsAsync(ObservableSet<IReadOnlyList<Gem>> gems, ObservableSkillCollection skills)
+        {
+            var (initialUpdate, initialSkills) = await _observables.ParseGemsAsync(gems);
+            var initialCalculationTask = _calculator.UpdateCalculatorAsync(initialUpdate);
+            skills.InitializeSkillsFromGems(initialSkills);
+            await initialCalculationTask;
+
+            var (updateObservable, skillsObservable) = _observables.ObserveGems(gems);
+            _calculator.SubscribeTo(updateObservable);
+            skillsObservable.ObserveOn(_schedulers.Dispatcher).Subscribe(skills.UpdateSkillsFromGems);
+        }
+
         private async Task ConnectToSkillsAsync(ObservableSet<IReadOnlyList<Skill>> skills)
             => await ConnectAsync(
                 _observables.ParseSkillsAsync(skills),
                 _observables.ObserveSkills(skills));
 
         private async Task ConnectAsync(
-            Task<CalculatorUpdate> initialUpdate, IObservable<CalculatorUpdate> changeObservable)
+            Task<CalculatorUpdate> initialUpdateTask, IObservable<CalculatorUpdate> changeObservable)
         {
+            var initialUpdate = await initialUpdateTask;
             await _calculator.UpdateCalculatorAsync(initialUpdate);
             _calculator.SubscribeTo(changeObservable);
         }

@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Engine.GameModel.Skills;
-using PoESkillTree.Engine.Utils;
 using PoESkillTree.Engine.Utils.Extensions;
 using PoESkillTree.Utils;
 
@@ -170,9 +169,7 @@ namespace PoESkillTree.Model.Items
             _skillDefinitions = skillDefinitions;
             Equip.CollectionChanged += OnCollectionChanged;
             Gems.CollectionChanged += OnCollectionChanged;
-            SkillEnabler.JsonRepresentationChanged += OnCollectionChanged;
-            Skills.Add(new[] {Skill.Default});
-            Skills.CollectionChanged += SkillsOnCollectionChanged;
+            SkillEnabler.EnabledChangedForSlots += OnCollectionChanged;
 
             if (!string.IsNullOrEmpty(itemData))
             {
@@ -309,17 +306,11 @@ namespace PoESkillTree.Model.Items
             }
             Equip.CollectionChanged -= OnCollectionChanged;
             Gems.CollectionChanged -= OnCollectionChanged;
-            SkillEnabler.JsonRepresentationChanged -= OnCollectionChanged;
-            Skills.CollectionChanged -= SkillsOnCollectionChanged;
+            SkillEnabler.EnabledChangedForSlots -= OnCollectionChanged;
         }
 
-        private void OnCollectionChanged(object? sender, EventArgs args)
+        private void OnCollectionChanged(object? sender, object args)
             => OnItemDataChanged();
-
-        private void SkillsOnCollectionChanged(object sender, CollectionChangedEventArgs<IReadOnlyList<Skill>> args)
-        {
-            SkillEnabler.Store(args.AddedItems, args.RemovedItems);
-        }
 
         private void SlottedItemOnPropertyChanged(object sender, PropertyChangedEventArgs args)
         {

@@ -81,8 +81,8 @@ namespace PoESkillTree.Computation.Model
             => observable.ObserveOn(_calculationScheduler)
                 .ForEachAsync(UpdateCalculator);
 
-        public Task UpdateCalculatorAsync(Task<CalculatorUpdate> update) =>
-            _calculationScheduler.ScheduleAsync(async () => UpdateCalculator(await update.ConfigureAwait(false)));
+        public Task UpdateCalculatorAsync(CalculatorUpdate update) =>
+            _calculationScheduler.ScheduleAsync(() => UpdateCalculator(update));
 
         public void SubscribeTo(IObservable<CalculatorUpdate> observable)
             => _updateSubject.Value.OnNext(observable);
@@ -108,6 +108,7 @@ namespace PoESkillTree.Computation.Model
                 .Buffer(TimeSpan.FromMilliseconds(50))
                 .Where(us => us.Any())
                 .Select(us => us.Aggregate(CalculatorUpdate.Accumulate))
+                .Where(u => u.AddedModifiers.Any() || u.RemovedModifiers.Any())
                 .ObserveOn(_calculationScheduler)
                 .Subscribe(UpdateCalculator, ex => Log.Error(ex, "Exception while observing calculator updates"));
             return subject;

@@ -80,10 +80,10 @@ namespace PoESkillTree.Computation.Model
                 : _parser.ParseJewelSocketedInItem(item, slot).Modifiers;
         }
 
-        public Task<(CalculatorUpdate update, IEnumerable<IReadOnlyList<Skill>> skills)> ParseGemsAsync(IEnumerable<IReadOnlyList<Gem>> gems) =>
+        public Task<(CalculatorUpdate update, IReadOnlyList<IReadOnlyList<Skill>> skills)> ParseGemsAsync(IEnumerable<IReadOnlyList<Gem>> gems) =>
             _parsingScheduler.ScheduleAsync(() => ParseGems(gems));
 
-        public (IObservable<CalculatorUpdate> updateObservable, IObservable<IEnumerable<IReadOnlyList<Skill>>> skillsObservable) ObserveGems(
+        public (IObservable<CalculatorUpdate> updateObservable, IObservable<IReadOnlyList<IReadOnlyList<Skill>>> skillsObservable) ObserveGems(
             INotifyCollectionChanged<IReadOnlyList<Gem>> gems)
         {
             var updateAndSkillsObservable = CreateObservableFromCollection(gems)
@@ -105,12 +105,12 @@ namespace PoESkillTree.Computation.Model
             return (updateObservable, skillsObservable);
         }
 
-        private (CalculatorUpdate, IEnumerable<IReadOnlyList<Skill>>) ParseGems(IEnumerable<IReadOnlyList<Gem>> gems)
+        private (CalculatorUpdate, IReadOnlyList<IReadOnlyList<Skill>>) ParseGems(IEnumerable<IReadOnlyList<Gem>> gems)
         {
             var modifiersAndSkills = gems.Select(ParseGems).ToList();
             var modifiers = modifiersAndSkills.SelectMany(t => t.modifiers).ToList();
             var calculatorUpdate = new CalculatorUpdate(modifiers, Array.Empty<Modifier>());
-            var skills = modifiersAndSkills.Select(t => t.skills);
+            var skills = modifiersAndSkills.Select(t => t.skills).ToList();
             return (calculatorUpdate, skills);
         }
 
