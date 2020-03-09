@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Engine.GameModel.Skills;
 using PoESkillTree.Model.Items;
@@ -111,23 +112,16 @@ namespace PoESkillTree.ViewModels.Skills
             if (propertyName == nameof(Definition) || propertyName == nameof(Level) || propertyName == nameof(Quality)
                 || propertyName == nameof(Skills))
             {
-                // TODO recreate ToolTips of all Skills
+                foreach (var skill in Skills)
+                {
+                    skill.ReCreateToolTip();
+                }
                 ToolTip = CreateToolTip();
             }
             base.OnPropertyChanged(propertyName);
         }
 
-        private IHasItemToolTip CreateToolTip()
-        {
-            // TODO use ToolTip of first Skill
-            if (Definition != null && Definition.Model.Levels.TryGetValue(Level, out var levelDefinition))
-            {
-                return new SkillItem(levelDefinition.Tooltip, Quality);
-            }
-            else
-            {
-                return new SkillItem(DisplayName);
-            }
-        }
+        private IHasItemToolTip CreateToolTip() =>
+            Skills.FirstOrDefault()?.ToolTip ?? new SkillItem(DisplayName);
     }
 }

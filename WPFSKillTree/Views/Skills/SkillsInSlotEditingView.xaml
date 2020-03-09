@@ -114,7 +114,7 @@
                         <l:Catalog>Level</l:Catalog>
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="viewModels:SkillViewModel">
+                        <DataTemplate DataType="viewModels:GemViewModel">
                             <mahapps:NumericUpDown Style="{StaticResource UpDownInDataGridStyle}"
                                                    Minimum="1" Maximum="{Binding Definition.MaxLevel}"
                                                    NumericInputMode="Numbers"
@@ -128,7 +128,7 @@
                         <l:Catalog>Quality</l:Catalog>
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="viewModels:SkillViewModel">
+                        <DataTemplate DataType="viewModels:GemViewModel">
                             <mahapps:NumericUpDown Style="{StaticResource UpDownInDataGridStyle}"
                                                    Minimum="0" Maximum="30"
                                                    NumericInputMode="Numbers"
@@ -142,11 +142,11 @@
                         <l:Catalog>Group</l:Catalog>
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="viewModels:SkillViewModel">
+                        <DataTemplate DataType="viewModels:GemViewModel">
                             <mahapps:NumericUpDown Style="{StaticResource UpDownInDataGridStyle}"
                                                    Minimum="1"
                                                    NumericInputMode="Numbers"
-                                                   Value="{Binding GemGroup, UpdateSourceTrigger=PropertyChanged}" />
+                                                   Value="{Binding Group, UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -157,7 +157,7 @@
                         <l:Catalog>Enabled</l:Catalog>
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="viewModels:SkillViewModel">
+                        <DataTemplate DataType="viewModels:GemViewModel">
                             <CheckBox IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}"
                                       HorizontalAlignment="Left"
                                       Margin="10 0 0 0" />
@@ -168,7 +168,7 @@
                 <DataGridTemplateColumn Width="1*"
                                         MaxWidth="60">
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="viewModels:SkillViewModel">
+                        <DataTemplate DataType="viewModels:GemViewModel">
                             <Button Command="{Binding Data.RemoveGemCommand, Source={StaticResource VmProxy}}"
                                     CommandParameter="{Binding}"
                                     Width="20" Height="20"
