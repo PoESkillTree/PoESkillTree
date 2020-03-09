@@ -81,6 +81,9 @@ namespace PoESkillTree.Computation.Model
             => observable.ObserveOn(_calculationScheduler)
                 .ForEachAsync(UpdateCalculator);
 
+        public Task UpdateCalculatorAsync(Task<CalculatorUpdate> update) =>
+            _calculationScheduler.ScheduleAsync(async () => UpdateCalculator(await update.ConfigureAwait(false)));
+
         public void SubscribeTo(IObservable<CalculatorUpdate> observable)
             => _updateSubject.Value.OnNext(observable);
 

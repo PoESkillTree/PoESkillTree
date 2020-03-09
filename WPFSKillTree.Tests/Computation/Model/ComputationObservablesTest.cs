@@ -56,7 +56,7 @@ namespace PoESkillTree.Computation.Model
             var parseResults = CreateParseResults(expected);
             var sut = CreateSut(MockSkilledPassiveNodeParser(parseResults));
 
-            var actual = await AggregateAsync(sut.ParseSkilledPassiveNodes(skilledNodes));
+            var actual = await sut.ParseSkilledPassiveNodesAsync(skilledNodes);
 
             Assert.AreEqual(expected, actual.AddedModifiers);
             Assert.IsEmpty(actual.RemovedModifiers);
@@ -98,7 +98,7 @@ namespace PoESkillTree.Computation.Model
             var parser = MockItemParser(items, parseResults);
             var sut = CreateSut(parser);
 
-            var actual = await AggregateAsync(sut.ParseItems(items));
+            var actual = await sut.ParseItemsAsync(items);
 
             Assert.AreEqual(expected, actual.AddedModifiers);
             Assert.IsEmpty(actual.RemovedModifiers);
@@ -140,7 +140,7 @@ namespace PoESkillTree.Computation.Model
             var parser = MockSkillParser(skills, parseResults);
             var sut = CreateSut(parser);
 
-            var actual = await AggregateAsync(sut.ParseSkills(skills));
+            var actual = await sut.ParseSkillsAsync(skills);
 
             Assert.AreEqual(expected, actual.AddedModifiers);
             Assert.IsEmpty(actual.RemovedModifiers);

@@ -94,28 +94,28 @@ namespace PoESkillTree.Computation
 
         private async Task ConnectToSkilledPassiveNodesAsync(ObservableSet<SkillNode> skilledNodes)
             => await ConnectAsync(
-                _observables.ParseSkilledPassiveNodes(skilledNodes),
+                _observables.ParseSkilledPassiveNodesAsync(skilledNodes),
                 _observables.ObserveSkilledPassiveNodes(skilledNodes));
 
         private async Task ConnectToEquipmentAsync(ObservableSet<(Item, ItemSlot)> items)
             => await ConnectAsync(
-                _observables.ParseItems(items),
+                _observables.ParseItemsAsync(items),
                 _observables.ObserveItems(items));
 
         private async Task ConnectToJewelsAsync(ObservableSet<(Item, ItemSlot, ushort, JewelRadius)> jewels)
             => await ConnectAsync(
-                _observables.ParseJewels(jewels),
+                _observables.ParseJewelsAsync(jewels),
                 _observables.ObserveJewels(jewels));
 
         private async Task ConnectToSkillsAsync(ObservableSet<IReadOnlyList<Skill>> skills)
             => await ConnectAsync(
-                _observables.ParseSkills(skills),
+                _observables.ParseSkillsAsync(skills),
                 _observables.ObserveSkills(skills));
 
         private async Task ConnectAsync(
-            IObservable<CalculatorUpdate> initialObservable, IObservable<CalculatorUpdate> changeObservable)
+            Task<CalculatorUpdate> initialUpdate, IObservable<CalculatorUpdate> changeObservable)
         {
-            await _calculator.ForEachUpdateCalculatorAsync(initialObservable);
+            await _calculator.UpdateCalculatorAsync(initialUpdate);
             _calculator.SubscribeTo(changeObservable);
         }
 
