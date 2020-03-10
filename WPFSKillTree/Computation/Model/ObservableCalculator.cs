@@ -106,8 +106,7 @@ namespace PoESkillTree.Computation.Model
             var subject = new Subject<IObservable<CalculatorUpdate>>();
             subject.Merge()
                 .Buffer(TimeSpan.FromMilliseconds(50))
-                .Where(us => us.Any())
-                .Select(us => us.Aggregate(CalculatorUpdate.Accumulate))
+                .Select(us => us.Aggregate(CalculatorUpdate.Empty, CalculatorUpdate.Accumulate))
                 .Where(u => u.AddedModifiers.Any() || u.RemovedModifiers.Any())
                 .ObserveOn(_calculationScheduler)
                 .Subscribe(UpdateCalculator, ex => Log.Error(ex, "Exception while observing calculator updates"));
