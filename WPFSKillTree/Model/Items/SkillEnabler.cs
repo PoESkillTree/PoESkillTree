@@ -17,18 +17,7 @@ namespace PoESkillTree.Model.Items
         {
             if (_enabledDict.TryGetValue(new DictKey(skill), out var value) && value != skill.IsEnabled)
             {
-                if (skill.Gem is null)
-                {
-                    return Skill.FromItem(skill.Id, skill.Level, skill.Quality, skill.ItemSlot, skill.SkillIndex, value);
-                }
-                else if (skill.SkillIndex > 0)
-                {
-                    return Skill.SecondaryFromGem(skill.Id, skill.Gem, value);
-                }
-                else
-                {
-                    return Skill.FromGem(skill.Gem, value);
-                }
+                return skill.WithIsEnabled(value);
             }
 
             return skill;
