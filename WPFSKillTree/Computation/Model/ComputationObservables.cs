@@ -119,17 +119,10 @@ namespace PoESkillTree.Computation.Model
             return (calculatorUpdate, skills);
         }
 
-        private (IReadOnlyList<Modifier> modifiers, IReadOnlyList<Skill> skills) ParseGems(IEnumerable<Gem> gems)
+        private (IReadOnlyList<Modifier> modifiers, IReadOnlyList<Skill> skills) ParseGems(IReadOnlyList<Gem> gems)
         {
-            var skills = new List<Skill>();
-            var modifiers = new List<Modifier>();
-            foreach (var gem in gems)
-            {
-                modifiers.AddRange(_parser.ParseGem(gem, out var newSkills).Modifiers);
-                skills.AddRange(newSkills);
-            }
-
-            return (modifiers, skills);
+            var (result, skills) = _parser.ParseGems(gems);
+            return (result.Modifiers, skills);
         }
 
         public Task<CalculatorUpdate> ParseSkillsAsync(IEnumerable<IReadOnlyList<Skill>> skills) =>
