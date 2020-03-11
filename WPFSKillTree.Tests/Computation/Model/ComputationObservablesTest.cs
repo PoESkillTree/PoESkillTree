@@ -11,6 +11,7 @@ using PoESkillTree.Engine.Computation.Builders.Stats;
 using PoESkillTree.Engine.Computation.Common;
 using PoESkillTree.Engine.Computation.Core;
 using PoESkillTree.Engine.Computation.Parsing;
+using PoESkillTree.Engine.GameModel;
 using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Engine.GameModel.PassiveTree;
 using PoESkillTree.Engine.GameModel.Skills;
@@ -41,7 +42,7 @@ namespace PoESkillTree.Computation.Model
             var sut = CreateSut(parser);
 
             var actual =
-                await AggregateAsync(sut.InitialParse(passiveTree, TimeSpan.Zero, ImmediateScheduler.Instance));
+                await AggregateAsync(sut.InitialParse(passiveTree, TimeSpan.Zero));
 
             Assert.That(actual.AddedModifiers, Is.EquivalentTo(expected));
             Assert.IsEmpty(actual.RemovedModifiers);
@@ -55,7 +56,7 @@ namespace PoESkillTree.Computation.Model
             var parseResults = CreateParseResults(expected);
             var sut = CreateSut(MockSkilledPassiveNodeParser(parseResults));
 
-            var actual = await AggregateAsync(sut.ParseSkilledPassiveNodes(skilledNodes));
+            var actual = await sut.ParseSkilledPassiveNodesAsync(skilledNodes);
 
             Assert.AreEqual(expected, actual.AddedModifiers);
             Assert.IsEmpty(actual.RemovedModifiers);
@@ -97,7 +98,7 @@ namespace PoESkillTree.Computation.Model
             var parser = MockItemParser(items, parseResults);
             var sut = CreateSut(parser);
 
-            var actual = await AggregateAsync(sut.ParseItems(items));
+            var actual = await sut.ParseItemsAsync(items);
 
             Assert.AreEqual(expected, actual.AddedModifiers);
             Assert.IsEmpty(actual.RemovedModifiers);
@@ -139,7 +140,7 @@ namespace PoESkillTree.Computation.Model
             var parser = MockSkillParser(skills, parseResults);
             var sut = CreateSut(parser);
 
-            var actual = await AggregateAsync(sut.ParseSkills(skills));
+            var actual = await sut.ParseSkillsAsync(skills);
 
             Assert.AreEqual(expected, actual.AddedModifiers);
             Assert.IsEmpty(actual.RemovedModifiers);
@@ -192,7 +193,7 @@ namespace PoESkillTree.Computation.Model
                 if (i < items.Count)
                 {
                     var item = items[i].Item1;
-                    parser.Setup(p => p.ParseItem(item, slot)).Returns(parseResults[i]);
+                    parser.Setup(p => p.ParseItem(item, slot, Entity.Character)).Returns(parseResults[i]);
                 }
             }
             return parser.Object;
@@ -205,7 +206,7 @@ namespace PoESkillTree.Computation.Model
             for (var i = 0; i < skills.Count; i++)
             {
                 var id = i;
-                parser.Setup(p => p.ParseSkills(skills[id])).Returns(parseResults[i]);
+                parser.Setup(p => p.ParseSkills(skills[id], Entity.Character)).Returns(parseResults[i]);
             }
             return parser.Object;
         }
@@ -232,8 +233,8 @@ namespace PoESkillTree.Computation.Model
         private static IReadOnlyList<IReadOnlyList<Skill>> CreateSkills()
             => Enumerable.Range(0, 3).Select(i => Enumerable.Range(i, 2).Select(CreateSkill).ToList()).ToList();
 
-        private static Skill CreateSkill(int id)
-            => new Skill(id.ToString(), 1, 0, default, 0, 0);
+        private static Skill CreateSkill(int id) =>
+            Skill.FromGem(new Gem(id.ToString(), 1, 0, default, 0, 0, true), true);
 
         private static List<Modifier> CreateModifiers(int count)
             => Enumerable.Range(0, count).Select(i => CreateModifier(i.ToString())).ToList();
@@ -250,7 +251,7 @@ namespace PoESkillTree.Computation.Model
             };
 
         private static ComputationObservables CreateSut(IParser parser)
-            => new ComputationObservables(parser);
+            => new ComputationObservables(parser, ImmediateScheduler.Instance, ImmediateScheduler.Instance);
 
         private static async Task<CalculatorUpdate> AggregateAsync(IObservable<CalculatorUpdate> observable)
             => await observable

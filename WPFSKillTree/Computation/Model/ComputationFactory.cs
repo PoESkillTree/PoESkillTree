@@ -12,20 +12,22 @@ namespace PoESkillTree.Computation.Model
 {
     public class ComputationFactory
     {
+        private readonly Lazy<ICalculator> _calculator;
         private readonly Lazy<Task<IBuilderFactories>> _builderFactories;
         private readonly Lazy<Task<IParser>> _parser;
 
         public ComputationFactory(GameData gameData)
         {
+            _calculator = new Lazy<ICalculator>(Calculator.Create);
             _builderFactories = new Lazy<Task<IBuilderFactories>>(
                 () => BuilderFactories.CreateAsync(gameData));
             _parser = new Lazy<Task<IParser>>(
-                () => Parser<ParsingStep>.CreateAsync(gameData, _builderFactories.Value,
+                async () => await Parser<ParsingStep>.CreateAsync(gameData, _builderFactories.Value,
                     ParsingData.CreateAsync(gameData, _builderFactories.Value)));
         }
 
         public ICalculator CreateCalculator()
-            => Calculator.Create();
+            => _calculator.Value;
 
         public Task<IBuilderFactories> CreateBuilderFactoriesAsync()
             => _builderFactories.Value;

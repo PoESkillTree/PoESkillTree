@@ -116,8 +116,7 @@ namespace PoESkillTree.Views
 
         private ImportViewModels _importViewModels;
 
-        private readonly ObservableItemCollectionConverter
-            _equipmentConverter = new ObservableItemCollectionConverter();
+        private ObservableItemCollectionConverter? _equipmentConverter;
 
         private ComputationViewModel? _computationViewModel;
 
@@ -647,10 +646,13 @@ namespace PoESkillTree.Views
 
         private async Task InitializeComputationDependentAsync(ComputationInitializer computationInitializer)
         {
+            _equipmentConverter = new ObservableItemCollectionConverter(computationInitializer.CreateAdditionalSkillStatApplier());
+            _equipmentConverter.ConvertFrom(ItemAttributes);
             await computationInitializer.InitializeAfterBuildLoadAsync(
                 Tree.SkilledNodes,
                 _equipmentConverter.Equipment,
                 _equipmentConverter.Jewels,
+                _equipmentConverter.Gems,
                 _equipmentConverter.Skills);
             computationInitializer.SetupPeriodicActions();
             ComputationViewModel = await computationInitializer.CreateComputationViewModelAsync(PersistentData);
@@ -1634,7 +1636,7 @@ namespace PoESkillTree.Views
             }
 
             itemAttributes.ItemDataChanged += ItemAttributesOnItemDataChanged;
-            _equipmentConverter.ConvertFrom(itemAttributes);
+            _equipmentConverter?.ConvertFrom(itemAttributes);
             ItemAttributes = itemAttributes;
             InventoryViewModel =
                 new InventoryViewModel(_dialogCoordinator, itemAttributes, await GetJewelPassiveNodesAsync());

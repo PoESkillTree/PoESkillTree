@@ -26,32 +26,33 @@ namespace PoESkillTree.ViewModels.Skills
     /// </summary>
     public sealed class SkillsInSlotEditingViewModel : CloseableViewModel, IDisposable
     {
+        private readonly SkillDefinitions _skillDefinitions;
+        private readonly ItemImageService _itemImageService;
         private readonly ItemAttributes _itemAttributes;
         public ItemSlot Slot { get; }
 
-        public IReadOnlyList<SkillDefinitionViewModel> AvailableSkills { get; }
+        public IReadOnlyList<SkillDefinitionViewModel> AvailableGems { get; }
 
-        public CollectionViewSource SkillsViewSource { get; }
+        public CollectionViewSource GemsViewSource { get; }
 
-        private readonly ObservableCollection<SkillViewModel> _skills
-            = new ObservableCollection<SkillViewModel>();
+        private readonly ObservableCollection<GemViewModel> _gems = new ObservableCollection<GemViewModel>();
 
-        private IReadOnlyList<Skill>? _skillModels;
+        private IReadOnlyList<Gem>? _gemModels;
 
-        public ICommand AddSkillCommand { get; }
-        public ICommand RemoveSkillCommand { get; }
+        public ICommand AddGemCommand { get; }
+        public ICommand RemoveGemCommand { get; }
 
         public int NumberOfSockets
             => _itemAttributes.GetItemInSlot(Slot, null)?.BaseType.MaximumNumberOfSockets ?? 0;
 
-        private SkillViewModel _newSkill;
+        private GemViewModel _newGem;
         /// <summary>
-        /// Gets the currently edited skill that can be socketed into the item with AddSkillCommand.
+        /// Gets the currently edited gem that can be socketed into the item with AddGemCommand.
         /// </summary>
-        public SkillViewModel NewSkill
+        public GemViewModel NewGem
         {
-            get => _newSkill;
-            private set => SetProperty(ref _newSkill, value);
+            get => _newGem;
+            private set => SetProperty(ref _newGem, value);
         }
 
         private static readonly string DefaultSummary = L10n.Message("no active skills");
@@ -76,126 +77,181 @@ namespace PoESkillTree.ViewModels.Skills
             SkillDefinitions skillDefinitions, ItemImageService itemImageService, ItemAttributes itemAttributes,
             ItemSlot slot)
         {
+            _skillDefinitions = skillDefinitions;
+            _itemImageService = itemImageService;
             _itemAttributes = itemAttributes;
             Slot = slot;
-            AvailableSkills = skillDefinitions.Skills
+            AvailableGems = skillDefinitions.Skills
                 .Where(d => d.BaseItem != null)
                 .Where(d => d.BaseItem!.ReleaseState == ReleaseState.Released ||
                             d.BaseItem.ReleaseState == ReleaseState.Legacy)
                 .OrderBy(d => d.BaseItem!.DisplayName)
-                .Select(d => new SkillDefinitionViewModel(itemImageService, d)).ToList();
-            _newSkill = new SkillViewModel(AvailableSkills[0])
+                .Select(CreateSkillDefinitionViewModel).ToList();
+            _newGem = new GemViewModel(AvailableGems[0])
             {
                 Level = 20,
                 Quality = 0,
-                GemGroup = 1,
+                Group = 1,
                 SocketIndex = -1,
                 IsEnabled = true,
             };
-            AddSkillCommand = new RelayCommand(AddSkill);
-            RemoveSkillCommand = new RelayCommand<SkillViewModel>(RemoveSkill);
+            AddGemCommand = new RelayCommand(AddGem);
+            RemoveGemCommand = new RelayCommand<GemViewModel>(RemoveGem);
 
-            SkillsViewSource = new CollectionViewSource
+            GemsViewSource = new CollectionViewSource
             {
-                Source = _skills
+                Source = _gems
             };
-            SkillsViewSource.SortDescriptions.Add(new SortDescription(
-                nameof(SkillViewModel.GemGroup),
+            GemsViewSource.SortDescriptions.Add(new SortDescription(
+                nameof(GemViewModel.Group),
                 ListSortDirection.Ascending));
-            SkillsViewSource.SortDescriptions.Add(new SortDescription(
-                nameof(SkillViewModel.SocketIndex),
+            GemsViewSource.SortDescriptions.Add(new SortDescription(
+                nameof(GemViewModel.SocketIndex),
                 ListSortDirection.Ascending));
 
-            UpdateFromItemAttributes();
+            UpdateGemsFromItemAttributes();
+            UpdateSkillsFromItemAttributes();
+            itemAttributes.Gems.CollectionChanged += GemsOnCollectionChanged;
             itemAttributes.Skills.CollectionChanged += SkillsOnCollectionChanged;
         }
 
-        private void UpdateFromItemAttributes()
+        private void UpdateGemsFromItemAttributes()
         {
-            _skills.Clear();
-            _skillModels = _itemAttributes.GetSkillsInSlot(Slot);
-            foreach (var skill in _skillModels)
+            foreach (var gemVm in _gems)
             {
-                var gemBase = AvailableSkills.FirstOrDefault(g => g.Id == skill.Id);
-                if (gemBase == null)
-                {
-                    continue;
-                }
-                var socketedGem = new SkillViewModel(gemBase)
-                {
-                    Level = skill.Level,
-                    Quality = skill.Quality,
-                    GemGroup = skill.GemGroup + 1,
-                    SocketIndex = skill.SocketIndex,
-                    IsEnabled = skill.IsEnabled,
-                };
-                socketedGem.PropertyChanged += SocketedGemsOnPropertyChanged;
-                _skills.Add(socketedGem);
+                DisposeGem(gemVm);
             }
+            _gems.Clear();
+
+            _gemModels = _itemAttributes.GetGemsInSlot(Slot);
+            foreach (var gem in _gemModels)
+            {
+                var definition = AvailableGems.FirstOrDefault(d => d.Id == gem.SkillId);
+                if (definition is null)
+                    continue;
+
+                var gemVm = new GemViewModel(definition)
+                {
+                    Level = gem.Level,
+                    Quality = gem.Quality,
+                    Group = gem.Group,
+                    SocketIndex = gem.SocketIndex,
+                    IsEnabled = gem.IsEnabled,
+                };
+                gemVm.PropertyChanged += GemViewModelOnPropertyChanged;
+                _gems.Add(gemVm);
+            }
+
             UpdateSummary();
         }
 
-        private void AddSkill()
+        private void UpdateSkillsFromItemAttributes()
         {
-            var addedGem = NewSkill.Clone();
-            addedGem.PropertyChanged += SocketedGemsOnPropertyChanged;
-            _skills.Add(addedGem);
+            var skillModels = _itemAttributes.GetSkillsInSlot(Slot);
+            foreach (var (gem, skills) in skillModels.Where(s => s.Gem != null).GroupBy(s => s.Gem!))
+            {
+                var gemVm = _gems.FirstOrDefault(v => v.Definition?.Id == gem.SkillId && v.SocketIndex == gem.SocketIndex);
+                if (gemVm is null)
+                    continue;
+
+                foreach (var skillVm in gemVm.Skills)
+                {
+                    skillVm.PropertyChanged -= SkillViewModelOnPropertyChanged;
+                }
+
+                var skillVms = new List<SkillViewModel>();
+                foreach (var skill in skills)
+                {
+                    var definition = CreateSkillDefinitionViewModel(_skillDefinitions.GetSkillById(skill.Id));
+                    var skillVm = new SkillViewModel(gemVm, skill.SkillIndex, definition)
+                    {
+                        IsEnabled = skill.IsEnabled
+                    };
+                    skillVm.PropertyChanged += SkillViewModelOnPropertyChanged;
+                    skillVms.Add(skillVm);
+                }
+                gemVm.Skills = skillVms;
+            }
+        }
+
+        private SkillDefinitionViewModel CreateSkillDefinitionViewModel(SkillDefinition definition) =>
+            new SkillDefinitionViewModel(_itemImageService, definition);
+
+        private void AddGem()
+        {
+            var addedGem = NewGem.Clone();
+            if (addedGem.SocketIndex < 0)
+            {
+                addedGem.SocketIndex = _gems.Any() ? _gems.Max(g => g.SocketIndex) + 1 : 1;
+            }
+            addedGem.PropertyChanged += GemViewModelOnPropertyChanged;
+            _gems.Add(addedGem);
             UpdateItemAttributes();
         }
 
-        private void RemoveSkill(SkillViewModel skill)
+        private void RemoveGem(GemViewModel gem)
         {
-            skill.PropertyChanged -= SocketedGemsOnPropertyChanged;
-            _skills.Remove(skill);
-            NewSkill = skill;
+            DisposeGem(gem);
+            _gems.Remove(gem);
+            NewGem = gem;
             UpdateItemAttributes();
         }
 
-        private void SocketedGemsOnPropertyChanged(object sender, PropertyChangedEventArgs args)
+        private void GemViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
-            if (args.PropertyName != nameof(SkillViewModel.SocketIndex))
+            if (args.PropertyName == nameof(GemViewModel.Definition)
+                || args.PropertyName == nameof(GemViewModel.Level)
+                || args.PropertyName == nameof(GemViewModel.Quality)
+                || args.PropertyName == nameof(GemViewModel.SocketIndex)
+                || args.PropertyName == nameof(GemViewModel.Group)
+                || args.PropertyName == nameof(GemViewModel.IsEnabled))
             {
                 UpdateItemAttributes();
             }
-            if (args.PropertyName == nameof(SkillViewModel.GemGroup) || args.PropertyName == nameof(SkillViewModel.SocketIndex))
+
+            if (args.PropertyName == nameof(GemViewModel.Group) || args.PropertyName == nameof(GemViewModel.SocketIndex))
             {
-                SkillsViewSource.View.Refresh();
+                GemsViewSource.View.Refresh();
+            }
+        }
+
+        private void SkillViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            if (args.PropertyName == nameof(SkillViewModel.IsEnabled) && sender is SkillViewModel skillVm && skillVm.Gem != null)
+            {
+                _itemAttributes.SkillEnabler.SetIsEnabled(skillVm.Gem.ToGem(Slot), skillVm.SkillIndex, skillVm.IsEnabled);
             }
         }
 
         private void UpdateItemAttributes()
         {
-            var nextSocketIndex = _skills.Max(s => (int?) s.SocketIndex) + 1 ?? 0;
-            var skills = new List<Skill>();
-            foreach (var skillVm in _skills)
-            {
-                if (skillVm.SocketIndex < 0)
-                {
-                    skillVm.SocketIndex = nextSocketIndex++;
-                }
-                if (skillVm.Definition is null)
-                    continue;
-                var skill = new Skill(skillVm.Definition.Id, skillVm.Level, skillVm.Quality, Slot,
-                    skillVm.SocketIndex, skillVm.GemGroup - 1, skillVm.IsEnabled);
-                skills.Add(skill);
-            }
-
-            _skillModels = skills;
-            _itemAttributes.SetSkillsInSlot(_skillModels, Slot);
+            _gemModels = _gems
+                .Where(g => g.Definition != null)
+                .Select(g => g.ToGem(Slot))
+                .ToList();
+            _itemAttributes.SetGemsInSlot(_gemModels, Slot);
             UpdateSummary();
+        }
+
+        private void GemsOnCollectionChanged(object sender, CollectionChangedEventArgs<IReadOnlyList<Gem>> args)
+        {
+            if (!ReferenceEquals(_gemModels, _itemAttributes.GetGemsInSlot(Slot)))
+            {
+                UpdateGemsFromItemAttributes();
+            }
         }
 
         private void SkillsOnCollectionChanged(object sender, CollectionChangedEventArgs<IReadOnlyList<Skill>> args)
         {
-            if (!ReferenceEquals(_skillModels, _itemAttributes.GetSkillsInSlot(Slot)))
+            if (args.AddedItems.Concat(args.RemovedItems).Flatten().Any(s => s.ItemSlot == Slot))
             {
-                UpdateFromItemAttributes();
+                UpdateSkillsFromItemAttributes();
             }
         }
 
         private void UpdateSummary()
         {
-            var activeSkills = _skills
+            var activeSkills = _gems
                 .Where(s => s.Definition != null)
                 .Where(s => !s.Definition!.Model.IsSupport)
                 .ToList();
@@ -216,8 +272,18 @@ namespace PoESkillTree.ViewModels.Skills
             }
         }
 
+        private void DisposeGem(GemViewModel gem)
+        {
+            gem.PropertyChanged -= GemViewModelOnPropertyChanged;
+            foreach (var skill in gem.Skills)
+            {
+                skill.PropertyChanged -= SkillViewModelOnPropertyChanged;
+            }
+        }
+
         public void Dispose()
         {
+            _itemAttributes.Gems.CollectionChanged -= GemsOnCollectionChanged;
             _itemAttributes.Skills.CollectionChanged -= SkillsOnCollectionChanged;
         }
     }

@@ -33,8 +33,8 @@
         </Grid.ColumnDefinitions>
 
         <controls:SearchableComboBox Grid.Row="0" Grid.Column="0"
-                                     ItemsSource="{Binding AvailableSkills}"
-                                     SelectedItem="{Binding NewSkill.Definition}"
+                                     ItemsSource="{Binding AvailableGems}"
+                                     SelectedItem="{Binding NewGem.Definition}"
                                      SearchValuePath="Name"
                                      ToolTipService.InitialShowDelay="100"
                                      ToolTipService.ShowDuration="60000">
@@ -42,7 +42,7 @@
                 <ToolTip Padding="0"
                          BorderThickness="0">
                     <ToolTip.Content>
-                        <controls:ItemTooltip DataContext="{Binding NewSkill.ToolTip}" />
+                        <controls:ItemTooltip DataContext="{Binding NewGem.ToolTip}" />
                     </ToolTip.Content>
                 </ToolTip>
             </controls:SearchableComboBox.ToolTip>
@@ -57,24 +57,24 @@
             </controls:SearchableComboBox.ItemTemplate>
         </controls:SearchableComboBox>
         <mahapps:NumericUpDown Grid.Row="0" Grid.Column="1"
-                               Minimum="1" Maximum="{Binding NewSkill.Definition.MaxLevel}"
+                               Minimum="1" Maximum="{Binding NewGem.Definition.MaxLevel}"
                                NumericInputMode="Numbers"
-                               Value="{Binding NewSkill.Level}" />
+                               Value="{Binding NewGem.Level}" />
         <mahapps:NumericUpDown Grid.Row="0" Grid.Column="2"
                                Minimum="0" Maximum="30"
                                NumericInputMode="Numbers"
-                               Value="{Binding NewSkill.Quality}" />
+                               Value="{Binding NewGem.Quality}" />
         <mahapps:NumericUpDown Grid.Row="0" Grid.Column="3"
                                Minimum="1"
                                NumericInputMode="Numbers"
-                               Value="{Binding NewSkill.GemGroup}" />
+                               Value="{Binding NewGem.Group}" />
         <CheckBox Grid.Row="0" Grid.Column="4"
                   HorizontalAlignment="Left"
                   Margin="10 0 0 0"
-                  IsChecked="{Binding NewSkill.IsEnabled}" />
+                  IsChecked="{Binding NewGem.IsEnabled}" />
         <Button Grid.Row="0" Grid.Column="5"
                 HorizontalAlignment="Center"
-                Command="{Binding AddSkillCommand}">
+                Command="{Binding AddGemCommand}">
             <l:Catalog>Add</l:Catalog>
         </Button>
 
@@ -82,7 +82,7 @@
                   AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
                   CanUserResizeColumns="False"
                   VerticalScrollBarVisibility="Visible"
-                  ItemsSource="{Binding SkillsViewSource.View}">
+                  ItemsSource="{Binding GemsViewSource.View}">
             <DataGrid.Columns>
                 <DataGridTemplateColumn IsReadOnly="True"
                                         Width="4*">
@@ -90,21 +90,53 @@
                         <l:Catalog>Skill Name</l:Catalog>
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="viewModels:SkillViewModel">
-                            <DockPanel ToolTipService.InitialShowDelay="100"
-                                       ToolTipService.ShowDuration="60000">
-                                <DockPanel.ToolTip>
-                                    <ToolTip Padding="0"
-                                             BorderThickness="0">
-                                        <ToolTip.Content>
-                                            <controls:ItemTooltip DataContext="{Binding ToolTip}" />
-                                        </ToolTip.Content>
-                                    </ToolTip>
-                                </DockPanel.ToolTip>
-                                <Image Width="18" Margin="0 0 2 0"
-                                       Source="{Binding Definition.Icon.ImageSource.Result}" />
-                                <TextBlock Text="{Binding Definition.Name}" />
-                            </DockPanel>
+                        <DataTemplate DataType="viewModels:GemViewModel">
+                            <StackPanel Orientation="Vertical">
+                                <DockPanel ToolTipService.InitialShowDelay="100"
+                                           ToolTipService.ShowDuration="60000">
+                                    <DockPanel.ToolTip>
+                                        <ToolTip Padding="0"
+                                                 BorderThickness="0">
+                                            <ToolTip.Content>
+                                                <controls:ItemTooltip DataContext="{Binding ToolTip}" />
+                                            </ToolTip.Content>
+                                        </ToolTip>
+                                    </DockPanel.ToolTip>
+                                    <Image Width="18" Margin="0 0 2 0"
+                                           Source="{Binding Definition.Icon.ImageSource.Result}" />
+                                    <TextBlock Text="{Binding Definition.Name}" />
+                                </DockPanel>
+                                <ItemsControl ItemsSource="{Binding Skills}"
+                                              Visibility="{Binding DisplaySkills, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                              Margin="10 2 0 2">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate DataType="viewModels:SkillViewModel">
+                                            <DockPanel Margin="0 2 0 0">
+                                                <CheckBox DockPanel.Dock="Left"
+                                                          
+                                                          IsChecked="{Binding IsEnabled}">
+                                                    <CheckBox.LayoutTransform>
+                                                        <ScaleTransform ScaleX="0.8" ScaleY="0.8" />
+                                                    </CheckBox.LayoutTransform>
+                                                </CheckBox>
+                                                <TextBlock Text="{Binding DisplayName}"
+                                                           VerticalAlignment="Center"
+                                                           ToolTipService.InitialShowDelay="100"
+                                                           ToolTipService.ShowDuration="60000">
+                                                    <TextBlock.ToolTip>
+                                                        <ToolTip Padding="0"
+                                                                 BorderThickness="0">
+                                                            <ToolTip.Content>
+                                                                <controls:ItemTooltip DataContext="{Binding ToolTip}" />
+                                                            </ToolTip.Content>
+                                                        </ToolTip>
+                                                    </TextBlock.ToolTip>
+                                                </TextBlock>
+                                            </DockPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -114,7 +146,7 @@
                         <l:Catalog>Level</l:Catalog>
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="viewModels:SkillViewModel">
+                        <DataTemplate DataType="viewModels:GemViewModel">
                             <mahapps:NumericUpDown Style="{StaticResource UpDownInDataGridStyle}"
                                                    Minimum="1" Maximum="{Binding Definition.MaxLevel}"
                                                    NumericInputMode="Numbers"
@@ -128,7 +160,7 @@
                         <l:Catalog>Quality</l:Catalog>
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="viewModels:SkillViewModel">
+                        <DataTemplate DataType="viewModels:GemViewModel">
                             <mahapps:NumericUpDown Style="{StaticResource UpDownInDataGridStyle}"
                                                    Minimum="0" Maximum="30"
                                                    NumericInputMode="Numbers"
@@ -142,11 +174,11 @@
                         <l:Catalog>Group</l:Catalog>
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="viewModels:SkillViewModel">
+                        <DataTemplate DataType="viewModels:GemViewModel">
                             <mahapps:NumericUpDown Style="{StaticResource UpDownInDataGridStyle}"
                                                    Minimum="1"
                                                    NumericInputMode="Numbers"
-                                                   Value="{Binding GemGroup, UpdateSourceTrigger=PropertyChanged}" />
+                                                   Value="{Binding Group, UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -157,7 +189,7 @@
                         <l:Catalog>Enabled</l:Catalog>
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="viewModels:SkillViewModel">
+                        <DataTemplate DataType="viewModels:GemViewModel">
                             <CheckBox IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}"
                                       HorizontalAlignment="Left"
                                       Margin="10 0 0 0" />
@@ -168,8 +200,8 @@
                 <DataGridTemplateColumn Width="1*"
                                         MaxWidth="60">
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="viewModels:SkillViewModel">
-                            <Button Command="{Binding Data.RemoveSkillCommand, Source={StaticResource VmProxy}}"
+                        <DataTemplate DataType="viewModels:GemViewModel">
+                            <Button Command="{Binding Data.RemoveGemCommand, Source={StaticResource VmProxy}}"
                                     CommandParameter="{Binding}"
                                     Width="20" Height="20"
                                     HorizontalAlignment="Center"

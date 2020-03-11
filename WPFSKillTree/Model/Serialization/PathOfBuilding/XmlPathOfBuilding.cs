@@ -61,6 +61,10 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
         public bool Enabled { get; set; }
         [XmlAttribute("skillPart")]
         public int SkillPart { get; set; }
+        [XmlAttribute("enableGlobal1")]
+        public bool PrimarySkillEnabled { get; set; } = true;
+        [XmlAttribute("enableGlobal2")]
+        public bool SecondarySkillEnabled { get; set; } = true;
     }
 
     public class XmlPathOfBuildingTree
