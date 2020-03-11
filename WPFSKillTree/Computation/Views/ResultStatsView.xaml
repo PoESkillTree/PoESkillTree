@@ -27,7 +27,7 @@
                     </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn IsReadOnly="True"
-                                    Width="60"
+                                    Width="70"
                                     HeaderStyle="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                     Binding="{Binding Node.StringValue}">
                     <DataGridTextColumn.Header>

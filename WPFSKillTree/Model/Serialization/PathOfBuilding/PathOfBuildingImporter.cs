@@ -160,7 +160,7 @@ namespace PoESkillTree.Model.Serialization.PathOfBuilding
                 foreach (var poBGem in groupAsList)
                 {
                     itemSerializer.SkillEnabler.SetIsEnabled(poBGem.Gem, 0, poBGem.PrimarySkillIsEnabled);
-                    itemSerializer.SkillEnabler.SetIsEnabled(poBGem.Gem, 0, poBGem.SecondarySkillIsEnabled);
+                    itemSerializer.SkillEnabler.SetIsEnabled(poBGem.Gem, 1, poBGem.SecondarySkillIsEnabled);
                 }
             }
 

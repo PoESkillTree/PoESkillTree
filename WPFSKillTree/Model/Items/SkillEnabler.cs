@@ -46,7 +46,7 @@ namespace PoESkillTree.Model.Items
 
         public event EventHandler<IReadOnlyCollection<ItemSlot>>? EnabledChangedForSlots;
 
-        public string ToJsonString()
+        public JToken ToJson()
         {
             var representations = _enabledDict.Select(p => new JsonRepresentation
             {
@@ -56,7 +56,7 @@ namespace PoESkillTree.Model.Items
                 SkillIndex = p.Key.Tuple.skillIndex,
                 IsEnabled = p.Value
             });
-            return JsonConvert.SerializeObject(representations);
+            return JArray.FromObject(representations);
         }
 
         private class DictKey : ValueObject

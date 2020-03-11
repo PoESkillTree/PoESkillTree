@@ -293,7 +293,7 @@ namespace PoESkillTree.Model.Items
             {
                 {"items", items},
                 {"gems", gems},
-                {"enabledSkills", SkillEnabler.ToJsonString()},
+                {"enabledSkills", SkillEnabler.ToJson()},
             };
             return jObj.ToString(Formatting.None);
         }
