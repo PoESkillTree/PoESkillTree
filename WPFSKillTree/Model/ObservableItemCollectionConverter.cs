@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using PoESkillTree.Computation.Model;
 using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Engine.GameModel.Skills;
 using PoESkillTree.Engine.Utils;
@@ -27,9 +28,9 @@ namespace PoESkillTree.Model
         public ObservableSet<IReadOnlyList<Gem>> Gems { get; } = new ObservableSet<IReadOnlyList<Gem>>();
         public ObservableSkillCollection Skills { get; }
 
-        public ObservableItemCollectionConverter()
+        public ObservableItemCollectionConverter(AdditionalSkillStatApplier additionalSkillStatApplier)
         {
-            Skills = new ObservableSkillCollection(Gems);
+            Skills = new ObservableSkillCollection(Gems, additionalSkillStatApplier);
         }
 
         public void ConvertFrom(ItemAttributes itemAttributes)

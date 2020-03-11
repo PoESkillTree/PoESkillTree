@@ -135,6 +135,9 @@ namespace PoESkillTree.Computation
             _calculator.SubscribeTo(changeObservable);
         }
 
+        public AdditionalSkillStatApplier CreateAdditionalSkillStatApplier() =>
+            new AdditionalSkillStatApplier(_calculator, _builderFactories.StatBuilders.Gem);
+
         public async Task<ComputationViewModel> CreateComputationViewModelAsync(IPersistentData persistentData)
         {
             var vm =
