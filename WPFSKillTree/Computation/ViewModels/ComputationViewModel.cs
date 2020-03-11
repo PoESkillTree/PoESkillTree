@@ -181,7 +181,7 @@ namespace PoESkillTree.Computation.ViewModels
             AddAvailableStats(DefensiveStats, f.StatBuilders.Evasion.ChanceAgainstProjectileAttacks);
             AddAvailableStats(DefensiveStats, f.StatBuilders.Accuracy, Entity.Enemy);
             AddStats(DefensiveStats, f.DamageTypeBuilders.AnyDamageType().Resistance);
-            ForEachDamageType(t => AddAvailableStats(DefensiveStats, f.MetaStatBuilders.ResistanceAgainstHits(t)));
+            ForEachDamageType(t => AddAvailableStats(DefensiveStats, f.DamageTypeBuilders.From(t).ResistanceAgainstHits));
             ForEachDamageType(t => AddAvailableStats(DefensiveStats, f.MetaStatBuilders.MitigationAgainstHits(t)));
             ForEachDamageType(t => AddAvailableStats(DefensiveStats, f.MetaStatBuilders.MitigationAgainstDoTs(t)));
             ForEachDamageType(t => AddAvailableStats(DefensiveStats, f.MetaStatBuilders.MitigationAgainstDoTs(t)));

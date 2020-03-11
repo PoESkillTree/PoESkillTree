@@ -21,7 +21,6 @@ namespace PoESkillTree.Model
                 skillNode.Name,
                 skillNode.IsAscendancyNode,
                 !skillNode.IsRootNode && !skillNode.IsAscendancyStart && !skillNode.IsMultipleChoiceOption,
-                skillNode.PassivePointsGranted,
                 new NodePosition(skillNode.Position.X, skillNode.Position.Y), 
                 skillNode.StatDefinitions);
 
