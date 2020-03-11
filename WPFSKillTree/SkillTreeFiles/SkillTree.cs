@@ -114,9 +114,9 @@ namespace PoESkillTree.SkillTreeFiles
             {"notable", "NotableFrameUnallocated"},
             {"keystone", "KeystoneFrameUnallocated"},
             {"jewel", "JewelFrameUnallocated"},
-            {"ascendancyNormal", "PassiveSkillScreenAscendancyFrameSmallNormal"},
-            {"ascendancyNotable", "PassiveSkillScreenAscendancyFrameLargeNormal"},
-            {"ascendancyStart", "PassiveSkillScreenAscendancyMiddle"},
+            {"ascendancyNormal", "AscendancyFrameSmallNormal"},
+            {"ascendancyNotable", "AscendancyFrameLargeNormal"},
+            {"ascendancyStart", "AscendancyMiddle"},
             {"blighted", "BlightedNotableFrameUnallocated"},
         };
 
@@ -126,9 +126,9 @@ namespace PoESkillTree.SkillTreeFiles
             {"notable", "NotableFrameAllocated"},
             {"keystone", "KeystoneFrameAllocated"},
             {"jewel", "JewelFrameAllocated"},
-            {"ascendancyNormal", "PassiveSkillScreenAscendancyFrameSmallAllocated"},
-            {"ascendancyNotable", "PassiveSkillScreenAscendancyFrameLargeAllocated"},
-            {"ascendancyStart", "PassiveSkillScreenAscendancyMiddle"},
+            {"ascendancyNormal", "AscendancyFrameSmallAllocated"},
+            {"ascendancyNotable", "AscendancyFrameLargeAllocated"},
+            {"ascendancyStart", "AscendancyMiddle"},
             {"blighted", "BlightedNotableFrameAllocated"},
         };
 

@@ -90,8 +90,7 @@ namespace PoESkillTree.SkillTreeFiles
         [JsonProperty("isMultipleChoiceOption")]
         public bool IsMultipleChoiceOption { get; set; }
 
-        [JsonProperty("isAscendancyStart")]
-        public bool IsAscendancyStart { get; set; }
+        public bool IsAscendancyStart => Name == AscendancyName;
 
         [JsonProperty("passivePointsGranted")]
         public int PassivePointsGranted { get; set; }
@@ -105,8 +104,7 @@ namespace PoESkillTree.SkillTreeFiles
         [JsonProperty("ia")]
         public int IntelligenceGranted { get; set; }
 
-        [JsonProperty("isBlighted")]
-        public bool IsBlighted { get; set; }
+        public bool IsBlighted => IsNotable && (NodesIdsIn is null || NodesIdsIn.Count == 0) && (NodeIdsOut is null || NodeIdsOut.Count == 0);
 
         [JsonProperty("spc")]
         public int[] Characters { get; set; } = default!;

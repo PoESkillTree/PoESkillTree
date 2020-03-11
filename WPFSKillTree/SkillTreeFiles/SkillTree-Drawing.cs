@@ -619,13 +619,13 @@ namespace PoESkillTree.SkillTreeFiles
                     switch (type)
                     {
                         case "Highlight":
-                            imageName = "PassiveSkillScreenAscendancyButtonHighlight";
+                            imageName = "AscendancyButtonHighlight";
                             break;
                         case "Pressed":
-                            imageName = "PassiveSkillScreenAscendancyButtonPressed";
+                            imageName = "AscendancyButtonPressed";
                             break;
                         default:
-                            imageName = "PassiveSkillScreenAscendancyButton";
+                            imageName = "AscendancyButton";
                             break;
                     }
 
