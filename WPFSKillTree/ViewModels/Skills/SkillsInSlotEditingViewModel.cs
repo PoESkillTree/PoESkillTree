@@ -163,7 +163,7 @@ namespace PoESkillTree.ViewModels.Skills
                 foreach (var skill in skills)
                 {
                     var definition = CreateSkillDefinitionViewModel(_skillDefinitions.GetSkillById(skill.Id));
-                    var skillVm = new SkillViewModel(gemVm, skill.SkillIndex, definition)
+                    var skillVm = new SkillViewModel(gemVm, skill.Level, skill.Quality, skill.SkillIndex, definition)
                     {
                         IsEnabled = skill.IsEnabled
                     };

@@ -111,13 +111,16 @@ namespace PoESkillTree.ViewModels.Skills
             {
                 Level = Definition.MaxLevel;
             }
-            if (propertyName == nameof(Definition) || propertyName == nameof(Level) || propertyName == nameof(Quality)
-                || propertyName == nameof(Skills))
+            if (propertyName == nameof(Level) || propertyName == nameof(Quality))
             {
                 foreach (var skill in Skills)
                 {
                     skill.ReCreateToolTip();
                 }
+                ToolTip = CreateToolTip();
+            }
+            else if (propertyName == nameof(Definition) || propertyName == nameof(Skills))
+            {
                 ToolTip = CreateToolTip();
             }
             base.OnPropertyChanged(propertyName);

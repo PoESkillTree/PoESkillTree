@@ -8,15 +8,20 @@ namespace PoESkillTree.ViewModels.Skills
         private bool _isEnabled;
         private IHasItemToolTip _toolTip;
 
-        public SkillViewModel(GemViewModel? gem, int skillIndex, SkillDefinitionViewModel definition)
+        public SkillViewModel(GemViewModel? gem, int level, int quality, int skillIndex, SkillDefinitionViewModel definition)
         {
             Gem = gem;
+            Level = level;
+            Quality = quality;
             SkillIndex = skillIndex;
             Definition = definition;
             _toolTip = CreateToolTip();
         }
 
         public GemViewModel? Gem { get; }
+
+        public int Level { get; }
+        public int Quality { get; }
 
         public int SkillIndex { get; }
 
@@ -37,7 +42,7 @@ namespace PoESkillTree.ViewModels.Skills
         }
 
         public SkillViewModel Clone() =>
-            new SkillViewModel(Gem, SkillIndex, Definition)
+            new SkillViewModel(Gem, Level, Quality, SkillIndex, Definition)
             {
                 IsEnabled = IsEnabled,
             };
@@ -49,9 +54,9 @@ namespace PoESkillTree.ViewModels.Skills
 
         private IHasItemToolTip CreateToolTip()
         {
-            if (Gem != null && Definition.Model.Levels.TryGetValue(Gem.Level, out var levelDefinition))
+            if (Definition.Model.Levels.TryGetValue(Level, out var levelDefinition))
             {
-                return new SkillItem(levelDefinition.Tooltip, Gem.Quality);
+                return new SkillItem(levelDefinition.Tooltip, Level, Gem?.Level, Quality);
             }
             else
             {
