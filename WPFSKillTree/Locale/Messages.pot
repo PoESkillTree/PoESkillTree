@@ -81,7 +81,6 @@ msgstr ""
 #: Controls\Dialogs\Views\ValidatingInputDialogView.xaml:49
 #: Views\Builds\EditBuildWindow.xaml:48 Views\Crafting\CraftingView.xaml:155
 #: Views\Crafting\UniqueCraftingView.xaml:62
-#: Views\Equipment\SocketedGemsEditingView.xaml:181
 #: Views\Equipment\TabPicker.xaml:127
 #: Controls\Dialogs\ExtendedDialogManager.cs:92
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:121
@@ -273,7 +272,7 @@ msgid "Right click to edit"
 msgstr ""
 
 #: Views\Builds\BuildsControl.xaml:123 Views\Builds\BuildsControl.xaml:200
-#: Views\MainRibbon.xaml:487 Views\MainRibbon.xaml:492
+#: Views\MainRibbon.xaml:488 Views\MainRibbon.xaml:493
 msgid "Edit"
 msgstr ""
 
@@ -294,7 +293,7 @@ msgid "New Build"
 msgstr ""
 
 #: Views\Builds\BuildsControl.xaml:158
-#: ViewModels\Builds\BuildsControlViewModel.cs:370
+#: ViewModels\Builds\BuildsControlViewModel.cs:381
 msgid "New Folder"
 msgstr ""
 
@@ -306,12 +305,12 @@ msgstr ""
 msgid "Copy"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:229 Views\MainRibbon.xaml:158
+#: Views\Builds\BuildsControl.xaml:229 Views\MainRibbon.xaml:159
 msgid "Save"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:235 Views\MainRibbon.xaml:510
-#: Views\MainRibbon.xaml:515
+#: Views\Builds\BuildsControl.xaml:235 Views\MainRibbon.xaml:511
+#: Views\MainRibbon.xaml:516
 msgid "Discard changes"
 msgstr ""
 
@@ -344,14 +343,6 @@ msgstr ""
 msgid "Unique Crafting Window"
 msgstr ""
 
-#: Views\Equipment\SocketedGemsEditingView.xaml:166
-msgid "Equipped item's maximum number of sockets:"
-msgstr ""
-
-#: Views\Equipment\SocketedGemsEditingView.xaml:176
-msgid "Save socketed gems"
-msgstr ""
-
 #: Views\Equipment\TabPicker.xaml:18
 msgid "Stash Bookmark"
 msgstr ""
@@ -368,13 +359,13 @@ msgstr ""
 msgid "Delete bookmark"
 msgstr ""
 
-#: Views\HelpWindow.xaml:11 Views\MainRibbon.xaml:1181
-#: Views\MainRibbon.xaml:1193 Views\MainRibbon.xaml:1198
+#: Views\HelpWindow.xaml:11 Views\MainRibbon.xaml:1209
+#: Views\MainRibbon.xaml:1221 Views\MainRibbon.xaml:1226
 msgid "Help"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:9 Views\MainRibbon.xaml:1216
-#: Views\MainRibbon.xaml:1221
+#: Views\HotkeysWindow.xaml:9 Views\MainRibbon.xaml:1244
+#: Views\MainRibbon.xaml:1249
 msgid "Hotkeys"
 msgstr ""
 
@@ -446,8 +437,8 @@ msgstr ""
 msgid "Shadow"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:105 Views\MainRibbon.xaml:321
-#: Views\MainRibbon.xaml:948 Views\MainWindow.xaml:177
+#: Views\HotkeysWindow.xaml:105 Views\MainRibbon.xaml:322
+#: Views\MainRibbon.xaml:976 Views\MainWindow.xaml:181
 msgid "Passive tree"
 msgstr ""
 
@@ -507,7 +498,7 @@ msgstr ""
 msgid "Highlight similar nodes"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:152 Views\MainWindow.xaml:250
+#: Views\HotkeysWindow.xaml:152 Views\MainWindow.xaml:254
 msgid "Equipment"
 msgstr ""
 
@@ -519,8 +510,8 @@ msgstr ""
 msgid "Edit socketed gems"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:163 Views\MainRibbon.xaml:932
-#: Views\MainRibbon.xaml:1020
+#: Views\HotkeysWindow.xaml:163 Views\MainRibbon.xaml:960
+#: Views\MainRibbon.xaml:1048
 msgid "Saved builds"
 msgstr ""
 
@@ -532,7 +523,7 @@ msgstr ""
 msgid "Move build up and down"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:174 Views\MainRibbon.xaml:910
+#: Views\HotkeysWindow.xaml:174 Views\MainRibbon.xaml:938
 msgid "Build summary"
 msgstr ""
 
@@ -675,560 +666,580 @@ msgstr ""
 msgid "Load stash tab from clipboard"
 msgstr ""
 
-#: Views\MainRibbon.xaml:56
+#: Views\MainRibbon.xaml:57
 msgid "File"
 msgstr ""
 
-#: Views\MainRibbon.xaml:60
+#: Views\MainRibbon.xaml:61
 msgid "New"
 msgstr ""
 
-#: Views\MainRibbon.xaml:70
+#: Views\MainRibbon.xaml:71
 msgid "New top level build"
 msgstr ""
 
-#: Views\MainRibbon.xaml:75
+#: Views\MainRibbon.xaml:76
 msgid "New top level build (Ctrl+N)"
 msgstr ""
 
-#: Views\MainRibbon.xaml:78
+#: Views\MainRibbon.xaml:79
 msgid "Create a new empty build in the root build folder."
 msgstr ""
 
-#: Views\MainRibbon.xaml:90 Views\MainRibbon.xaml:95
+#: Views\MainRibbon.xaml:91 Views\MainRibbon.xaml:96
 msgid "New build next to current"
 msgstr ""
 
-#: Views\MainRibbon.xaml:100
+#: Views\MainRibbon.xaml:101
 #, csharp-format
 msgid "Create a new empty build in the same folder as the current build ({0})."
 msgstr ""
 
-#: Views\MainRibbon.xaml:115 Views\MainRibbon.xaml:120
+#: Views\MainRibbon.xaml:116
 msgid "New top level folder"
 msgstr ""
 
-#: Views\MainRibbon.xaml:123
+#: Views\MainRibbon.xaml:121
+msgid "New top level folder (Ctrl+Shift+N)"
+msgstr ""
+
+#: Views\MainRibbon.xaml:124
 msgid "Create a new empty folder in the root build folder."
 msgstr ""
 
-#: Views\MainRibbon.xaml:135 Views\MainRibbon.xaml:140
+#: Views\MainRibbon.xaml:136 Views\MainRibbon.xaml:141
 msgid "New folder next to current"
 msgstr ""
 
-#: Views\MainRibbon.xaml:145
+#: Views\MainRibbon.xaml:146
 #, csharp-format
 msgid "Create a new empty folder in the same folder as the current build ({0})."
 msgstr ""
 
-#: Views\MainRibbon.xaml:150
+#: Views\MainRibbon.xaml:151
 msgid "Maximum folder depth has been reached."
 msgstr ""
 
-#: Views\MainRibbon.xaml:168
+#: Views\MainRibbon.xaml:169
 msgid "Save current build"
 msgstr ""
 
-#: Views\MainRibbon.xaml:173
+#: Views\MainRibbon.xaml:174
 msgid "Save current build (Ctrl+S)"
 msgstr ""
 
-#: Views\MainRibbon.xaml:176
+#: Views\MainRibbon.xaml:177
 msgid "Save the currently opened build."
 msgstr ""
 
-#: Views\MainRibbon.xaml:179
+#: Views\MainRibbon.xaml:180
 msgid "The current build has no unsaved changes."
 msgstr ""
 
-#: Views\MainRibbon.xaml:192
+#: Views\MainRibbon.xaml:193
 msgid "Save current build as"
 msgstr ""
 
-#: Views\MainRibbon.xaml:197
+#: Views\MainRibbon.xaml:198
 msgid "Save current build as (Ctrl+Alt+S)"
 msgstr ""
 
-#: Views\MainRibbon.xaml:200
+#: Views\MainRibbon.xaml:201
 msgid "Save the currently opened build as a new build."
 msgstr ""
 
-#: Views\MainRibbon.xaml:212
+#: Views\MainRibbon.xaml:213
 msgid "Save all builds"
 msgstr ""
 
-#: Views\MainRibbon.xaml:217
+#: Views\MainRibbon.xaml:218
 msgid "Save all builds (Ctrl+Shift+N)"
 msgstr ""
 
-#: Views\MainRibbon.xaml:220
+#: Views\MainRibbon.xaml:221
 msgid "Save all changed builds."
 msgstr ""
 
-#: Views\MainRibbon.xaml:223
+#: Views\MainRibbon.xaml:224
 msgid "No build has unsaved changes."
 msgstr ""
 
-#: Views\MainRibbon.xaml:237 Views\MainRibbon.xaml:242
+#: Views\MainRibbon.xaml:238 Views\MainRibbon.xaml:243
 msgid "Reload builds from file system"
 msgstr ""
 
-#: Views\MainRibbon.xaml:245
+#: Views\MainRibbon.xaml:246
 msgid "Reload saved build information from file system, e.g. after manually copying builds there."
 msgstr ""
 
-#: Views\MainRibbon.xaml:256 Views\MainRibbon.xaml:261
+#: Views\MainRibbon.xaml:257 Views\MainRibbon.xaml:262
 msgid "Open build directory"
 msgstr ""
 
-#: Views\MainRibbon.xaml:264
+#: Views\MainRibbon.xaml:265
 msgid ""
 "Open the build save path in the file explorer.\n"
 "The path can be changed in the options."
 msgstr ""
 
-#: Views\MainRibbon.xaml:277 Views\MainRibbon.xaml:282
+#: Views\MainRibbon.xaml:278 Views\MainRibbon.xaml:283
 #: ViewModels\SettingsMenuViewModel.cs:30
 msgid "Options"
 msgstr ""
 
-#: Views\MainRibbon.xaml:285
+#: Views\MainRibbon.xaml:286
 msgid "Open the options."
 msgstr ""
 
-#: Views\MainRibbon.xaml:296
+#: Views\MainRibbon.xaml:297
 msgid "Exit"
 msgstr ""
 
-#: Views\MainRibbon.xaml:301
+#: Views\MainRibbon.xaml:302
 msgid "Exit (Alt+F4)"
 msgstr ""
 
-#: Views\MainRibbon.xaml:304
+#: Views\MainRibbon.xaml:305
 msgid "Exit the program."
 msgstr ""
 
-#: Views\MainRibbon.xaml:317
+#: Views\MainRibbon.xaml:318
 msgid "Home"
 msgstr ""
 
-#: Views\MainRibbon.xaml:332
+#: Views\MainRibbon.xaml:333
 msgid "Undo"
 msgstr ""
 
-#: Views\MainRibbon.xaml:337
+#: Views\MainRibbon.xaml:338
 msgid "Undo (Ctrl+Z)"
 msgstr ""
 
-#: Views\MainRibbon.xaml:340
+#: Views\MainRibbon.xaml:341
 msgid "Undo the last passive tree action."
 msgstr ""
 
-#: Views\MainRibbon.xaml:354
+#: Views\MainRibbon.xaml:355
 msgid "Redo"
 msgstr ""
 
-#: Views\MainRibbon.xaml:359
+#: Views\MainRibbon.xaml:360
 msgid "Redo (Ctrl+Y)"
 msgstr ""
 
-#: Views\MainRibbon.xaml:362
+#: Views\MainRibbon.xaml:363
 msgid "Redo the last passive tree action."
 msgstr ""
 
-#: Views\MainRibbon.xaml:376
+#: Views\MainRibbon.xaml:377
 msgid "Reset"
 msgstr ""
 
-#: Views\MainRibbon.xaml:381
+#: Views\MainRibbon.xaml:382
 msgid "Reset passive tree (Ctrl+R)"
 msgstr ""
 
-#: Views\MainRibbon.xaml:384
+#: Views\MainRibbon.xaml:385
 msgid "Reset the passive tree. What is reset can be configured in the options."
 msgstr ""
 
-#: Views\MainRibbon.xaml:389
+#: Views\MainRibbon.xaml:390
 msgid "Reset preferences"
 msgstr ""
 
-#: Views\MainRibbon.xaml:395
+#: Views\MainRibbon.xaml:396
 msgid "Non-ascendancy passive nodes"
 msgstr ""
 
-#: Views\MainRibbon.xaml:402
+#: Views\MainRibbon.xaml:403
 msgid "Ascendancy passive nodes"
 msgstr ""
 
-#: Views\MainRibbon.xaml:409
+#: Views\MainRibbon.xaml:410
 msgid "Selected bandit"
 msgstr ""
 
-#: Views\MainRibbon.xaml:416
+#: Views\MainRibbon.xaml:417
 msgid "Craft"
 msgstr ""
 
-#: Views\MainRibbon.xaml:427 Views\MainRibbon.xaml:432
+#: Views\MainRibbon.xaml:428 Views\MainRibbon.xaml:433
 msgid "Craft unique"
 msgstr ""
 
-#: Views\MainRibbon.xaml:435
+#: Views\MainRibbon.xaml:436
 msgid "Craft a new unique item and add it to the stash."
 msgstr ""
 
-#: Views\MainRibbon.xaml:449 Views\MainRibbon.xaml:454
+#: Views\MainRibbon.xaml:450 Views\MainRibbon.xaml:455
 msgid "Craft item"
 msgstr ""
 
-#: Views\MainRibbon.xaml:457
+#: Views\MainRibbon.xaml:458
 msgid "Craft a new non-unique item and add it to the stash."
 msgstr ""
 
-#: Views\MainRibbon.xaml:465 Views\MainRibbon.xaml:470
+#: Views\MainRibbon.xaml:466 Views\MainRibbon.xaml:471
 msgid "Build"
 msgstr ""
 
-#: Views\MainRibbon.xaml:473
+#: Views\MainRibbon.xaml:474
 msgid "These commands operate on the current build. For other builds and folders, use the saved builds panel's context menu."
 msgstr ""
 
-#: Views\MainRibbon.xaml:495
+#: Views\MainRibbon.xaml:496
 msgid "Change the current build's name and note."
 msgstr ""
 
-#: Views\MainRibbon.xaml:518
+#: Views\MainRibbon.xaml:519
 msgid "Discards all changes made to the current build after the last save."
 msgstr ""
 
-#: Views\MainRibbon.xaml:532 Views\MainRibbon.xaml:537
+#: Views\MainRibbon.xaml:533 Views\MainRibbon.xaml:538
 msgid "Copy (export)"
 msgstr ""
 
-#: Views\MainRibbon.xaml:540
+#: Views\MainRibbon.xaml:541
 msgid "Copy/export the current build to the clipboard as a XML string."
 msgstr ""
 
-#: Views\MainRibbon.xaml:554 Views\MainRibbon.xaml:559
+#: Views\MainRibbon.xaml:555 Views\MainRibbon.xaml:560
 msgid "Paste (import)"
 msgstr ""
 
-#: Views\MainRibbon.xaml:562
+#: Views\MainRibbon.xaml:563
 msgid "Paste/import a new build from the clipboard into the root build folder and open it."
 msgstr ""
 
-#: Views\MainRibbon.xaml:565
+#: Views\MainRibbon.xaml:566
 msgid "The clipboard is empty or does not contain a build in a suitable format. Builds can only be imported as a XML string."
 msgstr ""
 
-#: Views\MainRibbon.xaml:573
+#: Views\MainRibbon.xaml:574
 msgid "Import"
 msgstr ""
 
-#: Views\MainRibbon.xaml:584 Views\MainRibbon.xaml:589
+#: Views\MainRibbon.xaml:585 Views\MainRibbon.xaml:590
 msgid "Import character"
 msgstr ""
 
-#: Views\MainRibbon.xaml:592
+#: Views\MainRibbon.xaml:593
 msgid "Import passive tree, items and skills of an existing character."
 msgstr ""
 
-#: Views\MainRibbon.xaml:606 Views\MainRibbon.xaml:611
+#: Views\MainRibbon.xaml:607 Views\MainRibbon.xaml:612
 msgid "Import stash"
 msgstr ""
 
-#: Views\MainRibbon.xaml:614
+#: Views\MainRibbon.xaml:615
 msgid "Import stash tabs of an account."
 msgstr ""
 
-#: Views\MainRibbon.xaml:622
+#: Views\MainRibbon.xaml:629 Views\MainRibbon.xaml:634
+msgid "Import PoB"
+msgstr ""
+
+#: Views\MainRibbon.xaml:637
+msgid "Import a new build from the clipboard in Path of Building's format (build code or pastebin URL) into the root folder and open it."
+msgstr ""
+
+#: Views\MainRibbon.xaml:640
+msgid "The clipboard is empty or does not contain a build in a suitable format. Builds can only be imported from a build code or pastebin URL."
+msgstr ""
+
+#: Views\MainRibbon.xaml:648
 msgid "Tag nodes"
 msgstr ""
 
-#: Views\MainRibbon.xaml:633 Views\MainRibbon.xaml:638
+#: Views\MainRibbon.xaml:659 Views\MainRibbon.xaml:664
 msgid "Tag highlighted nodes"
 msgstr ""
 
-#: Views\MainRibbon.xaml:641
+#: Views\MainRibbon.xaml:667
 msgid "Tag all highlighted nodes."
 msgstr ""
 
-#: Views\MainRibbon.xaml:651 Views\MainRibbon.xaml:656
+#: Views\MainRibbon.xaml:677 Views\MainRibbon.xaml:682
 msgid "Check-tag highlighted nodes"
 msgstr ""
 
-#: Views\MainRibbon.xaml:659
+#: Views\MainRibbon.xaml:685
 msgid "Check-tag all highlighted nodes."
 msgstr ""
 
-#: Views\MainRibbon.xaml:670 Views\MainRibbon.xaml:675
+#: Views\MainRibbon.xaml:696 Views\MainRibbon.xaml:701
 msgid "Cross-tag highlighted nodes"
 msgstr ""
 
-#: Views\MainRibbon.xaml:678
+#: Views\MainRibbon.xaml:704
 msgid "Cross-tag all highlighted nodes."
 msgstr ""
 
-#: Views\MainRibbon.xaml:694 Views\MainRibbon.xaml:699
+#: Views\MainRibbon.xaml:720 Views\MainRibbon.xaml:725
 msgid "Untag all nodes"
 msgstr ""
 
-#: Views\MainRibbon.xaml:702
+#: Views\MainRibbon.xaml:728
 msgid "Remove tags from all passive nodes."
 msgstr ""
 
-#: Views\MainRibbon.xaml:717 Views\MainRibbon.xaml:722
+#: Views\MainRibbon.xaml:743 Views\MainRibbon.xaml:748
 msgid "Unhighlight all nodes"
 msgstr ""
 
-#: Views\MainRibbon.xaml:725
+#: Views\MainRibbon.xaml:751
 msgid "Remove all passive node highlights."
 msgstr ""
 
-#: Views\MainRibbon.xaml:733
+#: Views\MainRibbon.xaml:759
 msgid "Tools"
 msgstr ""
 
-#: Views\MainRibbon.xaml:745
+#: Views\MainRibbon.xaml:771
 msgid "Passive tree generator"
 msgstr ""
 
-#: Views\MainRibbon.xaml:750
+#: Views\MainRibbon.xaml:776
 msgid "Passive tree generator (Ctrl+Shift+G)"
 msgstr ""
 
-#: Views\MainRibbon.xaml:753
+#: Views\MainRibbon.xaml:779
 msgid "Open the passive tree generator. It creates optimized builds based on constraints."
 msgstr ""
 
-#: Views\MainRibbon.xaml:762
+#: Views\MainRibbon.xaml:789
 msgid "Run 'Tagged Nodes' generator"
 msgstr ""
 
-#: Views\MainRibbon.xaml:767
+#: Views\MainRibbon.xaml:794
 msgid "Run 'Tagged Nodes' generator (Ctrl+Shift+T)"
 msgstr ""
 
-#: Views\MainRibbon.xaml:770
+#: Views\MainRibbon.xaml:797
 msgid "Run the 'Tagged Nodes' generator with the current settings set in the passive tree generator window."
 msgstr ""
 
-#: Views\MainRibbon.xaml:780
+#: Views\MainRibbon.xaml:808
 msgid "Run 'Advanced' generator"
 msgstr ""
 
-#: Views\MainRibbon.xaml:785
+#: Views\MainRibbon.xaml:813
 msgid "Run 'Advanced' generator (Ctrl+Shift+A)"
 msgstr ""
 
-#: Views\MainRibbon.xaml:788
+#: Views\MainRibbon.xaml:816
 msgid "Run the 'Advanced' generator with the current settings set in the passive tree generator window."
 msgstr ""
 
-#: Views\MainRibbon.xaml:804 Views\MainRibbon.xaml:809
+#: Views\MainRibbon.xaml:832 Views\MainRibbon.xaml:837
 msgid "Screenshot skilled nodes"
 msgstr ""
 
-#: Views\MainRibbon.xaml:812
+#: Views\MainRibbon.xaml:840
 msgid "Take a screenshot of the passive tree area around the skilled nodes."
 msgstr ""
 
-#: Views\MainRibbon.xaml:828
+#: Views\MainRibbon.xaml:856
 msgid "Create PoEUrl of passive tree"
 msgstr ""
 
-#: Views\MainRibbon.xaml:833
+#: Views\MainRibbon.xaml:861
 msgid "Create PoEUrl of passive tree (Ctrl+E)"
 msgstr ""
 
-#: Views\MainRibbon.xaml:836
+#: Views\MainRibbon.xaml:864
 msgid "Creates a PoEUrl from the current passive tree URL and copies it to the clipboard."
 msgstr ""
 
-#: Views\MainRibbon.xaml:851 Views\MainRibbon.xaml:856
+#: Views\MainRibbon.xaml:879 Views\MainRibbon.xaml:884
 msgid "Download live tree data"
 msgstr ""
 
-#: Views\MainRibbon.xaml:859
+#: Views\MainRibbon.xaml:887
 msgid "Delete the current passive tree data and download the official data from the latest patch."
 msgstr ""
 
-#: Views\MainRibbon.xaml:874 Views\MainRibbon.xaml:879
+#: Views\MainRibbon.xaml:902 Views\MainRibbon.xaml:907
 msgid "Check for updates"
 msgstr ""
 
-#: Views\MainRibbon.xaml:882
+#: Views\MainRibbon.xaml:910
 msgid "Check for updates available for PoESkillTree."
 msgstr ""
 
-#: Views\MainRibbon.xaml:895
+#: Views\MainRibbon.xaml:923
 msgid "View"
 msgstr ""
 
-#: Views\MainRibbon.xaml:899
+#: Views\MainRibbon.xaml:927
 msgid "Panels"
 msgstr ""
 
-#: Views\MainRibbon.xaml:915
+#: Views\MainRibbon.xaml:943
 msgid "Build summary (Ctrl+Q)"
 msgstr ""
 
-#: Views\MainRibbon.xaml:918
+#: Views\MainRibbon.xaml:946
 msgid "Show a summary of the currently opened build."
 msgstr ""
 
-#: Views\MainRibbon.xaml:937
+#: Views\MainRibbon.xaml:965
 msgid "Saved builds (Ctrl+B)"
 msgstr ""
 
-#: Views\MainRibbon.xaml:940
+#: Views\MainRibbon.xaml:968
 msgid "Show the available builds in the build save path."
 msgstr ""
 
-#: Views\MainRibbon.xaml:959
+#: Views\MainRibbon.xaml:987
 msgid "Summary of changes"
 msgstr ""
 
-#: Views\MainRibbon.xaml:964
+#: Views\MainRibbon.xaml:992
 msgid "Summary of changes (Ctrl+G)"
 msgstr ""
 
-#: Views\MainRibbon.xaml:967
+#: Views\MainRibbon.xaml:995
 msgid "Show a summary of the total changes to the passive tree when hovering over a node."
 msgstr ""
 
-#: Views\MainRibbon.xaml:981 Views\MainRibbon.xaml:986
+#: Views\MainRibbon.xaml:1009 Views\MainRibbon.xaml:1014
 msgid "Tree comparison"
 msgstr ""
 
-#: Views\MainRibbon.xaml:989
+#: Views\MainRibbon.xaml:1017
 msgid "Compare the passive trees of the current and selected builds. Builds can be selected in the saved builds panel."
 msgstr ""
 
-#: Views\MainRibbon.xaml:1003 Views\MainRibbon.xaml:1008
+#: Views\MainRibbon.xaml:1031 Views\MainRibbon.xaml:1036
 msgid "Show all ascendancies"
 msgstr ""
 
-#: Views\MainRibbon.xaml:1011
+#: Views\MainRibbon.xaml:1039
 msgid "Show all ascendancy class passive nodes instead of just your current ascendancy."
 msgstr ""
 
-#: Views\MainRibbon.xaml:1031 Views\MainRibbon.xaml:1036
+#: Views\MainRibbon.xaml:1059 Views\MainRibbon.xaml:1064
 msgid "Expand all folders"
 msgstr ""
 
-#: Views\MainRibbon.xaml:1039
+#: Views\MainRibbon.xaml:1067
 msgid "Expand all build folders in the saved builds panel."
 msgstr ""
 
-#: Views\MainRibbon.xaml:1042 Views\MainRibbon.xaml:1067
+#: Views\MainRibbon.xaml:1070 Views\MainRibbon.xaml:1095
 msgid "The saved builds panel must be open."
 msgstr ""
 
-#: Views\MainRibbon.xaml:1056 Views\MainRibbon.xaml:1061
+#: Views\MainRibbon.xaml:1084 Views\MainRibbon.xaml:1089
 msgid "Collapse all folders"
 msgstr ""
 
-#: Views\MainRibbon.xaml:1064
+#: Views\MainRibbon.xaml:1092
 msgid "Collapse all build folders in the saved builds panel."
 msgstr ""
 
-#: Views\MainRibbon.xaml:1075
+#: Views\MainRibbon.xaml:1103
 msgid "Theme"
 msgstr ""
 
-#: Views\MainRibbon.xaml:1083
+#: Views\MainRibbon.xaml:1111
 msgid "Base color:"
 msgstr ""
 
-#: Views\MainRibbon.xaml:1088
+#: Views\MainRibbon.xaml:1116
 msgid "Base color"
 msgstr ""
 
-#: Views\MainRibbon.xaml:1091
+#: Views\MainRibbon.xaml:1119
 msgid "Change the base color of the theme defining the program's look."
 msgstr ""
 
-#: Views\MainRibbon.xaml:1103
+#: Views\MainRibbon.xaml:1131
 msgid "Color scheme:"
 msgstr ""
 
-#: Views\MainRibbon.xaml:1119
+#: Views\MainRibbon.xaml:1147
 msgid "Color scheme"
 msgstr ""
 
-#: Views\MainRibbon.xaml:1122
+#: Views\MainRibbon.xaml:1150
 msgid "Change the color scheme of the theme defining the program's look."
 msgstr ""
 
-#: Views\MainRibbon.xaml:1130
+#: Views\MainRibbon.xaml:1158
 msgid "Links"
 msgstr ""
 
-#: Views\MainRibbon.xaml:1142 Views\MainRibbon.xaml:1147
+#: Views\MainRibbon.xaml:1170 Views\MainRibbon.xaml:1175
 msgid "Path of Exile website"
 msgstr ""
 
-#: Views\MainRibbon.xaml:1150
+#: Views\MainRibbon.xaml:1178
 msgid "Open the official Path of Exile website in the default web browser."
 msgstr ""
 
-#: Views\MainRibbon.xaml:1165 Views\MainRibbon.xaml:1170
+#: Views\MainRibbon.xaml:1193 Views\MainRibbon.xaml:1198
 msgid "Path of Exile wiki"
 msgstr ""
 
-#: Views\MainRibbon.xaml:1173
+#: Views\MainRibbon.xaml:1201
 msgid "Open the Path of Exile wiki in the default web browser."
 msgstr ""
 
-#: Views\MainRibbon.xaml:1201
+#: Views\MainRibbon.xaml:1229
 msgid "Learn more about the program."
 msgstr ""
 
-#: Views\MainRibbon.xaml:1224
+#: Views\MainRibbon.xaml:1252
 msgid "Learn more about the available hotkeys."
 msgstr ""
 
-#: Views\MainRibbon.xaml:1239 Views\MainRibbon.xaml:1244
+#: Views\MainRibbon.xaml:1267 Views\MainRibbon.xaml:1272
 msgid "About"
 msgstr ""
 
-#: Views\MainRibbon.xaml:1247
+#: Views\MainRibbon.xaml:1275
 msgid "View information about the program."
 msgstr ""
 
-#: Views\MainWindow.xaml:147 Views\MainWindow.xaml:219
+#: Views\MainWindow.xaml:151 Views\MainWindow.xaml:223
 msgid "Use regular expressions"
 msgstr ""
 
-#: Views\MainWindow.xaml:235 Views\MainWindow.xaml:238
+#: Views\MainWindow.xaml:239 Views\MainWindow.xaml:242
 msgid "Passive tree link"
 msgstr ""
 
-#: Views\MainWindow.xaml:277
+#: Views\MainWindow.xaml:281
+msgid "Skills"
+msgstr ""
+
+#: Views\MainWindow.xaml:287
 msgid "Computation"
 msgstr ""
 
-#: Views\MainWindow.xaml:292
+#: Views\MainWindow.xaml:302
 msgid "Bandit"
 msgstr ""
 
-#: Views\MainWindow.xaml:304
+#: Views\MainWindow.xaml:314
 msgid "Used Passive Skill Points"
 msgstr ""
 
-#: Views\MainWindow.xaml:310
+#: Views\MainWindow.xaml:320
 msgid "Total Passive Skill Points"
 msgstr ""
 
-#: Views\MainWindow.xaml:322
+#: Views\MainWindow.xaml:332
 msgid "Used Ascendancy Skill Points"
 msgstr ""
 
-#: Views\MainWindow.xaml:328
+#: Views\MainWindow.xaml:338
 msgid "Total Ascendancy Skill Points"
 msgstr ""
 
-#: Views\MainWindow.xaml:338
+#: Views\MainWindow.xaml:348
 msgid "Level"
 msgstr ""
 
@@ -1272,6 +1283,14 @@ msgstr ""
 msgid "Automatically download missing item images"
 msgstr ""
 
+#: Views\Skills\SkillsInSlotEditingDialog.xaml:13
+msgid "Edit Socketed Skills"
+msgstr ""
+
+#: Views\Skills\SkillsInSlotEditingView.xaml:218
+msgid "Equipped item's maximum number of sockets:"
+msgstr ""
+
 #: Controls\Dialogs\ExtendedDialogManager.cs:57
 msgid "Confirmation"
 msgstr ""
@@ -1311,6 +1330,7 @@ msgstr ""
 #: Model\Serialization\PersistentDataDeserializerCurrent.cs:77
 #: Model\Serialization\PersistentDataDeserializerCurrent.cs:139
 #: Model\Serialization\PersistentDataDeserializerCurrent.cs:148
+#: ViewModels\Builds\BuildsControlViewModel.cs:757
 msgid "Import failed"
 msgstr ""
 
@@ -1540,6 +1560,74 @@ msgstr ""
 msgid "Could not open Skill Tree Generator"
 msgstr ""
 
+#: Utils\Converter\ItemSlotToStringConverter.cs:15
+msgid "Not equippable"
+msgstr ""
+
+#: Utils\Converter\ItemSlotToStringConverter.cs:16
+msgid "Body Armour"
+msgstr ""
+
+#: Utils\Converter\ItemSlotToStringConverter.cs:17
+msgid "Main-Hand"
+msgstr ""
+
+#: Utils\Converter\ItemSlotToStringConverter.cs:18
+msgid "Off-Hand"
+msgstr ""
+
+#: Utils\Converter\ItemSlotToStringConverter.cs:19
+msgid "Ring 1"
+msgstr ""
+
+#: Utils\Converter\ItemSlotToStringConverter.cs:20
+msgid "Ring 2"
+msgstr ""
+
+#: Utils\Converter\ItemSlotToStringConverter.cs:21
+msgid "Amulet"
+msgstr ""
+
+#: Utils\Converter\ItemSlotToStringConverter.cs:22
+msgid "Helmet"
+msgstr ""
+
+#: Utils\Converter\ItemSlotToStringConverter.cs:23
+msgid "Gloves"
+msgstr ""
+
+#: Utils\Converter\ItemSlotToStringConverter.cs:24
+msgid "Boots"
+msgstr ""
+
+#: Utils\Converter\ItemSlotToStringConverter.cs:25
+msgid "Belt"
+msgstr ""
+
+#: Utils\Converter\ItemSlotToStringConverter.cs:26
+msgid "Flask 1"
+msgstr ""
+
+#: Utils\Converter\ItemSlotToStringConverter.cs:27
+msgid "Flask 2"
+msgstr ""
+
+#: Utils\Converter\ItemSlotToStringConverter.cs:28
+msgid "Flask 3"
+msgstr ""
+
+#: Utils\Converter\ItemSlotToStringConverter.cs:29
+msgid "Flask 4"
+msgstr ""
+
+#: Utils\Converter\ItemSlotToStringConverter.cs:30
+msgid "Flask 5"
+msgstr ""
+
+#: Utils\Converter\ItemSlotToStringConverter.cs:31
+msgid "Passive Tree"
+msgstr ""
+
 #: Utils\PathEx.cs:37 ViewModels\Builds\BuildValidator.cs:164
 msgid "Value is required."
 msgstr ""
@@ -1596,106 +1684,110 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:57
+#: ViewModels\Builds\BuildsControlViewModel.cs:61
 msgid "All"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:346
+#: ViewModels\Builds\BuildsControlViewModel.cs:357
 msgid ""
 "Files in your build save directory have been changed.\n"
 "Do you want to reload all builds from the file system?"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:350
+#: ViewModels\Builds\BuildsControlViewModel.cs:361
 msgid ""
 "\n"
 "All unsaved changes will be lost."
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:352
+#: ViewModels\Builds\BuildsControlViewModel.cs:363
 msgid ""
 "\n"
 "\n"
 "You can also reload through the 'File' menu."
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:354
+#: ViewModels\Builds\BuildsControlViewModel.cs:365
 msgid "Builds changed"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:371
+#: ViewModels\Builds\BuildsControlViewModel.cs:382
 msgid "Enter the name of the new folder."
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:406
+#: ViewModels\Builds\BuildsControlViewModel.cs:417
 msgid "The currently opened build can not be deleted."
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:412
+#: ViewModels\Builds\BuildsControlViewModel.cs:423
 #, csharp-format
 msgid "This will delete the build folder \"{0}\" and all its contents.\n"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:413
-#: Views\MainWindow.xaml.cs:949
+#: ViewModels\Builds\BuildsControlViewModel.cs:424
+#: Views\MainWindow.xaml.cs:962
 msgid "Do you want to continue?"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:434
+#: ViewModels\Builds\BuildsControlViewModel.cs:445
 msgid "This build is currently opened but has unsaved changes.\n"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:435
+#: ViewModels\Builds\BuildsControlViewModel.cs:446
 msgid "Do you want to discard all changes made to it since your last save?"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:436
+#: ViewModels\Builds\BuildsControlViewModel.cs:447
 msgid "Discard changes?"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:451
+#: ViewModels\Builds\BuildsControlViewModel.cs:462
 msgid "Saving new Build"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:452
+#: ViewModels\Builds\BuildsControlViewModel.cs:463
 msgid "Enter the name of the build."
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:468
+#: ViewModels\Builds\BuildsControlViewModel.cs:479
 msgid "Save as"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:469
+#: ViewModels\Builds\BuildsControlViewModel.cs:480
 msgid "Enter the new name of the build"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:601
+#: ViewModels\Builds\BuildsControlViewModel.cs:612
 msgid "Edit Folder"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:602
+#: ViewModels\Builds\BuildsControlViewModel.cs:613
 msgid "Enter the new name for this folder below."
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:626
+#: ViewModels\Builds\BuildsControlViewModel.cs:637
 msgid ""
 "Any unsaved changes will be lost.\n"
 "Are you sure?"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:777
+#: ViewModels\Builds\BuildsControlViewModel.cs:755
+msgid "Could not import a build in PoB format from the clipboard."
+msgstr ""
+
+#: ViewModels\Builds\BuildsControlViewModel.cs:860
 msgid "An error occurred during a save operation."
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:794
+#: ViewModels\Builds\BuildsControlViewModel.cs:877
 msgid "An error occurred during a delete operation."
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:811
+#: ViewModels\Builds\BuildsControlViewModel.cs:894
 msgid "Unsaved Builds"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:812
+#: ViewModels\Builds\BuildsControlViewModel.cs:895
 msgid "These builds are not saved:\n"
 msgstr ""
 
@@ -1740,27 +1832,27 @@ msgstr ""
 msgid "Import Level"
 msgstr ""
 
-#: ViewModels\Import\ImportCharacterViewModel.cs:237
+#: ViewModels\Import\ImportCharacterViewModel.cs:233
 msgid "Import Passive Tree and Jewels"
 msgstr ""
 
-#: ViewModels\Import\ImportCharacterViewModel.cs:242
+#: ViewModels\Import\ImportCharacterViewModel.cs:238
 msgid "Import Passive Tree"
 msgstr ""
 
-#: ViewModels\Import\ImportCharacterViewModel.cs:247
+#: ViewModels\Import\ImportCharacterViewModel.cs:243
 msgid "Import Jewels"
 msgstr ""
 
-#: ViewModels\Import\ImportCharacterViewModel.cs:319
+#: ViewModels\Import\ImportCharacterViewModel.cs:315
 msgid "A tab in your default web browser has been opened containing your character's data."
 msgstr ""
 
-#: ViewModels\Import\ImportCharacterViewModel.cs:320
+#: ViewModels\Import\ImportCharacterViewModel.cs:316
 msgid "Copy its contents and paste them into the field below."
 msgstr ""
 
-#: ViewModels\Import\ImportCharacterViewModel.cs:321
+#: ViewModels\Import\ImportCharacterViewModel.cs:317
 msgid "In case no browser has been opened, the URL was also copied to your clipboard."
 msgstr ""
 
@@ -1803,6 +1895,10 @@ msgid ""
 "If you cancel, the build directory will not be changed."
 msgstr ""
 
+#: ViewModels\Skills\SkillsInSlotEditingViewModel.cs:58
+msgid "no active skills"
+msgstr ""
+
 #: Views\Builds\EditBuildWindow.xaml.cs:16
 msgid "Not Available"
 msgstr ""
@@ -1824,174 +1920,174 @@ msgstr ""
 msgid "Untag All Skill Nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:389
+#: Views\MainWindow.xaml.cs:399
 msgid "Create New Attribute Group"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:389
+#: Views\MainWindow.xaml.cs:399
 msgid "Group name"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:394
+#: Views\MainWindow.xaml.cs:404
 msgid "A group with that name already exists."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:481
+#: Views\MainWindow.xaml.cs:491
 msgid "Initialization"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:482 Views\MainWindow.xaml.cs:502
+#: Views\MainWindow.xaml.cs:492 Views\MainWindow.xaml.cs:512
 msgid "Initializing window ..."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:497
+#: Views\MainWindow.xaml.cs:507
 msgid "Loading skill tree assets ..."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:533
+#: Views\MainWindow.xaml.cs:543
 msgid "Highlight nodes by attribute"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:538
+#: Views\MainWindow.xaml.cs:548
 msgid "Remove highlights by attribute"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:610
+#: Views\MainWindow.xaml.cs:620
 msgid "Load Tree"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:616
+#: Views\MainWindow.xaml.cs:626
 msgid "Load as new build"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:814
+#: Views\MainWindow.xaml.cs:827
 msgid ""
 "There are unsaved builds. Do you want to save them before closing?\n"
 "\n"
 "Canceling stops the program from closing and does not save any builds."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:894
+#: Views\MainWindow.xaml.cs:907
 #, csharp-format
 msgid "{0} point"
 msgid_plural "{0} points"
 msgstr[0] ""
 msgstr[1] ""
 
-#: Views\MainWindow.xaml.cs:928
+#: Views\MainWindow.xaml.cs:941
 msgid "Your build must use at least one node to generate a screenshot"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:946
+#: Views\MainWindow.xaml.cs:959
 msgid "The existing skill tree data will be deleted. The data will be downloaded from the official online skill tree and is from the latest released version of the game."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:955
+#: Views\MainWindow.xaml.cs:968
 msgid "Downloading skill tree assets ..."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:976
+#: Views\MainWindow.xaml.cs:989
 msgid "An error occurred while downloading assets."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:993
+#: Views\MainWindow.xaml.cs:1006
 msgid "Checking for updates"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:998
+#: Views\MainWindow.xaml.cs:1011
 msgid "You have the latest version!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1003
+#: Views\MainWindow.xaml.cs:1016
 #, csharp-format
 msgid "An update for {0} ({1}) is available!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1006
+#: Views\MainWindow.xaml.cs:1019
 msgid "The application will be closed when download completes to proceed with the update."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1007
+#: Views\MainWindow.xaml.cs:1020
 #, csharp-format
 msgid "A new version {0} is available!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1010
+#: Views\MainWindow.xaml.cs:1023
 msgid "The new version of application will be installed side-by-side with earlier versions."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1014
+#: Views\MainWindow.xaml.cs:1027
 msgid "Warning: This is a pre-release, meaning there could be some bugs!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1018
+#: Views\MainWindow.xaml.cs:1031
 msgid "Do you want to download and install the update?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1019
+#: Views\MainWindow.xaml.cs:1032
 msgid "Do you want to download and install the new version?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1021
+#: Views\MainWindow.xaml.cs:1034
 msgid "Continue installation?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1032
+#: Views\MainWindow.xaml.cs:1045
 msgid "An error occurred while attempting to contact the update location."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1040
+#: Views\MainWindow.xaml.cs:1053
 msgid "Downloading latest version"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1055 Views\MainWindow.xaml.cs:1070
+#: Views\MainWindow.xaml.cs:1068 Views\MainWindow.xaml.cs:1083
 msgid "An error occurred during the download operation."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1083
+#: Views\MainWindow.xaml.cs:1096
 msgid "An error occurred while attempting to start the installation."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1620
+#: Views\MainWindow.xaml.cs:1634
 msgid "An error occurred while attempting to load item data."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1714 Views\MainWindow.xaml.cs:1757
+#: Views\MainWindow.xaml.cs:1729 Views\MainWindow.xaml.cs:1772
 msgid "An error occurred while attempting to load Skill tree from URL."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1736
+#: Views\MainWindow.xaml.cs:1751
 msgid "The build you are loading contains information about selected bandits."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1737
+#: Views\MainWindow.xaml.cs:1752
 msgid "Do you want to use it and overwrite current settings?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1738
+#: Views\MainWindow.xaml.cs:1753
 msgid "Replace Bandits settings"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1764
+#: Views\MainWindow.xaml.cs:1779
 msgid "Current: "
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1765
+#: Views\MainWindow.xaml.cs:1780
 msgid "Loaded: "
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1860
+#: Views\MainWindow.xaml.cs:1875
 msgid "Generating PoEUrl of Skill tree"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1866
+#: Views\MainWindow.xaml.cs:1881
 msgid "An error occurred while attempting to contact the PoEUrl location."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1876
+#: Views\MainWindow.xaml.cs:1891
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1880
+#: Views\MainWindow.xaml.cs:1895
 msgid "An error occurred while copying to Clipboard."
 msgstr ""
