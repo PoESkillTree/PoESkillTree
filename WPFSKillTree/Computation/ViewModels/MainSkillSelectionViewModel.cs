@@ -125,7 +125,7 @@ namespace PoESkillTree.Computation.ViewModels
         }
 
         private bool IsActiveSkill(Skill skill)
-            => skill.IsEnabled && !_skillDefinitions.GetSkillById(skill.Id).IsSupport;
+            => skill.IsEnabled && (skill.Gem is null || skill.Gem.IsEnabled) && !_skillDefinitions.GetSkillById(skill.Id).IsSupport;
 
         private void AddSkill(MainSkillViewModel skill)
             => AvailableSkills.Add(skill);
