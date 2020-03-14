@@ -22,6 +22,8 @@ namespace PoESkillTree.Model.Items.Mods
             "map", "unique_map", "no_monster_packs",
             // no idea where these come from
             "no_elemental_damage_mods", "no_physical_damage_mods",
+            // crafting Cluster Jewels properly also requires enchant crafting -> not supported yet
+            "expansion_jewel_large", "expansion_jewel_medium", "expansion_jewel_small",
         };
         private static readonly ISet<string> UnknownItemClasses = new HashSet<string>
         {
@@ -194,6 +196,7 @@ namespace PoESkillTree.Model.Items.Mods
                 let tag = spawnWeight.Tag
                 where !tag.EndsWith("_shaper") && !tag.EndsWith("_elder")
                       && !tag.EndsWith("_crusader") && !tag.EndsWith("_eyrie") && !tag.EndsWith("_basilisk") && !tag.EndsWith("_adjudicator")
+                      && !tag.StartsWith("affliction_")
                       && !TagsExtensions.TryParse(tag, out _)
                       && !UnknownTags.Contains(tag)
                 select tag
