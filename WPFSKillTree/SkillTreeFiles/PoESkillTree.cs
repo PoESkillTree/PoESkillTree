@@ -42,6 +42,9 @@ namespace PoESkillTree.SkillTreeFiles
             set => _position = value;
         }
 
+        [JsonProperty("isProxy")]
+        public bool IsProxy { get; set; }
+
         [JsonProperty("oo")]
         public Dictionary<int, bool>? OccupiedOrbits { get; set; }
 
@@ -91,6 +94,9 @@ namespace PoESkillTree.SkillTreeFiles
         public bool IsMultipleChoiceOption { get; set; }
 
         public bool IsAscendancyStart => Name == AscendancyName;
+
+        [JsonProperty("expansionJewel")]
+        public ExpansionJewel? ExpansionJewel { get; set; }
 
         [JsonProperty("passivePointsGranted")]
         public int PassivePointsGranted { get; set; }
@@ -225,6 +231,21 @@ namespace PoESkillTree.SkillTreeFiles
 
         [JsonIgnore]
         public static float[] OrbitRadii = { 0, 81.5f, 163, 326, 489 };
+    }
+
+    public class ExpansionJewel
+    {
+        [JsonProperty("size")]
+        public int Size { get; set; }
+
+        [JsonProperty("index")]
+        public int Index { get; set; }
+
+        [JsonProperty("proxy")]
+        public ushort ProxyNode { get; set; }
+
+        [JsonProperty("parent")]
+        public ushort ParentNode { get; set; }
     }
 
     public class BaseConstants

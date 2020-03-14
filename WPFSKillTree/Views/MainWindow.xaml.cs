@@ -1659,6 +1659,7 @@ namespace PoESkillTree.Views
             var treeDefinition = await _gameData.PassiveTree;
             return treeDefinition.Nodes
                 .Where(d => d.Type == PassiveNodeType.JewelSocket)
+                .Where(d => !d.Name.StartsWith("Small Outer") && !d.Name.StartsWith("Medium Outer"))
                 .Select(d => d.Id);
         }
 

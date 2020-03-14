@@ -34,7 +34,10 @@ namespace PoESkillTree.TreeDrawing
 
         private readonly IReadOnlyDictionary<string, BitmapImage> _assets;
         private readonly IReadOnlyDictionary<ushort, SkillNode> _skillNodes;
-        private readonly Dictionary<JewelType, (Size, ImageBrush)> _brushes = new Dictionary<JewelType, (Size, ImageBrush)>();
+
+        private readonly Dictionary<(JewelType type, bool isClusterSocket), (Size, ImageBrush)> _brushes =
+            new Dictionary<(JewelType, bool), (Size, ImageBrush)>();
+
         private IReadOnlyList<InventoryItemViewModel> _jewelViewModels;
 
         public JewelDrawer(
@@ -78,17 +81,17 @@ namespace PoESkillTree.TreeDrawing
             using var dc = Visual.RenderOpen();
             foreach (var item in JewelViewModels.Select(vm => vm.Item).WhereNotNull())
             {
-                if (GetJewelType(item.Tags) is JewelType jewelType)
+                if (item.Socket.HasValue)
                 {
-                    Draw(dc, item.Socket!.Value, jewelType);
+                    Draw(dc, item.Socket.Value, GetJewelType(item.Tags));
                 }
             }
         }
 
         private void Draw(DrawingContext drawingContext, ushort nodeId, JewelType jewelType)
         {
-            var (size, brush) = _brushes.GetOrAdd(jewelType, CreateBrush);
             var node = _skillNodes[nodeId];
+            var (size, brush) = _brushes.GetOrAdd((jewelType, node.ExpansionJewel != null), CreateBrush);
             drawingContext.DrawRectangle(brush, null,
                 new Rect(node.Position.X - size.Width,
                     node.Position.Y - size.Height,
@@ -96,7 +99,7 @@ namespace PoESkillTree.TreeDrawing
                     size.Height * 2));
         }
 
-        private static JewelType? GetJewelType(Tags tags)
+        private static JewelType GetJewelType(Tags tags)
         {
             if (tags.HasFlag(Tags.AbyssJewel))
                 return JewelType.Abyss;
@@ -108,12 +111,16 @@ namespace PoESkillTree.TreeDrawing
                 return JewelType.Green;
             if (tags.HasFlag(Tags.IntJewel))
                 return JewelType.Blue;
-            return null;
+            return JewelType.Red;
         }
 
-        private (Size, ImageBrush) CreateBrush(JewelType jewelType)
+        private (Size, ImageBrush) CreateBrush((JewelType type, bool isClusterSocket) key)
         {
-            var assetName = AssetNames[jewelType];
+            var assetName = AssetNames[key.type];
+            if (key.isClusterSocket)
+            {
+                assetName += "Alt";
+            }
             var image = _assets[assetName];
             var size = new Size(image.PixelWidth, image.PixelHeight);
             var brush = new ImageBrush

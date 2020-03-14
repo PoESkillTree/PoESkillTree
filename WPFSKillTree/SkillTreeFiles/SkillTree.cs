@@ -118,6 +118,7 @@ namespace PoESkillTree.SkillTreeFiles
             {"ascendancyNotable", "AscendancyFrameLargeNormal"},
             {"ascendancyStart", "AscendancyMiddle"},
             {"blighted", "BlightedNotableFrameUnallocated"},
+            {"clusterJewel", "JewelSocketAltNormal"},
         };
 
         private static readonly Dictionary<string, string> NodeBackgroundsActive = new Dictionary<string, string>
@@ -130,6 +131,7 @@ namespace PoESkillTree.SkillTreeFiles
             {"ascendancyNotable", "AscendancyFrameLargeAllocated"},
             {"ascendancyStart", "AscendancyMiddle"},
             {"blighted", "BlightedNotableFrameAllocated"},
+            {"clusterJewel", "JewelSocketAltActive"},
         };
 
         private static SkillIcons IconActiveSkills { get; set; }

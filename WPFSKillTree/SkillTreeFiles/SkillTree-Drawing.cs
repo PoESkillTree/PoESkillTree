@@ -290,6 +290,7 @@ namespace PoESkillTree.SkillTreeFiles
                 PassiveNodeType.Notable when node.IsBlighted => 14,
                 PassiveNodeType.Notable => 2,
                 PassiveNodeType.Keystone => 4,
+                PassiveNodeType.JewelSocket when node.ExpansionJewel != null => 16,
                 PassiveNodeType.JewelSocket => 6,
                 _ => 0
             };
@@ -413,19 +414,24 @@ namespace PoESkillTree.SkillTreeFiles
                 {
                     Assets["PSGroupBackground1"],
                     Assets["PSGroupBackground2"],
-                    Assets["PSGroupBackground3"]
+                    Assets["PSGroupBackground3"],
+                    Assets["GroupBackgroundSmallAlt"],
+                    Assets["GroupBackgroundMediumAlt"],
+                    Assets["GroupBackgroundLargeHalfAlt"],
                 };
-                Brush[] groupOrbitBrush =
+                ImageBrush[] groupOrbitBrush =
                 {
                     new ImageBrush(Assets["PSGroupBackground1"]),
                     new ImageBrush(Assets["PSGroupBackground2"]),
-                    new ImageBrush(Assets["PSGroupBackground3"])
+                    new ImageBrush(Assets["PSGroupBackground3"]),
+                    new ImageBrush(Assets["GroupBackgroundSmallAlt"]),
+                    new ImageBrush(Assets["GroupBackgroundMediumAlt"]),
+                    new ImageBrush(Assets["GroupBackgroundLargeHalfAlt"]),
                 };
-                if (groupOrbitBrush[2] is ImageBrush imageBrush)
-                {
-                    imageBrush.TileMode = TileMode.FlipXY;
-                    imageBrush.Viewport = new Rect(0, 0, 1, .5f);
-                }
+                groupOrbitBrush[2].TileMode = TileMode.FlipXY;
+                groupOrbitBrush[2].Viewport = new Rect(0, 0, 1, .5f);
+                groupOrbitBrush[5].TileMode = TileMode.FlipXY;
+                groupOrbitBrush[5].Viewport = new Rect(0, 0, 1, .5f);
 
                 #region Background Drawing
                 var backgroundBrush = new ImageBrush(Assets["Background1"]) { TileMode = TileMode.Tile };
@@ -447,13 +453,15 @@ namespace PoESkillTree.SkillTreeFiles
                     if (!enumerable.Any()) continue;
                     var maxr = enumerable.Max(ng => ng);
                     if (maxr == 0) continue;
-                    maxr = maxr > 3 ? 2 : maxr - 1;
-                    var maxfac = maxr == 2 ? 2 : 1;
-                    dc.DrawRectangle(groupOrbitBrush[maxr], null,
-                        new Rect(
-                            skillNodeGroup.Position -
-                            new Vector2D(groupBackgrounds[maxr].PixelWidth * 1.25, groupBackgrounds[maxr].PixelHeight * 1.25 * maxfac),
-                            new Size(groupBackgrounds[maxr].PixelWidth * 2.5, groupBackgrounds[maxr].PixelHeight * 2.5 * maxfac)));
+                    var groupType = maxr > 3 ? 2 : maxr - 1;
+                    var heightFactor = groupType == 2 ? 2 : 1;
+                    if (skillNodeGroup.IsProxy)
+                    {
+                        groupType += 3;
+                    }
+                    var size = new Size(groupBackgrounds[groupType].PixelWidth * 2.5, groupBackgrounds[groupType].PixelHeight * 2.5 * heightFactor);
+                    var offset = new Vector2D(size.Width, size.Height) / 2;
+                    dc.DrawRectangle(groupOrbitBrush[groupType], null, new Rect(skillNodeGroup.Position - offset, size));
                 }
                 #endregion
             }
