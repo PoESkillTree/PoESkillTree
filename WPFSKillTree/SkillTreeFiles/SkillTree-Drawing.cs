@@ -29,6 +29,29 @@ namespace PoESkillTree.SkillTreeFiles
         private readonly Pen _refundOverlayPen = new Pen(Brushes.Red, 15f) { DashStyle = new DashStyle(new DoubleCollection { 2 }, 2) };
         private const float HighlightFactor = 1.2f;
 
+        private static readonly IReadOnlyDictionary<string, Vector2D> AscendancyStartNodePositions = new Dictionary<string, Vector2D>
+        {
+            {"Guardian", new Vector2D(-8300, -5200)},
+            {"Hierophant", new Vector2D(-8300, -3700)},
+            {"Inquisitor", new Vector2D(-8300, -2200)},
+            {"Chieftain", new Vector2D(-8300, 2200)},
+            {"Berserker", new Vector2D(-8300, 3700)},
+            {"Juggernaut", new Vector2D(-8300, 5200)},
+            {"Assassin", new Vector2D(8900, -5200)},
+            {"Trickster", new Vector2D(8900, -3700)},
+            {"Saboteur", new Vector2D(8900, -2200)},
+            {"Deadeye", new Vector2D(8900, 2200)},
+            {"Pathfinder", new Vector2D(8900, 3700)},
+            {"Raider", new Vector2D(8900, 5200)},
+            {"Occultist", new Vector2D(-1500, -8000)},
+            {"Elementalist", new Vector2D(0, -8000)},
+            {"Necromancer", new Vector2D(1500, -8000)},
+            {"Gladiator", new Vector2D(-1500, 8000)},
+            {"Champion", new Vector2D(0, 8000)},
+            {"Slayer", new Vector2D(1500, 8000)},
+            {"Ascendant", new Vector2D(-6500, 7700)},
+        };
+
         private readonly List<(Rect rect, ImageBrush brush)> _faceBrushes = new List<(Rect, ImageBrush)>();
         private readonly List<(Size size, ImageBrush brush)> _nodeSurroundBrushes = new List<(Size, ImageBrush)>();
         private readonly List<(Size size, ImageBrush brush)> _nodeSurroundComparisonBrushes = new List<(Size, ImageBrush)>();
@@ -36,7 +59,6 @@ namespace PoESkillTree.SkillTreeFiles
 
         private readonly NodeHighlighter _nodeHighlighter = new NodeHighlighter();
         private readonly IPersistentData _persistentData;
-        private readonly List<Tuple<int, Vector2D>> _originalPositions = new List<Tuple<int, Vector2D>>();
         public bool DrawAscendancy;
 
         public DrawingVisual SkillTreeVisual { get; private set; }
@@ -350,57 +372,65 @@ namespace PoESkillTree.SkillTreeFiles
         {
             if (!_persistentData.Options.ShowAllAscendancyClasses)
             {
-                var ascName = AscendancyClassName;
-                var nodeList = Skillnodes.Where(x => x.Value.AscendancyName == ascName && !x.Value.IsAscendancyStart);
-                var worldPos = Skillnodes[RootNodeClassDictionary[CharClass]].Position;
-                var ascStartNode = AscRootNodeList.First(x => x.AscendancyName == ascName);
-                var ascNodeOriginalPos = ascStartNode.Group.Position;
-                if (_originalPositions.All(x => x.Item1 != ascStartNode.GroupId))
-                    _originalPositions.Add(new Tuple<int, Vector2D>(ascStartNode.GroupId, ascNodeOriginalPos));
+                var ascStartNode = AscRootNodeList.First(x => x.AscendancyName == AscendancyClassName);
 
-                var imageName = "Classes" + ascStartNode.AscendancyName;
-                var bitmap = Assets[imageName];
+                var position = GetPositionForSingleAscendancy(ascStartNode);
 
-                const int distanceFromStartNodeCenter = 270;
-                var dirX = 0.0;
-                var dirY = 1.0;
-                var distToCentre = Math.Sqrt(worldPos.X * worldPos.X + worldPos.Y * worldPos.Y);
-                var isCentered = Math.Abs(worldPos.X) < 10.0 && Math.Abs(worldPos.Y) < 10.0;
-                if (!isCentered)
-                {
-                    dirX = worldPos.X / distToCentre;
-                    dirY = -worldPos.Y / distToCentre;
-                }
-                var ascButtonRot = Math.Atan2(dirX, dirY);
-                var imageCx = worldPos.X + (distanceFromStartNodeCenter + bitmap.Height * 1.25) * Math.Cos(ascButtonRot + Math.PI / 2);
-                var imageCy = worldPos.Y + (distanceFromStartNodeCenter + bitmap.Width * 1.25) * Math.Sin(ascButtonRot + Math.PI / 2);
-
-                ascStartNode.Group.Position = new Vector2D(imageCx, imageCy);
-                var done = new List<SkillNodeGroup> { ascStartNode.Group };
-
-                foreach (var n in nodeList)
-                {
-                    if (done.Contains(n.Value.Group))
-                        continue;
-                    if (_originalPositions.All(x => x.Item1 != n.Value.GroupId))
-                        _originalPositions.Add(new Tuple<int, Vector2D>(n.Value.GroupId, n.Value.Group.Position));
-                    var diffDist = ascNodeOriginalPos - n.Value.Group.Position;
-
-                    n.Value.Group.Position = ascStartNode.Group.Position - diffDist;
-                    done.Add(n.Value.Group);
-                }
+                RepositionAscendancyAt(ascStartNode, position);
             }
             else
             {
-                foreach (var g in _originalPositions)
+                foreach (var ascStartNode in AscRootNodeList)
                 {
-                    foreach (var n in Skillnodes)
+                    if (AscendancyStartNodePositions.TryGetValue(ascStartNode.AscendancyName!, out var position))
                     {
-                        if (g.Item1 != n.Value.GroupId) continue;
-                        n.Value.Group.Position = g.Item2;
+                        RepositionAscendancyAt(ascStartNode, position);
                     }
                 }
-                _originalPositions.Clear();
+            }
+        }
+
+        private Vector2D GetPositionForSingleAscendancy(SkillNode ascStartNode)
+        {
+            var imageName = "Classes" + ascStartNode.AscendancyName;
+            var bitmap = Assets[imageName];
+
+            var worldPos = Skillnodes[RootNodeClassDictionary[CharClass]].Position;
+            const int distanceFromStartNodeCenter = 270;
+            var dirX = 0.0;
+            var dirY = 1.0;
+            var distToCentre = Math.Sqrt(worldPos.X * worldPos.X + worldPos.Y * worldPos.Y);
+            var isCentered = Math.Abs(worldPos.X) < 10.0 && Math.Abs(worldPos.Y) < 10.0;
+            if (!isCentered)
+            {
+                dirX = worldPos.X / distToCentre;
+                dirY = -worldPos.Y / distToCentre;
+            }
+
+            var ascButtonRot = Math.Atan2(dirX, dirY);
+            var imageCx = worldPos.X + (distanceFromStartNodeCenter + bitmap.Height * 1.25) * Math.Cos(ascButtonRot + Math.PI / 2);
+            var imageCy = worldPos.Y + (distanceFromStartNodeCenter + bitmap.Width * 1.25) * Math.Sin(ascButtonRot + Math.PI / 2);
+            var position = new Vector2D(imageCx, imageCy);
+            return position;
+        }
+
+        private static void RepositionAscendancyAt(SkillNode ascStartNode, Vector2D position)
+        {
+            var ascStartNodeOriginalPos = ascStartNode.Group.Position;
+            ascStartNode.Group.Position = position;
+
+            var nodes = Skillnodes
+                .Where(x => x.Value.AscendancyName == ascStartNode.AscendancyName! && !x.Value.IsAscendancyStart)
+                .Select(p => p.Value);
+            var done = new List<SkillNodeGroup> {ascStartNode.Group};
+            foreach (var node in nodes)
+            {
+                if (done.Contains(node.Group))
+                    continue;
+                var diffDist = ascStartNodeOriginalPos - node.Group.Position;
+
+                node.Group.Position = ascStartNode.Group.Position - diffDist;
+                done.Add(node.Group);
             }
         }
 

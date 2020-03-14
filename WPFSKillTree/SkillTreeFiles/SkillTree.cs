@@ -481,7 +481,6 @@ namespace PoESkillTree.SkillTreeFiles
             Justification = "Would notify changes for the not existing property 'ChangeAscClass'")]
         private void ChangeAscClass(int toType)
         {
-            var changedType = _asctype != toType;
             if (toType == 0)
             {
                 var remove = SkilledNodes.Where(n => n.IsAscendancyNode).ToList();
@@ -506,8 +505,7 @@ namespace PoESkillTree.SkillTreeFiles
                 }
             }
 
-            if (changedType)
-                DrawAscendancyLayers();
+            DrawAscendancyLayers();
         }
 
         public void SwitchClass(CharacterClass charClass)
