@@ -68,7 +68,7 @@ namespace PoESkillTree.Computation
             _parser = await computationFactory.CreateParserAsync();
 
             _schedulers = new ComputationSchedulerProvider();
-            _observables = new ComputationObservables(_parser, _schedulers.TaskPool, _schedulers.CalculationThread);
+            _observables = new ComputationObservables(_parser, _schedulers.TaskPool);
             _calculator = new ObservableCalculator(_iCalculator, _schedulers.CalculationThread);
         }
 

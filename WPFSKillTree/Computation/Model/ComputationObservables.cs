@@ -21,13 +21,11 @@ namespace PoESkillTree.Computation.Model
     {
         private readonly IParser _parser;
         private readonly IScheduler _parsingScheduler;
-        private readonly IScheduler _calculationScheduler;
 
-        public ComputationObservables(IParser parser, IScheduler parsingScheduler, IScheduler calculationScheduler)
+        public ComputationObservables(IParser parser, IScheduler parsingScheduler)
         {
             _parser = parser;
             _parsingScheduler = parsingScheduler;
-            _calculationScheduler = calculationScheduler;
         }
 
         public IObservable<CalculatorUpdate> InitialParse(PassiveTreeDefinition passiveTreeDefinition, TimeSpan bufferTimeSpan)
@@ -126,10 +124,10 @@ namespace PoESkillTree.Computation.Model
         }
 
         public Task<CalculatorUpdate> ParseSkillsAsync(IEnumerable<IReadOnlyList<Skill>> skills) =>
-            _calculationScheduler.ScheduleAsync(() => ParseCollection(skills, ParseSkills));
+            _parsingScheduler.ScheduleAsync(() => ParseCollection(skills, ParseSkills));
 
         public IObservable<CalculatorUpdate> ObserveSkills(INotifyCollectionChanged<IReadOnlyList<Skill>> skills) =>
-            ObserveCollection(skills, ParseSkills, _calculationScheduler);
+            ObserveCollection(skills, ParseSkills, _parsingScheduler);
 
         private IReadOnlyList<Modifier> ParseSkills(IReadOnlyList<Skill> skills)
             => _parser.ParseSkills(skills).Modifiers;

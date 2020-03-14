@@ -251,7 +251,7 @@ namespace PoESkillTree.Computation.Model
             };
 
         private static ComputationObservables CreateSut(IParser parser)
-            => new ComputationObservables(parser, ImmediateScheduler.Instance, ImmediateScheduler.Instance);
+            => new ComputationObservables(parser, ImmediateScheduler.Instance);
 
         private static async Task<CalculatorUpdate> AggregateAsync(IObservable<CalculatorUpdate> observable)
             => await observable
