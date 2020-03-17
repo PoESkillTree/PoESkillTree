@@ -3,6 +3,7 @@ using PoESkillTree.Engine.GameModel.PassiveTree;
 using PoESkillTree.Engine.GameModel.PassiveTree.Base;
 using PoESkillTree.Engine.Utils.Extensions;
 using PoESkillTree.SkillTreeFiles;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
@@ -13,14 +14,23 @@ namespace PoESkillTree.ViewModels.PassiveTree
     {
         private readonly JsonPassiveNode JsonPassiveNode;
         public readonly PassiveNodeGroupViewModel? PassiveNodeGroup;
-        
+
+        public PassiveNodeViewModel() => JsonPassiveNode = new JsonPassiveNode();
         public PassiveNodeViewModel(JsonPassiveNode jsonPassiveNode, PassiveNodeGroupViewModel? group = null)
         {
             JsonPassiveNode = jsonPassiveNode;
             PassiveNodeGroup = group;
             InitializeAttributes();
         }
-        
+
+        public PassiveNodeDefinition PassiveNodeDefinition => new PassiveNodeDefinition(Id,
+                  PassiveNodeType,
+                  Name,
+                  IsAscendancyNode,
+                  !IsRootNode && !IsAscendancyNode && !IsMultipleChoiceOption,
+                  new NodePosition(PositionAtZoomLevel(1f).X, PositionAtZoomLevel(1f).Y),
+                  StatDescriptions);
+        //public PassiveNodeDefinition PassiveNodeDefinition => PassiveNodeDefinition.Convert(JsonPassiveNode);
         public CharacterClass? StartingCharacterClass { get => JsonPassiveNode.StartingCharacterClass; set => JsonPassiveNode.StartingCharacterClass = value; }
         public ushort? PassiveNodeGroupId { get => JsonPassiveNode.PassiveNodeGroupId; set => JsonPassiveNode.PassiveNodeGroupId = value; }
         public int OrbitRadiiIndex { get => JsonPassiveNode.OrbitRadiiIndex; set => JsonPassiveNode.OrbitRadiiIndex = value; }
@@ -56,7 +66,11 @@ namespace PoESkillTree.ViewModels.PassiveTree
         public int Strength { get => JsonPassiveNode.Strength; set => JsonPassiveNode.Strength = value; }
         public int Dexterity { get => JsonPassiveNode.Dexterity; set => JsonPassiveNode.Dexterity = value; }
         public int Intelligence { get => JsonPassiveNode.Intelligence; set => JsonPassiveNode.Intelligence = value; }
-        public double Arc => JsonPassiveNode.Arc;
+
+        private double? _arc = null;
+        public double Arc => _arc ??= 2 * Math.PI * SkillsPerOrbitIndex / SkillsPerOrbit[OrbitRadiiIndex];
+        //TODO: UNCOMMENT when updating to PoESkillTree.Engine v0.3.1
+        //public double Arc => JsonPassiveNode.Arc;
 
         public string IconKey => $"{IconKeyPrefix}_{Icon}";
         private string IconKeyPrefix => PassiveNodeType switch
@@ -76,17 +90,35 @@ namespace PoESkillTree.ViewModels.PassiveTree
         {
             get
             {
-                if (_position?.X != JsonPassiveNode.Position.X || _position?.Y != JsonPassiveNode.Position.Y)
+                //TODO: UNCOMMENT when updating to PoESkillTree.Engine v0.3.1
+                //if (_position?.X != JsonPassiveNode.Position.X || _position?.Y != JsonPassiveNode.Position.Y)
+                //{
+                //    _position = new Vector2D(JsonPassiveNode.Position.X, JsonPassiveNode.Position.Y);
+                //}
+
+                if (!_position.HasValue)
                 {
-                    _position = new Vector2D(JsonPassiveNode.Position.X, JsonPassiveNode.Position.Y);
+                    _position = PositionAtZoomLevel(ZoomLevel);
                 }
 
                 return _position.Value;
             }
         }
+        
+        //TODO: DELETE when updating to PoESkillTree.Engine v0.3.1
+        public Vector2D PositionAtZoomLevel(float zoomLevel)
+        {
+            if (PassiveNodeGroup is null)
+            {
+                return new Vector2D(0, 0);
+            }
+
+            var orbitRadius = OrbitRadii[OrbitRadiiIndex] * zoomLevel;
+            return PassiveNodeGroup.Position - new Vector2D(orbitRadius * (float)Math.Sin(-Arc), orbitRadius * (float)Math.Cos(-Arc));
+        }
 
         private bool? _isScionAscendancyNotable = null;
-        public bool IsScionAscendancyNotable
+        public bool IsAscendantClassStartNode
         {
             get
             {
@@ -95,6 +127,10 @@ namespace PoESkillTree.ViewModels.PassiveTree
                     _isScionAscendancyNotable = false;
                     if (PassiveNodeType == PassiveNodeType.Notable)
                     {
+                        /// <summary>
+                        /// Nodes with an attribute matching this regex are one of the "Path of the ..." nodes connection Scion
+                        /// Ascendant with other classes.
+                        /// </summary>
                         var regexString = new Regex(@"Can Allocate Passives from the .* starting point");
                         foreach (var attibute in StatDescriptions)
                         {
@@ -111,7 +147,6 @@ namespace PoESkillTree.ViewModels.PassiveTree
             }
         }
 
-
         public void ClearPositionCache()
         {
             _position = null;
@@ -124,7 +159,7 @@ namespace PoESkillTree.ViewModels.PassiveTree
             {
                 StatDescriptions = new[] { "+1 Jewel Socket" };
             }
-            
+
             var regexAttrib = new Regex("[0-9]*\\.?[0-9]+");
             foreach (string s in StatDescriptions)
             {

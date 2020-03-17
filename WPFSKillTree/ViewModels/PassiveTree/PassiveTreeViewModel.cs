@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Engine.GameModel;
+﻿using Newtonsoft.Json;
+using PoESkillTree.Engine.GameModel;
 using PoESkillTree.Engine.GameModel.PassiveTree.Base;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,11 @@ namespace PoESkillTree.ViewModels.PassiveTree
     {
         private readonly JsonPassiveTree JsonPassiveTree;
 
-        public PassiveTreeViewModel(JsonPassiveTree jsonPassiveTree)
+        public PassiveTreeViewModel(string json) : this(JsonConvert.DeserializeObject<JsonPassiveTree>(json)) { }
+
+        public PassiveTreeViewModel(JsonPassiveTree? jsonPassiveTree)
         {
-            JsonPassiveTree = jsonPassiveTree;
+            JsonPassiveTree = jsonPassiveTree ?? throw new ArgumentNullException(nameof(JsonPassiveTree));
             Root = new PassiveNodeViewModel(JsonPassiveTree.Root);
 
             InitializePassiveNodeGroups();
@@ -81,11 +84,11 @@ namespace PoESkillTree.ViewModels.PassiveTree
                     }
 
                     var n2 = PassiveNodes[id];
-                    if (n2.IsScionAscendancyNotable && n1.IsRootNode)
+                    if (n2.IsAscendantClassStartNode && n1.IsRootNode)
                     {
                         n2.NeighborPassiveNodes[n1.Id] = n1;
                     }
-                    else if (n1.IsScionAscendancyNotable && n2.IsRootNode)
+                    else if (n1.IsAscendantClassStartNode && n2.IsRootNode)
                     {
                         n1.NeighborPassiveNodes[n2.Id] = n2;
                     }
