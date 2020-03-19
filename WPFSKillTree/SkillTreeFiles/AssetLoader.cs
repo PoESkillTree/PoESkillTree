@@ -68,9 +68,10 @@ namespace PoESkillTree.SkillTreeFiles
         public async Task<string> DownloadSkillTreeToFileAsync()
         {
             var code = await _httpClient.GetStringAsync(Constants.TreeAddress);
-            var regex = new Regex("var passiveSkillTreeData.*");
+            var start = "var passiveSkillTreeData = ";
+            var regex = new Regex($"{start}{{(?>[^{{}}]|(?<open>){{|(?<-open>)}})*}}(?(o)(?!))");
             var skillTreeObj = regex.Match(code).Value.Replace("\\/", "/");
-            skillTreeObj = skillTreeObj.Substring(27, skillTreeObj.Length - 27 - 1);
+            skillTreeObj = skillTreeObj.Substring(start.Length, skillTreeObj.Length - start.Length);
             await FileUtils.WriteAllTextAsync(_tempSkillTreePath, skillTreeObj);
             return skillTreeObj;
         }
