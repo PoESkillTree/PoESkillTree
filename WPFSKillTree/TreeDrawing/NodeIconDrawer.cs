@@ -61,7 +61,7 @@ namespace PoESkillTree.TreeDrawing
         {
         }
 
-        public void Draw() => Draw(n => !n.IsAscendancyNode);
+        public void Draw() => Draw(n => !n.IsAscendancyNode && !n.IsRootNode);
     }
 
     public class AscendancyNodeIconDrawer : NodeIconDrawer
@@ -70,7 +70,7 @@ namespace PoESkillTree.TreeDrawing
         {
         }
 
-        public void Draw(bool allAscendancies, string? ascendancyClassName) => Draw(n =>
-            n.IsAscendancyNode && (allAscendancies || n.AscendancyName == ascendancyClassName));
+        public void Draw(bool allAscendancies, string? ascendancyClassName)
+            => Draw(n => !n.IsAscendancyStart && n.IsAscendancyNode && (allAscendancies || n.AscendancyName == ascendancyClassName));
     }
 }

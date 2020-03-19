@@ -24,10 +24,11 @@ namespace PoESkillTree.SkillTreeFiles
     {
         #region Members
         private static readonly Color TreeComparisonColor = Colors.RoyalBlue;
-        private readonly Pen _basePathPen = new Pen(Brushes.DarkSlateGray, 20f);
-        private readonly Pen _activePathPen = new Pen(Brushes.DarkKhaki, 15f);
-        private readonly Pen _skillOverlayPen = new Pen(Brushes.LawnGreen, 15f) { DashStyle = new DashStyle(new DoubleCollection { 2 }, 2) };
-        private readonly Pen _refundOverlayPen = new Pen(Brushes.Red, 15f) { DashStyle = new DashStyle(new DoubleCollection { 2 }, 2) };
+        private readonly Pen _basePathPen = new Pen(Brushes.DarkSlateGray, 10f);
+        private readonly Pen _activePathPen = new Pen(Brushes.DarkKhaki, 7.5f);
+        private readonly Pen _skillOverlayPen = new Pen(Brushes.LawnGreen, 7.5f) { DashStyle = new DashStyle(new DoubleCollection { 2 }, 2) };
+        private readonly Pen _refundOverlayPen = new Pen(Brushes.Red, 7.5f) { DashStyle = new DashStyle(new DoubleCollection { 2 }, 2) };
+        private readonly Pen _textShadowPen = new Pen(Brushes.Black, 2) { LineJoin = PenLineJoin.Round, MiterLimit = 10 };
         private const float HighlightFactor = 1.2f;
         private const float DistanceFromStartNodeCenter = 270f;
 
@@ -507,20 +508,19 @@ namespace PoESkillTree.SkillTreeFiles
                         dc.DrawRectangle(brush, null, new Rect(pos - new Vector2D(rect.Width, rect.Height), pos + new Vector2D(rect.Width, rect.Height)));
 
                         var charBaseAttr = CharBaseAttributes[CharClass].ToDictionary();
-
                         var text = CreateAttributeText(charBaseAttr["+# to Intelligence"].ToString(CultureInfo.InvariantCulture), Brushes.DodgerBlue);
                         var textPos = pos - new Vector2D(10, 47);
-                        dc.DrawGeometry(null, new Pen(Brushes.Black, 2) { LineJoin = PenLineJoin.Round, MiterLimit = 10 }, text.BuildGeometry(textPos));
+                        dc.DrawGeometry(null, _textShadowPen, text.BuildGeometry(textPos));
                         dc.DrawText(text, textPos);
 
                         text = CreateAttributeText(charBaseAttr["+# to Strength"].ToString(CultureInfo.InvariantCulture), Brushes.IndianRed);
                         textPos = pos - new Vector2D(42, -10);
-                        dc.DrawGeometry(null, new Pen(Brushes.Black, 2) { LineJoin = PenLineJoin.Round, MiterLimit = 10 }, text.BuildGeometry(textPos));
+                        dc.DrawGeometry(null, _textShadowPen, text.BuildGeometry(textPos));
                         dc.DrawText(text, textPos);
 
                         text = CreateAttributeText(charBaseAttr["+# to Dexterity"].ToString(CultureInfo.InvariantCulture), Brushes.MediumSeaGreen);
                         textPos = pos - new Vector2D(-24, -10);
-                        dc.DrawGeometry(null, new Pen(Brushes.Black, 2) { LineJoin = PenLineJoin.Round, MiterLimit = 10 }, text.BuildGeometry(textPos));
+                        dc.DrawGeometry(null, _textShadowPen, text.BuildGeometry(textPos));
                         dc.DrawText(text, textPos);
 
                     }
@@ -557,7 +557,7 @@ namespace PoESkillTree.SkillTreeFiles
                             pos.X - (bitmap.PixelWidth / 2) + currentClass.FlavourTextRect.X * node.ZoomLevel,
                             pos.Y - (bitmap.PixelHeight / 2) + currentClass.FlavourTextRect.Y * node.ZoomLevel);
                     text.TextAlignment = TextAlignment.Left;
-                    dc.DrawGeometry(null, new Pen(Brushes.Black, 2) { LineJoin = PenLineJoin.Round, MiterLimit = 10 }, text.BuildGeometry(textPos));
+                    dc.DrawGeometry(null, _textShadowPen, text.BuildGeometry(textPos));
                     dc.DrawText(text, textPos);
                 }
             }
@@ -643,7 +643,7 @@ namespace PoESkillTree.SkillTreeFiles
                         if (state.HasFlag(HighlightState.FromHover))
                         {
                             var brushColor = (Brush)new BrushConverter().ConvertFromString(_persistentData.Options.NodeHoverHighlightColor);
-                            hpen = new Pen(brushColor, 20);
+                            hpen = new Pen(brushColor, 5);
                         }
                         else
                         {

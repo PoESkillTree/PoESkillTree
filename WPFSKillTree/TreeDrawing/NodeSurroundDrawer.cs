@@ -62,7 +62,7 @@ namespace PoESkillTree.TreeDrawing
         {
         }
 
-        public void Draw() => Draw(n => !n.IsAscendancyNode && n.PassiveNodeType != PassiveNodeType.Mastery);
+        public void Draw() => Draw(n => !n.IsRootNode && !n.IsAscendancyNode && n.PassiveNodeType != PassiveNodeType.Mastery);
     }
 
     public class AscendancyNodeSurroundDrawer : NodeSurroundDrawer
@@ -73,7 +73,7 @@ namespace PoESkillTree.TreeDrawing
         {
         }
 
-        public void Draw(bool allAscendancies, string? ascendancyClassName) => Draw(n =>
-            n.IsAscendancyNode && (allAscendancies || n.AscendancyName == ascendancyClassName) && n.PassiveNodeType != PassiveNodeType.Mastery);
+        public void Draw(bool allAscendancies, string? ascendancyClassName)
+            => Draw(n => n.IsAscendancyNode && (allAscendancies || n.AscendancyName == ascendancyClassName) && n.PassiveNodeType != PassiveNodeType.Mastery);
     }
 }
