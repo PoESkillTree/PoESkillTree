@@ -16,6 +16,7 @@ using PoESkillTree.SkillTreeFiles;
 using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
 using PoESkillTree.ViewModels.Equipment;
+using PoESkillTree.ViewModels.PassiveTree;
 
 namespace PoESkillTree.Computation
 {
@@ -52,13 +53,13 @@ namespace PoESkillTree.Computation
 
         public GameData GameData => _gameData.Data;
 
-        public async Task InitializeAsync(IEnumerable<SkillNode> skillNodes)
+        public async Task InitializeAsync(IEnumerable<PassiveNodeViewModel> skillNodes)
         {
             await InitializeFields(skillNodes);
             _initialParseTask = DoInitialParseAsync();
         }
 
-        private async Task InitializeFields(IEnumerable<SkillNode> skillNodes)
+        private async Task InitializeFields(IEnumerable<PassiveNodeViewModel> skillNodes)
         {
             _gameData.PassiveNodes = skillNodes;
 
@@ -82,7 +83,7 @@ namespace PoESkillTree.Computation
         }
 
         public async Task InitializeAfterBuildLoadAsync(
-            ObservableSet<SkillNode> skilledNodes, ObservableSet<(Item, ItemSlot)> items,
+            ObservableSet<PassiveNodeViewModel> skilledNodes, ObservableSet<(Item, ItemSlot)> items,
             ObservableSet<(Item, ItemSlot, ushort, JewelRadius)> jewels,
             ObservableSet<IReadOnlyList<Gem>> gems, ObservableSkillCollection skills)
         {
@@ -95,7 +96,7 @@ namespace PoESkillTree.Computation
             await ConnectToSkillsAsync(skills.Collection);
         }
 
-        private async Task ConnectToSkilledPassiveNodesAsync(ObservableSet<SkillNode> skilledNodes)
+        private async Task ConnectToSkilledPassiveNodesAsync(ObservableSet<PassiveNodeViewModel> skilledNodes)
             => await ConnectAsync(
                 _observables.ParseSkilledPassiveNodesAsync(skilledNodes),
                 _observables.ObserveSkilledPassiveNodes(skilledNodes));

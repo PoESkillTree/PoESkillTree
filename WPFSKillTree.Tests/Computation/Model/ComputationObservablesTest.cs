@@ -17,6 +17,7 @@ using PoESkillTree.Engine.GameModel.PassiveTree;
 using PoESkillTree.Engine.GameModel.Skills;
 using PoESkillTree.SkillTreeFiles;
 using PoESkillTree.Utils;
+using PoESkillTree.ViewModels.PassiveTree;
 
 namespace PoESkillTree.Computation.Model
 {
@@ -74,7 +75,7 @@ namespace PoESkillTree.Computation.Model
                 new CalculatorUpdate(new Modifier[0], parseResults[0].Modifiers),
                 new CalculatorUpdate(new Modifier[0], parseResults[1].Modifiers),
             };
-            var observableSet = new ObservableSet<SkillNode>();
+            var observableSet = new ObservableSet<PassiveNodeViewModel>();
             var sut = CreateSut(MockSkilledPassiveNodeParser(parseResults));
 
             var actual = new List<CalculatorUpdate>();
@@ -221,8 +222,8 @@ namespace PoESkillTree.Computation.Model
             => new PassiveNodeDefinition(id, default, "", false, false,
                 default, new string[0]);
 
-        private static IReadOnlyList<SkillNode> CreateSkillNodes(int nodeCount)
-            => Enumerable.Range(0, nodeCount).Select(id => new SkillNode { Id = (ushort) id }).ToList();
+        private static IReadOnlyList<PassiveNodeViewModel> CreateSkillNodes(int nodeCount)
+            => Enumerable.Range(0, nodeCount).Select(id => new PassiveNodeViewModel((ushort)id)).ToList();
 
         private static IReadOnlyList<(Item, ItemSlot)> CreateItems(int count)
             => Enumerable.Range(0, count).Zip(Enums.GetValues<ItemSlot>(), (i, s) => (CreateItem(i), s)).ToList();

@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace PoESkillTree.SkillTreeFiles
 {
     public class Class
     {
-        public Class(int order, string name, string displayName, string flavourText, Vector2D flavourTextRect, IReadOnlyList<int> flavourTextColour)
+        public Class(int order, string name, string displayName, string flavourText, Vector2D flavourTextRect, Color flavourTextColour)
         {
             Order = order;
             Name = name;
@@ -19,6 +20,6 @@ namespace PoESkillTree.SkillTreeFiles
         public string DisplayName { get; }
         public string FlavourText { get; }
         public Vector2D FlavourTextRect { get; }
-        public IReadOnlyList<int> FlavourTextColour { get; }
+        public Color FlavourTextColour { get; }
     }
 }

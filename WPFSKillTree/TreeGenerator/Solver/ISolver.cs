@@ -37,7 +37,7 @@ namespace PoESkillTree.TreeGenerator.Solver
 
         /// <summary>
         /// Gets the best solution generated up to this point as
-        /// HashSet of <see cref="SkillTreeFiles.SkillNode"/> ids.
+        /// HashSet of <see cref="SkillTreeFiles.PassiveNodeViewModel"/> ids.
         /// Return value is undefined until <see cref="Initialize"/> got called.
         /// 
         /// If these are counted, <see cref="UncountedNodes"/> has to be subtracted from the result.

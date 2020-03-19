@@ -1,11 +1,11 @@
-﻿using System;
+﻿using PoESkillTree.Engine.GameModel;
+using PoESkillTree.Engine.GameModel.PassiveTree;
+using PoESkillTree.ViewModels.PassiveTree;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using PoESkillTree.Engine.GameModel;
-using PoESkillTree.Engine.GameModel.PassiveTree;
-using PoESkillTree.SkillTreeFiles;
 
 namespace PoESkillTree.Model
 {
@@ -17,7 +17,7 @@ namespace PoESkillTree.Model
         public GameData Data { get; }
 
         [DisallowNull]
-        public IEnumerable<SkillNode>? PassiveNodes { private get; set; }
+        public IEnumerable<PassiveNodeViewModel>? PassiveNodes { private get; set; }
 
         private class LazyPassiveNodeEnumerable : IEnumerable<PassiveNodeDefinition>
         {
@@ -30,7 +30,7 @@ namespace PoESkillTree.Model
             {
                 if (_loader.PassiveNodes == null)
                     throw new InvalidOperationException("GameDataLoader.PassiveNodes was not yet set");
-                return _loader.PassiveNodes.Select(ModelConverter.Convert).GetEnumerator();
+                return _loader.PassiveNodes.Select(x => x.PassiveNodeDefinition).GetEnumerator();
             }
 
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

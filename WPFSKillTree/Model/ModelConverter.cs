@@ -3,6 +3,7 @@ using PoESkillTree.Engine.GameModel.Items;
 using PoESkillTree.Engine.GameModel.PassiveTree;
 using PoESkillTree.Model.Items.Mods;
 using PoESkillTree.SkillTreeFiles;
+using PoESkillTree.ViewModels.PassiveTree;
 using OldItem = PoESkillTree.Model.Items.Item;
 
 namespace PoESkillTree.Model
@@ -14,16 +15,6 @@ namespace PoESkillTree.Model
     /// </summary>
     public static class ModelConverter
     {
-        public static PassiveNodeDefinition Convert(SkillNode skillNode)
-            => new PassiveNodeDefinition(
-                skillNode.Id,
-                skillNode.Type,
-                skillNode.Name,
-                skillNode.IsAscendancyNode,
-                !skillNode.IsRootNode && !skillNode.IsAscendancyStart && !skillNode.IsMultipleChoiceOption,
-                new NodePosition(skillNode.Position.X, skillNode.Position.Y), 
-                skillNode.StatDefinitions);
-
         public static Item Convert(OldItem oldItem)
         {
             var quality = (int) oldItem.Properties.First("Quality: +#%", 0, 0);

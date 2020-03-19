@@ -1,19 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows.Media;
-using PoESkillTree.Engine.GameModel.Items;
+﻿using PoESkillTree.Engine.GameModel.Items;
+using PoESkillTree.Engine.GameModel.PassiveTree;
 using PoESkillTree.Engine.Utils.Extensions;
 using PoESkillTree.SkillTreeFiles;
 using PoESkillTree.ViewModels.Equipment;
+using PoESkillTree.ViewModels.PassiveTree;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Media;
 using Item = PoESkillTree.Model.Items.Item;
 
 namespace PoESkillTree.TreeDrawing
 {
     public class JewelRadiusDrawer
     {
-        private const int RadiusPenThickness = 8;
+        private const int RadiusPenThickness = 5;
 
         private static readonly IReadOnlyDictionary<JewelRadius, Brush> RadiusBrushes = new Dictionary<JewelRadius, Brush>
         {
@@ -22,20 +25,18 @@ namespace PoESkillTree.TreeDrawing
             {JewelRadius.Small, Brushes.LightCyan},
         };
 
-        private readonly PoESkillTreeOptions _options;
-        private readonly IReadOnlyDictionary<ushort, SkillNode> _skillNodes;
-        private readonly IReadOnlyCollection<SkillNode> _skilledNodes;
+        private readonly IReadOnlyDictionary<ushort, PassiveNodeViewModel> _skillNodes;
+        private readonly IReadOnlyCollection<PassiveNodeViewModel> _skilledNodes;
+        private readonly Func<PassiveNodeViewModel, Size> _getSize;
         private readonly DrawingVisual _skilledNodesVisual;
         private readonly DrawingVisual _highlightVisual;
         private IReadOnlyList<InventoryItemViewModel> _jewelViewModels;
 
-        public JewelRadiusDrawer(
-            PoESkillTreeOptions options, IReadOnlyDictionary<ushort, SkillNode> skillNodes,
-            IReadOnlyCollection<SkillNode> skilledNodes)
+        public JewelRadiusDrawer(IReadOnlyDictionary<ushort, PassiveNodeViewModel> skillNodes, IReadOnlyCollection<PassiveNodeViewModel> skilledNodes, Func<PassiveNodeViewModel, Size> getSize)
         {
-            _options = options;
             _skillNodes = skillNodes;
             _skilledNodes = skilledNodes;
+            _getSize = getSize;
             _skilledNodesVisual = new DrawingVisual();
             _highlightVisual = new DrawingVisual();
             Visual = new DrawingVisual();
@@ -84,7 +85,7 @@ namespace PoESkillTree.TreeDrawing
             }
         }
 
-        public void DrawHighlight(SkillNode node, Item? socketedJewel)
+        public void DrawHighlight(PassiveNodeViewModel node, Item? socketedJewel)
         {
             using var dc = _highlightVisual.RenderOpen();
             if (socketedJewel is null)
@@ -102,38 +103,32 @@ namespace PoESkillTree.TreeDrawing
             }
         }
 
-        private void DrawRadius(DrawingContext context, SkillNode node, JewelRadius radiusEnum)
+        private void DrawRadius(DrawingContext context, PassiveNodeViewModel node, JewelRadius radiusEnum)
         {
             if (radiusEnum == JewelRadius.None)
                 return;
 
-            double radius = radiusEnum.GetRadius();
-            if (_options?.Circles != null && _options.Circles.TryGetValue(radiusEnum.ToString(), out var circles)
-                                          && Constants.AssetZoomLevel < circles.Count)
-            {
-                var circle = circles[Constants.AssetZoomLevel];
-                radius = Math.Round(circle.Width / circle.ZoomLevel / 2);
-            }
-
-            radius -= RadiusPenThickness / 2;
+            double radius = radiusEnum.GetRadius(node.ZoomLevel) - (RadiusPenThickness / 2);
             var pen = new Pen(RadiusBrushes[radiusEnum], RadiusPenThickness);
 
             context.DrawEllipse(null, pen, node.Position, radius, radius);
         }
 
-        private void DrawNodeHighlights(DrawingContext context, SkillNode node, JewelRadius radiusEnum)
+        private void DrawNodeHighlights(DrawingContext context, PassiveNodeViewModel node, JewelRadius radiusEnum)
         {
             if (radiusEnum == JewelRadius.None)
                 return;
 
-            var radius = radiusEnum.GetRadius();
+            var radius = radiusEnum.GetRadius(node.ZoomLevel);
             var nodesInRadius = _skillNodes.Values
-                .Where(n => !n.IsMastery && !n.IsRootNode && !n.IsAscendancyNode)
+                .Where(n => n.PassiveNodeType != PassiveNodeType.Mastery && !n.IsRootNode && !n.IsAscendancyNode)
                 .Where(n => Distance(n.Position, node.Position) <= radius);
             var pen = new Pen(RadiusBrushes[radiusEnum], RadiusPenThickness);
             foreach (var n in nodesInRadius)
             {
-                context.DrawEllipse(null, pen, n.Position, 60, 60);
+                var size = _getSize(n);
+                var highlightRadius = Math.Sqrt((size.Width * size.Height) / Math.PI) + 10;
+                context.DrawEllipse(null, pen, n.Position, highlightRadius, highlightRadius);
             }
         }
 

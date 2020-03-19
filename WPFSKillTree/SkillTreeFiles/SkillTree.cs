@@ -1,16 +1,4 @@
-﻿using Newtonsoft.Json;
-using PoESkillTree.Utils;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media.Imaging;
+﻿using EnumsNET;
 using PoESkillTree.Common;
 using PoESkillTree.Controls.Dialogs;
 using PoESkillTree.Engine.GameModel;
@@ -19,21 +7,28 @@ using PoESkillTree.Engine.Utils;
 using PoESkillTree.Engine.Utils.Extensions;
 using PoESkillTree.Localization;
 using PoESkillTree.Model;
+using PoESkillTree.Utils;
 using PoESkillTree.Utils.UrlProcessing;
 using PoESkillTree.Utils.Wpf;
-using HighlightState = PoESkillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
+using PoESkillTree.ViewModels.PassiveTree;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media.Imaging;
 using static PoESkillTree.SkillTreeFiles.Constants;
+using HighlightState = PoESkillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
 
 namespace PoESkillTree.SkillTreeFiles
 {
     public partial class SkillTree : Notifier, ISkillTree
     {
-        public Vector2D AscButtonPosition = new Vector2D();
-        /// <summary>
-        /// Nodes with an attribute matching this regex are one of the "Path of the ..." nodes connection Scion
-        /// Ascendant with other classes.
-        /// </summary>
-        private static readonly Regex AscendantClassStartRegex = new Regex(@"Can Allocate Passives from the .* starting point");
+        public Rect AscendancyButtonRect = new Rect();
 
 #pragma warning disable CS8618 // Initialized in InitializeAsync or CreateAsync
         // The absolute path of Assets folder (contains trailing directory separator).
@@ -136,7 +131,7 @@ namespace PoESkillTree.SkillTreeFiles
 
         private static SkillIcons IconActiveSkills { get; set; }
         private static SkillIcons IconInActiveSkills { get; set; }
-        public static Dictionary<ushort, SkillNode> Skillnodes => PoESkillTree.Nodes;
+        public static Dictionary<ushort, PassiveNodeViewModel> Skillnodes => PoESkillTree.PassiveNodes;
 
         private static IEnumerable<string>? _allAttributes;
         /// <summary>
@@ -153,18 +148,18 @@ namespace PoESkillTree.SkillTreeFiles
             private set;
         }
 
-        public static List<ushort> RootNodeList { get; private set; }
-        private static HashSet<SkillNode> AscRootNodeList { get; set; }
+        public static List<ushort> RootNodeList { get; } = new List<ushort>();
+        private static HashSet<PassiveNodeViewModel> AscRootNodeList { get; } = new HashSet<PassiveNodeViewModel>();
         public static Rect2D SkillTreeRect { get; private set; }
-        private static Dictionary<CharacterClass, ushort> RootNodeClassDictionary { get; set; }
-        private static Dictionary<ushort, ushort> StartNodeDictionary { get; set; }
+        private static Dictionary<CharacterClass, ushort> RootNodeClassDictionary { get; } = new Dictionary<CharacterClass, ushort>();
+        private static Dictionary<ushort, ushort> StartNodeDictionary { get; } = new Dictionary<ushort, ushort>();
 
         private static Dictionary<string, BitmapImage> Assets { get; } = new Dictionary<string, BitmapImage>();
 
-        public readonly ObservableSet<SkillNode> SkilledNodes = new ObservableSet<SkillNode>();
-        public readonly ObservableSet<SkillNode> HighlightedNodes = new ObservableSet<SkillNode>();
+        public readonly ObservableSet<PassiveNodeViewModel> SkilledNodes = new ObservableSet<PassiveNodeViewModel>();
+        public readonly ObservableSet<PassiveNodeViewModel> HighlightedNodes = new ObservableSet<PassiveNodeViewModel>();
 
-        private readonly ObservableSet<SkillNode> _itemAllocatedNodes = new ObservableSet<SkillNode>();
+        private readonly ObservableSet<PassiveNodeViewModel> _itemAllocatedNodes = new ObservableSet<PassiveNodeViewModel>();
 
         public IEnumerable<ushort> ItemAllocatedNodes
         {
@@ -173,7 +168,7 @@ namespace PoESkillTree.SkillTreeFiles
 
         public Func<IReadOnlyCollection<ushort>, IEnumerable<ushort>> ItemConnectedNodesSelector { private get; set; }
 
-        private IEnumerable<SkillNode> SelectItemConnectedNodes(IEnumerable<SkillNode> sourceNodes) =>
+        private IEnumerable<PassiveNodeViewModel> SelectItemConnectedNodes(IEnumerable<PassiveNodeViewModel> sourceNodes) =>
             ItemConnectedNodesSelector(sourceNodes.Select(n => n.Id).ToHashSet())
                 .Select(n => Skillnodes[n]);
 
@@ -184,8 +179,7 @@ namespace PoESkillTree.SkillTreeFiles
         private CharacterClass _charClass;
         private int _asctype;
 
-        public static PoESkillTree PoESkillTree { get; private set; }
-        private static PoESkillTreeOptions PoESkillTreeOptions { get; set; }
+        public static PassiveTreeViewModel PoESkillTree { get; private set; }
 
         private static bool _initialized;
 
@@ -197,13 +191,11 @@ namespace PoESkillTree.SkillTreeFiles
             Serializer = new SkillTreeToUrlSerializer(this);
         }
 
-        private async Task InitializeAsync(string treestring, string opsstring, ProgressDialogController? controller,
-            AssetLoader assetLoader)
+        private async Task InitializeAsync(string treestring, string? opsstring, ProgressDialogController? controller, AssetLoader assetLoader)
         {
             if (!_initialized)
             {
-                PoESkillTree = JsonConvert.DeserializeObject<PoESkillTree>(treestring, new PoESkillTreeConverter())!;
-                PoESkillTreeOptions = JsonConvert.DeserializeObject<PoESkillTreeOptions>(opsstring);
+                PoESkillTree = new PassiveTreeViewModel(treestring, opsstring);
 
                 controller?.SetProgress(0.25);
                 await assetLoader.DownloadSkillNodeSpritesAsync(PoESkillTree, d => controller?.SetProgress(0.25 + d * 0.30));
@@ -238,7 +230,7 @@ namespace PoESkillTree.SkillTreeFiles
                         icons = IconInActiveSkills;
                         prefix = obj.Key;
                     }
-                    var sprite = obj.Value[AssetZoomLevel];
+                    var sprite = obj.Value[PoESkillTree.MaxImageZoomLevelIndex];
                     var path = _assetsFolderPath + sprite.FileName;
                     assetActions.Add(
                         (Task.Run(() => BitmapImageFactory.Create(path)), i => icons.Images[sprite.FileName] = i));
@@ -255,7 +247,7 @@ namespace PoESkillTree.SkillTreeFiles
                 await assetLoader.DownloadAssetsAsync(PoESkillTree, d => controller?.SetProgress(0.55 + d * 0.44));
                 foreach (var ass in PoESkillTree.Assets)
                 {
-                    var key = ass.Key;
+                    var key = ass.Key.Replace("PassiveSkillScreen", string.Empty);
                     var path = _assetsFolderPath + key + ".png";
                     assetActions.Add((Task.Run(() => BitmapImageFactory.Create(path)), i => Assets[key] = i));
                 }
@@ -265,7 +257,7 @@ namespace PoESkillTree.SkillTreeFiles
                     action(await task);
                 }
 
-                AscendancyClasses = new AscendancyClasses(PoESkillTreeOptions.CharacterToAscendancy);
+                AscendancyClasses = new AscendancyClasses(PoESkillTree.CharacterClasses);
 
                 BuildConverter = new BuildConverter(AscendancyClasses,
                     url => new NaivePoEUrlDeserializer(url, AscendancyClasses),
@@ -273,32 +265,25 @@ namespace PoESkillTree.SkillTreeFiles
                     PathofexileUrlDeserializer.TryCreate);
 
                 CharBaseAttributes = new Dictionary<CharacterClass, IReadOnlyList<(string stat, float value)>>();
-                foreach (var (key, value) in PoESkillTree.CharacterData)
+                foreach (var character in PoESkillTree.CharacterClasses)
                 {
-                    CharBaseAttributes[(CharacterClass)key] = new (string stat, float value)[]
+                    var characterClass = Enums.Parse<CharacterClass>(character.Name);
+                    CharBaseAttributes[characterClass] = new (string stat, float value)[]
                     {
-                        ("+# to Strength", value.BaseStrength),
-                        ("+# to Dexterity", value.BaseDexterity),
-                        ("+# to Intelligence", value.BaseIntelligence)
+                        ("+# to Strength", character.Strength),
+                        ("+# to Dexterity", character.Dexterity),
+                        ("+# to Intelligence", character.Intelligence)
                     };
                 }
 
-                SkillNode.OrbitRadii = PoESkillTree.Constants.OrbitRadii ?? SkillNode.OrbitRadii;
-                SkillNode.SkillsPerOrbit = PoESkillTree.Constants.SkillsPerOrbit ?? SkillNode.SkillsPerOrbit;
-                RootNodeClassDictionary = new Dictionary<CharacterClass, ushort>();
-                StartNodeDictionary = new Dictionary<ushort, ushort>();
-                AscRootNodeList = new HashSet<SkillNode>();
-                RootNodeList = new List<ushort>();
-
                 if (PoESkillTree.Root != null)
                 {
-                    foreach (var i in PoESkillTree.Root.NodeIdsOut)
+                    foreach (var i in PoESkillTree.Root.OutPassiveNodeIds)
                     {
                         RootNodeList.Add(i);
                         if (Skillnodes.ContainsKey(i))
                         {
                             var node = Skillnodes[i];
-                            node.IsRootNode = true;
 
                             var characterClass = PassiveNodeNameToClass[node.Name.ToUpperInvariant()];
                             if (!RootNodeClassDictionary.ContainsKey(characterClass))
@@ -306,7 +291,7 @@ namespace PoESkillTree.SkillTreeFiles
                                 RootNodeClassDictionary.Add(characterClass, node.Id);
                             }
 
-                            foreach (var linkedNode in node.NodeIdsOut)
+                            foreach (var linkedNode in node.OutPassiveNodeIds)
                             {
                                 if (!StartNodeDictionary.ContainsKey(node.Id) && !node.IsAscendancyStart)
                                 {
@@ -317,105 +302,17 @@ namespace PoESkillTree.SkillTreeFiles
                     }
                 }
 
-                var regexAttrib = new Regex("[0-9]*\\.?[0-9]+");
-                Regex regexString = new Regex(@"Can Allocate Passives from the .* starting point");
-                foreach (var skillNode in Skillnodes)
+                foreach (var (_, node) in PoESkillTree.PassiveNodes)
                 {
-                    var n1 = skillNode.Value;
-                    if (n1.Name.Contains("Jewel Socket"))
+                    if (node.IsAscendancyStart && !AscRootNodeList.Contains(node))
                     {
-                        n1.StatDefinitions = new[] { "+1 Jewel Socket" };
-                    }
-
-                    //populate the Attributes fields with parsed attributes 
-                    n1.Attributes = new Dictionary<string, IReadOnlyList<float>>();
-                    foreach (string s in n1.StatDefinitions)
-                    {
-                        var values = new List<float>();
-
-                        foreach (var m in regexAttrib.Matches(s).WhereNotNull())
-                        {
-                            if (m.Value == "")
-                                values.Add(float.NaN);
-                            else
-                                values.Add(float.Parse(m.Value, CultureInfo.InvariantCulture));
-                        }
-                        string cs = (regexAttrib.Replace(s, "#"));
-
-                        n1.Attributes[cs] = values;
-                    }
-
-                    if (n1.IsAscendancyStart && !AscRootNodeList.Contains(n1))
-                    {
-                        AscRootNodeList.Add(n1);
-                    }
-
-                    foreach (var i in n1.NodeIdsOut)
-                    {
-                        var n2 = Skillnodes[i];
-                        if (!StartNodeDictionary.ContainsKey(n1.Id) && RootNodeList.Contains(n2.Id))
-                        {
-                            StartNodeDictionary.Add(n1.Id, n2.Id);
-                        }
-
-                        bool isScionAscendancyNotable = false;
-                        foreach (var attibute in n1.StatDefinitions)
-                        {
-                            if (regexString.IsMatch(attibute))
-                                isScionAscendancyNotable = true;
-                        }
-
-                        foreach (var attibute in n2.StatDefinitions)
-                        {
-                            if (regexString.IsMatch(attibute))
-                                isScionAscendancyNotable = true;
-                        }
-
-                        if (isScionAscendancyNotable && StartNodeDictionary.Keys.Contains(n1.Id))
-                        {
-                            if (!n2.Neighbor.Contains(n1))
-                            {
-                                n2.Neighbor.Add(n1);
-                            }
-                        }
-                        else if (isScionAscendancyNotable && StartNodeDictionary.Keys.Contains(n2.Id))
-                        {
-                            if (!n1.Neighbor.Contains(n2))
-                            {
-                                n1.Neighbor.Add(n2);
-                            }
-                        }
-                        else
-                        {
-                            if (!n2.Neighbor.Contains(n1))
-                            {
-                                n2.Neighbor.Add(n1);
-                            }
-                            if (!n1.Neighbor.Contains(n2))
-                            {
-                                n1.Neighbor.Add(n2);
-                            }
-                        }
-
-                        if (n1.IsAscendancyNode == n2.IsAscendancyNode)
-                        {
-                            n1.VisibleNeighbors.Add(n2);
-                            n2.VisibleNeighbors.Add(n1);
-                        }
+                        AscRootNodeList.Add(node);
                     }
                 }
 
-                foreach (var gp in PoESkillTree.Groups)
-                {
-                    foreach (var node in gp.Value.NodeIds)
-                    {
-                        gp.Value.Nodes.Add(Skillnodes[node]);
-                        Skillnodes[node].Group = gp.Value;
-                    }
-                }
-
-                SkillTreeRect = new Rect2D(new Vector2D(PoESkillTree.min_x * 1.1, PoESkillTree.min_y * 1.1),
-                    new Vector2D(PoESkillTree.max_x * 1.1, PoESkillTree.max_y * 1.1));
+                SkillTreeRect = new Rect2D(
+                    new Vector2D(PoESkillTree.MinX * PoESkillTree.MaxImageZoomLevel * 1.25, PoESkillTree.MinY * PoESkillTree.MaxImageZoomLevel * 1.25), 
+                    new Vector2D(PoESkillTree.MaxX * PoESkillTree.MaxImageZoomLevel * 1.25, PoESkillTree.MaxY * PoESkillTree.MaxImageZoomLevel * 1.25));
             }
 
             if (_persistentData.Options.ShowAllAscendancyClasses)
@@ -491,7 +388,7 @@ namespace PoESkillTree.SkillTreeFiles
             }
             else
             {
-                var remove = new List<SkillNode>();
+                var remove = new List<PassiveNodeViewModel>();
                 SetProperty(ref _asctype, toType, propertyName: nameof(AscType));
                 var sn = GetAscNode();
                 if (sn != null)
@@ -530,7 +427,7 @@ namespace PoESkillTree.SkillTreeFiles
             => GetAttributes(SkilledNodes, CharClass, _persistentData.CurrentBuild.Level, _persistentData.CurrentBuild.Bandits);
 
         public static Dictionary<string, List<float>> GetAttributes(
-            IEnumerable<SkillNode> skilledNodes, CharacterClass charClass, int level, BanditSettings banditSettings)
+            IEnumerable<PassiveNodeViewModel> skilledNodes, CharacterClass charClass, int level, BanditSettings banditSettings)
         {
             var temp = GetAttributesWithoutImplicit(skilledNodes, charClass, banditSettings);
 
@@ -554,7 +451,7 @@ namespace PoESkillTree.SkillTreeFiles
         }
 
         private static Dictionary<string, List<float>> GetAttributesWithoutImplicit(
-            IEnumerable<SkillNode> skilledNodes, CharacterClass charClass, BanditSettings banditSettings)
+            IEnumerable<PassiveNodeViewModel> skilledNodes, CharacterClass charClass, BanditSettings banditSettings)
         {
             var temp = new Dictionary<string, List<float>>();
 
@@ -589,7 +486,7 @@ namespace PoESkillTree.SkillTreeFiles
         }
 
 
-        public static Dictionary<string, List<float>> GetAttributesWithoutImplicitNodesOnly(IEnumerable<SkillNode> skilledNodes)
+        public static Dictionary<string, List<float>> GetAttributesWithoutImplicitNodesOnly(IEnumerable<PassiveNodeViewModel> skilledNodes)
         {
             var temp = new Dictionary<string, List<float>>();
 
@@ -635,8 +532,7 @@ namespace PoESkillTree.SkillTreeFiles
 
             var skillTreeTask = LoadTreeFileAsync(dataFolderPath + "Skilltree.txt",
                 () => assetLoader.DownloadSkillTreeToFileAsync());
-            var optsTask = LoadTreeFileAsync(dataFolderPath + "Opts.txt",
-                () => assetLoader.DownloadOptsToFileAsync());
+            var optsTask = LoadTreeFileAsync(dataFolderPath + "Opts.txt");
             await Task.WhenAny(skillTreeTask, optsTask);
             controller?.SetProgress(0.1);
 
@@ -649,56 +545,62 @@ namespace PoESkillTree.SkillTreeFiles
             return tree;
         }
 
-        private static async Task<string> LoadTreeFileAsync(string path, Func<Task<string>> downloadFile)
+        private static async Task<string> LoadTreeFileAsync(string path, Func<Task<string>>? downloadFile = null)
         {
-            var treeObj = "";
+            var treeObj = string.Empty;
             if (File.Exists(path))
             {
                 treeObj = await FileUtils.ReadAllTextAsync(path);
             }
-            if (treeObj == "")
+
+            if (string.IsNullOrWhiteSpace(treeObj) && !(downloadFile is null))
             {
                 treeObj = await downloadFile();
             }
+
             return treeObj;
         }
 
-        private IEnumerable<KeyValuePair<ushort, SkillNode>> FindNodesInRange(Vector2D mousePointer, int range = 50)
+        private List<KeyValuePair<ushort, PassiveNodeViewModel>> FindNodesInRange(Vector2D mousePointer)
         {
-            var nodes =
-              Skillnodes.Where(n => ((n.Value.Position - mousePointer).Length < range)).ToList();
-            if (!DrawAscendancy || AscType <= 0) return nodes;
-            var asn = GetAscNode()!;
-            var bitmap = Assets["Classes" + asn.AscendancyName];
-            nodes = Skillnodes.Where(n => (n.Value.IsAscendancyNode || (Math.Pow(n.Value.Position.X - asn.Position.X, 2) + Math.Pow(n.Value.Position.Y - asn.Position.Y, 2)) > Math.Pow((bitmap.Height * 1.25 + bitmap.Width * 1.25) / 2, 2)) && ((n.Value.Position - mousePointer).Length < range)).ToList();
-            return nodes;
+            var nodes = Skillnodes.Where(n =>
+            {
+                var size = GetNodeSurroundBrushSize(n.Value, 0);
+                var range = size.Width * size.Height * n.Value.ZoomLevel;
+                var length = (n.Value.Position - mousePointer).Length;
+                return length * length < range;
+            });
+
+            if (!DrawAscendancy || AscType <= 0) return nodes.ToList();
+            if (GetAscNode() is PassiveNodeViewModel asn)
+            {
+                var bitmap = Assets["Classes" + asn.AscendancyName];
+                var radius = (bitmap.Width * bitmap.Height) / Math.PI;
+                nodes = nodes.Where(n => n.Value.IsAscendancyNode || (Math.Pow(n.Value.Position.X - asn.Position.X, 2) + Math.Pow((n.Value.Position.Y - asn.Position.Y), 2)) > radius).ToList();
+            }
+            return nodes.ToList();
         }
 
-        public SkillNode? FindNodeInRange(Vector2D mousePointer, int range = 50)
+        public PassiveNodeViewModel? FindNodeInRange(Vector2D mousePointer)
         {
-            var nodes = FindNodesInRange(mousePointer, range);
-            var nodeList = nodes as IList<KeyValuePair<ushort, SkillNode>> ?? nodes.ToList();
-            if (!nodeList.Any()) return null;
+            var nodes = FindNodesInRange(mousePointer) ?? new List<KeyValuePair<ushort, PassiveNodeViewModel>>();
+            if (!nodes.Any()) return null;
 
             if (DrawAscendancy)
             {
-                var dnode = nodeList.First();
-                return nodeList
-                    .Where(x => x.Value.AscendancyName == AscendancyClassName)
-                    .DefaultIfEmpty(dnode)
-                    .First()
-                    .Value;
+                var dnode = nodes.First();
+                return nodes.Where(x => x.Value.AscendancyName == AscendancyClassName).DefaultIfEmpty(dnode).First().Value;
             }
-            return nodeList.First().Value;
+            return nodes.First().Value;
         }
 
-        public void ResetSkilledNodesTo(IReadOnlyCollection<SkillNode> nodes)
+        public void ResetSkilledNodesTo(IReadOnlyCollection<PassiveNodeViewModel> nodes)
         {
             SkilledNodes.ResetTo(nodes);
             AscType = SelectAscendancyFromNodes(nodes) ?? 0;
         }
 
-        public void AllocateSkillNodes(IReadOnlyCollection<SkillNode> toAdd)
+        public void AllocateSkillNodes(IReadOnlyCollection<PassiveNodeViewModel> toAdd)
         {
             toAdd = toAdd.Where(n => !SkilledNodes.Contains(n)).ToList();
             var toRemove = toAdd.SelectMany(SelectAscendancyNodesToRemove).ToList();
@@ -707,7 +609,7 @@ namespace PoESkillTree.SkillTreeFiles
                 AscType = ascType;
         }
 
-        private int? SelectAscendancyFromNodes(IEnumerable<SkillNode> nodes)
+        private int? SelectAscendancyFromNodes(IEnumerable<PassiveNodeViewModel> nodes)
         {
             int? ascendancy = null;
             foreach (var node in nodes)
@@ -718,7 +620,7 @@ namespace PoESkillTree.SkillTreeFiles
             return ascendancy;
         }
 
-        private IEnumerable<SkillNode> SelectAscendancyNodesToRemove(SkillNode node)
+        private IEnumerable<PassiveNodeViewModel> SelectAscendancyNodesToRemove(PassiveNodeViewModel node)
         {
             if (node.IsAscendancyStart)
                 return SkilledNodes.Where(x => x.IsAscendancyNode && x.AscendancyName != node.AscendancyName);
@@ -727,10 +629,10 @@ namespace PoESkillTree.SkillTreeFiles
                     .Where(x => x.IsMultipleChoiceOption)
                     .Where(x => AscendancyClasses.GetStartingClass(node.Name)
                                 == AscendancyClasses.GetStartingClass(x.Name));
-            return Enumerable.Empty<SkillNode>();
+            return Enumerable.Empty<PassiveNodeViewModel>();
         }
 
-        public void ForceRefundNode(SkillNode node)
+        public void ForceRefundNode(PassiveNodeViewModel node)
         {
             if (!SkilledNodes.Contains(node))
                 return;
@@ -738,13 +640,13 @@ namespace PoESkillTree.SkillTreeFiles
             SkilledNodes.ExceptWith(GetNodesToRefundWhenRefunding(node));
         }
 
-        public IReadOnlyCollection<SkillNode> ForceRefundNodePreview(SkillNode node) =>
+        public IReadOnlyCollection<PassiveNodeViewModel> ForceRefundNodePreview(PassiveNodeViewModel node) =>
             GetNodesToRefundWhenRefunding(node);
 
-        private IReadOnlyCollection<SkillNode> GetNodesToRefundWhenRefunding(SkillNode node)
+        private IReadOnlyCollection<PassiveNodeViewModel> GetNodesToRefundWhenRefunding(PassiveNodeViewModel node)
         {
             if (!SkilledNodes.Contains(node))
-                return Array.Empty<SkillNode>();
+                return Array.Empty<PassiveNodeViewModel>();
 
             var newSkilledNodes = SkilledNodes.ToHashSet();
             newSkilledNodes.Remove(node);
@@ -755,14 +657,14 @@ namespace PoESkillTree.SkillTreeFiles
             return SkilledNodes.Except(reachable).ToList();
         }
 
-        private HashSet<SkillNode> SelectNodesReachableFromStart(IReadOnlyCollection<SkillNode> nodes)
+        private HashSet<PassiveNodeViewModel> SelectNodesReachableFromStart(IReadOnlyCollection<PassiveNodeViewModel> nodes)
         {
-            var front = new HashSet<SkillNode> {GetCharNode()};
+            var front = new HashSet<PassiveNodeViewModel> { GetCharNode() };
 
-            var reachable = new HashSet<SkillNode>(front);
+            var reachable = new HashSet<PassiveNodeViewModel>(front);
             while (front.Any())
             {
-                front = front.SelectMany(n => n.Neighbor)
+                front = front.SelectMany(n => n.NeighborPassiveNodes.Values)
                     .Where(n => !reachable.Contains(n))
                     .Where(nodes.Contains)
                     .ToHashSet();
@@ -772,28 +674,28 @@ namespace PoESkillTree.SkillTreeFiles
             return reachable;
         }
 
-        public IReadOnlyCollection<SkillNode> GetShortestPathTo(SkillNode targetNode)
+        public IReadOnlyCollection<PassiveNodeViewModel> GetShortestPathTo(PassiveNodeViewModel targetNode)
         {
             if (SkilledNodes.Contains(targetNode))
-                return new List<SkillNode>();
+                return new List<PassiveNodeViewModel>();
             var reachableSkilled = SelectNodesReachableFromStart(SkilledNodes);
             var itemConnected = SelectItemConnectedNodes(reachableSkilled);
             var adjacent = GetAvailableNodes(reachableSkilled);
             if (adjacent.Contains(targetNode) || itemConnected.Contains(targetNode))
-                return new List<SkillNode> { targetNode };
+                return new List<PassiveNodeViewModel> { targetNode };
 
-            var visited = new HashSet<SkillNode>(reachableSkilled);
-            var distance = new Dictionary<SkillNode, int>();
-            var parents = new Dictionary<SkillNode, SkillNode>();
-            var newOnes = new Queue<SkillNode>();
-            var toOmit = new HashSet<SkillNode>(
+            var visited = new HashSet<PassiveNodeViewModel>(reachableSkilled);
+            var distance = new Dictionary<PassiveNodeViewModel, int>();
+            var parents = new Dictionary<PassiveNodeViewModel, PassiveNodeViewModel>();
+            var newOnes = new Queue<PassiveNodeViewModel>();
+            var toOmit = new HashSet<ushort>(
                          from entry in _nodeHighlighter.NodeHighlights
                          where entry.Value.HasFlag(HighlightState.Crossed)
-                         select entry.Key);
+                         select entry.Key.Id);
 
             foreach (var node in adjacent)
             {
-                if (toOmit.Contains(node))
+                if (toOmit.Contains(node.Id))
                 {
                     continue;
                 }
@@ -806,19 +708,19 @@ namespace PoESkillTree.SkillTreeFiles
                 var newNode = newOnes.Dequeue();
                 var dis = distance[newNode];
                 visited.Add(newNode);
-                foreach (var connection in newNode.Neighbor)
+                foreach (var (id, connection) in newNode.NeighborPassiveNodes)
                 {
-                    if (toOmit.Contains(connection))
+                    if (toOmit.Contains(id))
                         continue;
                     if (visited.Contains(connection))
                         continue;
                     if (distance.ContainsKey(connection))
                         continue;
-                    if (newNode.Character.HasValue)
+                    if (newNode.StartingCharacterClass.HasValue)
                         continue;
-                    if (newNode.Type == PassiveNodeType.Mastery)
+                    if (newNode.PassiveNodeType == PassiveNodeType.Mastery)
                         continue;
-                    if (IsAscendantClassStartNode(newNode))
+                    if (newNode.IsAscendantClassStartNode)
                         continue;
                     distance.Add(connection, dis + 1);
                     newOnes.Enqueue(connection);
@@ -834,10 +736,10 @@ namespace PoESkillTree.SkillTreeFiles
             }
 
             if (!distance.ContainsKey(targetNode))
-                return new List<SkillNode>();
+                return new List<PassiveNodeViewModel>();
 
             var curr = targetNode;
-            var result = new List<SkillNode> { curr };
+            var result = new List<PassiveNodeViewModel> { curr };
             while (parents.ContainsKey(curr))
             {
                 result.Add(parents[curr]);
@@ -848,20 +750,12 @@ namespace PoESkillTree.SkillTreeFiles
         }
 
         /// <summary>
-        /// Returns true iff node is a Ascendant "Path of the ..." node.
-        /// </summary>
-        public static bool IsAscendantClassStartNode(SkillNode node)
-        {
-            return node.StatDefinitions.Any(s => AscendantClassStartRegex.IsMatch(s));
-        }
-
-        /// <summary>
         /// Changes the HighlightState of the node:
         /// None -> Checked -> Crossed -> None -> ...
         /// (preserves other HighlightStates than Checked and Crossed)
         /// </summary>
         /// <param name="node">Node to change the HighlightState for</param>
-        public void CycleNodeTagForward(SkillNode node)
+        public void CycleNodeTagForward(PassiveNodeViewModel node)
         {
             var id = node.Id;
             var build = _persistentData.CurrentBuild;
@@ -891,7 +785,7 @@ namespace PoESkillTree.SkillTreeFiles
         /// (preserves other HighlightStates than Checked and Crossed)
         /// </summary>
         /// <param name="node">Node to change the HighlightState for</param>
-        public void CycleNodeTagBackward(SkillNode node)
+        public void CycleNodeTagBackward(PassiveNodeViewModel node)
         {
             var id = node.Id;
             var build = _persistentData.CurrentBuild;
@@ -926,7 +820,7 @@ namespace PoESkillTree.SkillTreeFiles
             DrawHighlights();
         }
 
-        private static IEnumerable<SkillNode> SelectExistingNodesById(IEnumerable<ushort> nodeIds)
+        private static IEnumerable<PassiveNodeViewModel> SelectExistingNodesById(IEnumerable<ushort> nodeIds)
         {
             return
                 from id in nodeIds
@@ -934,7 +828,7 @@ namespace PoESkillTree.SkillTreeFiles
                 select Skillnodes[id];
         }
 
-        public void SetCheckTaggedNodes(IReadOnlyList<SkillNode> checkTagged)
+        public void SetCheckTaggedNodes(IReadOnlyList<PassiveNodeViewModel> checkTagged)
         {
             _nodeHighlighter.ResetHighlights(checkTagged, HighlightState.Checked);
             _persistentData.CurrentBuild.CheckedNodeIds.Clear();
@@ -965,8 +859,8 @@ namespace PoESkillTree.SkillTreeFiles
                     var regex = new Regex(search, RegexOptions.IgnoreCase);
                     var nodes =
                         Skillnodes.Values.Where(
-                            nd => (matchFct(nd.StatDefinitions, att => regex.IsMatch(att)) ||
-                                  regex.IsMatch(nd.Name) && nd.Type != PassiveNodeType.Mastery) &&
+                            nd => (matchFct(nd.StatDescriptions, att => regex.IsMatch(att)) ||
+                                  regex.IsMatch(nd.Name) && nd.PassiveNodeType != PassiveNodeType.Mastery) &&
                                   (DrawAscendancy ? (_persistentData.Options.ShowAllAscendancyClasses || (nd.AscendancyName == null || nd.AscendancyName == AscendancyClassName)) : nd.AscendancyName == null));
                     _nodeHighlighter.ResetHighlights(nodes, flag);
                     DrawHighlights();
@@ -981,8 +875,8 @@ namespace PoESkillTree.SkillTreeFiles
                 search = search.ToLowerInvariant();
                 var nodes =
                     Skillnodes.Values.Where(
-                        nd => (matchFct(nd.StatDefinitions, att => att.ToLowerInvariant().Contains(search)) ||
-                              nd.Name.ToLowerInvariant().Contains(search) && nd.Type != PassiveNodeType.Mastery) &&
+                        nd => (matchFct(nd.StatDescriptions, att => att.ToLowerInvariant().Contains(search)) ||
+                              nd.Name.ToLowerInvariant().Contains(search) && nd.PassiveNodeType != PassiveNodeType.Mastery) &&
                               (DrawAscendancy ? (_persistentData.Options.ShowAllAscendancyClasses || (nd.AscendancyName == null || nd.AscendancyName == AscendancyClassName)) : nd.AscendancyName == null));
                 _nodeHighlighter.ResetHighlights(nodes, flag);
                 DrawHighlights();
@@ -1101,30 +995,30 @@ namespace PoESkillTree.SkillTreeFiles
         }
 
         public static void DecodeUrl(
-            string url, out HashSet<SkillNode> skilledNodes, out CharacterClass charClass, ISkillTree skillTree)
+            string url, out HashSet<PassiveNodeViewModel> skilledNodes, out CharacterClass charClass, ISkillTree skillTree)
             => DecodeUrlPrivate(url, out skilledNodes, out charClass, skillTree);
 
-        private static BuildUrlData DecodeUrl(string url, out HashSet<SkillNode> skilledNodes, ISkillTree skillTree)
+        private static BuildUrlData DecodeUrl(string url, out HashSet<PassiveNodeViewModel> skilledNodes, ISkillTree skillTree)
             => DecodeUrlPrivate(url, out skilledNodes, out _, skillTree);
 
         public static BuildUrlData DecodeUrl(string url, ISkillTree skillTree)
             => DecodeUrlPrivate(url, out _, out _, skillTree);
 
         private static BuildUrlData DecodeUrlPrivate(
-            string url, out HashSet<SkillNode> skilledNodes, out CharacterClass charClass, ISkillTree skillTree)
+            string url, out HashSet<PassiveNodeViewModel> skilledNodes, out CharacterClass charClass, ISkillTree skillTree)
         {
             BuildUrlData buildData = skillTree.BuildConverter.GetUrlDeserializer(url).GetBuildData();
 
             charClass = buildData.CharacterClass;
             var ascType = (byte)buildData.AscendancyClassId;
 
-            SkillNode startnode = Skillnodes[RootNodeClassDictionary[charClass]];
-            skilledNodes = new HashSet<SkillNode> { startnode };
+            PassiveNodeViewModel startnode = Skillnodes[RootNodeClassDictionary[charClass]];
+            skilledNodes = new HashSet<PassiveNodeViewModel> { startnode };
 
             if (ascType > 0)
             {
                 var ascendancyClass = skillTree.AscendancyClasses.GetAscendancyClassName(charClass, ascType);
-                SkillNode ascNode = AscRootNodeList.First(nd => nd.AscendancyName == ascendancyClass);
+                PassiveNodeViewModel ascNode = AscRootNodeList.First(nd => nd.AscendancyName == ascendancyClass);
                 skilledNodes.Add(ascNode);
             }
 
@@ -1184,9 +1078,9 @@ namespace PoESkillTree.SkillTreeFiles
         /// <summary>
         /// Returns all currently Check-tagged nodes.
         /// </summary>
-        public HashSet<SkillNode> GetCheckedNodes()
+        public HashSet<PassiveNodeViewModel> GetCheckedNodes()
         {
-            var nodes = new HashSet<SkillNode>();
+            var nodes = new HashSet<PassiveNodeViewModel>();
             foreach (var entry in _nodeHighlighter.NodeHighlights)
             {
                 if (!entry.Key.IsRootNode && entry.Value.HasFlag(HighlightState.Checked))
@@ -1200,9 +1094,9 @@ namespace PoESkillTree.SkillTreeFiles
         /// <summary>
         /// Returns all currently Cross-tagged nodes.
         /// </summary>
-        public HashSet<SkillNode> GetCrossedNodes()
+        public HashSet<PassiveNodeViewModel> GetCrossedNodes()
         {
-            var nodes = new HashSet<SkillNode>();
+            var nodes = new HashSet<PassiveNodeViewModel>();
             foreach (var entry in _nodeHighlighter.NodeHighlights)
             {
                 if (!entry.Key.IsRootNode && entry.Value.HasFlag(HighlightState.Crossed))
@@ -1213,13 +1107,13 @@ namespace PoESkillTree.SkillTreeFiles
             return nodes;
         }
 
-        private SkillNode GetCharNode()
+        private PassiveNodeViewModel GetCharNode()
             => Skillnodes[GetCharNodeId()];
 
         private ushort GetCharNodeId()
             => RootNodeClassDictionary[CharClass];
 
-        private SkillNode? GetAscNode()
+        private PassiveNodeViewModel? GetAscNode()
         {
             var ascNodeId = GetAscNodeId();
             if (ascNodeId != 0)
@@ -1235,15 +1129,15 @@ namespace PoESkillTree.SkillTreeFiles
             return AscRootNodeList.FirstOrDefault(x => x.AscendancyName == AscendancyClassName)?.Id ?? 0;
         }
 
-        private HashSet<SkillNode> GetAvailableNodes(IEnumerable<SkillNode> skilledNodes)
+        private HashSet<PassiveNodeViewModel> GetAvailableNodes(IEnumerable<PassiveNodeViewModel> skilledNodes)
         {
-            var availNodes = new HashSet<SkillNode>();
+            var availNodes = new HashSet<PassiveNodeViewModel>();
 
             foreach (var node in skilledNodes)
             {
-                foreach (var skillNode in node.Neighbor)
+                foreach (var skillNode in node.NeighborPassiveNodes.Values)
                 {
-                    if (!RootNodeList.Contains(skillNode.Id) && !SkilledNodes.Contains(skillNode))
+                    if (!skillNode.IsRootNode && !SkilledNodes.Contains(skillNode))
                         availNodes.Add(skillNode);
                 }
             }

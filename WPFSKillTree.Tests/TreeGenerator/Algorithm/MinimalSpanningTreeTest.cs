@@ -4,6 +4,7 @@ using System.Linq;
 using NUnit.Framework;
 using PoESkillTree.SkillTreeFiles;
 using PoESkillTree.TreeGenerator.Algorithm.Model;
+using PoESkillTree.ViewModels.PassiveTree;
 
 namespace PoESkillTree.TreeGenerator.Algorithm
 {
@@ -18,29 +19,28 @@ namespace PoESkillTree.TreeGenerator.Algorithm
             // Don't screw this up.
             Assert.IsTrue(n == adjacencyMatrix.GetUpperBound(1) + 1);
 
-            List<SkillNode> nodes = new List<SkillNode>();
+            List<PassiveNodeViewModel> nodes = new List<PassiveNodeViewModel>();
             for (ushort i = 0; i < n; i++)
             {
-                var node = new SkillNode { Id = i };
+                var node = new PassiveNodeViewModel(i);
                 nodes.Add(node);
             }
 
             for (int i = 0; i < n; i++)
             {
-                nodes[i].Neighbor = new List<SkillNode>();
                 for (int j = 0; j < i; j++)
                 {
                     if (adjacencyMatrix[i, j])
                     {
-                        nodes[i].Neighbor.Add(nodes[j]);
+                        nodes[i].NeighborPassiveNodes[nodes[j].Id] = nodes[j];
                         // No directed edges atm.
-                        nodes[j].Neighbor.Add(nodes[i]);
+                        nodes[j].NeighborPassiveNodes[nodes[i].Id] = nodes[i];
                     }
                 }
             }
 
             SearchGraph graph = new SearchGraph();
-            foreach (SkillNode node in nodes)
+            foreach (PassiveNodeViewModel node in nodes)
             {
                 graph.AddNode(node);
             }

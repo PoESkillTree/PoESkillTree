@@ -12,13 +12,13 @@ namespace PoESkillTree.SkillTreeFiles
         public readonly Dictionary<string, BitmapImage> Images = new Dictionary<string, BitmapImage>();
 
         /// <summary>
-        /// Dictionary that maps the icon name for a skill node (see <see cref="SkillNode.IconKey"/>) to the position
+        /// Dictionary that maps the icon name for a skill node (see <see cref="PassiveNodeViewModel.IconKey"/>) to the position
         /// in its sprite image.
         /// </summary>
         public readonly Dictionary<string, Rect> SkillPositions = new Dictionary<string, Rect>();
 
         /// <summary>
-        /// Dictionary that maps the icon name for a skill node (see <see cref="SkillNode.IconKey"/>) to the sprite
+        /// Dictionary that maps the icon name for a skill node (see <see cref="PassiveNodeViewModel.IconKey"/>) to the sprite
         /// image name it is contained in.
         /// </summary>
         public readonly Dictionary<string, string> SkillImages = new Dictionary<string, string>();

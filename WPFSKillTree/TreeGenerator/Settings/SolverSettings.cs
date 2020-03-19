@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using PoESkillTree.SkillTreeFiles;
+using PoESkillTree.ViewModels.PassiveTree;
 
 namespace PoESkillTree.TreeGenerator.Settings
 {
@@ -13,12 +14,12 @@ namespace PoESkillTree.TreeGenerator.Settings
         /// <summary>
         /// Set of Nodes that must be included in the result tree.
         /// </summary>
-        public readonly ISet<SkillNode> Checked;
+        public readonly ISet<PassiveNodeViewModel> Checked;
 
         /// <summary>
         /// Set of Nodes that must not be included in the result tree.
         /// </summary>
-        public readonly ISet<SkillNode> Crossed;
+        public readonly ISet<PassiveNodeViewModel> Crossed;
 
         /// <summary>
         /// The number of iterations the solver should run. Each iteration is independent of each other
@@ -38,13 +39,13 @@ namespace PoESkillTree.TreeGenerator.Settings
         /// <param name="checked">Set of Nodes that must be included in the result tree.</param>
         /// <param name="crossed">Set of Nodes that must not be included in the result tree.</param>
         /// <param name="iterations">The number of iterations the solver should run. (>= 1)</param>
-        public SolverSettings(ISet<SkillNode>? @checked, ISet<SkillNode>? crossed,
+        public SolverSettings(ISet<PassiveNodeViewModel>? @checked, ISet<PassiveNodeViewModel>? crossed,
             int iterations)
         {
             if (iterations < 1) throw new ArgumentOutOfRangeException(nameof(iterations), iterations, "must be >= 1");
 
-            Checked = @checked ?? new HashSet<SkillNode>();
-            Crossed = crossed ?? new HashSet<SkillNode>();
+            Checked = @checked ?? new HashSet<PassiveNodeViewModel>();
+            Crossed = crossed ?? new HashSet<PassiveNodeViewModel>();
             Iterations = iterations;
         }
     }

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using PoESkillTree.Utils;
+using PoESkillTree.ViewModels.PassiveTree;
+using System;
 using System.Collections.Generic;
 using System.Windows;
-using PoESkillTree.SkillTreeFiles;
-using PoESkillTree.Utils;
 
 namespace PoESkillTree.ViewModels.Equipment
 {
@@ -10,13 +10,13 @@ namespace PoESkillTree.ViewModels.Equipment
     {
         private static readonly Rect DefaultViewBox = GetViewBox(15000, new Point());
 
-        private readonly IReadOnlyDictionary<ushort, SkillNode> _skillNodes;
+        private readonly IReadOnlyDictionary<ushort, PassiveNodeViewModel> _skillNodes;
         private readonly IReadOnlyList<InventoryItemViewModel> _jewels;
 
         private Rect _viewBox = DefaultViewBox;
 
         public SkillTreeAreaViewModel(
-            IReadOnlyDictionary<ushort, SkillNode> skillNodes, IReadOnlyList<InventoryItemViewModel> jewels)
+            IReadOnlyDictionary<ushort, PassiveNodeViewModel> skillNodes, IReadOnlyList<InventoryItemViewModel> jewels)
         {
             _skillNodes = skillNodes;
             _jewels = jewels;
@@ -36,7 +36,7 @@ namespace PoESkillTree.ViewModels.Equipment
         {
             if (e.PropertyName == nameof(InventoryItemViewModel.IsCurrent))
             {
-                SetViewBox((InventoryItemViewModel) sender);
+                SetViewBox((InventoryItemViewModel)sender);
             }
         }
 
@@ -54,7 +54,7 @@ namespace PoESkillTree.ViewModels.Equipment
         }
 
         private static Rect GetViewBox(double size, Point center) =>
-            new Rect(new Point(center.X - size/2, center.Y - size/2), new Size(size, size));
+            new Rect(new Point(center.X - size / 2, center.Y - size / 2), new Size(size, size));
 
         public void Dispose()
         {

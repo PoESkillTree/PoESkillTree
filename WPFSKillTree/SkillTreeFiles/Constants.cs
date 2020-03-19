@@ -15,12 +15,5 @@
 
         public const string TreeAddress = "https://www.pathofexile.com/passive-skill-tree/";
         public const string DefaultTree = "https://www.pathofexile.com/passive-skill-tree/AAAABAMAAA==";
-
-        /// <summary>
-        /// The image files (node sprites and assets) come in 4 sizes.
-        /// This specifies the index of PoESkillTree.imageZoomLevels to take for assets and the index
-        /// of PoESkillTree.skillSprites[s] to take the sprite file from.
-        /// </summary>
-        public const int AssetZoomLevel = 3;
     }
 }
