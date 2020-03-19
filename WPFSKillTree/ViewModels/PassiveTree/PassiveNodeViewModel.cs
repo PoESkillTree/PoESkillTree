@@ -14,48 +14,42 @@ namespace PoESkillTree.ViewModels.PassiveTree
         private readonly JsonPassiveNode JsonPassiveNode;
         public readonly PassiveNodeGroupViewModel? PassiveNodeGroup;
 
-        public PassiveNodeViewModel() : this(new JsonPassiveNode()) { }
+        public PassiveNodeViewModel(ushort id) : this(new JsonPassiveNode() { Id = id }) { }
         public PassiveNodeViewModel(JsonPassiveNode jsonPassiveNode, PassiveNodeGroupViewModel? group = null)
         {
             JsonPassiveNode = jsonPassiveNode;
             PassiveNodeGroup = group;
             InitializeAttributes();
         }
+
         public PassiveNodeDefinition PassiveNodeDefinition => PassiveNodeDefinition.Convert(JsonPassiveNode);
-        public CharacterClass? StartingCharacterClass { get => JsonPassiveNode.StartingCharacterClass; set => JsonPassiveNode.StartingCharacterClass = value; }
-        public string[]? Recipe { get => JsonPassiveNode.Recipe; set => JsonPassiveNode.Recipe = value; }
-        public JsonExpansionJewelSocket? ExpansionJewelSocket { get => JsonPassiveNode.ExpansionJewelSocket; set => JsonPassiveNode.ExpansionJewelSocket = value; }
+
+        public ushort Id { get => JsonPassiveNode.Id; }
+        public ushort Skill { get => JsonPassiveNode.Skill; set => JsonPassiveNode.Skill = value; }
+        public string Name { get => JsonPassiveNode.Name; }
+        public CharacterClass? StartingCharacterClass { get => JsonPassiveNode.StartingCharacterClass; }
+        public string[]? Recipe { get => JsonPassiveNode.Recipe; }
+        public JsonExpansionJewelSocket? ExpansionJewelSocket { get => JsonPassiveNode.ExpansionJewelSocket; }
         public HashSet<ushort> OutPassiveNodeIds => JsonPassiveNode.OutPassiveNodeIds;
         public HashSet<ushort> InPassiveNodeIds => JsonPassiveNode.InPassiveNodeIds;
-        public bool IsSkilled { get => JsonPassiveNode.IsSkilled; set => JsonPassiveNode.IsSkilled = value; }
-        public float[] SkillsPerOrbit { get => JsonPassiveNode.SkillsPerOrbit; set => JsonPassiveNode.SkillsPerOrbit = value; }
-        public float[] OrbitRadii { get => JsonPassiveNode.OrbitRadii; set => JsonPassiveNode.OrbitRadii = value; }
-        public int OrbitRadiiIndex { get => JsonPassiveNode.OrbitRadiiIndex; set => JsonPassiveNode.OrbitRadiiIndex = value; }
-        public int SkillsPerOrbitIndex { get => JsonPassiveNode.SkillsPerOrbitIndex; set => JsonPassiveNode.SkillsPerOrbitIndex = value; }
-        public bool IsSmall => JsonPassiveNode.IsSmall;
+        public float[] OrbitRadii { get => JsonPassiveNode.OrbitRadii; }
+        public int OrbitRadiiIndex { get => JsonPassiveNode.OrbitRadiiIndex; }
         public bool IsAscendancyNode => JsonPassiveNode.IsAscendancyNode;
         public bool IsRootNode => JsonPassiveNode.IsRootNode;
-        public PassiveNodeType PassiveNodeType { get => JsonPassiveNode.PassiveNodeType; set => JsonPassiveNode.PassiveNodeType = value; }
-        public string[] ReminderText { get => JsonPassiveNode.ReminderText; set => JsonPassiveNode.ReminderText = value; }
-        public string[] StatDescriptions { get => JsonPassiveNode.StatDescriptions; set => JsonPassiveNode.StatDescriptions = value; }
-        public int PassivePointsGranted { get => JsonPassiveNode.PassivePointsGranted; set => JsonPassiveNode.PassivePointsGranted = value; }
-        public ushort Id { get => JsonPassiveNode.Id; set => JsonPassiveNode.Id = value; }
-        public ushort Skill { get => JsonPassiveNode.Skill; set => JsonPassiveNode.Skill = value; }
-        public string Icon { get => JsonPassiveNode.Icon; set => JsonPassiveNode.Icon = value; }
-        public string Name { get => JsonPassiveNode.Name; set => JsonPassiveNode.Name = value; }
-        public string? AscendancyName { get => JsonPassiveNode.AscendancyName; set => JsonPassiveNode.AscendancyName = value; }
-        public bool IsNotable { get => JsonPassiveNode.IsNotable; set => JsonPassiveNode.IsNotable = value; }
-        public bool IsKeystone { get => JsonPassiveNode.IsKeystone; set => JsonPassiveNode.IsKeystone = value; }
-        public bool IsMastery { get => JsonPassiveNode.IsMastery; set => JsonPassiveNode.IsMastery = value; }
-        public bool IsJewelSocket { get => JsonPassiveNode.IsJewelSocket; set => JsonPassiveNode.IsJewelSocket = value; }
-        public bool IsBlighted { get => JsonPassiveNode.IsBlighted; set => JsonPassiveNode.IsBlighted = value; }
-        public bool IsProxy { get => JsonPassiveNode.IsProxy; set => JsonPassiveNode.IsProxy = value; }
-        public bool IsAscendancyStart { get => JsonPassiveNode.IsAscendancyStart; set => JsonPassiveNode.IsAscendancyStart = value; }
-        public bool IsMultipleChoice { get => JsonPassiveNode.IsMultipleChoice; set => JsonPassiveNode.IsMultipleChoice = value; }
-        public bool IsMultipleChoiceOption { get => JsonPassiveNode.IsMultipleChoiceOption; set => JsonPassiveNode.IsMultipleChoiceOption = value; }
-        public int Strength { get => JsonPassiveNode.Strength; set => JsonPassiveNode.Strength = value; }
-        public int Dexterity { get => JsonPassiveNode.Dexterity; set => JsonPassiveNode.Dexterity = value; }
-        public int Intelligence { get => JsonPassiveNode.Intelligence; set => JsonPassiveNode.Intelligence = value; }
+        public PassiveNodeType PassiveNodeType { get => JsonPassiveNode.PassiveNodeType; }
+        public string[] ReminderText { get => JsonPassiveNode.ReminderText; }
+        public string[] StatDescriptions { get => JsonPassiveNode.StatDescriptions; private set => JsonPassiveNode.StatDescriptions = value; }
+        public int PassivePointsGranted { get => JsonPassiveNode.PassivePointsGranted; }
+        public string Icon { get => JsonPassiveNode.Icon; }
+        public string? AscendancyName { get => JsonPassiveNode.AscendancyName; }
+        public bool IsBlighted { get => JsonPassiveNode.IsBlighted; }
+        public bool IsProxy { get => JsonPassiveNode.IsProxy; }
+        public bool IsAscendancyStart { get => JsonPassiveNode.IsAscendancyStart; }
+        public bool IsMultipleChoice { get => JsonPassiveNode.IsMultipleChoice; }
+        public bool IsMultipleChoiceOption { get => JsonPassiveNode.IsMultipleChoiceOption; }
+        public int Strength { get => JsonPassiveNode.Strength; }
+        public int Dexterity { get => JsonPassiveNode.Dexterity; }
+        public int Intelligence { get => JsonPassiveNode.Intelligence; }
         public double Arc => JsonPassiveNode.Arc;
 
         public string IconKey => $"{IconKeyPrefix}_{Icon}";
@@ -70,7 +64,7 @@ namespace PoESkillTree.ViewModels.PassiveTree
         public Dictionary<ushort, PassiveNodeViewModel> NeighborPassiveNodes { get; } = new Dictionary<ushort, PassiveNodeViewModel>();
         public Dictionary<ushort, PassiveNodeViewModel> VisibleNeighborPassiveNodes { get; } = new Dictionary<ushort, PassiveNodeViewModel>();
 
-        public float ZoomLevel { get => JsonPassiveNode.ZoomLevel; set { JsonPassiveNode.ZoomLevel = value; ClearPositionCache(); } }
+        public float ZoomLevel { get => JsonPassiveNode.ZoomLevel; }
         private Vector2D? _position = null;
         public Vector2D Position
         {

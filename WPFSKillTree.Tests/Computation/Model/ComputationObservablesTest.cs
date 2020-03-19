@@ -223,7 +223,7 @@ namespace PoESkillTree.Computation.Model
                 default, new string[0]);
 
         private static IReadOnlyList<PassiveNodeViewModel> CreateSkillNodes(int nodeCount)
-            => Enumerable.Range(0, nodeCount).Select(id => new PassiveNodeViewModel { Id = (ushort) id }).ToList();
+            => Enumerable.Range(0, nodeCount).Select(id => new PassiveNodeViewModel((ushort)id)).ToList();
 
         private static IReadOnlyList<(Item, ItemSlot)> CreateItems(int count)
             => Enumerable.Range(0, count).Zip(Enums.GetValues<ItemSlot>(), (i, s) => (CreateItem(i), s)).ToList();

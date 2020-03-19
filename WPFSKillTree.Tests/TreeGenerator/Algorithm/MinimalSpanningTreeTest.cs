@@ -22,7 +22,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm
             List<PassiveNodeViewModel> nodes = new List<PassiveNodeViewModel>();
             for (ushort i = 0; i < n; i++)
             {
-                var node = new PassiveNodeViewModel { Id = i };
+                var node = new PassiveNodeViewModel(i);
                 nodes.Add(node);
             }
 

@@ -17,12 +17,12 @@ namespace PoESkillTree.ViewModels.PassiveTree
         public ushort Id { get; private set; } = 0;
         public List<ushort> OccupiedOrbits => JsonPassiveNodeGroup.OccupiedOrbits;
         public HashSet<ushort> PassiveNodeIds => JsonPassiveNodeGroup.PassiveNodeIds;
-        public bool? IsProxy { get => JsonPassiveNodeGroup.IsProxy; set => JsonPassiveNodeGroup.IsProxy = value; }
+        public bool? IsProxy { get => JsonPassiveNodeGroup.IsProxy; }
         public Dictionary<ushort, PassiveNodeViewModel> PassiveNodes { get; } = new Dictionary<ushort, PassiveNodeViewModel>();
 
         public float X { get => JsonPassiveNodeGroup.OriginalX; private set { JsonPassiveNodeGroup.OriginalX = value; } }
         public float Y { get => JsonPassiveNodeGroup.OriginalY; private set { JsonPassiveNodeGroup.OriginalY = value; } }
-        public float ZoomLevel { get => JsonPassiveNodeGroup.ZoomLevel; set { JsonPassiveNodeGroup.ZoomLevel = value; ClearPositionCache(); } }
+        public float ZoomLevel { get => JsonPassiveNodeGroup.ZoomLevel; }
         private Vector2D? _position = null;
         public Vector2D Position
         {

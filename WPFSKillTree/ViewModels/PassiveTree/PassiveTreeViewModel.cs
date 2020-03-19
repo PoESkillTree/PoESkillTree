@@ -54,16 +54,16 @@ namespace PoESkillTree.ViewModels.PassiveTree
         public List<ushort> JewelSocketPassiveNodeIds => JsonPassiveTree.JewelSocketPassiveNodeIds;
         public Dictionary<CharacterClass, JsonPassiveTreeExtraImage> ExtraImages => JsonPassiveTree.ExtraImages;
         public Dictionary<string, List<JsonPassiveTreeSkillSprite>> SkillSprites => JsonPassiveTree.SkillSprites;
-        public float[] ImageZoomLevels { get => JsonPassiveTree.ImageZoomLevels; set => JsonPassiveTree.ImageZoomLevels = value; }
+        public float[] ImageZoomLevels { get => JsonPassiveTree.ImageZoomLevels; }
         public JsonPassiveTreeConstants Constants => JsonPassiveTree.Constants;
         public Dictionary<string, Dictionary<string, string>> Assets => JsonPassiveTree.Assets;
-        public float MaxY { get => JsonPassiveTree.MaxY; set => JsonPassiveTree.MaxY = value; }
-        public float MaxX { get => JsonPassiveTree.MaxX; set => JsonPassiveTree.MaxX = value; }
-        public float MinY { get => JsonPassiveTree.MinY; set => JsonPassiveTree.MinY = value; }
-        public float MinX { get => JsonPassiveTree.MinX; set => JsonPassiveTree.MinX = value; }
+        public float MaxY { get => JsonPassiveTree.MaxY; }
+        public float MaxX { get => JsonPassiveTree.MaxX; }
+        public float MinY { get => JsonPassiveTree.MinY; }
+        public float MinX { get => JsonPassiveTree.MinX; }
         public List<JsonPassiveTreeCharacterClass> CharacterClasses => JsonPassiveTree.CharacterClasses;
         public Uri SpriteSheetUri => JsonPassiveTree.SpriteSheetUri;
-        public string ImageRoot { get => JsonPassiveTree.ImageRoot; set => JsonPassiveTree.ImageRoot = value; }
+        public string ImageRoot { get => JsonPassiveTree.ImageRoot; }
 
         public PassiveNodeViewModel Root { get; }
         public Dictionary<ushort, PassiveNodeViewModel> PassiveNodes { get; } = new Dictionary<ushort, PassiveNodeViewModel>();
