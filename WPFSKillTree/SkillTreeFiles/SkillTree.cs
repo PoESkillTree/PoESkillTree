@@ -196,23 +196,8 @@ namespace PoESkillTree.SkillTreeFiles
         {
             if (!_initialized)
             {
-                PoESkillTree = new PassiveTreeViewModel(treestring);
-                if (!string.IsNullOrWhiteSpace(opsstring))
-                {
-                    var options = JsonConvert.DeserializeObject<JsonPassiveTreeOptions>(opsstring);
-                    foreach (var character in options.CharacterToAscendancy)
-                    {
-                        foreach (var other in PoESkillTree.CharacterClasses)
-                        {
-                            if (character.CharacterName == other.Name)
-                            {
-                                other.AscendancyClasses.AddRange(character.AscendancyClasses.Values);
-                                break;
-                            }
-                        }
-                    }
-                }
-
+                PoESkillTree = new PassiveTreeViewModel(treestring, opsstring);
+                
                 controller?.SetProgress(0.25);
                 await assetLoader.DownloadSkillNodeSpritesAsync(PoESkillTree, d => controller?.SetProgress(0.25 + d * 0.30));
                 IconInActiveSkills = new SkillIcons();
@@ -263,7 +248,7 @@ namespace PoESkillTree.SkillTreeFiles
                 await assetLoader.DownloadAssetsAsync(PoESkillTree, d => controller?.SetProgress(0.55 + d * 0.44));
                 foreach (var ass in PoESkillTree.Assets)
                 {
-                    var key = ass.Key;
+                    var key = ass.Key.Replace("PassiveSkillScreen", string.Empty);
                     var path = _assetsFolderPath + key + ".png";
                     assetActions.Add((Task.Run(() => BitmapImageFactory.Create(path)), i => Assets[key] = i));
                 }

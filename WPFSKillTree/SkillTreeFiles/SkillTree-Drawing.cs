@@ -219,6 +219,8 @@ namespace PoESkillTree.SkillTreeFiles
             foreach (var background in NodeBackgrounds)
             {
                 if (!NodeBackgroundsActive.ContainsKey(background.Key)) continue;
+                if (!Assets.ContainsKey(NodeBackgroundsActive[background.Key])) continue;
+
                 var normalBrushPImage = Assets[NodeBackgrounds[background.Key]];
                 var normalBrush = new ImageBrush
                 {
@@ -377,29 +379,34 @@ namespace PoESkillTree.SkillTreeFiles
             using (var dc = _background.RenderOpen())
             {
                 //These are the images around the groups of nodes 
-                BitmapImage[] groupBackgrounds =
+                var backgrounds = new List<string>
                 {
-                    Assets["PSGroupBackground1"],
-                    Assets["PSGroupBackground2"],
-                    Assets["PSGroupBackground3"],
-                    Assets["GroupBackgroundSmallAlt"],
-                    Assets["GroupBackgroundMediumAlt"],
-                    Assets["GroupBackgroundLargeHalfAlt"],
+                    "PSGroupBackground1",
+                    "PSGroupBackground2",
+                    "PSGroupBackground3",
+                    "GroupBackgroundSmallAlt",
+                    "GroupBackgroundMediumAlt",
+                    "GroupBackgroundLargeHalfAlt",
                 };
-                ImageBrush[] groupOrbitBrush =
+                var groupBackgrounds = new List<BitmapImage>();
+                var groupOrbitBrush = new List<ImageBrush>();
+
+                foreach (var background in backgrounds)
                 {
-                    new ImageBrush(Assets["PSGroupBackground1"]),
-                    new ImageBrush(Assets["PSGroupBackground2"]),
-                    new ImageBrush(Assets["PSGroupBackground3"]),
-                    new ImageBrush(Assets["GroupBackgroundSmallAlt"]),
-                    new ImageBrush(Assets["GroupBackgroundMediumAlt"]),
-                    new ImageBrush(Assets["GroupBackgroundLargeHalfAlt"]),
-                };
+                    if (Assets.ContainsKey(background))
+                    {
+                        groupBackgrounds.Add(Assets[background]);
+                        groupOrbitBrush.Add(new ImageBrush(Assets[background]));
+                    }
+                }
+                
                 groupOrbitBrush[2].TileMode = TileMode.FlipXY;
                 groupOrbitBrush[2].Viewport = new Rect(0, 0, 1, .5f);
-                groupOrbitBrush[5].TileMode = TileMode.FlipXY;
-                groupOrbitBrush[5].Viewport = new Rect(0, 0, 1, .5f);
-
+                if (groupOrbitBrush.Count > 3)
+                {
+                    groupOrbitBrush[5].TileMode = TileMode.FlipXY;
+                    groupOrbitBrush[5].Viewport = new Rect(0, 0, 1, .5f);
+                }
                 #region Background Drawing
                 var backgroundBrush = new ImageBrush(Assets["Background1"]) { TileMode = TileMode.Tile };
                 backgroundBrush.Viewport = new Rect(0, 0,
@@ -421,7 +428,7 @@ namespace PoESkillTree.SkillTreeFiles
                     if (maxr == 0) continue;
                     var groupType = maxr > 3 ? 2 : maxr - 1;
                     var heightFactor = groupType == 2 ? 2 : 1;
-                    if (skillNodeGroup.IsProxy.HasValue && skillNodeGroup.IsProxy.Value)
+                    if (skillNodeGroup.IsProxy.HasValue && skillNodeGroup.IsProxy.Value && groupOrbitBrush.Count > 3)
                     {
                         groupType += 3;
                     }

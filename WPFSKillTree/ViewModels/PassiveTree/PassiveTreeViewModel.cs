@@ -14,17 +14,36 @@ namespace PoESkillTree.ViewModels.PassiveTree
     {
         private readonly JsonPassiveTree JsonPassiveTree;
 
-        public PassiveTreeViewModel(string json) : this(JsonConvert.DeserializeObject<JsonPassiveTree>(json)) { }
-
-        public PassiveTreeViewModel(JsonPassiveTree? jsonPassiveTree)
+        public PassiveTreeViewModel(string treeJson, string? optionsJson = null)
+            : this(JsonConvert.DeserializeObject<JsonPassiveTree>(treeJson), !string.IsNullOrWhiteSpace(optionsJson) ? JsonConvert.DeserializeObject<JsonPassiveTreeOptions>(optionsJson) : null) { }
+        public PassiveTreeViewModel(JsonPassiveTree? jsonPassiveTree, JsonPassiveTreeOptions? options = null)
         {
             JsonPassiveTree = jsonPassiveTree ?? throw new ArgumentNullException(nameof(JsonPassiveTree));
             Root = new PassiveNodeViewModel(JsonPassiveTree.Root);
 
+            InitializeJsonPassiveTreeOptions(options);
             InitializePassiveNodeGroups();
             InitializePassiveNodes();
             InitializePassiveNodeNeighbors();
             FixAscendancyPassiveNodeGroups();
+        }
+
+        private void InitializeJsonPassiveTreeOptions(JsonPassiveTreeOptions? options)
+        {
+            if (!(options is null))
+            {
+                foreach (var character in options.CharacterToAscendancy)
+                {
+                    foreach (var other in CharacterClasses)
+                    {
+                        if (character.CharacterName == other.Name && !other.AscendancyClasses.Any())
+                        {
+                            other.AscendancyClasses.AddRange(character.AscendancyClasses.Values);
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         public Uri ImageUri => JsonPassiveTree.ImageUri;
