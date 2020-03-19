@@ -92,8 +92,8 @@ namespace PoESkillTree.TreeDrawing
         private void Draw(DrawingContext drawingContext, ushort nodeId, JewelType jewelType)
         {
             var node = _skillNodes[nodeId];
-            var (size, brush) = _brushes.GetOrAdd((jewelType, node.PassiveNodeType != PassiveNodeType.ExpansionJewelSocket), CreateBrush);
-            drawingContext.DrawRectangle(brush, null, new Rect(node.Position.X - size.Width, node.Position.Y - size.Height, size.Width, size.Height));
+            var (size, brush) = _brushes.GetOrAdd((jewelType, node.PassiveNodeType == PassiveNodeType.ExpansionJewelSocket), CreateBrush);
+            drawingContext.DrawRectangle(brush, null, new Rect(node.Position.X - size.Width / 2, node.Position.Y - size.Height / 2, size.Width, size.Height));
         }
 
         private static JewelType GetJewelType(Tags tags)
