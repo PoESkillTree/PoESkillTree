@@ -398,7 +398,7 @@ namespace PoESkillTree.SkillTreeFiles
                         groupOrbitBrush.Add(new ImageBrush(Assets[background]));
                     }
                 }
-                
+
                 groupOrbitBrush[2].TileMode = TileMode.FlipXY;
                 groupOrbitBrush[2].Viewport = new Rect(0, 0, 1, .5f);
                 if (groupOrbitBrush.Count > 3)
@@ -627,8 +627,8 @@ namespace PoESkillTree.SkillTreeFiles
         public void DrawHighlights()
         {
             var nh = _nodeHighlighter;
-            var crossPen = new Pen(Brushes.Red, 20);
-            var checkPen = new Pen(Brushes.Lime, 20);
+            var crossPen = new Pen(Brushes.Red, 5);
+            var checkPen = new Pen(Brushes.Lime, 5);
             using (var dc = _highlights.RenderOpen())
             {
                 foreach (var (node, state) in nh.NodeHighlights)
@@ -683,15 +683,15 @@ namespace PoESkillTree.SkillTreeFiles
                     {
                         // Checked nodes get highlighted with two green lines resembling a check mark.
                         // TODO a better looking check mark
-                        dc.DrawLine(checkPen, new Point(x - 8, y + 49), new Point(x - 50, y + 20));
-                        dc.DrawLine(checkPen, new Point(x + 50, y - 50), new Point(x - 22, y + 52));
+                        dc.DrawLine(checkPen, new Point(x - 4, y + 21), new Point(x - 21.5, y + 8));
+                        dc.DrawLine(checkPen, new Point(x + 21.5, y - 18), new Point(x - 7, y + 21.5));
                     }
 
                     if (state.HasFlag(HighlightState.Crossed))
                     {
                         // Crossed nodes get highlighted with two crossing red lines.
-                        dc.DrawLine(crossPen, new Point(x + 50, y + 70), new Point(x - 50, y - 70));
-                        dc.DrawLine(crossPen, new Point(x + 50, y - 70), new Point(x - 50, y + 70));
+                        dc.DrawLine(crossPen, new Point(x + 18, y + 24), new Point(x - 18, y - 24));
+                        dc.DrawLine(crossPen, new Point(x + 18, y - 24), new Point(x - 18, y + 24));
                     }
                 }
             }
