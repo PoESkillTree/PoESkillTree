@@ -1327,7 +1327,7 @@ namespace PoESkillTree.Views
             var v = new Vector2D(p.X, p.Y);
             v = v * _multransform + _addtransform;
 
-            var node = Tree.FindNodeInRange(v, 50);
+            var node = Tree.FindNodeInRange(v);
             if (node != null && !node.IsRootNode)
             {
                 if (node.IsAscendancyNode && !Tree.DrawAscendancy)
@@ -1373,7 +1373,7 @@ namespace PoESkillTree.Views
                 SetCurrentBuildUrlFromTree();
                 UpdateUI();
             }
-            else if ((Tree.AscButtonPosition - v).Length < 150 && Tree.AscType != 0)
+            else if (Tree.AscendancyButtonRect.Contains(v) && Tree.AscType != 0)
             {
                 if (PersistentData.Options.ShowAllAscendancyClasses) return;
                 Tree.DrawAscendancyButton("Pressed");
@@ -1405,13 +1405,13 @@ namespace PoESkillTree.Views
             var v = new Vector2D(p.X, p.Y);
             v = v * _multransform + _addtransform;
 
-            var node = Tree.FindNodeInRange(v, 50);
+            var node = Tree.FindNodeInRange(v);
             _hoveredNode = node;
             if (node != null && !node.IsRootNode)
             {
                 GenerateTooltipForNode(node);
             }
-            else if ((Tree.AscButtonPosition - v).Length < 150)
+            else if (Tree.AscendancyButtonRect.Contains(v))
             {
                 Tree.DrawAscendancyButton("Highlight");
             }

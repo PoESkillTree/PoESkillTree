@@ -368,7 +368,6 @@ namespace PoESkillTree.SkillTreeFiles
 
             var bitmap = Assets[$"Classes{ascStartNode.AscendancyName}"];
             var node = Skillnodes[RootNodeClassDictionary[CharClass]];
-            //var (position, _) = GetAscendancyButtonPosition(node, new Vector2D(DistanceFromStartNodeCenter + bitmap.Width * 1.25, DistanceFromStartNodeCenter + bitmap.Height * 1.25));
             var (position, _) = GetAscendancyButtonPosition(node, new Vector2D(DistanceFromStartNodeCenter + bitmap.Width * 1.25, DistanceFromStartNodeCenter + bitmap.Height * 1.25));
             return new Vector2D(position.X, position.Y);
         }
@@ -588,11 +587,9 @@ namespace PoESkillTree.SkillTreeFiles
                     var brush = new ImageBrush(Assets[imageName]);
 
                     var (position, rotation) = GetAscendancyButtonPosition(node, new Vector2D(DistanceFromStartNodeCenter, DistanceFromStartNodeCenter), node.ZoomLevel);
-                    var rect = new Rect(position.X - (b.PixelWidth / 2), position.Y - (DistanceFromStartNodeCenter - b.PixelHeight) * node.ZoomLevel / 2, b.PixelWidth, b.PixelHeight);
+                    AscendancyButtonRect = new Rect(position.X - (b.PixelWidth / 2), position.Y - (DistanceFromStartNodeCenter - b.PixelHeight) * node.ZoomLevel / 2, b.PixelWidth, b.PixelHeight);
                     dc.PushTransform(new RotateTransform(rotation * (180 / Math.PI), position.X, position.Y));
-                    dc.DrawRectangle(brush, null, rect);
-
-                    AscButtonPosition = position;
+                    dc.DrawRectangle(brush, null, AscendancyButtonRect);
                 }
             }
         }

@@ -1,5 +1,4 @@
 ﻿using EnumsNET;
-using Newtonsoft.Json;
 using PoESkillTree.Common;
 using PoESkillTree.Controls.Dialogs;
 using PoESkillTree.Engine.GameModel;
@@ -29,7 +28,7 @@ namespace PoESkillTree.SkillTreeFiles
 {
     public partial class SkillTree : Notifier, ISkillTree
     {
-        public Vector2D AscButtonPosition = new Vector2D();
+        public Rect AscendancyButtonRect = new Rect();
 
 #pragma warning disable CS8618 // Initialized in InitializeAsync or CreateAsync
         // The absolute path of Assets folder (contains trailing directory separator).
@@ -197,7 +196,7 @@ namespace PoESkillTree.SkillTreeFiles
             if (!_initialized)
             {
                 PoESkillTree = new PassiveTreeViewModel(treestring, opsstring);
-                
+
                 controller?.SetProgress(0.25);
                 await assetLoader.DownloadSkillNodeSpritesAsync(PoESkillTree, d => controller?.SetProgress(0.25 + d * 0.30));
                 IconInActiveSkills = new SkillIcons();
@@ -560,35 +559,37 @@ namespace PoESkillTree.SkillTreeFiles
             return treeObj;
         }
 
-        private IEnumerable<KeyValuePair<ushort, PassiveNodeViewModel>> FindNodesInRange(Vector2D mousePointer, int range = 50)
+        private List<KeyValuePair<ushort, PassiveNodeViewModel>> FindNodesInRange(Vector2D mousePointer)
         {
-            var nodes = Skillnodes.Where(n => ((n.Value.Position - mousePointer).Length < range)).ToList();
-            if (!DrawAscendancy || AscType <= 0) return nodes;
-            var asn = GetAscNode();
-            if (!(asn is null))
+            var nodes = Skillnodes.Where(n =>
+            {
+                var size = GetNodeSurroundBrushSize(n.Value, 0);
+                var range = size.Width * size.Height * n.Value.ZoomLevel;
+                var length = (n.Value.Position - mousePointer).Length;
+                return length * length < range;
+            });
+
+            if (!DrawAscendancy || AscType <= 0) return nodes.ToList();
+            if (GetAscNode() is PassiveNodeViewModel asn)
             {
                 var bitmap = Assets["Classes" + asn.AscendancyName];
-                nodes = nodes.Where(n => n.Value.IsAscendancyNode || (Math.Pow(n.Value.Position.X - asn.Position.X, 2) + Math.Pow((n.Value.Position.Y - asn.Position.Y), 2)) > Math.Pow((bitmap.Height + bitmap.Width) / 2, 2)).ToList();
+                var radius = (bitmap.Width * bitmap.Height) / Math.PI;
+                nodes = nodes.Where(n => n.Value.IsAscendancyNode || (Math.Pow(n.Value.Position.X - asn.Position.X, 2) + Math.Pow((n.Value.Position.Y - asn.Position.Y), 2)) > radius).ToList();
             }
-            return nodes;
+            return nodes.ToList();
         }
 
-        public PassiveNodeViewModel? FindNodeInRange(Vector2D mousePointer, int range = 50)
+        public PassiveNodeViewModel? FindNodeInRange(Vector2D mousePointer)
         {
-            var nodes = FindNodesInRange(mousePointer, range);
-            var nodeList = nodes as IList<KeyValuePair<ushort, PassiveNodeViewModel>> ?? nodes.ToList();
-            if (!nodeList.Any()) return null;
+            var nodes = FindNodesInRange(mousePointer) ?? new List<KeyValuePair<ushort, PassiveNodeViewModel>>();
+            if (!nodes.Any()) return null;
 
             if (DrawAscendancy)
             {
-                var dnode = nodeList.First();
-                return nodeList
-                    .Where(x => x.Value.AscendancyName == AscendancyClassName)
-                    .DefaultIfEmpty(dnode)
-                    .First()
-                    .Value;
+                var dnode = nodes.First();
+                return nodes.Where(x => x.Value.AscendancyName == AscendancyClassName).DefaultIfEmpty(dnode).First().Value;
             }
-            return nodeList.First().Value;
+            return nodes.First().Value;
         }
 
         public void ResetSkilledNodesTo(IReadOnlyCollection<PassiveNodeViewModel> nodes)
