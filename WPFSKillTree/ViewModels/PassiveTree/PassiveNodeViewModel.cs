@@ -15,7 +15,7 @@ namespace PoESkillTree.ViewModels.PassiveTree
         private readonly JsonPassiveNode JsonPassiveNode;
         public readonly PassiveNodeGroupViewModel? PassiveNodeGroup;
 
-        public PassiveNodeViewModel() => JsonPassiveNode = new JsonPassiveNode();
+        public PassiveNodeViewModel() : this(new JsonPassiveNode()) { }
         public PassiveNodeViewModel(JsonPassiveNode jsonPassiveNode, PassiveNodeGroupViewModel? group = null)
         {
             JsonPassiveNode = jsonPassiveNode;
@@ -23,18 +23,8 @@ namespace PoESkillTree.ViewModels.PassiveTree
             InitializeAttributes();
         }
 
-        public PassiveNodeDefinition PassiveNodeDefinition => new PassiveNodeDefinition(Id,
-                  PassiveNodeType,
-                  Name,
-                  IsAscendancyNode,
-                  !IsRootNode && !IsAscendancyNode && !IsMultipleChoiceOption,
-                  new NodePosition(PositionAtZoomLevel(1f).X, PositionAtZoomLevel(1f).Y),
-                  StatDescriptions);
-        //public PassiveNodeDefinition PassiveNodeDefinition => PassiveNodeDefinition.Convert(JsonPassiveNode);
+        public PassiveNodeDefinition PassiveNodeDefinition => PassiveNodeDefinition.Convert(JsonPassiveNode);
         public CharacterClass? StartingCharacterClass { get => JsonPassiveNode.StartingCharacterClass; set => JsonPassiveNode.StartingCharacterClass = value; }
-        public ushort? PassiveNodeGroupId { get => JsonPassiveNode.PassiveNodeGroupId; set => JsonPassiveNode.PassiveNodeGroupId = value; }
-        public int OrbitRadiiIndex { get => JsonPassiveNode.OrbitRadiiIndex; set => JsonPassiveNode.OrbitRadiiIndex = value; }
-        public int SkillsPerOrbitIndex { get => JsonPassiveNode.SkillsPerOrbitIndex; set => JsonPassiveNode.SkillsPerOrbitIndex = value; }
         public string[]? Recipe { get => JsonPassiveNode.Recipe; set => JsonPassiveNode.Recipe = value; }
         public JsonExpansionJewelSocket? ExpansionJewelSocket { get => JsonPassiveNode.ExpansionJewelSocket; set => JsonPassiveNode.ExpansionJewelSocket = value; }
         public HashSet<ushort> OutPassiveNodeIds => JsonPassiveNode.OutPassiveNodeIds;
@@ -42,6 +32,8 @@ namespace PoESkillTree.ViewModels.PassiveTree
         public bool IsSkilled { get => JsonPassiveNode.IsSkilled; set => JsonPassiveNode.IsSkilled = value; }
         public float[] SkillsPerOrbit { get => JsonPassiveNode.SkillsPerOrbit; set => JsonPassiveNode.SkillsPerOrbit = value; }
         public float[] OrbitRadii { get => JsonPassiveNode.OrbitRadii; set => JsonPassiveNode.OrbitRadii = value; }
+        public int OrbitRadiiIndex { get => JsonPassiveNode.OrbitRadiiIndex; set => JsonPassiveNode.OrbitRadiiIndex = value; }
+        public int SkillsPerOrbitIndex { get => JsonPassiveNode.SkillsPerOrbitIndex; set => JsonPassiveNode.SkillsPerOrbitIndex = value; }
         public bool IsSmall => JsonPassiveNode.IsSmall;
         public bool IsAscendancyNode => JsonPassiveNode.IsAscendancyNode;
         public bool IsRootNode => JsonPassiveNode.IsRootNode;
@@ -66,11 +58,7 @@ namespace PoESkillTree.ViewModels.PassiveTree
         public int Strength { get => JsonPassiveNode.Strength; set => JsonPassiveNode.Strength = value; }
         public int Dexterity { get => JsonPassiveNode.Dexterity; set => JsonPassiveNode.Dexterity = value; }
         public int Intelligence { get => JsonPassiveNode.Intelligence; set => JsonPassiveNode.Intelligence = value; }
-
-        private double? _arc = null;
-        public double Arc => _arc ??= 2 * Math.PI * SkillsPerOrbitIndex / SkillsPerOrbit[OrbitRadiiIndex];
-        //TODO: UNCOMMENT when updating to PoESkillTree.Engine v0.3.1
-        //public double Arc => JsonPassiveNode.Arc;
+        public double Arc => JsonPassiveNode.Arc;
 
         public string IconKey => $"{IconKeyPrefix}_{Icon}";
         private string IconKeyPrefix => PassiveNodeType switch
@@ -90,31 +78,12 @@ namespace PoESkillTree.ViewModels.PassiveTree
         {
             get
             {
-                //TODO: UNCOMMENT when updating to PoESkillTree.Engine v0.3.1
-                //if (_position?.X != JsonPassiveNode.Position.X || _position?.Y != JsonPassiveNode.Position.Y)
-                //{
-                //    _position = new Vector2D(JsonPassiveNode.Position.X, JsonPassiveNode.Position.Y);
-                //}
-
-                if (!_position.HasValue)
+                if (_position?.X != JsonPassiveNode.Position.X || _position?.Y != JsonPassiveNode.Position.Y)
                 {
-                    _position = PositionAtZoomLevel(ZoomLevel);
+                    _position = new Vector2D(JsonPassiveNode.Position.X, JsonPassiveNode.Position.Y);
                 }
-
                 return _position.Value;
             }
-        }
-        
-        //TODO: DELETE when updating to PoESkillTree.Engine v0.3.1
-        public Vector2D PositionAtZoomLevel(float zoomLevel)
-        {
-            if (PassiveNodeGroup is null)
-            {
-                return new Vector2D(0, 0);
-            }
-
-            var orbitRadius = OrbitRadii[OrbitRadiiIndex] * zoomLevel;
-            return PassiveNodeGroup.Position - new Vector2D(orbitRadius * (float)Math.Sin(-Arc), orbitRadius * (float)Math.Cos(-Arc));
         }
 
         private bool? _isScionAscendancyNotable = null;
@@ -153,7 +122,7 @@ namespace PoESkillTree.ViewModels.PassiveTree
             JsonPassiveNode.ClearPositionCache();
         }
 
-        public void InitializeAttributes()
+        private void InitializeAttributes()
         {
             if (PassiveNodeType == PassiveNodeType.JewelSocket || PassiveNodeType == PassiveNodeType.ExpansionJewelSocket)
             {

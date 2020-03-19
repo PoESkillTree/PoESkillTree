@@ -2,6 +2,7 @@
 using System.Linq;
 using EnumsNET;
 using PoESkillTree.Engine.GameModel;
+using PoESkillTree.Engine.GameModel.PassiveTree.Base;
 
 namespace PoESkillTree.SkillTreeFiles
 {
@@ -13,26 +14,22 @@ namespace PoESkillTree.SkillTreeFiles
         private readonly Dictionary<CharacterClass, List<Class>> _classes =
             new Dictionary<CharacterClass, List<Class>>();
 
-        internal AscendancyClasses(IReadOnlyCollection<CharacterToAscendancyOption> ascClasses)
+        internal AscendancyClasses(IReadOnlyCollection<JsonPassiveTreeCharacterClass> characters)
         {
-            if (ascClasses == null) return;
+            if (characters == null) return;
 
             _classes.Clear();
 
-            foreach (CharacterToAscendancyOption ascClass in ascClasses)
+            foreach (var character in characters)
             {
                 var classes = new List<Class>();
-                foreach (KeyValuePair<int, AscendancyClassOption> asc in ascClass.AscendancyClasses)
+                var i = 0;
+                foreach (var ascendancy in character.AscendancyClasses)
                 {
-                    int[] tempPointList = asc.Value.FlavourTextRect.Split(',').Select(int.Parse).ToArray();
-                    var newClass = new Class(asc.Key, asc.Value.DisplayName, asc.Value.Name,
-                        asc.Value.FlavourText, new Vector2D(tempPointList[0], tempPointList[1]),
-                        asc.Value.FlavourTextColour.Split(',').Select(int.Parse).ToArray());
-                    classes.Add(newClass);
-
+                    classes.Add(new Class(++i, ascendancy.Id, ascendancy.Name, ascendancy.FlavourText, new Vector2D(ascendancy.FlavourTextBounds.X, ascendancy.FlavourTextBounds.Y), ascendancy.FlavourTextColour));
                 }
 
-                var characterClass = Enums.Parse<CharacterClass>(ascClass.CharacterName);
+                var characterClass = Enums.Parse<CharacterClass>(character.Name);
                 _classes[characterClass] = classes;
             }
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PoESkillTree.ViewModels.PassiveTree;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,22 +16,22 @@ namespace PoESkillTree.SkillTreeFiles
             All = FromSearch | FromAttrib | Checked | Crossed | FromHover
         }
 
-        private readonly Dictionary<SkillNode, HighlightState> _nodeHighlights =
-            new Dictionary<SkillNode, HighlightState>();
+        private readonly Dictionary<PassiveNodeViewModel, HighlightState> _nodeHighlights =
+            new Dictionary<PassiveNodeViewModel, HighlightState>();
 
-        public IReadOnlyDictionary<SkillNode, HighlightState> NodeHighlights => _nodeHighlights;
+        public IReadOnlyDictionary<PassiveNodeViewModel, HighlightState> NodeHighlights => _nodeHighlights;
 
         /// <summary>
         /// Returns flags without HighlightState.Tags if the node is an ascendancy node.
         /// Returns flags unchanged if it is not.
         /// </summary>
-        private static HighlightState CleanFlags(SkillNode node, HighlightState flags)
+        private static HighlightState CleanFlags(PassiveNodeViewModel node, HighlightState flags)
         {
             if (!node.IsAscendancyNode) return flags;
             return flags & ~HighlightState.Tags;
         }
 
-        public bool NodeHasHighlights(SkillNode node, HighlightState flags)
+        public bool NodeHasHighlights(PassiveNodeViewModel node, HighlightState flags)
         {
             if (_nodeHighlights.ContainsKey(node))
             {
@@ -39,7 +40,7 @@ namespace PoESkillTree.SkillTreeFiles
             return false;
         }
 
-        public void HighlightNode(SkillNode node, HighlightState newFlags)
+        public void HighlightNode(PassiveNodeViewModel node, HighlightState newFlags)
         {
             var flags = CleanFlags(node, newFlags);
             if (flags == 0) return;
@@ -48,7 +49,7 @@ namespace PoESkillTree.SkillTreeFiles
             else _nodeHighlights.Add(node, flags);
         }
 
-        public void UnhighlightNode(SkillNode node, HighlightState removeFlags)
+        public void UnhighlightNode(PassiveNodeViewModel node, HighlightState removeFlags)
         {
             if (_nodeHighlights.ContainsKey(node))
             {
@@ -59,9 +60,9 @@ namespace PoESkillTree.SkillTreeFiles
             }
         }
 
-        public void HighlightNodes(IEnumerable<SkillNode> nodes, HighlightState newFlags)
+        public void HighlightNodes(IEnumerable<PassiveNodeViewModel> nodes, HighlightState newFlags)
         {
-            foreach (SkillNode node in nodes)
+            foreach (PassiveNodeViewModel node in nodes)
                 HighlightNode(node, newFlags);
         }
 
@@ -70,7 +71,7 @@ namespace PoESkillTree.SkillTreeFiles
         {
             // Kludge cast to avoid a "Collection was modified" exception.
             var keys = _nodeHighlights.Keys.ToArray();
-            foreach (SkillNode node in keys)
+            foreach (PassiveNodeViewModel node in keys)
                 UnhighlightNode(node, removeFlags);
         }
 
@@ -78,7 +79,7 @@ namespace PoESkillTree.SkillTreeFiles
         /// Removes <paramref name="replaceFlags"/> from all nodes and then adds them to all nodes
         /// in <paramref name="newNodes"/>.
         /// </summary>
-        public void ResetHighlights(IEnumerable<SkillNode> newNodes, HighlightState replaceFlags)
+        public void ResetHighlights(IEnumerable<PassiveNodeViewModel> newNodes, HighlightState replaceFlags)
         {
             UnhighlightAllNodes(replaceFlags);
             HighlightNodes(newNodes, replaceFlags);
@@ -89,7 +90,7 @@ namespace PoESkillTree.SkillTreeFiles
         /// Removes flags not in ifFlags, adds newFlags.
         /// </summary>
         /// <returns>All affected nodes.</returns>
-        public IEnumerable<SkillNode> HighlightNodesIf(HighlightState newFlags, HighlightState ifFlags)
+        public IEnumerable<PassiveNodeViewModel> HighlightNodesIf(HighlightState newFlags, HighlightState ifFlags)
         {
             var pairs = _nodeHighlights.Where(pair => (pair.Value & ifFlags) > 0).ToArray();
             foreach (var pair in pairs)

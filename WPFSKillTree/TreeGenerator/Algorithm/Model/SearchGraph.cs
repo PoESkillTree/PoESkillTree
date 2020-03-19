@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.SkillTreeFiles;
+using PoESkillTree.ViewModels.PassiveTree;
 
 namespace PoESkillTree.TreeGenerator.Algorithm.Model
 {
@@ -9,11 +10,11 @@ namespace PoESkillTree.TreeGenerator.Algorithm.Model
     /// </summary>
     public class SearchGraph
     {
-        public readonly Dictionary<SkillNode, GraphNode> NodeDict;
+        public readonly Dictionary<PassiveNodeViewModel, GraphNode> NodeDict;
 
         public SearchGraph()
         {
-            NodeDict = new Dictionary<SkillNode, GraphNode>();
+            NodeDict = new Dictionary<PassiveNodeViewModel, GraphNode>();
         }
 
         /// <summary>
@@ -22,7 +23,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm.Model
         /// </summary>
         /// <param name="node">The skill node to be added.</param>
         /// <returns>The graph node that is added to the graph.</returns>
-        public GraphNode AddNode(SkillNode node)
+        public GraphNode AddNode(PassiveNodeViewModel node)
         {
             var graphNode = new GraphNode(node.Id);
             NodeDict.Add(node, graphNode);
@@ -35,7 +36,7 @@ namespace PoESkillTree.TreeGenerator.Algorithm.Model
             return AddNode(SkillTree.Skillnodes[nodeId]);
         }
 
-        public GraphNode SetStartNodes(IReadOnlyCollection<SkillNode> startNodes)
+        public GraphNode SetStartNodes(IReadOnlyCollection<PassiveNodeViewModel> startNodes)
         {
             var supernode = new GraphNode(startNodes.Select(n => n.Id));
             foreach (var node in startNodes)
@@ -46,12 +47,12 @@ namespace PoESkillTree.TreeGenerator.Algorithm.Model
             return supernode;
         }
 
-        private void CheckLinks(SkillNode node)
+        private void CheckLinks(PassiveNodeViewModel node)
         {
             if (!NodeDict.ContainsKey(node)) return;
             GraphNode currentNode = NodeDict[node];
 
-            foreach (SkillNode neighbor in node.Neighbor)
+            foreach (var neighbor in node.NeighborPassiveNodes.Values)
             {
                 if (NodeDict.ContainsKey(neighbor))
                 {

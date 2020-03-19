@@ -1,14 +1,15 @@
-﻿using System;
+﻿using PoESkillTree.Engine.GameModel.Items;
+using PoESkillTree.Engine.GameModel.PassiveTree;
+using PoESkillTree.Engine.Utils.Extensions;
+using PoESkillTree.ViewModels.Equipment;
+using PoESkillTree.ViewModels.PassiveTree;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using PoESkillTree.Engine.GameModel.Items;
-using PoESkillTree.Engine.Utils.Extensions;
-using PoESkillTree.SkillTreeFiles;
-using PoESkillTree.ViewModels.Equipment;
 
 namespace PoESkillTree.TreeDrawing
 {
@@ -33,7 +34,7 @@ namespace PoESkillTree.TreeDrawing
         };
 
         private readonly IReadOnlyDictionary<string, BitmapImage> _assets;
-        private readonly IReadOnlyDictionary<ushort, SkillNode> _skillNodes;
+        private readonly IReadOnlyDictionary<ushort, PassiveNodeViewModel> _skillNodes;
 
         private readonly Dictionary<(JewelType type, bool isClusterSocket), (Size, ImageBrush)> _brushes =
             new Dictionary<(JewelType, bool), (Size, ImageBrush)>();
@@ -41,7 +42,7 @@ namespace PoESkillTree.TreeDrawing
         private IReadOnlyList<InventoryItemViewModel> _jewelViewModels;
 
         public JewelDrawer(
-            IReadOnlyDictionary<string, BitmapImage> assets, IReadOnlyDictionary<ushort, SkillNode> skillNodes)
+            IReadOnlyDictionary<string, BitmapImage> assets, IReadOnlyDictionary<ushort, PassiveNodeViewModel> skillNodes)
         {
             _assets = assets;
             _skillNodes = skillNodes;
@@ -91,12 +92,8 @@ namespace PoESkillTree.TreeDrawing
         private void Draw(DrawingContext drawingContext, ushort nodeId, JewelType jewelType)
         {
             var node = _skillNodes[nodeId];
-            var (size, brush) = _brushes.GetOrAdd((jewelType, node.ExpansionJewel != null), CreateBrush);
-            drawingContext.DrawRectangle(brush, null,
-                new Rect(node.Position.X - size.Width,
-                    node.Position.Y - size.Height,
-                    size.Width * 2,
-                    size.Height * 2));
+            var (size, brush) = _brushes.GetOrAdd((jewelType, node.PassiveNodeType != PassiveNodeType.ExpansionJewelSocket), CreateBrush);
+            drawingContext.DrawRectangle(brush, null, new Rect(node.Position.X - size.Width, node.Position.Y - size.Height, size.Width, size.Height));
         }
 
         private static JewelType GetJewelType(Tags tags)

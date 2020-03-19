@@ -5,15 +5,16 @@ using PoESkillTree.Engine.Utils;
 using PoESkillTree.Engine.Utils.Extensions;
 using PoESkillTree.SkillTreeFiles;
 using PoESkillTree.Utils;
+using PoESkillTree.ViewModels.PassiveTree;
 
 namespace PoESkillTree.ViewModels.Equipment
 {
     public sealed class JewelSocketObserver : IDisposable
     {
-        private readonly ObservableSet<SkillNode> _skilledNodes;
+        private readonly ObservableSet<PassiveNodeViewModel> _skilledNodes;
         private IReadOnlyDictionary<ushort, InventoryItemViewModel>? _treeJewelViewModels;
 
-        public JewelSocketObserver(ObservableSet<SkillNode> skilledNodes)
+        public JewelSocketObserver(ObservableSet<PassiveNodeViewModel> skilledNodes)
         {
             _skilledNodes = skilledNodes;
             _skilledNodes.CollectionChanged += SkilledNodesOnCollectionChanged;
@@ -40,7 +41,7 @@ namespace PoESkillTree.ViewModels.Equipment
             }
         }
 
-        private void SkilledNodesOnCollectionChanged(object sender, CollectionChangedEventArgs<SkillNode> args)
+        private void SkilledNodesOnCollectionChanged(object sender, CollectionChangedEventArgs<PassiveNodeViewModel> args)
         {
             if (_treeJewelViewModels is null)
                 return;

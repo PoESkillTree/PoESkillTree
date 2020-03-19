@@ -8,18 +8,20 @@ namespace PoESkillTree.ViewModels.PassiveTree
     {
         private readonly JsonPassiveNodeGroup JsonPassiveNodeGroup;
 
-        public PassiveNodeGroupViewModel(JsonPassiveNodeGroup jsonPassiveNodeGroup)
+        public PassiveNodeGroupViewModel(ushort id, JsonPassiveNodeGroup jsonPassiveNodeGroup)
         {
+            Id = id;
             JsonPassiveNodeGroup = jsonPassiveNodeGroup;
         }
 
+        public ushort Id { get; private set; } = 0;
         public List<ushort> OccupiedOrbits => JsonPassiveNodeGroup.OccupiedOrbits;
         public HashSet<ushort> PassiveNodeIds => JsonPassiveNodeGroup.PassiveNodeIds;
         public bool? IsProxy { get => JsonPassiveNodeGroup.IsProxy; set => JsonPassiveNodeGroup.IsProxy = value; }
         public Dictionary<ushort, PassiveNodeViewModel> PassiveNodes { get; } = new Dictionary<ushort, PassiveNodeViewModel>();
 
-        public float X { get => JsonPassiveNodeGroup.OriginalX; set { JsonPassiveNodeGroup.OriginalX = value; ClearPositionCache(); } }
-        public float Y { get => JsonPassiveNodeGroup.OriginalY; set { JsonPassiveNodeGroup.OriginalY = value; ClearPositionCache(); } }
+        public float X { get => JsonPassiveNodeGroup.OriginalX; private set { JsonPassiveNodeGroup.OriginalX = value; } }
+        public float Y { get => JsonPassiveNodeGroup.OriginalY; private set { JsonPassiveNodeGroup.OriginalY = value; } }
         public float ZoomLevel { get => JsonPassiveNodeGroup.ZoomLevel; set { JsonPassiveNodeGroup.ZoomLevel = value; ClearPositionCache(); } }
         private Vector2D? _position = null;
         public Vector2D Position
@@ -40,7 +42,7 @@ namespace PoESkillTree.ViewModels.PassiveTree
                 ClearPositionCache();
             }
         }
-        
+
         public void ClearPositionCache()
         {
             _position = null;

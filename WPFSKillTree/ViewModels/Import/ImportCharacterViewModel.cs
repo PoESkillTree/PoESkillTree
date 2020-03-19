@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Net.Http;
-using System.Reactive;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using NLog;
 using PoESkillTree.Common.ViewModels;
 using PoESkillTree.Controls.Dialogs;
@@ -18,6 +9,16 @@ using PoESkillTree.Model.Builds;
 using PoESkillTree.Model.Items;
 using PoESkillTree.SkillTreeFiles;
 using PoESkillTree.Utils;
+using PoESkillTree.ViewModels.PassiveTree;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Net.Http;
+using System.Reactive;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace PoESkillTree.ViewModels.Import
 {
@@ -267,7 +268,7 @@ namespace PoESkillTree.ViewModels.Import
                     .ToList();
                 var (characterClass, ascendancyClass) = GetCharacterAndAscendancyClass(passiveNodes);
 
-                _skillTree.ResetSkilledNodesTo(Array.Empty<SkillNode>());
+                _skillTree.ResetSkilledNodesTo(Array.Empty<PassiveNodeViewModel>());
                 _skillTree.SwitchClass(characterClass);
                 _skillTree.AscType = ascendancyClass;
                 _skillTree.AllocateSkillNodes(passiveNodes);
@@ -286,15 +287,15 @@ namespace PoESkillTree.ViewModels.Import
             return Unit.Default;
         }
 
-        private (CharacterClass characterClass, int ascendancyClass) GetCharacterAndAscendancyClass(IReadOnlyList<SkillNode> nodes)
+        private (CharacterClass characterClass, int ascendancyClass) GetCharacterAndAscendancyClass(IReadOnlyList<PassiveNodeViewModel> nodes)
         {
             if (SelectedAccountCharacter is null)
             {
                 var ascendancyClassName = nodes.FirstOrDefault(n => n.IsAscendancyNode)?.AscendancyName;
                 if (ascendancyClassName is null)
                 {
-                    var rootNode = nodes.SelectMany(n => n.Neighbor).FirstOrDefault(n => n.IsRootNode);
-                    return ((CharacterClass) (rootNode?.Character ?? 0), 0);
+                    var rootNode = nodes.SelectMany(n => n.NeighborPassiveNodes.Values).FirstOrDefault(n => n.IsRootNode);
+                    return (rootNode?.StartingCharacterClass ?? 0, 0);
                 }
                 else
                 {
@@ -304,7 +305,7 @@ namespace PoESkillTree.ViewModels.Import
             }
             else
             {
-                return ((CharacterClass) SelectedAccountCharacter.ClassId, SelectedAccountCharacter.AscendancyClass);
+                return ((CharacterClass)SelectedAccountCharacter.ClassId, SelectedAccountCharacter.AscendancyClass);
             }
         }
 

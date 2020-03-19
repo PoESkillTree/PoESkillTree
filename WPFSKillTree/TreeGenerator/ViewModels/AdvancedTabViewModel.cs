@@ -23,6 +23,7 @@ using PoESkillTree.TreeGenerator.Model.PseudoAttributes;
 using PoESkillTree.TreeGenerator.Settings;
 using PoESkillTree.TreeGenerator.Solver;
 using PoESkillTree.Utils.Converter;
+using PoESkillTree.ViewModels.PassiveTree;
 
 namespace PoESkillTree.TreeGenerator.ViewModels
 {
@@ -677,7 +678,7 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         private void LoadAttributesFromTree()
         {
             var attributes = new Dictionary<string, float>();
-            var unique = new List<SkillNode>();
+            var unique = new List<PassiveNodeViewModel>();
             foreach (var node in Tree.SkilledNodes)
             {
                 var hasUniqueAttribute = false;
@@ -734,7 +735,7 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         private void ConvertAttributeToPseudoAttributeConstraints()
         {
             var keystones = from node in Tree.GetCheckedNodes()
-                            where node.Type == PassiveNodeType.Keystone
+                            where node.PassiveNodeType == PassiveNodeType.Keystone
                             select node.Name;
             var conditionSettings = new ConditionSettings(Tags.Value, OffHand.Value, keystones.ToArray(), WeaponClass.Value);
             var convertedConstraints = new List<TargetWeightConstraint<string>>();

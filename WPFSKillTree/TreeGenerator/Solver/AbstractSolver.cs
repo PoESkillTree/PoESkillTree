@@ -7,6 +7,7 @@ using PoESkillTree.SkillTreeFiles;
 using PoESkillTree.TreeGenerator.Algorithm;
 using PoESkillTree.TreeGenerator.Algorithm.Model;
 using PoESkillTree.TreeGenerator.Settings;
+using PoESkillTree.ViewModels.PassiveTree;
 
 namespace PoESkillTree.TreeGenerator.Solver
 {
@@ -168,12 +169,12 @@ namespace PoESkillTree.TreeGenerator.Solver
             // Make all directed edges from Scion Ascendant "Path of the ..." node undirected.
             // This is really dirty but the whole code is so dependent on the skill tree stuff that
             // I don't see a non dirty way.
-            var ascendantClassStartNodes = SkillTree.Skillnodes.Values.Where(SkillTree.IsAscendantClassStartNode).ToList();
+            var ascendantClassStartNodes = SkillTree.Skillnodes.Values.Where(x => x.IsAscendantClassStartNode).ToList();
             foreach (var classStartNode in ascendantClassStartNodes)
             {
-                foreach (var neighbor in classStartNode.Neighbor)
+                foreach (var neighbor in classStartNode.NeighborPassiveNodes.Values)
                 {
-                    neighbor.Neighbor.Add(classStartNode);
+                    neighbor.NeighborPassiveNodes[classStartNode.Id] = classStartNode;
                 }
             }
 
@@ -186,9 +187,9 @@ namespace PoESkillTree.TreeGenerator.Solver
             // Remove all added edges again.
             foreach (var classStartNode in ascendantClassStartNodes)
             {
-                foreach (var neighbor in classStartNode.Neighbor)
+                foreach (var neighbor in classStartNode.NeighborPassiveNodes.Values)
                 {
-                    neighbor.Neighbor.Remove(classStartNode);
+                    neighbor.NeighborPassiveNodes.Remove(classStartNode.Id);
                 }
             }
         }
@@ -219,15 +220,15 @@ namespace PoESkillTree.TreeGenerator.Solver
         /// </summary>
         private void CreateSearchGraph(SearchGraph searchGraph)
         {
-            foreach (var i in SkillTree.PoESkillTree.Groups)
+            foreach (var i in SkillTree.PoESkillTree.PassiveNodeGroups)
             {
                 var ng = i.Value;
                 var mustInclude = false;
 
-                SkillNode? firstNeighbor = null;
+                PassiveNodeViewModel? firstNeighbor = null;
 
                 // Find out if this node group can be omitted.
-                foreach (var node in ng.Nodes)
+                foreach (var node in ng.PassiveNodes.Values)
                 {
                     // If the group contains a skilled node or a target node,
                     // it can't be omitted.
@@ -242,7 +243,7 @@ namespace PoESkillTree.TreeGenerator.Solver
                     // also be fully included (since it's not isolated and could
                     // be part of a path to other nodes).
                     var ng1 = ng;
-                    foreach (var neighbor in node.Neighbor.Where(neighbor => neighbor.Group != ng1))
+                    foreach (var neighbor in node.NeighborPassiveNodes.Values.Where(neighbor => neighbor.PassiveNodeGroup != ng1))
                     {
                         if (firstNeighbor == null)
                             firstNeighbor = neighbor;
@@ -260,7 +261,7 @@ namespace PoESkillTree.TreeGenerator.Solver
                 if (mustInclude)
                 {
                     // Add the group's nodes individually
-                    foreach (var node in ng.Nodes)
+                    foreach (var node in ng.PassiveNodes.Values)
                     {
                         // Can't path through class starts.
                         if (node.IsRootNode
@@ -270,7 +271,7 @@ namespace PoESkillTree.TreeGenerator.Solver
                             // Don't add nodes that should not be skilled.
                             || Settings.Crossed.Contains(node)
                             // Mastery nodes are obviously not useful.
-                            || node.Type == PassiveNodeType.Mastery
+                            || node.PassiveNodeType == PassiveNodeType.Mastery
                             // Ignore ascendencies for now
                             || node.IsAscendancyNode)
                             continue;
@@ -287,7 +288,7 @@ namespace PoESkillTree.TreeGenerator.Solver
         /// </summary>
         /// <param name="node">The node in question (not null)</param>
         /// <returns>true if not overriden</returns>
-        protected virtual bool MustIncludeNodeGroup(SkillNode node)
+        protected virtual bool MustIncludeNodeGroup(PassiveNodeViewModel node)
         {
             return false;
         }
@@ -297,7 +298,7 @@ namespace PoESkillTree.TreeGenerator.Solver
         /// </summary>
         /// <param name="node">The node in question (not null)</param>
         /// <returns>false if not overriden</returns>
-        protected virtual bool IncludeNodeInSearchGraph(SkillNode node)
+        protected virtual bool IncludeNodeInSearchGraph(PassiveNodeViewModel node)
         {
             return true;
         }

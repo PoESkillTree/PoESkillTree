@@ -14,6 +14,7 @@ using PoESkillTree.Engine.GameModel.Skills;
 using PoESkillTree.Engine.Utils;
 using PoESkillTree.SkillTreeFiles;
 using PoESkillTree.Utils.Extensions;
+using PoESkillTree.ViewModels.PassiveTree;
 
 namespace PoESkillTree.Computation.Model
 {
@@ -42,14 +43,14 @@ namespace PoESkillTree.Computation.Model
                 .Select(ms => new CalculatorUpdate(ms.ToList(), Array.Empty<Modifier>()));
         }
 
-        public Task<CalculatorUpdate> ParseSkilledPassiveNodesAsync(IEnumerable<SkillNode> skilledNodes) =>
+        public Task<CalculatorUpdate> ParseSkilledPassiveNodesAsync(IEnumerable<PassiveNodeViewModel> skilledNodes) =>
             _parsingScheduler.ScheduleAsync(() => ParseCollection(skilledNodes, ParseSkilledNode));
 
         public IObservable<CalculatorUpdate> ObserveSkilledPassiveNodes(
-            INotifyCollectionChanged<SkillNode> skilledNodes)
+            INotifyCollectionChanged<PassiveNodeViewModel> skilledNodes)
             => ObserveCollection(skilledNodes, ParseSkilledNode, _parsingScheduler);
 
-        private IReadOnlyList<Modifier> ParseSkilledNode(SkillNode node)
+        private IReadOnlyList<Modifier> ParseSkilledNode(PassiveNodeViewModel node)
             => _parser.ParseSkilledPassiveNode(node.Id).Modifiers;
 
         public Task<CalculatorUpdate> ParseItemsAsync(IEnumerable<(Item item, ItemSlot slot)> items)

@@ -1,10 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using EnumsNET;
+using Newtonsoft.Json;
 using PoESkillTree.Engine.GameModel;
 using PoESkillTree.Engine.GameModel.PassiveTree.Base;
+using PoESkillTree.SkillTreeFiles;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace PoESkillTree.ViewModels.PassiveTree
 {
@@ -22,6 +24,7 @@ namespace PoESkillTree.ViewModels.PassiveTree
             InitializePassiveNodeGroups();
             InitializePassiveNodes();
             InitializePassiveNodeNeighbors();
+            FixAscendancyPassiveNodeGroups();
         }
 
         public Uri ImageUri => JsonPassiveTree.ImageUri;
@@ -43,19 +46,20 @@ namespace PoESkillTree.ViewModels.PassiveTree
         public Uri SpriteSheetUri => JsonPassiveTree.SpriteSheetUri;
         public string ImageRoot { get => JsonPassiveTree.ImageRoot; set => JsonPassiveTree.ImageRoot = value; }
 
-        public Dictionary<ushort, PassiveNodeViewModel> PassiveNodes { get; } = new Dictionary<ushort, PassiveNodeViewModel>();
         public PassiveNodeViewModel Root { get; }
+        public Dictionary<ushort, PassiveNodeViewModel> PassiveNodes { get; } = new Dictionary<ushort, PassiveNodeViewModel>();
+        public Dictionary<ushort, PassiveNodeViewModel> AscendancyStartPassiveNodes { get; } = new Dictionary<ushort, PassiveNodeViewModel>();
         public Dictionary<ushort, PassiveNodeGroupViewModel> PassiveNodeGroups { get; } = new Dictionary<ushort, PassiveNodeGroupViewModel>();
-                
-        public void InitializePassiveNodeGroups()
+
+        private void InitializePassiveNodeGroups()
         {
             foreach (var (id, group) in JsonPassiveTree.PassiveNodeGroups)
             {
-                PassiveNodeGroups[id] = new PassiveNodeGroupViewModel(group);
+                PassiveNodeGroups[id] = new PassiveNodeGroupViewModel(id, group);
             }
         }
 
-        public void InitializePassiveNodes()
+        private void InitializePassiveNodes()
         {
             foreach (var (id, node) in JsonPassiveTree.PassiveNodes)
             {
@@ -64,15 +68,16 @@ namespace PoESkillTree.ViewModels.PassiveTree
                     var group = PassiveNodeGroups[node.PassiveNodeGroupId.Value];
                     PassiveNodes[id] = new PassiveNodeViewModel(node, group);
                     group.PassiveNodes[id] = PassiveNodes[id];
-                }
-                else
-                {
-                    PassiveNodes[id] = new PassiveNodeViewModel(node);
+
+                    if (PassiveNodes[id].IsAscendancyStart)
+                    {
+                        AscendancyStartPassiveNodes[id] = PassiveNodes[id];
+                    }
                 }
             }
         }
 
-        public void InitializePassiveNodeNeighbors()
+        private void InitializePassiveNodeNeighbors()
         {
             foreach (var (_, n1) in PassiveNodes)
             {
@@ -105,6 +110,74 @@ namespace PoESkillTree.ViewModels.PassiveTree
                     }
                 }
             }
+        }
+
+
+        public void FixAscendancyPassiveNodeGroups()
+        {
+            
+            foreach (var (_, node) in AscendancyStartPassiveNodes)
+            {
+                if (node.PassiveNodeGroup is null) continue;
+                
+                PassiveNodeViewModel? FindStartNode(IEnumerable<ushort> ids)
+                {
+                    foreach (var oid in ids)
+                        if (PassiveNodes.ContainsKey(oid) && PassiveNodes[oid].StartingCharacterClass.HasValue)
+                            return PassiveNodes[oid];
+                    return null;
+                }
+
+                var start = FindStartNode(node.OutPassiveNodeIds) ?? FindStartNode(node.InPassiveNodeIds);
+                if (start is null || !start.StartingCharacterClass.HasValue || start.PassiveNodeGroup is null) continue;
+
+                var name = Enums.GetName(start.StartingCharacterClass.Value);
+                var offset = CharacterClasses.First(c => c.Name == name).AscendancyClasses.Select((a, index) => a.Name == node.AscendancyName ? index - 1 : -2).Max();
+                if (offset == -2) continue;
+
+                var centerThreshold = 100;
+                var offsetDistance = 1450;
+                var basePosition = new Vector2D(0, 0);
+                var startGroup = PassiveNodeGroups[start.PassiveNodeGroup.Id];
+
+                if ((startGroup.X > -centerThreshold && startGroup.X < centerThreshold) && (startGroup.Y > -centerThreshold && startGroup.Y < centerThreshold))
+                {
+                    // Scion
+                    basePosition = new Vector2D(MinX * .65f, MaxY * .95f);
+                }
+                else if (startGroup.X > -centerThreshold && startGroup.X < centerThreshold)
+                {
+                    // Witch, Duelist
+                    basePosition = new Vector2D(startGroup.X / startGroup.ZoomLevel + (Math.Sign(startGroup.X) * offset * offsetDistance), (startGroup.Y / startGroup.ZoomLevel) + Math.Sign(startGroup.Y) > 0 ? MaxY + 1.05f : MinY);
+                }
+                else
+                {
+                    // Templar, Marauder, Ranger, Shadow 
+                    basePosition = new Vector2D(startGroup.X < 0 ? MinX * .80f : MaxX, (startGroup.Y / startGroup.ZoomLevel) + (Math.Sign(startGroup.Y) * offset * offsetDistance));
+                }
+
+                RepositionAscendancyAt(node, basePosition);
+            }
+        }
+
+        public void RepositionAscendancyAt(PassiveNodeViewModel node, Vector2D position)
+        {
+            if (node.PassiveNodeGroup is null) return;
+
+            var completed = new HashSet<ushort>() { node.PassiveNodeGroup.Id };
+            foreach (var (_, other) in PassiveNodes)
+            {
+                if (other.AscendancyName != node.AscendancyName) continue;
+                if (other.PassiveNodeGroup is null) continue;
+                if (completed.Contains(other.PassiveNodeGroup.Id)) continue;
+
+                var diff = node.PassiveNodeGroup.Position - other.PassiveNodeGroup.Position;
+                other.PassiveNodeGroup.Position = position - (diff / other.PassiveNodeGroup.ZoomLevel);
+
+                completed.Add(other.PassiveNodeGroup.Id);
+            }
+
+            node.PassiveNodeGroup.Position = position;
         }
     }
 }

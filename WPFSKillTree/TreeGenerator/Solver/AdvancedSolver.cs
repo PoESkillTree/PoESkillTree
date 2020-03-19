@@ -9,6 +9,7 @@ using PoESkillTree.TreeGenerator.Algorithm.Model;
 using PoESkillTree.TreeGenerator.Genetic;
 using PoESkillTree.TreeGenerator.Model.PseudoAttributes;
 using PoESkillTree.TreeGenerator.Settings;
+using PoESkillTree.ViewModels.PassiveTree;
 
 namespace PoESkillTree.TreeGenerator.Solver
 {
@@ -182,17 +183,17 @@ namespace PoESkillTree.TreeGenerator.Solver
             }
         }
 
-        protected override bool MustIncludeNodeGroup(SkillNode node)
+        protected override bool MustIncludeNodeGroup(PassiveNodeViewModel node)
         {
             // If the node has stats and is not a travel node,
             // the group is included.
             return _nodeAttributes[node.Id].Count > 0 && !_areTravelNodes[node.Id];
         }
 
-        protected override bool IncludeNodeInSearchGraph(SkillNode node)
+        protected override bool IncludeNodeInSearchGraph(PassiveNodeViewModel node)
         {
             // Keystones can only be included if they are check-tagged.
-            return node.Type != PassiveNodeType.Keystone;
+            return node.PassiveNodeType != PassiveNodeType.Keystone;
         }
 
         /// <summary>
@@ -243,7 +244,7 @@ namespace PoESkillTree.TreeGenerator.Solver
         private List<ConvertedPseudoAttributeConstraint> EvalPseudoAttrConstraints()
         {
             var keystones = from node in Settings.Checked
-                            where node.Type == PassiveNodeType.Keystone
+                            where node.PassiveNodeType == PassiveNodeType.Keystone
                             select node.Name;
             var conditionSettings = new ConditionSettings(Settings.Tags, Settings.OffHand, keystones.ToArray(), Settings.WeaponClass);
 
