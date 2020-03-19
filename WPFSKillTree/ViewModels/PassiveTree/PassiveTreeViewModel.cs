@@ -115,11 +115,10 @@ namespace PoESkillTree.ViewModels.PassiveTree
 
         public void FixAscendancyPassiveNodeGroups()
         {
-            
             foreach (var (_, node) in AscendancyStartPassiveNodes)
             {
                 if (node.PassiveNodeGroup is null) continue;
-                
+
                 PassiveNodeViewModel? FindStartNode(IEnumerable<ushort> ids)
                 {
                     foreach (var oid in ids)

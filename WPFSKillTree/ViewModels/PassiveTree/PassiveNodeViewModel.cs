@@ -3,7 +3,6 @@ using PoESkillTree.Engine.GameModel.PassiveTree;
 using PoESkillTree.Engine.GameModel.PassiveTree.Base;
 using PoESkillTree.Engine.Utils.Extensions;
 using PoESkillTree.SkillTreeFiles;
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
@@ -22,7 +21,6 @@ namespace PoESkillTree.ViewModels.PassiveTree
             PassiveNodeGroup = group;
             InitializeAttributes();
         }
-
         public PassiveNodeDefinition PassiveNodeDefinition => PassiveNodeDefinition.Convert(JsonPassiveNode);
         public CharacterClass? StartingCharacterClass { get => JsonPassiveNode.StartingCharacterClass; set => JsonPassiveNode.StartingCharacterClass = value; }
         public string[]? Recipe { get => JsonPassiveNode.Recipe; set => JsonPassiveNode.Recipe = value; }

@@ -39,7 +39,6 @@ namespace PoESkillTree.SkillTreeFiles
 
         private readonly NodeHighlighter _nodeHighlighter = new NodeHighlighter();
         private readonly IPersistentData _persistentData;
-        private Dictionary<ushort, Vector2D> _originalPositions = new Dictionary<ushort, Vector2D>();
         public bool DrawAscendancy;
 
         public DrawingVisual SkillTreeVisual { get; private set; }
