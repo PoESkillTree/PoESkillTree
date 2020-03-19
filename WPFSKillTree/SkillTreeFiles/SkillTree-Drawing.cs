@@ -29,7 +29,7 @@ namespace PoESkillTree.SkillTreeFiles
         private readonly Pen _skillOverlayPen = new Pen(Brushes.LawnGreen, 7.5f) { DashStyle = new DashStyle(new DoubleCollection { 2 }, 2) };
         private readonly Pen _refundOverlayPen = new Pen(Brushes.Red, 7.5f) { DashStyle = new DashStyle(new DoubleCollection { 2 }, 2) };
         private readonly Pen _textShadowPen = new Pen(Brushes.Black, 2) { LineJoin = PenLineJoin.Round, MiterLimit = 10 };
-        private const float HighlightFactor = 1.2f;
+        private const float HighlightFactor = 1.75f;
         private const float DistanceFromStartNodeCenter = 270f;
 
         private readonly List<(Rect rect, ImageBrush brush)> _faceBrushes = new List<(Rect, ImageBrush)>();
@@ -732,7 +732,7 @@ namespace PoESkillTree.SkillTreeFiles
         private void DrawTreeComparisonHighlight()
         {
             var ascendancyClassName = AscendancyClassName;
-            var pen2 = new Pen(new SolidColorBrush(TreeComparisonColor), 25 * HighlightFactor);
+            var pen2 = new Pen(new SolidColorBrush(TreeComparisonColor), _basePathPen.Thickness * HighlightFactor);
             _nodeComparisonSurroundDrawer.Draw();
             if (DrawAscendancy)
             {
