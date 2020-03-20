@@ -43,7 +43,7 @@ namespace PoESkillTree.Model.JsonSettings
 
         public void LoadFrom(JObject jObject)
         {
-            Value = jObject.TryGetValue(_key, out var token) ? token.ToObject<T>() : _defaultValue;
+            Value = jObject.TryGetValue(_key, out var token) && token.ToObject<T>() is T t ? t : _defaultValue;
         }
 
         public bool SaveTo(JObject jObject)

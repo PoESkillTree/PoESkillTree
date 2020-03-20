@@ -17,7 +17,7 @@ namespace PoESkillTree.Computation.ViewModels
 {
     public class AttributesInJewelRadiusViewModel
     {
-        private static readonly NotifyingTask<double> CompletedTask = new NotifyingTask<double>(Task.FromResult(0D), _ => {});
+        private static readonly NotifyingTask<double> CompletedTask = NotifyingTask.WithDefaultResult<double>();
 
         private static readonly ILogger Log = LogManager.GetCurrentClassLogger();
 
@@ -63,17 +63,17 @@ namespace PoESkillTree.Computation.ViewModels
             var task = GetAttributesInRadiusAsync(node, radius);
             if (DisplayStrength)
             {
-                Strength = new NotifyingTask<double>(GetStrengthAsync(task),
+                Strength = NotifyingTask.Create(GetStrengthAsync(task),
                     e => Log.Error(e, "Calculating Strength in radius failed"));
             }
             if (DisplayDexterity)
             {
-                Dexterity = new NotifyingTask<double>(GetDexterityAsync(task),
+                Dexterity = NotifyingTask.Create(GetDexterityAsync(task),
                     e => Log.Error(e, "Calculating Dexterity in radius failed"));
             }
             if (DisplayIntelligence)
             {
-                Intelligence = new NotifyingTask<double>(GetIntelligenceAsync(task),
+                Intelligence = NotifyingTask.Create(GetIntelligenceAsync(task),
                     e => Log.Error(e, "Calculating Intelligence in radius failed"));
             }
 

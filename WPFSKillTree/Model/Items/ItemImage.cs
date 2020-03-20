@@ -83,10 +83,7 @@ namespace PoESkillTree.Model.Items
         private static NotifyingTask<ImageSource> NewImageSourceTask(Task<ImageSource> task, string errorMessage,
             ImageSource defaultValue)
         {
-            return new NotifyingTask<ImageSource>(task, e => Log.Error(e, errorMessage))
-            {
-                Default = defaultValue
-            };
+            return new NotifyingTask<ImageSource>(task, defaultValue, e => Log.Error(e, errorMessage));
         }
 
         private static string MakeUrl(string imageUrl)

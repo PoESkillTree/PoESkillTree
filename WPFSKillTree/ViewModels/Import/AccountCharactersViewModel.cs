@@ -30,6 +30,7 @@ namespace PoESkillTree.ViewModels.Import
 
         private NotifyingTask<IReadOnlyList<AccountCharacterViewModel>> CreateTask((Realm realm, string? accountName) tuple) =>
             new NotifyingTask<IReadOnlyList<AccountCharacterViewModel>>(LoadAsync(tuple.realm, tuple.accountName),
+                Array.Empty<AccountCharacterViewModel>(),
                 e => Log.Error(e, $"Could not retrieve the characters of {tuple.accountName} on {tuple.realm}"));
 
         private async Task<IReadOnlyList<AccountCharacterViewModel>> LoadAsync(Realm realm, string? accountName)

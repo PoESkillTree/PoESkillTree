@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -30,6 +31,7 @@ namespace PoESkillTree.ViewModels.Import
 
         private NotifyingTask<IReadOnlyList<string>> CreateTask(Realm realm) =>
             new NotifyingTask<IReadOnlyList<string>>(LoadAsync(realm),
+                Array.Empty<string>(),
                 e => Log.Error(e, "Could not retrieve the currently running leagues for realm " + realm));
 
         private async Task<IReadOnlyList<string>> LoadAsync(Realm realm)

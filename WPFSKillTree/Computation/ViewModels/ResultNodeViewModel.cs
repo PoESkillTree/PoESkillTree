@@ -51,7 +51,7 @@ namespace PoESkillTree.Computation.ViewModels
             => new Lazy<NotifyingTask<IReadOnlyList<ModifierNodeViewModel>>>(
                 () => new NotifyingTask<IReadOnlyList<ModifierNodeViewModel>>(
                         _modifierNodeFactory.CreateAsync(Stat, NodeType),
-                        ex => Log.Error(ex, $"Failed to create modifier nodes for {Stat} {NodeType}"))
-                    {Default = new ModifierNodeViewModel[0]});
+                        Array.Empty<ModifierNodeViewModel>(),
+                        ex => Log.Error(ex, $"Failed to create modifier nodes for {Stat} {NodeType}")));
     }
 }

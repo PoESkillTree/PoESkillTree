@@ -72,7 +72,7 @@ namespace PoESkillTree.ViewModels.Import
             set => SetProperty(ref _selectedAccountCharacter, value);
         }
 
-        private NotifyingTask<Unit> _importItemsSkillsAndLevelTask = NotifyingTask<Unit>.FromResult(default);
+        private NotifyingTask<Unit> _importItemsSkillsAndLevelTask = NotifyingTask.WithDefaultResult<Unit>();
 
         public NotifyingTask<Unit> ImportItemsSkillsAndLevelTask
         {
@@ -80,7 +80,7 @@ namespace PoESkillTree.ViewModels.Import
             private set => SetProperty(ref _importItemsSkillsAndLevelTask, value);
         }
 
-        private NotifyingTask<Unit> _importPassiveTreeAndJewelsTask = NotifyingTask<Unit>.FromResult(default);
+        private NotifyingTask<Unit> _importPassiveTreeAndJewelsTask = NotifyingTask.WithDefaultResult<Unit>();
 
         public NotifyingTask<Unit> ImportPassiveTreeAndJewelsTask
         {
@@ -192,7 +192,7 @@ namespace PoESkillTree.ViewModels.Import
 
         private async void StartItemSkillsAndLevelImport(string title, bool items = false, bool skills = false, bool level = false)
         {
-            ImportItemsSkillsAndLevelTask = new NotifyingTask<Unit>(ImportItemSkillsAndLevelAsync(title, items, skills, level),
+            ImportItemsSkillsAndLevelTask = NotifyingTask.Create(ImportItemSkillsAndLevelAsync(title, items, skills, level),
                 e => Log.Error($"Could not retrieve {ItemsUrl}"));
             await ImportItemsSkillsAndLevelTask.TaskCompletion;
             CommandManager.InvalidateRequerySuggested();
@@ -246,7 +246,7 @@ namespace PoESkillTree.ViewModels.Import
 
         private async void StartPassiveTreeAndJewelsImport(string title, bool passiveTree = false, bool jewels = false)
         {
-            ImportPassiveTreeAndJewelsTask = new NotifyingTask<Unit>(ImportPassiveTreeAndJewelsAsync(title, passiveTree, jewels),
+            ImportPassiveTreeAndJewelsTask = NotifyingTask.Create(ImportPassiveTreeAndJewelsAsync(title, passiveTree, jewels),
                 e => Log.Error($"Could not retrieve {PassiveTreeUrl}"));
             await ImportPassiveTreeAndJewelsTask.TaskCompletion;
             CommandManager.InvalidateRequerySuggested();

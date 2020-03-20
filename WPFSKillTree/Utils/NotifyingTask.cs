@@ -1,10 +1,23 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 namespace PoESkillTree.Utils
 {
+    public static class NotifyingTask
+    {
+        public static NotifyingTask<TResult> Create<TResult>(Task<TResult> task, Action<Exception> errorHandler)
+            where TResult: struct =>
+            new NotifyingTask<TResult>(task, default, errorHandler);
+
+        public static NotifyingTask<TResult> WithDefaultResult<TResult>()
+            where TResult: struct =>
+            FromResult(default(TResult));
+
+        public static NotifyingTask<TResult> FromResult<TResult>(TResult result) =>
+            new NotifyingTask<TResult>(Task.FromResult(result), result, _ => { });
+    }
+
     // Original source: Stephen Cleary at https://msdn.microsoft.com/en-us/magazine/dn605875.aspx
     /// <summary>
     /// Wrapper class around Task that notifies property changes, has
@@ -12,11 +25,10 @@ namespace PoESkillTree.Utils
     /// </summary>
     public sealed class NotifyingTask<TResult> : INotifyPropertyChanged
     {
-        [MaybeNull]
-        public TResult Default { private get; set; } = default!;
+        private readonly TResult _defaultResult;
         public Task TaskCompletion { get; }
         public Task<TResult> Task { get; }
-        public TResult Result => IsSuccessfullyCompleted ? Task.Result : Default;
+        public TResult Result => IsSuccessfullyCompleted ? Task.Result : _defaultResult;
         public TaskStatus Status => Task.Status;
         public bool IsCompleted => Task.IsCompleted;
         public bool IsNotCompleted => !Task.IsCompleted;
@@ -29,8 +41,8 @@ namespace PoESkillTree.Utils
 
         private readonly Func<Exception, Task> _errorHandler;
 
-        public NotifyingTask(Task<TResult> task, Action<Exception> errorHandler)
-            : this(task, e =>
+        public NotifyingTask(Task<TResult> task, TResult defaultResult, Action<Exception> errorHandler)
+            : this(task, defaultResult, e =>
             {
                 errorHandler(e);
                 return System.Threading.Tasks.Task.CompletedTask;
@@ -38,15 +50,13 @@ namespace PoESkillTree.Utils
         {
         }
 
-        public NotifyingTask(Task<TResult> task, Func<Exception, Task> errorHandler)
+        public NotifyingTask(Task<TResult> task, TResult defaultResult, Func<Exception, Task> errorHandler)
         {
             Task = task;
+            _defaultResult = defaultResult;
             _errorHandler = errorHandler;
             TaskCompletion = task.IsCompleted ? System.Threading.Tasks.Task.CompletedTask : WatchTaskAsync();
         }
-
-        public static NotifyingTask<TResult> FromResult(TResult result) =>
-            new NotifyingTask<TResult>(System.Threading.Tasks.Task.FromResult(result), _ => { });
 
         private async Task WatchTaskAsync()
         {
@@ -86,7 +96,7 @@ namespace PoESkillTree.Utils
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public NotifyingTask<TResult> Select(Func<TResult, TResult> selector) =>
-            new NotifyingTask<TResult>(SelectAsync(selector), _errorHandler) {Default = Default};
+            new NotifyingTask<TResult>(SelectAsync(selector), _defaultResult, _errorHandler);
 
         private async Task<TResult> SelectAsync(Func<TResult, TResult> selector) =>
             selector(await Task);
