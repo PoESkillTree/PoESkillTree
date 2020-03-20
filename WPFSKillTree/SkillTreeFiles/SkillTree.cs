@@ -195,6 +195,11 @@ namespace PoESkillTree.SkillTreeFiles
         {
             if (!_initialized)
             {
+                RootNodeList.Clear();
+                AscRootNodeList.Clear();
+                RootNodeClassDictionary.Clear();
+                StartNodeDictionary.Clear();
+
                 PoESkillTree = new PassiveTreeViewModel(treestring, opsstring);
 
                 controller?.SetProgress(0.25);
