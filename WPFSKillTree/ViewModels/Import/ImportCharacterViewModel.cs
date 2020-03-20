@@ -282,7 +282,7 @@ namespace PoESkillTree.ViewModels.Import
                     _itemAttributes.RemoveItem(item);
                 }
 
-                _itemAttributes.DeserializePassiveTreeJewels(importJson);
+                _itemAttributes.DeserializePassiveTreeJewels(importJson, SkillTree.PoESkillTree.JewelSocketPassiveNodeIds);
             }
             return Unit.Default;
         }
