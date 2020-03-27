@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PoESkillTree 2.1.3\n"
 "POT-Creation-Date: 2015-01-01 00:00+0000\n"
-"PO-Revision-Date: 2015-01-01 00:00+0000\n"
+"PO-Revision-Date: 2020-03-28 00:18+0300\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: ru\n"
@@ -12,30 +12,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 2.3\n"
 
 #: Computation\Views\AttributesInJewelRadiusView.xaml:18
 msgid "Attributes in radius:"
-msgstr ""
+msgstr "Атрибуты в радиусе:"
 
 #: Computation\Views\ComputationView.xaml:32
 msgid "Alpha Version"
-msgstr ""
+msgstr "Альфа-версия"
 
 #: Computation\Views\ComputationView.xaml:41
 msgid "Offensive Stats"
-msgstr ""
+msgstr "Атака"
 
 #: Computation\Views\ComputationView.xaml:52
 msgid "Defensive Stats"
-msgstr ""
+msgstr "Защита"
 
 #: Computation\Views\ComputationView.xaml:61
 msgid "Independent Stats"
-msgstr ""
+msgstr "Прочее"
 
 #: Computation\Views\ComputationView.xaml:71
 msgid "Configuration"
-msgstr ""
+msgstr "Конфигурация"
 
 #: Computation\Views\ComputationView.xaml:83
 msgid "Stats gained on action"
@@ -43,11 +44,11 @@ msgstr ""
 
 #: Computation\Views\MainSkillSelectionView.xaml:12
 msgid "Main Skill:"
-msgstr ""
+msgstr "Основной Навык:"
 
 #: Computation\Views\ResultStatToolTip.xaml:27
 msgid "Value"
-msgstr ""
+msgstr "Значение"
 
 #: Computation\Views\ResultStatToolTip.xaml:34
 msgid "Form"
@@ -59,15 +60,15 @@ msgstr ""
 
 #: Computation\Views\ResultStatToolTip.xaml:48
 msgid "Source"
-msgstr ""
+msgstr "Источник"
 
 #: Computation\Views\ResultStatToolTip.xaml:55
 msgid "Source Name"
-msgstr ""
+msgstr "Имя Источника"
 
 #: Controls\Dialogs\Views\FileSelectorView.xaml:41
 msgid "Browse..."
-msgstr ""
+msgstr "Открыть..."
 
 #: Controls\Dialogs\Views\FileSelectorView.xaml:49
 #: Controls\Dialogs\Views\MetroMessageBoxView.xaml:70
@@ -90,15 +91,15 @@ msgstr "Закрыть"
 
 #: Controls\Dialogs\Views\MetroMessageBoxView.xaml:44
 msgid "Details"
-msgstr ""
+msgstr "Подробности"
 
 #: Controls\Dialogs\Views\MetroMessageBoxView.xaml:56
 msgid "Yes"
-msgstr ""
+msgstr "Да"
 
 #: Controls\Dialogs\Views\MetroMessageBoxView.xaml:63
 msgid "No"
-msgstr ""
+msgstr "Нет"
 
 #: Themes\BaseDialog.xaml:72
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:288
@@ -108,28 +109,28 @@ msgstr "Закрыть"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:99
 msgid "Level:"
-msgstr ""
+msgstr "Уровень:"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:109
 msgid "Additional points:"
-msgstr ""
+msgstr "Дополнительные очки:"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:118
 msgid "Total points:"
-msgstr ""
+msgstr "Всего очков:"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:129
 msgid "include Check-tagged nodes"
-msgstr ""
+msgstr "включить отмеченные узлы"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:138
 #: TreeGenerator\Views\SteinerTabView.xaml:14
 msgid "exclude Cross-tagged nodes"
-msgstr ""
+msgstr "исключить Cross-tagged узлы"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:146
 msgid "Iterations:"
-msgstr ""
+msgstr "Итерации:"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:149
 msgid "Determines how often the generator is run. The best result from all runs is kept."
@@ -142,11 +143,11 @@ msgstr ""
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:164
 #: TreeGenerator\Views\SteinerTabView.xaml:24
 msgid "Run"
-msgstr ""
+msgstr "Запустить"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:171
 msgid "Reset settings"
-msgstr ""
+msgstr "Сбросить настройки"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:178
 msgid "Attributes"
@@ -154,24 +155,24 @@ msgstr "Атрибуты"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:196
 msgid "Load from tree"
-msgstr ""
+msgstr "Загрузить из дерева"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:199
 msgid "Convert to Pseudo Attributes"
-msgstr ""
+msgstr "Конвертировать в псевдоатрибуты"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:201
 msgid "Converts the attributes to pseudo attributes where possible using the defined settings."
-msgstr ""
+msgstr "Конвертировать атрибуты в псевдоатрибуты, где это возможно, используя заданные настройки."
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:226
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:319
 msgid "Add"
-msgstr ""
+msgstr "Добавить"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:235
 msgid "Attribute"
-msgstr ""
+msgstr "Атрибуты"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:240
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:333
@@ -181,43 +182,43 @@ msgstr ""
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:253
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:346
 msgid "Weight"
-msgstr ""
+msgstr "Вес"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:284
 msgid "Pseudo Attributes"
-msgstr ""
+msgstr "Псевдо-атрибуты"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:328
 msgid "Pseudo attribute"
-msgstr ""
+msgstr "Псевдо-атрибут"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:388
 msgid "Settings"
-msgstr ""
+msgstr "Настройки"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:423
 msgid "Tree + Items"
-msgstr ""
+msgstr "Дерево + Предметы"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:426
 msgid "Tree only"
-msgstr ""
+msgstr "Только дерево"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:433
 msgid "Reload Pseudo Attributes from filesystem"
-msgstr ""
+msgstr "Перезагрузить псевдоатрибуты из файловой системы"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:440
 msgid "Weapon class"
-msgstr ""
+msgstr "Класс оружия"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:455
 msgid "Off hand"
-msgstr ""
+msgstr "Вторая рука"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:478
 msgid "Tags"
-msgstr ""
+msgstr "Метки"
 
 #: TreeGenerator\Views\ControllerWindow.xaml:30
 msgid "Finding optimal Skill tree..."
@@ -253,19 +254,19 @@ msgstr "Права"
 
 #: Views\AboutWindow.xaml:77
 msgid "Skill tree assets, item images and game data belong to"
-msgstr ""
+msgstr "Ресурсы дерева навыков, изображения предметов и игровые данные принадлежат"
 
 #: Views\AboutWindow.xaml:78
 msgid "Unique item data and item images are retrieved from"
-msgstr ""
+msgstr "Данные уникальных предметов и изображений извлекаются из"
 
 #: Views\AboutWindow.xaml:82
 msgid "Other game data is retrieved using"
-msgstr ""
+msgstr "Другие игровые данные получены с помощью"
 
 #: Views\AboutWindow.xaml:90
 msgid "The build calculation engine used in PoESkillTree is located in a separate repository:"
-msgstr ""
+msgstr "Механизм расчета билдов, используемый в PoESkillTree, находится в отдельном репозитории:"
 
 #: Views\Builds\BuildsControl.xaml:25
 msgid "Right click to edit"
@@ -274,7 +275,7 @@ msgstr "Нажмите правую кнопку мыши для изменен�
 #: Views\Builds\BuildsControl.xaml:123 Views\Builds\BuildsControl.xaml:200
 #: Views\MainRibbon.xaml:488 Views\MainRibbon.xaml:493
 msgid "Edit"
-msgstr ""
+msgstr "Редактировать"
 
 #: Views\Builds\BuildsControl.xaml:130 Views\Builds\BuildsControl.xaml:207
 msgid "Delete"
@@ -282,28 +283,28 @@ msgstr "Удалить"
 
 #: Views\Builds\BuildsControl.xaml:138 Views\Builds\BuildsControl.xaml:215
 msgid "Cut"
-msgstr ""
+msgstr "Вырезать"
 
 #: Views\Builds\BuildsControl.xaml:145
 msgid "Paste"
-msgstr ""
+msgstr "Вставить"
 
 #: Views\Builds\BuildsControl.xaml:152
 msgid "New Build"
-msgstr ""
+msgstr "Новый Билд"
 
 #: Views\Builds\BuildsControl.xaml:158
 #: ViewModels\Builds\BuildsControlViewModel.cs:381
 msgid "New Folder"
-msgstr ""
+msgstr "Новая Папка"
 
 #: Views\Builds\BuildsControl.xaml:193
 msgid "Open"
-msgstr ""
+msgstr "Открыть"
 
 #: Views\Builds\BuildsControl.xaml:222
 msgid "Copy"
-msgstr ""
+msgstr "Копировать"
 
 #: Views\Builds\BuildsControl.xaml:229 Views\MainRibbon.xaml:159
 msgid "Save"
@@ -312,11 +313,11 @@ msgstr "Сохранить"
 #: Views\Builds\BuildsControl.xaml:235 Views\MainRibbon.xaml:511
 #: Views\MainRibbon.xaml:516
 msgid "Discard changes"
-msgstr ""
+msgstr "Отменить изменения"
 
 #: Views\Builds\BuildsControl.xaml:238
 msgid "Discards all changes made to this build after the last save"
-msgstr ""
+msgstr "Отменяет все изменения, сделанные в этом билде после последнего сохранения"
 
 #: Views\Builds\EditBuildWindow.xaml:17
 msgid "Build Information"
@@ -332,32 +333,32 @@ msgstr "Заметки"
 
 #: Views\Crafting\CraftingView.xaml:42
 msgid "Crafting Window"
-msgstr ""
+msgstr "Окно Создания Предметов"
 
 #: Views\Crafting\CraftingView.xaml:150
 #: Views\Crafting\UniqueCraftingView.xaml:57
 msgid "Create Item"
-msgstr ""
+msgstr "Создать Предмет"
 
 #: Views\Crafting\UniqueCraftingView.xaml:16
 msgid "Unique Crafting Window"
-msgstr ""
+msgstr "Окно создания Уникальных предметов"
 
 #: Views\Equipment\TabPicker.xaml:18
 msgid "Stash Bookmark"
-msgstr ""
+msgstr "Сохранить Закладку"
 
 #: Views\Equipment\TabPicker.xaml:33
 msgid "Name"
-msgstr ""
+msgstr "Имя"
 
 #: Views\Equipment\TabPicker.xaml:110
 msgid "Delete bookmark and items"
-msgstr ""
+msgstr "Удалить закладку и предметы"
 
 #: Views\Equipment\TabPicker.xaml:114
 msgid "Delete bookmark"
-msgstr ""
+msgstr "Удалить закладку"
 
 #: Views\HelpWindow.xaml:11 Views\MainRibbon.xaml:1209
 #: Views\MainRibbon.xaml:1221 Views\MainRibbon.xaml:1226
@@ -371,19 +372,19 @@ msgstr "Горячие клавиши"
 
 #: Views\HotkeysWindow.xaml:50
 msgid "Ribbon menu elements"
-msgstr ""
+msgstr "Элементы меню Ribbon"
 
 #: Views\HotkeysWindow.xaml:53
 msgid "See their tooltips"
-msgstr ""
+msgstr "Смотреть их подсказки"
 
 #: Views\HotkeysWindow.xaml:58
 msgid "Change character class"
-msgstr ""
+msgstr "Изменить класс персонажа"
 
 #: Views\HotkeysWindow.xaml:61
 msgid "Ctrl + 1"
-msgstr ""
+msgstr "Ctrl + 1"
 
 #: Views\HotkeysWindow.xaml:64
 msgid "Scion"
@@ -391,7 +392,7 @@ msgstr "Дворянка"
 
 #: Views\HotkeysWindow.xaml:67
 msgid "Ctrl + 2"
-msgstr ""
+msgstr "Ctrl + 2"
 
 #: Views\HotkeysWindow.xaml:70
 msgid "Marauder"
@@ -399,7 +400,7 @@ msgstr "Дикарь"
 
 #: Views\HotkeysWindow.xaml:73
 msgid "Ctrl + 3"
-msgstr ""
+msgstr "Ctrl + 3"
 
 #: Views\HotkeysWindow.xaml:76
 msgid "Ranger"
@@ -407,7 +408,7 @@ msgstr "Охотница"
 
 #: Views\HotkeysWindow.xaml:79
 msgid "Ctrl + 4"
-msgstr ""
+msgstr "Ctrl + 4"
 
 #: Views\HotkeysWindow.xaml:82
 msgid "Witch"
@@ -415,7 +416,7 @@ msgstr "Ведьма"
 
 #: Views\HotkeysWindow.xaml:85
 msgid "Ctrl + 5"
-msgstr ""
+msgstr "Ctrl + 5"
 
 #: Views\HotkeysWindow.xaml:88
 msgid "Duelist"
@@ -423,7 +424,7 @@ msgstr "Гладиатор"
 
 #: Views\HotkeysWindow.xaml:91
 msgid "Ctrl + 6"
-msgstr ""
+msgstr "Ctrl + 6"
 
 #: Views\HotkeysWindow.xaml:94
 msgid "Templar"
@@ -431,7 +432,7 @@ msgstr "Жрец"
 
 #: Views\HotkeysWindow.xaml:97
 msgid "Ctrl + 7"
-msgstr ""
+msgstr "Ctrl + 7"
 
 #: Views\HotkeysWindow.xaml:100
 msgid "Shadow"
@@ -440,92 +441,92 @@ msgstr "Бандит"
 #: Views\HotkeysWindow.xaml:105 Views\MainRibbon.xaml:322
 #: Views\MainRibbon.xaml:976 Views\MainWindow.xaml:181
 msgid "Passive tree"
-msgstr ""
+msgstr "Дерево"
 
 #: Views\HotkeysWindow.xaml:108
 msgid "Ctrl + F"
-msgstr ""
+msgstr "Ctrl + F"
 
 #: Views\HotkeysWindow.xaml:111
 msgid "Search"
-msgstr ""
+msgstr "Поиск"
 
 #: Views\HotkeysWindow.xaml:114
 msgid "Ctrl + + / Shift + Left Click"
-msgstr ""
+msgstr "Ctrl + + / Shift + Left Click"
 
 #: Views\HotkeysWindow.xaml:117
 msgid "Zoom in"
-msgstr ""
+msgstr "Приблизить"
 
 #: Views\HotkeysWindow.xaml:120
 msgid "Ctrl + - / Ctrl + Left Click"
-msgstr ""
+msgstr "Ctrl + - / Ctrl + Left Click"
 
 #: Views\HotkeysWindow.xaml:123
 msgid "Zoom out"
-msgstr ""
+msgstr "Отдалить"
 
 #: Views\HotkeysWindow.xaml:126
 msgid "Right Click outside of tree area"
-msgstr ""
+msgstr "Щелкните правой кнопкой мыши за пределами области дерева"
 
 #: Views\HotkeysWindow.xaml:129
 msgid "Center tree and reset zoom"
-msgstr ""
+msgstr "Центрирование дерева и сброс масштаба"
 
 #: Views\HotkeysWindow.xaml:132
 msgid "Right Click on node"
-msgstr ""
+msgstr "Щелкните правой кнопкой мыши на узле"
 
 #: Views\HotkeysWindow.xaml:135
 msgid "Toggle passive node tag"
-msgstr ""
+msgstr "Переключить метку узла"
 
 #: Views\HotkeysWindow.xaml:138
 msgid "Shift + Right Click on node"
-msgstr ""
+msgstr "Shift + правая кнопка мыши по узлу"
 
 #: Views\HotkeysWindow.xaml:141
 msgid "Toggle passive node tag (reversed)"
-msgstr ""
+msgstr "Переключить метку узла (обратно)"
 
 #: Views\HotkeysWindow.xaml:144
 msgid "Shift + Hover over node"
-msgstr ""
+msgstr "Shift + Наведите курсор на узел"
 
 #: Views\HotkeysWindow.xaml:147
 msgid "Highlight similar nodes"
-msgstr ""
+msgstr "Выделить похожие узлы"
 
 #: Views\HotkeysWindow.xaml:152 Views\MainWindow.xaml:254
 msgid "Equipment"
-msgstr ""
+msgstr "Снаряжение"
 
 #: Views\HotkeysWindow.xaml:155
 msgid "Double click on an item slot"
-msgstr ""
+msgstr "Двойной щелчок на слоте предмета"
 
 #: Views\HotkeysWindow.xaml:158
 msgid "Edit socketed gems"
-msgstr ""
+msgstr "Редактировать слоты"
 
 #: Views\HotkeysWindow.xaml:163 Views\MainRibbon.xaml:960
 #: Views\MainRibbon.xaml:1048
 msgid "Saved builds"
-msgstr ""
+msgstr "Сохраненные билды"
 
 #: Views\HotkeysWindow.xaml:166
 msgid "Ctrl + Up/Down Arrow"
-msgstr ""
+msgstr "Ctrl + Up/Down Arrow"
 
 #: Views\HotkeysWindow.xaml:169
 msgid "Move build up and down"
-msgstr ""
+msgstr "Переместить билд вверх и вниз"
 
 #: Views\HotkeysWindow.xaml:174 Views\MainRibbon.xaml:938
 msgid "Build summary"
-msgstr ""
+msgstr "Сводка по билду"
 
 #: Views\HotkeysWindow.xaml:177
 msgid "Right Click"
@@ -533,44 +534,44 @@ msgstr "Правая кнопка мыши"
 
 #: Views\HotkeysWindow.xaml:180
 msgid "Highlight corresponding nodes in passive tree"
-msgstr ""
+msgstr "Выделить соответствующие узлы в дереве"
 
 #: Views\Import\ImportCharacterWindow.xaml:40
 msgid "Retrieving leagues for realm failed:"
-msgstr ""
+msgstr "Получение лиг для области не удалось:"
 
 #: Views\Import\ImportCharacterWindow.xaml:48
 msgid "Retrieving leagues for realm"
-msgstr ""
+msgstr "Получение лиг для области"
 
 #: Views\Import\ImportCharacterWindow.xaml:56
 msgid "Retrieving characters for account failed:"
-msgstr ""
+msgstr "Не удалось получить персонажей учетной записи:"
 
 #: Views\Import\ImportCharacterWindow.xaml:64
 msgid "Retrieving characters for account"
-msgstr ""
+msgstr "Получение персонажей учетной записи"
 
 #: Views\Import\ImportCharacterWindow.xaml:72
 msgid "Importing item and skill data failed:"
-msgstr ""
+msgstr "Импорт предметов и навыков не удался:"
 
 #: Views\Import\ImportCharacterWindow.xaml:80
 msgid "Importing item and skill data"
-msgstr ""
+msgstr "Импорт предметов и навыков"
 
 #: Views\Import\ImportCharacterWindow.xaml:87
 msgid "Importing passive tree and jewel data failed:"
-msgstr ""
+msgstr "Импорт дерева и самоцветов не удался:"
 
 #: Views\Import\ImportCharacterWindow.xaml:95
 msgid "Importing passive tree and jewel data data"
-msgstr ""
+msgstr "Импорт дерева и самоцветов"
 
 #: Views\Import\ImportCharacterWindow.xaml:108
 #: Views\Import\ImportStashWindow.xaml:42
 msgid "Realm"
-msgstr ""
+msgstr "Область"
 
 #: Views\Import\ImportCharacterWindow.xaml:115
 #: Views\Import\ImportStashWindow.xaml:48
@@ -579,7 +580,7 @@ msgstr "Имя Аккаунта"
 
 #: Views\Import\ImportCharacterWindow.xaml:123
 msgid "All leagues"
-msgstr ""
+msgstr "Все лиги"
 
 #: Views\Import\ImportCharacterWindow.xaml:136
 msgid "Character name"
@@ -587,47 +588,47 @@ msgstr "Имя Героя"
 
 #: Views\Import\ImportCharacterWindow.xaml:152
 msgid "Profile is private"
-msgstr ""
+msgstr "Профиль приватный"
 
 #: Views\Import\ImportCharacterWindow.xaml:170
 msgid "Import items, skills and level"
-msgstr ""
+msgstr "Импорт предметов, навыков и уровня"
 
 #: Views\Import\ImportCharacterWindow.xaml:175
 msgid "Import items"
-msgstr ""
+msgstr "Импорт предметов"
 
 #: Views\Import\ImportCharacterWindow.xaml:180
 msgid "Import skills"
-msgstr ""
+msgstr "Импорт навыков"
 
 #: Views\Import\ImportCharacterWindow.xaml:185
 msgid "Import level"
-msgstr ""
+msgstr "Импорт уровня"
 
 #: Views\Import\ImportCharacterWindow.xaml:191
 msgid "Import passive tree and jewels"
-msgstr ""
+msgstr "Импорт дерева и самоцветов"
 
 #: Views\Import\ImportCharacterWindow.xaml:196
 msgid "Import tree"
-msgstr ""
+msgstr "Импорт дерева"
 
 #: Views\Import\ImportCharacterWindow.xaml:201
 msgid "Import jewels"
-msgstr ""
+msgstr "Импорт самоцветов"
 
 #: Views\Import\ImportStashWindow.xaml:30
 msgid "Enter your realm, account name and league below and click 'Open in Browser'."
-msgstr ""
+msgstr "Введите свою область, имя учетной записи и лигу ниже и нажмите кнопку \"Открыть в браузере\"."
 
 #: Views\Import\ImportStashWindow.xaml:31
 msgid "This will open a page in your default Web-browser containing a list of your stash tabs."
-msgstr ""
+msgstr "Откроется страница в вашем веб-браузере по умолчанию, содержащая список ваших вкладок тайника."
 
 #: Views\Import\ImportStashWindow.xaml:32
 msgid "Copy the contents of that page and click 'Load stash tab list from clipboard'."
-msgstr ""
+msgstr "Скопируйте содержимое этой страницы и нажмите кнопку \"Загрузить список вкладок тайника из буфера обмена\"."
 
 #: Views\Import\ImportStashWindow.xaml:55
 msgid "League"
@@ -635,7 +636,7 @@ msgstr "Лига"
 
 #: Views\Import\ImportStashWindow.xaml:67
 msgid "Link to stash tab list:"
-msgstr ""
+msgstr "Ссылка на список вкладок тайника:"
 
 #: Views\Import\ImportStashWindow.xaml:72
 #: Views\Import\ImportStashWindow.xaml:123
@@ -644,192 +645,194 @@ msgstr "Открыть в браузере"
 
 #: Views\Import\ImportStashWindow.xaml:84
 msgid "Load stash tab list from clipboard"
-msgstr ""
+msgstr "Загрузить список вкладок тайника из буфера обмена"
 
 #: Views\Import\ImportStashWindow.xaml:89
 msgid "Select a stash tab and click 'Open in browser' below."
-msgstr ""
+msgstr "Выберите вкладку тайника и нажмите кнопку \"Открыть в браузере\" ниже."
 
 #: Views\Import\ImportStashWindow.xaml:90
 msgid "This will open a page in your default Web-browser containing the item data of the selected stash."
-msgstr ""
+msgstr "Откроется страница в вашем веб-браузере по умолчанию, содержащая данные предмета в выбранном тайнике."
 
 #: Views\Import\ImportStashWindow.xaml:91
 msgid "Copy the contents of that page and click 'Load stash tab from clipboard'."
-msgstr ""
+msgstr "Скопируйте содержимое этой страницы и нажмите кнопку \"Загрузить вкладку тайника из буфера обмена\"."
 
 #: Views\Import\ImportStashWindow.xaml:118
 msgid "Link to stash tab:"
-msgstr ""
+msgstr "Ссылка на вкладку тайника:"
 
 #: Views\Import\ImportStashWindow.xaml:135
 msgid "Load stash tab from clipboard"
-msgstr ""
+msgstr "Загрузить вкладку тайника из буфера обмена"
 
 #: Views\MainRibbon.xaml:57
 msgid "File"
-msgstr ""
+msgstr "Файл"
 
 #: Views\MainRibbon.xaml:61
 msgid "New"
-msgstr ""
+msgstr "Новый"
 
 #: Views\MainRibbon.xaml:71
 msgid "New top level build"
-msgstr ""
+msgstr "Новый билд сверху"
 
 #: Views\MainRibbon.xaml:76
 msgid "New top level build (Ctrl+N)"
-msgstr ""
+msgstr "Новый билд сверху (Ctrl+N)"
 
 #: Views\MainRibbon.xaml:79
 msgid "Create a new empty build in the root build folder."
-msgstr ""
+msgstr "Создать новый пустой билд в корневой папке билда."
 
 #: Views\MainRibbon.xaml:91 Views\MainRibbon.xaml:96
 msgid "New build next to current"
-msgstr ""
+msgstr "Новый билд ниже текущего"
 
 #: Views\MainRibbon.xaml:101
 #, csharp-format
 msgid "Create a new empty build in the same folder as the current build ({0})."
-msgstr ""
+msgstr "Создать новый пустой билд в той же папке, что и текущий билд ({0})."
 
 #: Views\MainRibbon.xaml:116
 msgid "New top level folder"
-msgstr ""
+msgstr "Новая папка верхнего уровня"
 
 #: Views\MainRibbon.xaml:121
 msgid "New top level folder (Ctrl+Shift+N)"
-msgstr ""
+msgstr "Новая папка верхнего уровня (Ctrl+Shift+N)"
 
 #: Views\MainRibbon.xaml:124
 msgid "Create a new empty folder in the root build folder."
-msgstr ""
+msgstr "Создать новую пустую папку в корневой папке билда."
 
 #: Views\MainRibbon.xaml:136 Views\MainRibbon.xaml:141
 msgid "New folder next to current"
-msgstr ""
+msgstr "Новая папка рядом с текущей"
 
 #: Views\MainRibbon.xaml:146
 #, csharp-format
 msgid "Create a new empty folder in the same folder as the current build ({0})."
-msgstr ""
+msgstr "Создать новую пустую папку в той же папке, что и текущий билд ({0})."
 
 #: Views\MainRibbon.xaml:151
 msgid "Maximum folder depth has been reached."
-msgstr ""
+msgstr "Максимальная глубина папок была достигнута."
 
 #: Views\MainRibbon.xaml:169
 msgid "Save current build"
-msgstr ""
+msgstr "Сохранить текущий билд"
 
 #: Views\MainRibbon.xaml:174
 msgid "Save current build (Ctrl+S)"
-msgstr ""
+msgstr "Save current build (Ctrl+S)"
 
 #: Views\MainRibbon.xaml:177
 msgid "Save the currently opened build."
-msgstr ""
+msgstr "Сохранить текущий открытый билд."
 
 #: Views\MainRibbon.xaml:180
 msgid "The current build has no unsaved changes."
-msgstr ""
+msgstr "Текущий билд не имеет несохраненных изменений."
 
 #: Views\MainRibbon.xaml:193
 msgid "Save current build as"
-msgstr ""
+msgstr "Сохранить текущий билд как"
 
 #: Views\MainRibbon.xaml:198
 msgid "Save current build as (Ctrl+Alt+S)"
-msgstr ""
+msgstr "Сохранить текущий билд как (Ctrl+Alt+S)"
 
 #: Views\MainRibbon.xaml:201
 msgid "Save the currently opened build as a new build."
-msgstr ""
+msgstr "Сохранить текущий открытый билд как новый."
 
 #: Views\MainRibbon.xaml:213
 msgid "Save all builds"
-msgstr ""
+msgstr "Сохранить все билды"
 
 #: Views\MainRibbon.xaml:218
 msgid "Save all builds (Ctrl+Shift+N)"
-msgstr ""
+msgstr "Сохранить все билды (Ctrl+Shift+N)"
 
 #: Views\MainRibbon.xaml:221
 msgid "Save all changed builds."
-msgstr ""
+msgstr "Сохранить все измененные билды."
 
 #: Views\MainRibbon.xaml:224
 msgid "No build has unsaved changes."
-msgstr ""
+msgstr "Ни в одном билде нет несохраненных изменений."
 
 #: Views\MainRibbon.xaml:238 Views\MainRibbon.xaml:243
 msgid "Reload builds from file system"
-msgstr ""
+msgstr "Перезагрузить билды из файловой системы"
 
 #: Views\MainRibbon.xaml:246
 msgid "Reload saved build information from file system, e.g. after manually copying builds there."
-msgstr ""
+msgstr "Перезагрузить сохраненную информацию о билде из файловой системы, например, после ручного копирования туда билдов."
 
 #: Views\MainRibbon.xaml:257 Views\MainRibbon.xaml:262
 msgid "Open build directory"
-msgstr ""
+msgstr "Открыть каталог билда"
 
 #: Views\MainRibbon.xaml:265
 msgid ""
 "Open the build save path in the file explorer.\n"
 "The path can be changed in the options."
 msgstr ""
+"Открыть путь сохранения билдов в проводнике.\n"
+"Путь можно изменить в настройках."
 
 #: Views\MainRibbon.xaml:278 Views\MainRibbon.xaml:283
 #: ViewModels\SettingsMenuViewModel.cs:30
 msgid "Options"
-msgstr ""
+msgstr "Параметры"
 
 #: Views\MainRibbon.xaml:286
 msgid "Open the options."
-msgstr ""
+msgstr "Открыть параметры."
 
 #: Views\MainRibbon.xaml:297
 msgid "Exit"
-msgstr ""
+msgstr "Выход"
 
 #: Views\MainRibbon.xaml:302
 msgid "Exit (Alt+F4)"
-msgstr ""
+msgstr "Выход (Alt+F4)"
 
 #: Views\MainRibbon.xaml:305
 msgid "Exit the program."
-msgstr ""
+msgstr "Выйти из программы."
 
 #: Views\MainRibbon.xaml:318
 msgid "Home"
-msgstr ""
+msgstr "Домашняя"
 
 #: Views\MainRibbon.xaml:333
 msgid "Undo"
-msgstr ""
+msgstr "Отменить"
 
 #: Views\MainRibbon.xaml:338
 msgid "Undo (Ctrl+Z)"
-msgstr ""
+msgstr "Отменить (Ctrl+Z)"
 
 #: Views\MainRibbon.xaml:341
 msgid "Undo the last passive tree action."
-msgstr ""
+msgstr "Отменить последнее  действие дерева."
 
 #: Views\MainRibbon.xaml:355
 msgid "Redo"
-msgstr ""
+msgstr "Повторить"
 
 #: Views\MainRibbon.xaml:360
 msgid "Redo (Ctrl+Y)"
-msgstr ""
+msgstr "Повторить (Ctrl+Y)"
 
 #: Views\MainRibbon.xaml:363
 msgid "Redo the last passive tree action."
-msgstr ""
+msgstr "Повтор последнего действия дерева."
 
 #: Views\MainRibbon.xaml:377
 msgid "Reset"
@@ -837,464 +840,463 @@ msgstr "Сбросить"
 
 #: Views\MainRibbon.xaml:382
 msgid "Reset passive tree (Ctrl+R)"
-msgstr ""
+msgstr "Сбросить дерево (Ctrl+R)"
 
 #: Views\MainRibbon.xaml:385
 msgid "Reset the passive tree. What is reset can be configured in the options."
-msgstr ""
+msgstr "Сброс дерева. Что будет сброшено, можно изменить в настройках."
 
 #: Views\MainRibbon.xaml:390
 msgid "Reset preferences"
-msgstr ""
+msgstr "Настройки сброса"
 
 #: Views\MainRibbon.xaml:396
 msgid "Non-ascendancy passive nodes"
-msgstr ""
+msgstr "Обычные узлы"
 
 #: Views\MainRibbon.xaml:403
 msgid "Ascendancy passive nodes"
-msgstr ""
+msgstr "Узлы восхождения"
 
 #: Views\MainRibbon.xaml:410
 msgid "Selected bandit"
-msgstr ""
+msgstr "Выбранного разбойника"
 
 #: Views\MainRibbon.xaml:417
 msgid "Craft"
-msgstr ""
+msgstr "Создание"
 
 #: Views\MainRibbon.xaml:428 Views\MainRibbon.xaml:433
 msgid "Craft unique"
-msgstr ""
+msgstr "Создание  уника"
 
 #: Views\MainRibbon.xaml:436
 msgid "Craft a new unique item and add it to the stash."
-msgstr ""
+msgstr "Создание нового уникального предмета и добавление его в тайник."
 
 #: Views\MainRibbon.xaml:450 Views\MainRibbon.xaml:455
 msgid "Craft item"
-msgstr ""
+msgstr "Создание предмета"
 
 #: Views\MainRibbon.xaml:458
 msgid "Craft a new non-unique item and add it to the stash."
-msgstr ""
+msgstr "Создание нового неуникального предмета и добавление его в тайник."
 
 #: Views\MainRibbon.xaml:466 Views\MainRibbon.xaml:471
 msgid "Build"
-msgstr ""
+msgstr "Билд"
 
 #: Views\MainRibbon.xaml:474
 msgid "These commands operate on the current build. For other builds and folders, use the saved builds panel's context menu."
-msgstr ""
+msgstr "Эти команды работают на текущем билде. Для других билдов и папок используйте контекстное меню панели сохраненных билдов."
 
 #: Views\MainRibbon.xaml:496
 msgid "Change the current build's name and note."
-msgstr ""
+msgstr "Измените имя и примечание текущего билда."
 
 #: Views\MainRibbon.xaml:519
 msgid "Discards all changes made to the current build after the last save."
-msgstr ""
+msgstr "Отменить все изменения, сделанные в текущем билде после последнего сохранения."
 
 #: Views\MainRibbon.xaml:533 Views\MainRibbon.xaml:538
 msgid "Copy (export)"
-msgstr ""
+msgstr "Копировать (экспорт)"
 
 #: Views\MainRibbon.xaml:541
 msgid "Copy/export the current build to the clipboard as a XML string."
-msgstr ""
+msgstr "Скопировать/экспортировать текущий билд в буфер обмена в виде строки XML."
 
 #: Views\MainRibbon.xaml:555 Views\MainRibbon.xaml:560
 msgid "Paste (import)"
-msgstr ""
+msgstr "Вставить (импорт)"
 
 #: Views\MainRibbon.xaml:563
 msgid "Paste/import a new build from the clipboard into the root build folder and open it."
-msgstr ""
+msgstr "Вставить/импортировать новый билд из буфера обмена в корневую папку билда и открыть ее."
 
 #: Views\MainRibbon.xaml:566
 msgid "The clipboard is empty or does not contain a build in a suitable format. Builds can only be imported as a XML string."
-msgstr ""
+msgstr "Буфер обмена пуст или не содержит билда в подходящем формате. Билды могут быть импортированы только в виде строки XML."
 
 #: Views\MainRibbon.xaml:574
 msgid "Import"
-msgstr ""
+msgstr "Импорт"
 
 #: Views\MainRibbon.xaml:585 Views\MainRibbon.xaml:590
 msgid "Import character"
-msgstr ""
+msgstr "Импорт персонажа"
 
 #: Views\MainRibbon.xaml:593
 msgid "Import passive tree, items and skills of an existing character."
-msgstr ""
+msgstr "Импор дерева, предметов и навыков существующего персонажа."
 
 #: Views\MainRibbon.xaml:607 Views\MainRibbon.xaml:612
 msgid "Import stash"
-msgstr ""
+msgstr "Импорт тайника"
 
 #: Views\MainRibbon.xaml:615
 msgid "Import stash tabs of an account."
-msgstr ""
+msgstr "Импорт вкладок тайника учетной записи."
 
 #: Views\MainRibbon.xaml:629 Views\MainRibbon.xaml:634
 msgid "Import PoB"
-msgstr ""
+msgstr "Импорт PoB"
 
 #: Views\MainRibbon.xaml:637
 msgid "Import a new build from the clipboard in Path of Building's format (build code or pastebin URL) into the root folder and open it."
-msgstr ""
+msgstr "Импортировать новый билд из буфера обмена в формате Path of Building (код билда или pastebin URL-адрес) в корневую папку и открыть ее."
 
 #: Views\MainRibbon.xaml:640
 msgid "The clipboard is empty or does not contain a build in a suitable format. Builds can only be imported from a build code or pastebin URL."
-msgstr ""
+msgstr "Буфер обмена пуст или не содержит билд в подходящем формате. Билды можно импортировать только из кода билда или pastebin URL-адреса."
 
 #: Views\MainRibbon.xaml:648
 msgid "Tag nodes"
-msgstr ""
+msgstr "Отметить узлы"
 
 #: Views\MainRibbon.xaml:659 Views\MainRibbon.xaml:664
 msgid "Tag highlighted nodes"
-msgstr ""
+msgstr "Отметить выделенные узлы"
 
 #: Views\MainRibbon.xaml:667
 msgid "Tag all highlighted nodes."
-msgstr ""
+msgstr "Отметить все выделенные узлы."
 
 #: Views\MainRibbon.xaml:677 Views\MainRibbon.xaml:682
 msgid "Check-tag highlighted nodes"
-msgstr ""
+msgstr "Cross-tagged выделенные узлы"
 
 #: Views\MainRibbon.xaml:685
 msgid "Check-tag all highlighted nodes."
-msgstr ""
+msgstr "Выделить все отмеченные узлы"
 
 #: Views\MainRibbon.xaml:696 Views\MainRibbon.xaml:701
 msgid "Cross-tag highlighted nodes"
-msgstr ""
+msgstr "Cross-tag выделенные узлы"
 
 #: Views\MainRibbon.xaml:704
 msgid "Cross-tag all highlighted nodes."
-msgstr ""
+msgstr "Cross-tag все выделенные узлы"
 
 #: Views\MainRibbon.xaml:720 Views\MainRibbon.xaml:725
 msgid "Untag all nodes"
-msgstr ""
+msgstr "Снять метки со всех узлов"
 
 #: Views\MainRibbon.xaml:728
 msgid "Remove tags from all passive nodes."
-msgstr ""
+msgstr "Удалить отмечтки со всех узлов."
 
 #: Views\MainRibbon.xaml:743 Views\MainRibbon.xaml:748
 msgid "Unhighlight all nodes"
-msgstr ""
+msgstr "Снять выделение всех узлов"
 
 #: Views\MainRibbon.xaml:751
 msgid "Remove all passive node highlights."
-msgstr ""
+msgstr "Удалить все выделения узлов."
 
 #: Views\MainRibbon.xaml:759
 msgid "Tools"
-msgstr ""
+msgstr "Инструменты"
 
 #: Views\MainRibbon.xaml:771
 msgid "Passive tree generator"
-msgstr ""
+msgstr "Генератор дерева"
 
 #: Views\MainRibbon.xaml:776
 msgid "Passive tree generator (Ctrl+Shift+G)"
-msgstr ""
+msgstr "Генератор дерева (Ctrl+Shift+G)"
 
 #: Views\MainRibbon.xaml:779
 msgid "Open the passive tree generator. It creates optimized builds based on constraints."
-msgstr ""
+msgstr "Открыть генератор дерева. Он создает оптимизированные билды на основе ограничений."
 
 #: Views\MainRibbon.xaml:789
 msgid "Run 'Tagged Nodes' generator"
-msgstr ""
+msgstr "Запустить генератор для 'Отмеченных Узлов'"
 
 #: Views\MainRibbon.xaml:794
 msgid "Run 'Tagged Nodes' generator (Ctrl+Shift+T)"
-msgstr ""
+msgstr "Запустить генератор для 'Отмеченных Узлов' (Ctrl+Shift+T)"
 
 #: Views\MainRibbon.xaml:797
 msgid "Run the 'Tagged Nodes' generator with the current settings set in the passive tree generator window."
-msgstr ""
+msgstr "Запустить генератор для 'Отмеченных Узлов' с текущими настройками, установленными в окне генератора дерева."
 
 #: Views\MainRibbon.xaml:808
 msgid "Run 'Advanced' generator"
-msgstr ""
+msgstr "Запустить 'Advanced' генератор"
 
 #: Views\MainRibbon.xaml:813
 msgid "Run 'Advanced' generator (Ctrl+Shift+A)"
-msgstr ""
+msgstr "Запустить 'Advanced' генератор (Ctrl+Shift+A)"
 
 #: Views\MainRibbon.xaml:816
 msgid "Run the 'Advanced' generator with the current settings set in the passive tree generator window."
-msgstr ""
+msgstr "Запустить 'Advanced' генератор  с текущими настройками, установленными в окне генератора дерева."
 
 #: Views\MainRibbon.xaml:832 Views\MainRibbon.xaml:837
 msgid "Screenshot skilled nodes"
-msgstr ""
+msgstr "Сделать скриншот узлов с навыками"
 
 #: Views\MainRibbon.xaml:840
 msgid "Take a screenshot of the passive tree area around the skilled nodes."
-msgstr ""
+msgstr "Сделать скриншот области дерева вокруг узлов с навыками."
 
 #: Views\MainRibbon.xaml:856
 msgid "Create PoEUrl of passive tree"
-msgstr ""
+msgstr "Создать ссылку PoEUrl для дерева"
 
 #: Views\MainRibbon.xaml:861
 msgid "Create PoEUrl of passive tree (Ctrl+E)"
-msgstr ""
+msgstr "Создать ссылку PoEUrl для дерева (Ctrl+E)"
 
 #: Views\MainRibbon.xaml:864
 msgid "Creates a PoEUrl from the current passive tree URL and copies it to the clipboard."
-msgstr ""
+msgstr "Создать PoEUrl из текущего URL-адреса дерева и копировать его в буфер обмена."
 
 #: Views\MainRibbon.xaml:879 Views\MainRibbon.xaml:884
 msgid "Download live tree data"
-msgstr ""
+msgstr "Загрузить данные дерева онлайн"
 
 #: Views\MainRibbon.xaml:887
 msgid "Delete the current passive tree data and download the official data from the latest patch."
-msgstr ""
+msgstr "Удалить текущие данные дерева и загрузить официальные данные из последнего патча."
 
 #: Views\MainRibbon.xaml:902 Views\MainRibbon.xaml:907
 msgid "Check for updates"
-msgstr ""
+msgstr "Проверить наличие обновлений"
 
 #: Views\MainRibbon.xaml:910
 msgid "Check for updates available for PoESkillTree."
-msgstr ""
+msgstr "Проверить наличие обновлений, доступных для PoESkillTree."
 
 #: Views\MainRibbon.xaml:923
 msgid "View"
-msgstr ""
+msgstr "Вид"
 
 #: Views\MainRibbon.xaml:927
 msgid "Panels"
-msgstr ""
+msgstr "Панели"
 
 #: Views\MainRibbon.xaml:943
 msgid "Build summary (Ctrl+Q)"
-msgstr ""
+msgstr "Сводка по билду (Ctrl+Q)"
 
 #: Views\MainRibbon.xaml:946
 msgid "Show a summary of the currently opened build."
-msgstr ""
+msgstr "Показать сводку по текущему открытому билду."
 
 #: Views\MainRibbon.xaml:965
 msgid "Saved builds (Ctrl+B)"
-msgstr ""
+msgstr "Сохраненные билды (Ctrl+B)"
 
 #: Views\MainRibbon.xaml:968
 msgid "Show the available builds in the build save path."
-msgstr ""
+msgstr "Показать доступные билды в пути сохранения билда."
 
 #: Views\MainRibbon.xaml:987
 msgid "Summary of changes"
-msgstr ""
+msgstr "Сводка изменений"
 
 #: Views\MainRibbon.xaml:992
 msgid "Summary of changes (Ctrl+G)"
-msgstr ""
+msgstr "Сводка изменений (Ctrl+G)"
 
 #: Views\MainRibbon.xaml:995
 msgid "Show a summary of the total changes to the passive tree when hovering over a node."
-msgstr ""
+msgstr "Показать сводку общих изменений в дереве при наведении на узел."
 
 #: Views\MainRibbon.xaml:1009 Views\MainRibbon.xaml:1014
 msgid "Tree comparison"
-msgstr ""
+msgstr "Сравнение деревьев"
 
 #: Views\MainRibbon.xaml:1017
 msgid "Compare the passive trees of the current and selected builds. Builds can be selected in the saved builds panel."
-msgstr ""
+msgstr "Сравнить деревья текущего и выбранного билдов. Билды можно выбрать на панели сохраненных билдов."
 
 #: Views\MainRibbon.xaml:1031 Views\MainRibbon.xaml:1036
 msgid "Show all ascendancies"
-msgstr ""
+msgstr "Показать все восхождения"
 
 #: Views\MainRibbon.xaml:1039
 msgid "Show all ascendancy class passive nodes instead of just your current ascendancy."
-msgstr ""
+msgstr "Показать все узлы класса восхождения, а не только вашего текущего восхождения."
 
 #: Views\MainRibbon.xaml:1059 Views\MainRibbon.xaml:1064
 msgid "Expand all folders"
-msgstr ""
+msgstr "Развернуть все папки"
 
 #: Views\MainRibbon.xaml:1067
 msgid "Expand all build folders in the saved builds panel."
-msgstr ""
+msgstr "Развернуть все папки билда на панели сохраненных билдов."
 
 #: Views\MainRibbon.xaml:1070 Views\MainRibbon.xaml:1095
 msgid "The saved builds panel must be open."
-msgstr ""
+msgstr "Панель сохраненных билдов должна быть открыта."
 
 #: Views\MainRibbon.xaml:1084 Views\MainRibbon.xaml:1089
 msgid "Collapse all folders"
-msgstr ""
+msgstr "Свернуть все папки"
 
 #: Views\MainRibbon.xaml:1092
 msgid "Collapse all build folders in the saved builds panel."
-msgstr ""
+msgstr "Свернуть все папки билда на панели сохраненных билдов."
 
 #: Views\MainRibbon.xaml:1103
 msgid "Theme"
-msgstr ""
+msgstr "Тема"
 
 #: Views\MainRibbon.xaml:1111
 msgid "Base color:"
-msgstr ""
+msgstr "Базовый цвет:"
 
 #: Views\MainRibbon.xaml:1116
 msgid "Base color"
-msgstr ""
+msgstr "Базовый цвет"
 
 #: Views\MainRibbon.xaml:1119
 msgid "Change the base color of the theme defining the program's look."
-msgstr ""
+msgstr "Изменить основной цвет темы, определяющий внешний вид программы."
 
 #: Views\MainRibbon.xaml:1131
 msgid "Color scheme:"
-msgstr ""
+msgstr "Цветовая схема:"
 
 #: Views\MainRibbon.xaml:1147
 msgid "Color scheme"
-msgstr ""
+msgstr "Цветовая схема"
 
 #: Views\MainRibbon.xaml:1150
 msgid "Change the color scheme of the theme defining the program's look."
-msgstr ""
+msgstr "Изменить цветовую схему темы, определяющую внешний вид программы."
 
 #: Views\MainRibbon.xaml:1158
 msgid "Links"
-msgstr ""
+msgstr "Ссылки"
 
 #: Views\MainRibbon.xaml:1170 Views\MainRibbon.xaml:1175
 msgid "Path of Exile website"
-msgstr ""
+msgstr "Вебсайт Path of Exile"
 
 #: Views\MainRibbon.xaml:1178
 msgid "Open the official Path of Exile website in the default web browser."
-msgstr ""
+msgstr "Открыть официальный сайт Path of Exile веб-браузере по умолчанию."
 
 #: Views\MainRibbon.xaml:1193 Views\MainRibbon.xaml:1198
 msgid "Path of Exile wiki"
-msgstr ""
+msgstr "Вики Path of Exile"
 
 #: Views\MainRibbon.xaml:1201
 msgid "Open the Path of Exile wiki in the default web browser."
-msgstr ""
+msgstr "Открыть вики  Path of Exile в веб-браузере по умолчанию."
 
 #: Views\MainRibbon.xaml:1229
 msgid "Learn more about the program."
-msgstr ""
+msgstr "Узнать больше о программе."
 
 #: Views\MainRibbon.xaml:1252
 msgid "Learn more about the available hotkeys."
-msgstr ""
+msgstr "Узнать больше о доступных горячих клавишах."
 
 #: Views\MainRibbon.xaml:1267 Views\MainRibbon.xaml:1272
 msgid "About"
-msgstr ""
+msgstr "О программе"
 
 #: Views\MainRibbon.xaml:1275
 msgid "View information about the program."
-msgstr ""
+msgstr "Просмотр информации о программе."
 
 #: Views\MainWindow.xaml:151 Views\MainWindow.xaml:223
 msgid "Use regular expressions"
-msgstr ""
+msgstr "Использовать регулярные выражения"
 
 #: Views\MainWindow.xaml:239 Views\MainWindow.xaml:242
 msgid "Passive tree link"
-msgstr ""
+msgstr "Ссылка на дерево"
 
 #: Views\MainWindow.xaml:281
-#, fuzzy
 msgid "Skills"
-msgstr "Сбросить пассивные умения"
+msgstr "Нывыки"
 
 #: Views\MainWindow.xaml:287
 msgid "Computation"
-msgstr ""
+msgstr "Расчеты"
 
 #: Views\MainWindow.xaml:302
 msgid "Bandit"
-msgstr ""
+msgstr "Разбойник"
 
 #: Views\MainWindow.xaml:314
 msgid "Used Passive Skill Points"
-msgstr ""
+msgstr "Использованные Очки Пассивных Навыков"
 
 #: Views\MainWindow.xaml:320
 msgid "Total Passive Skill Points"
-msgstr ""
+msgstr "Всего Очков Пассивных Навыков"
 
 #: Views\MainWindow.xaml:332
 msgid "Used Ascendancy Skill Points"
-msgstr ""
+msgstr "Использованные Очки Навыков Восхождения"
 
 #: Views\MainWindow.xaml:338
 msgid "Total Ascendancy Skill Points"
-msgstr ""
+msgstr "Всего Очков Навыков Восхождения"
 
 #: Views\MainWindow.xaml:348
 msgid "Level"
-msgstr ""
+msgstr "Уровень"
 
 #: Views\SettingsMenuWindow.xaml:45
 msgid "General:"
-msgstr ""
+msgstr "Общие:"
 
 #: Views\SettingsMenuWindow.xaml:61
 msgid "Language"
-msgstr ""
+msgstr "Язык"
 
 #: Views\SettingsMenuWindow.xaml:72
 msgid "Build save path"
-msgstr ""
+msgstr "Путь сохранения билдов"
 
 #: Views\SettingsMenuWindow.xaml:87
 msgid "Change..."
-msgstr ""
+msgstr "Изменить..."
 
 #: Views\SettingsMenuWindow.xaml:95
 msgid "Colors:"
-msgstr ""
+msgstr "Цвета:"
 
 #: Views\SettingsMenuWindow.xaml:112
 msgid "Node Search Highlight"
-msgstr ""
+msgstr "Выделение для Поиска Узлов"
 
 #: Views\SettingsMenuWindow.xaml:123
 msgid "Attribute Highlight"
-msgstr ""
+msgstr "Выделение для Атрибутов"
 
 #: Views\SettingsMenuWindow.xaml:133
 msgid "Node Hover Highlight"
-msgstr ""
+msgstr "Выделение Узлов при Наведении"
 
 #: Views\SettingsMenuWindow.xaml:143
 msgid "Equipment:"
-msgstr ""
+msgstr "Снаряжение:"
 
 #: Views\SettingsMenuWindow.xaml:158
 msgid "Automatically download missing item images"
-msgstr ""
+msgstr "Загружать отсутствующие изображения предметов"
 
 #: Views\Skills\SkillsInSlotEditingDialog.xaml:13
 msgid "Edit Socketed Skills"
-msgstr ""
+msgstr "Редактирование Навыков со Слотами"
 
 #: Views\Skills\SkillsInSlotEditingView.xaml:218
 msgid "Equipped item's maximum number of sockets:"
-msgstr ""
+msgstr "Максимальное число слотов в экипированном предмете:"
 
 #: Controls\Dialogs\ExtendedDialogManager.cs:57
 msgid "Confirmation"
-msgstr ""
+msgstr "Подтверждение"
 
 #: Controls\Dialogs\ExtendedDialogManager.cs:62
 msgid "Error"
@@ -1310,46 +1312,48 @@ msgstr "Информация"
 
 #: Model\Serialization\AbstractPersistentDataDeserializer.cs:97
 msgid "Directory must be empty."
-msgstr ""
+msgstr "Каталог должен быть пустым."
 
 #: Model\Serialization\AbstractPersistentDataDeserializer.cs:101
 #: ViewModels\SettingsMenuViewModel.cs:66
 msgid "Select build directory"
-msgstr ""
+msgstr "Выберите каталог билда"
 
 #: Model\Serialization\AbstractPersistentDataDeserializer.cs:102
 msgid ""
 "Select the directory where builds will be stored.\n"
 "It will be created if it does not yet exist. You can change it in the settings later."
 msgstr ""
+"Выберите каталог, в котором будут храниться билды.\n"
+"Он будет создан, если он еще не существует. Вы можете изменить его в настройках позже."
 
 #: Model\Serialization\PersistentDataDeserializerCurrent.cs:75
 #, csharp-format
 msgid "Could not import build file, only existing files with the extension {0} can be imported."
-msgstr ""
+msgstr "Не удалось импортировать файл билда, можно импортировать только существующие файлы с расширением {0}."
 
 #: Model\Serialization\PersistentDataDeserializerCurrent.cs:77
 #: Model\Serialization\PersistentDataDeserializerCurrent.cs:139
 #: Model\Serialization\PersistentDataDeserializerCurrent.cs:148
 #: ViewModels\Builds\BuildsControlViewModel.cs:757
 msgid "Import failed"
-msgstr ""
+msgstr "Импорт не удался"
 
 #: Model\Serialization\PersistentDataDeserializerCurrent.cs:138
 msgid "Build is of an old version and can't be imported"
-msgstr ""
+msgstr "Билд имеет старую версию и не может быть импортирован"
 
 #: Model\Serialization\PersistentDataDeserializerCurrent.cs:147
 msgid "Could not import build"
-msgstr ""
+msgstr "Не удалось импортировать билд"
 
 #: Model\Serialization\SerializationConstants.cs:16
 msgid "New build"
-msgstr ""
+msgstr "Новый билд"
 
 #: SkillTreeFiles\SkillTree.cs:1040
 msgid "Some nodes ({unknownNodes}) are unknown and have been omitted."
-msgstr ""
+msgstr "Некоторые узлы ({unknownNodes}) неизвестны и были опущены."
 
 #: SkillTreeFiles\Updater.cs:107 SkillTreeFiles\Updater.cs:232
 msgid "Download already in progress"
@@ -1387,7 +1391,7 @@ msgstr ""
 
 #: TreeGenerator\Model\PseudoAttributes\PseudoAttributeLoader.cs:105
 msgid "Invalid Xml file: "
-msgstr ""
+msgstr "Недопустимый Xml-файл:"
 
 #: TreeGenerator\Model\PseudoAttributes\PseudoAttributeLoader.cs:190
 #, csharp-format
@@ -1415,7 +1419,7 @@ msgstr ""
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:210
 #: Utils\Converter\GroupStringConverter.cs:35
 msgid "Core Attributes"
-msgstr "Главние атрибуты"
+msgstr "Главные атрибуты"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:211
 #: Utils\Converter\GroupStringConverter.cs:31
@@ -1425,7 +1429,7 @@ msgstr "Общее"
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:212
 #: Utils\Converter\GroupStringConverter.cs:20
 msgid "Keystone"
-msgstr "Ключевые пассивное навики"
+msgstr "Ключевые пассивное навыки"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:213
 #: Utils\Converter\GroupStringConverter.cs:22
@@ -1490,24 +1494,24 @@ msgstr "Тотемы"
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:228
 #: Utils\Converter\GroupStringConverter.cs:34
 msgid "Flasks"
-msgstr ""
+msgstr "Флаконы"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:229
 #: Utils\Converter\GroupStringConverter.cs:36
 msgid "Everything Else"
-msgstr ""
+msgstr "Все Остальное"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:273
 msgid "Advanced"
-msgstr ""
+msgstr "Дополнительные"
 
 #: TreeGenerator\ViewModels\AutomatedTabViewModel.cs:17
 msgid "Automated"
-msgstr ""
+msgstr "Автоматизированные"
 
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:25
 msgid "Current iteration:"
-msgstr ""
+msgstr "Текущая итерация:"
 
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:80
 msgid "Initializing..."
@@ -1520,27 +1524,31 @@ msgstr "Пауза"
 
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:183
 msgid "Skill tree generator"
-msgstr ""
+msgstr "Генератор дерева навыков"
 
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:230
-#, fuzzy
 msgid ""
 "The optimizer was unable to find a conforming tree.\n"
 "Please change skill node tagging and try again.\n"
 "\n"
 "Note: When using the Advanced generator, you need to check-tag all keystones you want."
-msgstr "Измените отмечание навыков и попробуйте снова."
+msgstr ""
+"Оптимизатор не смог найти соответствующее дерево.\n"
+"Пожалуйста, измените метку узла навыков и повторите попытку.\n"
+"\n"
+"Примечание: при использовании расширенного генератора вам нужно проверить-пометить все ключевые камни, которые необходимо."
 
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:287
 msgid "Finished!"
 msgstr "Завершено!"
 
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:322
-#, fuzzy, csharp-format
+#, csharp-format
 msgid "Best result so far: {0} point spent"
 msgid_plural "Best result so far: {0} points spent"
-msgstr[0] "Лучший результат: дополнительно потрачен {0} навык"
+msgstr[0] "Лучший результат: дополнительно потрачен(о) {0} очков навыка"
 msgstr[1] "дополнительно потрачено {0} навыков"
+msgstr[2] ""
 
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:355
 msgid "Continue"
@@ -1548,128 +1556,127 @@ msgstr "продолжать"
 
 #: TreeGenerator\ViewModels\SteinerTabViewModel.cs:22
 msgid "Tagged Nodes"
-msgstr ""
+msgstr "Помеченные Узлы"
 
 #: TreeGenerator\ViewModels\SteinerTabViewModel.cs:46
 msgid "Please tag non-skilled nodes by right-clicking them."
-msgstr "Отмечайте не выбранние навики используя правую кнопку мыши."
+msgstr "Пожалуйста, отметьте невыбранные навыки, используя правую кнопку мыши."
 
 #: TreeGenerator\ViewModels\TreeGeneratorInteraction.cs:68
 msgid "The Skill Tree Generator is already open"
-msgstr ""
+msgstr "Генератор Дерева Навыков уже открыт"
 
 #: TreeGenerator\ViewModels\TreeGeneratorInteraction.cs:83
 msgid "Could not open Skill Tree Generator"
-msgstr ""
+msgstr "Не удалось открыть Генератор Дерева Навыков"
 
 #: Utils\Converter\ItemSlotToStringConverter.cs:15
-#, fuzzy
 msgid "Not equippable"
-msgstr "Нет доступа"
+msgstr "Не экипируемое"
 
 #: Utils\Converter\ItemSlotToStringConverter.cs:16
 msgid "Body Armour"
-msgstr ""
+msgstr "Нательная Броня"
 
 #: Utils\Converter\ItemSlotToStringConverter.cs:17
 msgid "Main-Hand"
-msgstr ""
+msgstr "В основной руке"
 
 #: Utils\Converter\ItemSlotToStringConverter.cs:18
 msgid "Off-Hand"
-msgstr ""
+msgstr "Во второй руке"
 
 #: Utils\Converter\ItemSlotToStringConverter.cs:19
 msgid "Ring 1"
-msgstr ""
+msgstr "Кольцо 1"
 
 #: Utils\Converter\ItemSlotToStringConverter.cs:20
 msgid "Ring 2"
-msgstr ""
+msgstr "Кольцо 2"
 
 #: Utils\Converter\ItemSlotToStringConverter.cs:21
 msgid "Amulet"
-msgstr ""
+msgstr "Амулет"
 
 #: Utils\Converter\ItemSlotToStringConverter.cs:22
 msgid "Helmet"
-msgstr ""
+msgstr "Шлем"
 
 #: Utils\Converter\ItemSlotToStringConverter.cs:23
 msgid "Gloves"
-msgstr ""
+msgstr "Перчатки"
 
 #: Utils\Converter\ItemSlotToStringConverter.cs:24
 msgid "Boots"
-msgstr ""
+msgstr "Сапоги"
 
 #: Utils\Converter\ItemSlotToStringConverter.cs:25
 msgid "Belt"
-msgstr ""
+msgstr "Пояс"
 
 #: Utils\Converter\ItemSlotToStringConverter.cs:26
 msgid "Flask 1"
-msgstr ""
+msgstr "Флакон 1"
 
 #: Utils\Converter\ItemSlotToStringConverter.cs:27
 msgid "Flask 2"
-msgstr ""
+msgstr "Флакон 2"
 
 #: Utils\Converter\ItemSlotToStringConverter.cs:28
 msgid "Flask 3"
-msgstr ""
+msgstr "Флакон 3"
 
 #: Utils\Converter\ItemSlotToStringConverter.cs:29
 msgid "Flask 4"
-msgstr ""
+msgstr "Флакон 4"
 
 #: Utils\Converter\ItemSlotToStringConverter.cs:30
 msgid "Flask 5"
-msgstr ""
+msgstr "Флакон 5"
 
 #: Utils\Converter\ItemSlotToStringConverter.cs:31
 msgid "Passive Tree"
-msgstr ""
+msgstr "Дерево"
 
 #: Utils\PathEx.cs:37 ViewModels\Builds\BuildValidator.cs:164
 msgid "Value is required."
-msgstr ""
+msgstr "Требуется значение."
 
 #: Utils\PathEx.cs:41
 msgid "Value only contains white space characters."
-msgstr ""
+msgstr "Значение содержит только пробелы."
 
 #: Utils\PathEx.cs:52
 msgid "Path already exists."
-msgstr ""
+msgstr "Путь уже существует."
 
 #: Utils\PathEx.cs:56
 msgid "Path exists and is not a directory."
-msgstr ""
+msgstr "Путь существует и не является каталогом."
 
 #: Utils\PathEx.cs:60
 msgid "Path already exists as a directory."
-msgstr ""
+msgstr "Путь уже существует как каталог."
 
 #: Utils\PathEx.cs:65
 msgid "Path must not be relative."
-msgstr ""
+msgstr "Путь не должен быть относительным."
 
 #: Utils\PathEx.cs:70
 msgid "Value contains invalid characters."
-msgstr ""
+msgstr "Значение содержит недопустимые символы."
 
 #: Utils\PathEx.cs:74
 msgid "Path could not be accessed."
-msgstr ""
+msgstr "Путь недоступен."
 
 #: Utils\PathEx.cs:78
 msgid "Path is too long."
-msgstr ""
+msgstr "Путь слишком длинный."
 
 #: Utils\PathEx.cs:82
 msgid "Value contains a colon at an invalid position-"
-msgstr ""
+msgstr "Значение содержит двоеточие в неверной позиции-"
 
 #: Utils\UrlProcessing\BuildUrlNormalizer.cs:93
 msgid "Resolving shortened tree address"
@@ -1677,31 +1684,35 @@ msgstr "Обрабатывается ссылка"
 
 #: Utils\UrlProcessing\NaivePoeUrlDeserializer.cs:56
 msgid "The build is using an old version of the passive tree."
-msgstr ""
+msgstr "В билде используется старая версия дерева."
 
 #: Utils\UrlProcessing\NaivePoeUrlDeserializer.cs:107
 msgid "Failed to load build from URL."
-msgstr ""
+msgstr "Не удалось загрузить билд из URL."
 
 #: Computation\ViewModels\CalculationNodeViewModel.cs:75
 msgid "None"
-msgstr ""
+msgstr "Нет"
 
 #: ViewModels\Builds\BuildsControlViewModel.cs:61
 msgid "All"
-msgstr ""
+msgstr "Все"
 
 #: ViewModels\Builds\BuildsControlViewModel.cs:357
 msgid ""
 "Files in your build save directory have been changed.\n"
 "Do you want to reload all builds from the file system?"
 msgstr ""
+"Файлы в вашем каталоге для сохранения билдов были изменены.\n"
+"Вы хотите перезагрузить все билды из файловой системы?"
 
 #: ViewModels\Builds\BuildsControlViewModel.cs:361
 msgid ""
 "\n"
 "All unsaved changes will be lost."
 msgstr ""
+"\n"
+"Все несохраненные изменения будут потеряны."
 
 #: ViewModels\Builds\BuildsControlViewModel.cs:363
 msgid ""
@@ -1709,70 +1720,74 @@ msgid ""
 "\n"
 "You can also reload through the 'File' menu."
 msgstr ""
+"\n"
+"\n"
+"Вы также можете перезагрузить через меню \"Файл\"."
 
 #: ViewModels\Builds\BuildsControlViewModel.cs:365
 msgid "Builds changed"
-msgstr ""
+msgstr "Билды были изменены"
 
 #: ViewModels\Builds\BuildsControlViewModel.cs:382
 msgid "Enter the name of the new folder."
-msgstr ""
+msgstr "Введите имя новой папки."
 
 #: ViewModels\Builds\BuildsControlViewModel.cs:417
 msgid "The currently opened build can not be deleted."
-msgstr ""
+msgstr "Открытый в данный момент билд не может быть удален."
 
 #: ViewModels\Builds\BuildsControlViewModel.cs:423
 #, csharp-format
 msgid "This will delete the build folder \"{0}\" and all its contents.\n"
-msgstr ""
+msgstr "Это приведет к удалению папки билда \"{0} \" и всего его содержимого.\n"
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:424
-#: Views\MainWindow.xaml.cs:963
+#: ViewModels\Builds\BuildsControlViewModel.cs:424 Views\MainWindow.xaml.cs:963
 msgid "Do you want to continue?"
 msgstr "Хотите продолжить?"
 
 #: ViewModels\Builds\BuildsControlViewModel.cs:445
 msgid "This build is currently opened but has unsaved changes.\n"
-msgstr ""
+msgstr "Этот билд в настоящее время открыт, но имеет несохраненные изменения.\n"
 
 #: ViewModels\Builds\BuildsControlViewModel.cs:446
 msgid "Do you want to discard all changes made to it since your last save?"
-msgstr ""
+msgstr "Вы хотите отменить все изменения, внесенные с момента вашего последнего сохранения?"
 
 #: ViewModels\Builds\BuildsControlViewModel.cs:447
 msgid "Discard changes?"
-msgstr ""
+msgstr "Отменить изменения?"
 
 #: ViewModels\Builds\BuildsControlViewModel.cs:462
 msgid "Saving new Build"
-msgstr ""
+msgstr "Сохранение нового Билда"
 
 #: ViewModels\Builds\BuildsControlViewModel.cs:463
 msgid "Enter the name of the build."
-msgstr ""
+msgstr "Введите имя билда."
 
 #: ViewModels\Builds\BuildsControlViewModel.cs:479
 msgid "Save as"
-msgstr ""
+msgstr "Сохранить как"
 
 #: ViewModels\Builds\BuildsControlViewModel.cs:480
 msgid "Enter the new name of the build"
-msgstr ""
+msgstr "Введите новое имя билда"
 
 #: ViewModels\Builds\BuildsControlViewModel.cs:612
 msgid "Edit Folder"
-msgstr ""
+msgstr "Изменить Папку"
 
 #: ViewModels\Builds\BuildsControlViewModel.cs:613
 msgid "Enter the new name for this folder below."
-msgstr ""
+msgstr "Введите новое имя для этой папки ниже."
 
 #: ViewModels\Builds\BuildsControlViewModel.cs:637
 msgid ""
 "Any unsaved changes will be lost.\n"
 "Are you sure?"
 msgstr ""
+"Любые несохраненные изменения будут потеряны.\n"
+"Вы уверены?"
 
 #: ViewModels\Builds\BuildsControlViewModel.cs:755
 #, fuzzy
@@ -1785,19 +1800,19 @@ msgstr "Произошла ошибка при сохранении."
 
 #: ViewModels\Builds\BuildsControlViewModel.cs:877
 msgid "An error occurred during a delete operation."
-msgstr ""
+msgstr "Произошла ошибка при удалении."
 
 #: ViewModels\Builds\BuildsControlViewModel.cs:894
 msgid "Unsaved Builds"
-msgstr ""
+msgstr "Несохраненные Билды"
 
 #: ViewModels\Builds\BuildsControlViewModel.cs:895
 msgid "These builds are not saved:\n"
-msgstr ""
+msgstr "Эти билды не были сохранены:\n"
 
 #: ViewModels\Builds\BuildValidator.cs:143
 msgid "A build or folder with this name already exists."
-msgstr ""
+msgstr "Билд или папка с таким именем уже существует."
 
 #: ViewModels\Builds\BuildViewModel.cs:87
 #, csharp-format
@@ -1805,73 +1820,76 @@ msgid "{0}, {1} point used"
 msgid_plural "{0}, {1} points used"
 msgstr[0] "{0}, {1} умений использовано"
 msgstr[1] "{0}, {1} умений использовано"
+msgstr[2] ""
 
 #: ViewModels\Equipment\StashViewModel.cs:340
 msgid ""
 "This will delete all items between this and the next bookmark and can not be undone.\n"
 "Do you want to continue?"
 msgstr ""
+"Это приведет к удалению всех элементов между этой и следующей закладкой и не сможет быть отменено.\n"
+"Вы хотите продолжить?"
 
 #: ViewModels\Equipment\StashViewModel.cs:341
 msgid "Delete items"
-msgstr ""
+msgstr "Удалить предметы"
 
 #: ViewModels\Import\ImportCharacterViewModel.cs:125
 msgid "Import Character"
-msgstr ""
+msgstr "Импорт Персонажа"
 
 #: ViewModels\Import\ImportCharacterViewModel.cs:175
 msgid "Import Items, Skills and Level"
-msgstr ""
+msgstr "Импорт Предметов, Навыков и Уровня"
 
 #: ViewModels\Import\ImportCharacterViewModel.cs:180
 msgid "Import Items"
-msgstr ""
+msgstr "Импорт Предметов"
 
 #: ViewModels\Import\ImportCharacterViewModel.cs:185
 msgid "Import Skills"
-msgstr ""
+msgstr "Импорт Навыков"
 
 #: ViewModels\Import\ImportCharacterViewModel.cs:190
 msgid "Import Level"
-msgstr ""
+msgstr "Импорт Уровня"
 
 #: ViewModels\Import\ImportCharacterViewModel.cs:234
 msgid "Import Passive Tree and Jewels"
-msgstr ""
+msgstr "Импорт Дерева и Самоцветов"
 
 #: ViewModels\Import\ImportCharacterViewModel.cs:239
 msgid "Import Passive Tree"
-msgstr ""
+msgstr "Импорт Дерева"
 
 #: ViewModels\Import\ImportCharacterViewModel.cs:244
 msgid "Import Jewels"
-msgstr ""
+msgstr "Импорт Самоцветов"
 
 #: ViewModels\Import\ImportCharacterViewModel.cs:316
 msgid "A tab in your default web browser has been opened containing your character's data."
-msgstr ""
+msgstr "В вашем веб-браузере по умолчанию была открыта вкладка, содержащая данные вашего персонажа."
 
 #: ViewModels\Import\ImportCharacterViewModel.cs:317
 msgid "Copy its contents and paste them into the field below."
-msgstr ""
+msgstr "Скопируйте его содержимое и вставьте его в поле ниже."
 
 #: ViewModels\Import\ImportCharacterViewModel.cs:318
 msgid "In case no browser has been opened, the URL was also copied to your clipboard."
-msgstr ""
+msgstr "Если браузер не был открыт, то URL-адрес также был скопирован в буфер обмена."
 
 #: ViewModels\Import\ImportStashViewModel.cs:77
 msgid "Download & Import Stash"
-msgstr ""
+msgstr "Загрузка & Импорт Тайника"
 
 #: ViewModels\Import\ImportStashViewModel.cs:155
 #: ViewModels\Import\ImportStashViewModel.cs:211
 msgid "An error occurred while attempting to load stash data."
-msgstr "Произошла ошибка при попытке загрузить данные личного сундука."
+msgstr "Произошла ошибка при попытке загрузить данные тайника."
 
 #: ViewModels\Import\ImportStashViewModel.cs:205
 msgid "New tab added"
-msgstr ""
+msgstr "Добавлена новая секция"
 
 #: ViewModels\Import\ImportStashViewModel.cs:206
 #, fuzzy, csharp-format
@@ -1880,17 +1898,19 @@ msgstr "Была добавлена новая секция с {0} предме�
 
 #: ViewModels\SettingsMenuViewModel.cs:49
 msgid "You will need to restart the program for all changes to take effect."
-msgstr ""
+msgstr "Необходимо будет перезапустить программу, чтобы все изменения вступили в силу."
 
 #: ViewModels\SettingsMenuViewModel.cs:50
 msgid "Restart is needed"
-msgstr ""
+msgstr "Необходим перезапуск"
 
 #: ViewModels\SettingsMenuViewModel.cs:67
 msgid ""
 "Select the directory where builds will be stored.\n"
 "It will be created if it does not yet exist."
 msgstr ""
+"Выберите каталог, в котором будут храниться билды.\n"
+"Он будет создан, если он еще не существует."
 
 #: ViewModels\SettingsMenuViewModel.cs:73
 msgid ""
@@ -1898,10 +1918,13 @@ msgid ""
 "\n"
 "If you cancel, the build directory will not be changed."
 msgstr ""
+"Есть несохраненные билды. Вы хотите сохранить их перед изменением каталога билда?\n"
+"\n"
+"Если вы отмените это действие, каталог билда не будет изменен."
 
 #: ViewModels\Skills\SkillsInSlotEditingViewModel.cs:58
 msgid "no active skills"
-msgstr ""
+msgstr "нет активных навыков"
 
 #: Views\Builds\EditBuildWindow.xaml.cs:16
 msgid "Not Available"
@@ -1918,43 +1941,43 @@ msgstr "Файл не найден"
 
 #: Views\MainRibbon.xaml.cs:71
 msgid "Are you sure?"
-msgstr ""
+msgstr "Вы уверены?"
 
 #: Views\MainRibbon.xaml.cs:72
 msgid "Untag All Skill Nodes"
-msgstr ""
+msgstr "Снять все Отмеченные Узлы Навыков"
 
 #: Views\MainWindow.xaml.cs:400
 msgid "Create New Attribute Group"
-msgstr ""
+msgstr "Создать Новую Группу Атрибутов"
 
 #: Views\MainWindow.xaml.cs:400
 msgid "Group name"
-msgstr ""
+msgstr "Имя Группы"
 
 #: Views\MainWindow.xaml.cs:405
 msgid "A group with that name already exists."
-msgstr ""
+msgstr "Группа с таким названием уже существует."
 
 #: Views\MainWindow.xaml.cs:492
 msgid "Initialization"
-msgstr ""
+msgstr "Инициализация"
 
 #: Views\MainWindow.xaml.cs:493 Views\MainWindow.xaml.cs:513
 msgid "Initializing window ..."
-msgstr ""
+msgstr "Инициализация окна ..."
 
 #: Views\MainWindow.xaml.cs:508
 msgid "Loading skill tree assets ..."
-msgstr ""
+msgstr "Загрузка ресурсов дерева навыков ..."
 
 #: Views\MainWindow.xaml.cs:544
 msgid "Highlight nodes by attribute"
-msgstr ""
+msgstr "Выделить узлы по атрибуту"
 
 #: Views\MainWindow.xaml.cs:549
 msgid "Remove highlights by attribute"
-msgstr ""
+msgstr "Удалить выделения по атрибуту"
 
 #: Views\MainWindow.xaml.cs:621
 msgid "Load Tree"
@@ -1962,7 +1985,7 @@ msgstr "Загрузить"
 
 #: Views\MainWindow.xaml.cs:627
 msgid "Load as new build"
-msgstr ""
+msgstr "Загрузить как новый билд"
 
 #: Views\MainWindow.xaml.cs:828
 msgid ""
@@ -1970,6 +1993,9 @@ msgid ""
 "\n"
 "Canceling stops the program from closing and does not save any builds."
 msgstr ""
+"Есть несохраненные билды. Вы хотите сохранить их до закрытия?\n"
+"\n"
+"Отмена останавливает закрытие программы и не сохраняет никаких билдов."
 
 #: Views\MainWindow.xaml.cs:908
 #, fuzzy, csharp-format
@@ -1977,22 +2003,23 @@ msgid "{0} point"
 msgid_plural "{0} points"
 msgstr[0] "{0}, {1} умений использовано"
 msgstr[1] "{0}, {1} умений использовано"
+msgstr[2] ""
 
 #: Views\MainWindow.xaml.cs:942
 msgid "Your build must use at least one node to generate a screenshot"
-msgstr ""
+msgstr "Ваш билд должен использовать по крайней мере один узел для создания скриншота"
 
 #: Views\MainWindow.xaml.cs:960
 msgid "The existing skill tree data will be deleted. The data will be downloaded from the official online skill tree and is from the latest released version of the game."
-msgstr ""
+msgstr "Существующие данные дерева навыков будут удалены. Данные будут загружены из официального онлайн-дерева навыков и взяты из последней выпущенной версии игры."
 
 #: Views\MainWindow.xaml.cs:969
 msgid "Downloading skill tree assets ..."
-msgstr ""
+msgstr "Загрузка ресурсов дерева навыков ..."
 
 #: Views\MainWindow.xaml.cs:990
 msgid "An error occurred while downloading assets."
-msgstr "Произошла ошибка при загрузке активов."
+msgstr "Произошла ошибка при загрузке ресурсов."
 
 #: Views\MainWindow.xaml.cs:1007
 msgid "Checking for updates"
@@ -2034,7 +2061,7 @@ msgstr "Хотите загрузить и установить новую ве�
 
 #: Views\MainWindow.xaml.cs:1035
 msgid "Continue installation?"
-msgstr ""
+msgstr "Продолжить установку?"
 
 #: Views\MainWindow.xaml.cs:1046
 msgid "An error occurred while attempting to contact the update location."
@@ -2062,23 +2089,23 @@ msgstr "Произошла ошибка при попытке загрузить
 
 #: Views\MainWindow.xaml.cs:1755
 msgid "The build you are loading contains information about selected bandits."
-msgstr ""
+msgstr "Загружаемый билд содержит информацию о выбранных разбойниках."
 
 #: Views\MainWindow.xaml.cs:1756
 msgid "Do you want to use it and overwrite current settings?"
-msgstr ""
+msgstr "Вы хотите использовать это и перезаписать текущие настройки?"
 
 #: Views\MainWindow.xaml.cs:1757
 msgid "Replace Bandits settings"
-msgstr ""
+msgstr "Заменить настройки Разбойников"
 
 #: Views\MainWindow.xaml.cs:1783
 msgid "Current: "
-msgstr ""
+msgstr "Текущие:"
 
 #: Views\MainWindow.xaml.cs:1784
 msgid "Loaded: "
-msgstr ""
+msgstr "Загруженные:"
 
 #: Views\MainWindow.xaml.cs:1879
 msgid "Generating PoEUrl of Skill tree"
