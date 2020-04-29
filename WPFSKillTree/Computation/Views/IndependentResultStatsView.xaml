@@ -28,14 +28,14 @@
                                 Width="250"
                                 Binding="{Binding}">
                 <DataGridTextColumn.Header>
-                    <l:Catalog>Stat</l:Catalog>
+                    <l:Catalog Message="Stat" />
                 </DataGridTextColumn.Header>
             </DataGridTextColumn>
             <DataGridTextColumn IsReadOnly="True"
                                 Width="60"
                                 Binding="{Binding StringValue}">
                 <DataGridTextColumn.Header>
-                    <l:Catalog>Value</l:Catalog>
+                    <l:Catalog Message="Value" />
                 </DataGridTextColumn.Header>
                 <DataGridTextColumn.CellStyle>
                     <Style TargetType="DataGridCell"

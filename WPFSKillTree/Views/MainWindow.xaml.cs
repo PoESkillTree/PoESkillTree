@@ -549,19 +549,19 @@ namespace PoESkillTree.Views
                 Header = L10n.Message("Remove highlights by attribute")
             };
             cmRemoveHighlight.Click += UnhighlightNodesByAttribute;
-            var cmCreateGroup = new MenuItem { Header = "Create new group" };
+            var cmCreateGroup = new MenuItem { Header = L10n.Message("Create new group") };
             cmCreateGroup.Click += CreateGroup;
             cmAddToGroup = new MenuItem
             {
-                Header = "Add to group...",
+                Header = L10n.Message("Add to group..."),
                 IsEnabled = false
             };
             cmDeleteGroup = new MenuItem
             {
-                Header = "Delete group...",
+                Header = L10n.Message("Delete group..."),
                 IsEnabled = false
             };
-            var cmRemoveFromGroup = new MenuItem { Header = "Remove from group" };
+            var cmRemoveFromGroup = new MenuItem { Header = L10n.Message("Remove from group") };
             cmRemoveFromGroup.Click += RemoveFromGroup;
 
             _attributeGroups = new GroupStringConverter();
@@ -939,7 +939,8 @@ namespace PoESkillTree.Views
             }
             else
             {
-                await this.ShowInfoAsync(L10n.Message("Your build must use at least one node to generate a screenshot"), title: "Screenshot Generator");
+                await this.ShowInfoAsync(L10n.Message("Your build must use at least one node to generate a screenshot"),
+                    title: L10n.Message("Screenshot Generator"));
             }
         }
 

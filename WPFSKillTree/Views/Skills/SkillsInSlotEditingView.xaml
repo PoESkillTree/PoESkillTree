@@ -75,7 +75,7 @@
         <Button Grid.Row="0" Grid.Column="5"
                 HorizontalAlignment="Center"
                 Command="{Binding AddGemCommand}">
-            <l:Catalog>Add</l:Catalog>
+            <l:Catalog Message="Add" />
         </Button>
 
         <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="7"
@@ -87,7 +87,7 @@
                 <DataGridTemplateColumn IsReadOnly="True"
                                         Width="4*">
                     <DataGridTemplateColumn.Header>
-                        <l:Catalog>Skill Name</l:Catalog>
+                        <l:Catalog Message="Skill Name" />
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="viewModels:GemViewModel">
@@ -143,7 +143,7 @@
                 
                 <DataGridTemplateColumn Width="1*">
                     <DataGridTemplateColumn.Header>
-                        <l:Catalog>Level</l:Catalog>
+                        <l:Catalog Message="Level" />
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="viewModels:GemViewModel">
@@ -157,7 +157,7 @@
 
                 <DataGridTemplateColumn Width="1*">
                     <DataGridTemplateColumn.Header>
-                        <l:Catalog>Quality</l:Catalog>
+                        <l:Catalog Message="Quality" />
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="viewModels:GemViewModel">
@@ -171,7 +171,7 @@
 
                 <DataGridTemplateColumn Width="1*">
                     <DataGridTemplateColumn.Header>
-                        <l:Catalog>Group</l:Catalog>
+                        <l:Catalog Message="Group" />
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="viewModels:GemViewModel">
@@ -186,7 +186,7 @@
                 <DataGridTemplateColumn Width="1*"
                                         MaxWidth="80">
                     <DataGridTemplateColumn.Header>
-                        <l:Catalog>Enabled</l:Catalog>
+                        <l:Catalog Message="Enabled" />
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="viewModels:GemViewModel">

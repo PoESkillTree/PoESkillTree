@@ -23,7 +23,7 @@
                                     HeaderStyle="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                     Binding="{Binding Node}">
                     <DataGridTextColumn.Header>
-                        <l:Catalog>Stat</l:Catalog>
+                        <l:Catalog Message="Stat" />
                     </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn IsReadOnly="True"
@@ -31,7 +31,7 @@
                                     HeaderStyle="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                     Binding="{Binding Node.StringValue}">
                     <DataGridTextColumn.Header>
-                        <l:Catalog>Value</l:Catalog>
+                        <l:Catalog Message="Value" />
                     </DataGridTextColumn.Header>
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell"
@@ -79,7 +79,7 @@
                       SelectedItem="{Binding NewStat.NodeType}" />
             <Button Grid.Column="2" Grid.Row="1"
                     Command="{Binding AddStatCommand}">
-                <l:Catalog>Add</l:Catalog>
+                <l:Catalog Message="Add" />
             </Button>
         </Grid>
     </StackPanel>

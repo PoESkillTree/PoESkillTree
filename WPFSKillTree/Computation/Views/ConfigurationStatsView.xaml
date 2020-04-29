@@ -57,13 +57,13 @@
                                 HeaderStyle="{StaticResource MahApps.Styles.DataGridColumnHeader}"
                                 Binding="{Binding Node}">
                 <DataGridTextColumn.Header>
-                    <l:Catalog>Stat</l:Catalog>
+                    <l:Catalog Message="Stat" />
                 </DataGridTextColumn.Header>
             </DataGridTextColumn>
             <DataGridTemplateColumn Width="120"
                                     HeaderStyle="{StaticResource MahApps.Styles.DataGridColumnHeader}">
                 <DataGridTemplateColumn.Header>
-                    <l:Catalog>Value</l:Catalog>
+                    <l:Catalog Message="Value" />
                 </DataGridTemplateColumn.Header>
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate DataType="viewModels:ConfigurationStatViewModel">

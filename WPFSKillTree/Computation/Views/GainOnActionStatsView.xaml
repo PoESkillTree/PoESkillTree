@@ -26,21 +26,21 @@
                                 Width="300"
                                 Binding="{Binding GainOnActionType.GainedStat.Identity}">
                 <DataGridTextColumn.Header>
-                    <l:Catalog>Stat</l:Catalog>
+                    <l:Catalog Message="Stat" />
                 </DataGridTextColumn.Header>
             </DataGridTextColumn>
             <DataGridTextColumn IsReadOnly="True"
                                 Width="150"
                                 Binding="{Binding Action}">
                 <DataGridTextColumn.Header>
-                    <l:Catalog>Action</l:Catalog>
+                    <l:Catalog Message="Action" />
                 </DataGridTextColumn.Header>
             </DataGridTextColumn>
             <DataGridTextColumn IsReadOnly="True"
                                 Width="60"
                                 Binding="{Binding Node.StringValue}">
                 <DataGridTextColumn.Header>
-                    <l:Catalog>Value</l:Catalog>
+                    <l:Catalog Message="Value" />
                 </DataGridTextColumn.Header>
                 <DataGridTextColumn.CellStyle>
                     <Style TargetType="DataGridCell"

@@ -41,13 +41,36 @@ msgstr ""
 msgid "Stats gained on action"
 msgstr ""
 
+#: Computation\Views\ConfigurationStatsView.xaml:60
+#: Computation\Views\GainOnActionStatsView.xaml:29
+#: Computation\Views\IndependentResultStatsView.xaml:31
+#: Computation\Views\ResultStatsView.xaml:26
+msgid "Stat"
+msgstr ""
+
+#: Computation\Views\ConfigurationStatsView.xaml:66
+#: Computation\Views\GainOnActionStatsView.xaml:43
+#: Computation\Views\IndependentResultStatsView.xaml:38
+#: Computation\Views\ResultStatsView.xaml:34
+#: Computation\Views\ResultStatToolTip.xaml:27
+msgid "Value"
+msgstr ""
+
+#: Computation\Views\GainOnActionStatsView.xaml:36
+#, fuzzy
+msgid "Action"
+msgstr "Funkcia"
+
 #: Computation\Views\MainSkillSelectionView.xaml:12
 msgid "Main Skill:"
 msgstr ""
 
-#: Computation\Views\ResultStatToolTip.xaml:27
-msgid "Value"
-msgstr ""
+#: Computation\Views\ResultStatsView.xaml:82
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:226
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:319
+#: Views\Skills\SkillsInSlotEditingView.xaml:78
+msgid "Add"
+msgstr "Pridať"
 
 #: Computation\Views\ResultStatToolTip.xaml:34
 msgid "Form"
@@ -106,6 +129,10 @@ msgstr "Nie"
 msgid "Close"
 msgstr "Zavrieť"
 
+#: Themes\SearchableComboBox.xaml:225
+msgid "Type to search"
+msgstr ""
+
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:99
 msgid "Level:"
 msgstr "Level:"
@@ -122,10 +149,19 @@ msgstr "Body celkovo:"
 msgid "include Check-tagged nodes"
 msgstr "zahrnúť uzly označené zaškrtnutím"
 
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:131
+msgid "Select if Check-tagged nodes must be skilled by possible solutions."
+msgstr ""
+
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:138
 #: TreeGenerator\Views\SteinerTabView.xaml:14
 msgid "exclude Cross-tagged nodes"
 msgstr "vylúčiť uzly označené zaškrtnutím"
+
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:140
+#: TreeGenerator\Views\SteinerTabView.xaml:16
+msgid "Select if Cross-tagged nodes must not be skilled by possible solutions."
+msgstr ""
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:146
 msgid "Iterations:"
@@ -164,11 +200,6 @@ msgstr "Konvertovať na pseudo-atribúty"
 msgid "Converts the attributes to pseudo attributes where possible using the defined settings."
 msgstr "Konvertuje atribúty na pseudo-atribúty, kde je to možné, na základe definovaných nastavení."
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:226
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:319
-msgid "Add"
-msgstr "Pridať"
-
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:235
 msgid "Attribute"
 msgstr "Atribút"
@@ -195,33 +226,78 @@ msgstr "Pseudo-atribút"
 msgid "Settings"
 msgstr "Nastavenia"
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:423
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:408
+msgid "These settings define which attributes influence pseudo attributes."
+msgstr ""
+
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:412
+#, fuzzy
+msgid "For example, '#% increased Melee Physical Damage' will only influence the pseudo attribute '#% increased Physical Damage' if the Tag 'Melee' is selected."
+msgstr ""
+"Tieto nastavenia definujú, ktoré atribúty ovplyvňujú pseudo-atribúty.\n"
+"Napríklad, „#% increased Melee Physical Damage“ bude ovplyvňovať pseudo-atribút „#% increased Physical Damage“, ak je zvolená značka „Melee“."
+
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:422
 msgid "Tree + Items"
 msgstr "Strom + predmety"
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:426
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:425
 msgid "Tree only"
 msgstr "Len strom"
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:433
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:432
 msgid "Reload Pseudo Attributes from filesystem"
 msgstr "Znova načítať pseudo-atribúty zo súboru"
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:440
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:439
 msgid "Weapon class"
 msgstr "Trieda zbrane"
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:455
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:454
 msgid "Off hand"
 msgstr "Druhá ruka"
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:478
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:477
 msgid "Tags"
 msgstr "Značky"
 
 #: TreeGenerator\Views\ControllerWindow.xaml:30
 msgid "Finding optimal Skill tree..."
 msgstr "Hľadanie optimálneho stromu zručností..."
+
+#: TreeGenerator\Views\SettingsWindow.xaml:16
+#, fuzzy
+msgid "Passive Tree Generator"
+msgstr "Generátor stromu zručností"
+
+#: TreeGenerator\Views\SteinerTabView.xaml:32
+msgid "This generator connects all Check-tagged nodes to the current tree with the least amount of nodes possible. Cross-tagged nodes will not be skilled (if the corresponding checkbox is checked). It should always generate the optimal solution."
+msgstr ""
+
+#: TreeGenerator\Views\SteinerTabView.xaml:36
+msgid "Nodes can be Check-tagged by right-clicking them. They can be Cross-tagged by right-clicking twice or shift-right-clicking once."
+msgstr ""
+
+#: TreeGenerator\Views\SteinerTabView.xaml:41
+#, fuzzy
+msgid "The 'Advanced' tab"
+msgstr "Pokročilé"
+
+#: TreeGenerator\Views\SteinerTabView.xaml:45
+msgid "For more complex generation, select the 'Advanced' tab. It allows you to add constraints, like a specific amount of '#% increased maximum Life', to the generated trees while keeping the amount of points spent under the specified number."
+msgstr ""
+
+#: TreeGenerator\Views\SteinerTabView.xaml:49
+msgid "The 'Advanced' generator also allows constraints that combine multiple attributes into one. These are called 'Pseudo Attributes' and what influences them can be adjusted under 'Advanced - Settings'."
+msgstr ""
+
+#: TreeGenerator\Views\SteinerTabView.xaml:53
+msgid "Constraints consist of three parts: the attribute name, the target value you want solutions to achieve and a weight. Reaching the target value of constraints with higher weights will be prioritized over reaching the target value of those with lower weights."
+msgstr ""
+
+#: TreeGenerator\Views\SteinerTabView.xaml:57
+msgid "However, the resulting solutions may deviate slightly from the optimum, as the problems that are solved are much more complex."
+msgstr ""
 
 #: Views\AboutWindow.xaml:11
 msgid "About PoESkillTree"
@@ -271,12 +347,19 @@ msgstr ""
 msgid "Right click to edit"
 msgstr "Upraviť kliknutím pravého tlačidla"
 
+#: Views\Builds\BuildsControl.xaml:87 Views\MainWindow.xaml:141
+#, fuzzy
+msgid "Filter"
+msgstr "Filter:"
+
 #: Views\Builds\BuildsControl.xaml:123 Views\Builds\BuildsControl.xaml:200
 #: Views\MainRibbon.xaml:488 Views\MainRibbon.xaml:493
 msgid "Edit"
 msgstr "Upraviť"
 
 #: Views\Builds\BuildsControl.xaml:130 Views\Builds\BuildsControl.xaml:207
+#: Views\Equipment\DraggableItemView.xaml:27
+#: Views\Equipment\InventoryItemView.xaml:39
 msgid "Delete"
 msgstr "Zmazať"
 
@@ -334,6 +417,10 @@ msgstr "Poznámka zostavy"
 msgid "Crafting Window"
 msgstr ""
 
+#: Views\Crafting\CraftingView.xaml:143
+msgid "Show drop disabled bases"
+msgstr ""
+
 #: Views\Crafting\CraftingView.xaml:150
 #: Views\Crafting\UniqueCraftingView.xaml:57
 msgid "Create Item"
@@ -342,6 +429,20 @@ msgstr ""
 #: Views\Crafting\UniqueCraftingView.xaml:16
 msgid "Unique Crafting Window"
 msgstr ""
+
+#: Views\Crafting\UniqueCraftingView.xaml:50
+msgid "Show drop disabled uniques"
+msgstr ""
+
+#: Views\Equipment\InventoryItemView.xaml:44
+#: Views\Skills\SkillsInSlotEditingDialog.xaml:13
+msgid "Edit Socketed Skills"
+msgstr ""
+
+#: Views\Equipment\StashView.xaml:252
+#, fuzzy
+msgid "Stash search"
+msgstr "Stash záložka"
 
 #: Views\Equipment\TabPicker.xaml:18
 msgid "Stash Bookmark"
@@ -446,7 +547,7 @@ msgstr ""
 msgid "Ctrl + F"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:111
+#: Views\HotkeysWindow.xaml:111 Views\MainWindow.xaml:213
 msgid "Search"
 msgstr ""
 
@@ -1240,7 +1341,7 @@ msgstr "Použité Ascendancy body"
 msgid "Total Ascendancy Skill Points"
 msgstr "Celkovo Ascendancy bodov"
 
-#: Views\MainWindow.xaml:348
+#: Views\MainWindow.xaml:348 Views\Skills\SkillsInSlotEditingView.xaml:146
 msgid "Level"
 msgstr "Level"
 
@@ -1284,8 +1385,22 @@ msgstr "Vybavenie:"
 msgid "Automatically download missing item images"
 msgstr "Automaticky stiahnuť chýbajúce obrázky predmetov"
 
-#: Views\Skills\SkillsInSlotEditingDialog.xaml:13
-msgid "Edit Socketed Skills"
+#: Views\Skills\SkillsInSlotEditingView.xaml:90
+#, fuzzy
+msgid "Skill Name"
+msgstr "Strom zručností"
+
+#: Views\Skills\SkillsInSlotEditingView.xaml:160
+msgid "Quality"
+msgstr ""
+
+#: Views\Skills\SkillsInSlotEditingView.xaml:174
+#, fuzzy
+msgid "Group"
+msgstr "Názov skupiny"
+
+#: Views\Skills\SkillsInSlotEditingView.xaml:189
+msgid "Enabled"
 msgstr ""
 
 #: Views\Skills\SkillsInSlotEditingView.xaml:218
@@ -1347,7 +1462,7 @@ msgstr ""
 msgid "New build"
 msgstr "Nová zostava"
 
-#: SkillTreeFiles\SkillTree.cs:1040
+#: SkillTreeFiles\SkillTree.cs:1045
 msgid "Some nodes ({unknownNodes}) are unknown and have been omitted."
 msgstr ""
 
@@ -1736,7 +1851,7 @@ msgid "This will delete the build folder \"{0}\" and all its contents.\n"
 msgstr ""
 
 #: ViewModels\Builds\BuildsControlViewModel.cs:424
-#: Views\MainWindow.xaml.cs:963
+#: Views\MainWindow.xaml.cs:964
 msgid "Do you want to continue?"
 msgstr "Chcete pokračovať?"
 
@@ -1967,6 +2082,23 @@ msgstr "Zvýrazniť uzly podľa atribútu"
 msgid "Remove highlights by attribute"
 msgstr "Zrušiť zvýraznenia podľa atribútu"
 
+#: Views\MainWindow.xaml.cs:552
+#, fuzzy
+msgid "Create new group"
+msgstr "Vytvoriť novú skupinu atribútov"
+
+#: Views\MainWindow.xaml.cs:556
+msgid "Add to group..."
+msgstr ""
+
+#: Views\MainWindow.xaml.cs:561
+msgid "Delete group..."
+msgstr ""
+
+#: Views\MainWindow.xaml.cs:564
+msgid "Remove from group"
+msgstr ""
+
 #: Views\MainWindow.xaml.cs:621
 msgid "Load Tree"
 msgstr "Načítať strom"
@@ -1994,117 +2126,122 @@ msgstr[2] "{0}, {1} bodov"
 msgid "Your build must use at least one node to generate a screenshot"
 msgstr "Vaša zostava musí obsahovať aspoň jeden uzol pre vytvorenie snímky"
 
-#: Views\MainWindow.xaml.cs:960
+#: Views\MainWindow.xaml.cs:943
+#, fuzzy
+msgid "Screenshot Generator"
+msgstr "Generátor stromu zručností"
+
+#: Views\MainWindow.xaml.cs:961
 msgid "The existing skill tree data will be deleted. The data will be downloaded from the official online skill tree and is from the latest released version of the game."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:969
+#: Views\MainWindow.xaml.cs:970
 msgid "Downloading skill tree assets ..."
 msgstr "Sťahujem údaje stromu zručností ..."
 
-#: Views\MainWindow.xaml.cs:990
+#: Views\MainWindow.xaml.cs:991
 msgid "An error occurred while downloading assets."
 msgstr "Nastala chyba počas sťahovania údajov."
 
-#: Views\MainWindow.xaml.cs:1007
+#: Views\MainWindow.xaml.cs:1008
 msgid "Checking for updates"
 msgstr "Kontrola aktualizácií"
 
-#: Views\MainWindow.xaml.cs:1012
+#: Views\MainWindow.xaml.cs:1013
 msgid "You have the latest version!"
 msgstr "Máte najnovšiu verziu!"
 
-#: Views\MainWindow.xaml.cs:1017
+#: Views\MainWindow.xaml.cs:1018
 #, csharp-format
 msgid "An update for {0} ({1}) is available!"
 msgstr "Aktualizácia pre {0} ({1}) je k dispozícii!"
 
-#: Views\MainWindow.xaml.cs:1020
+#: Views\MainWindow.xaml.cs:1021
 msgid "The application will be closed when download completes to proceed with the update."
 msgstr "Po dokončení sťahovania bude aplikácia zatvorená, aby mohla aktualizácia prebehnúť."
 
-#: Views\MainWindow.xaml.cs:1021
+#: Views\MainWindow.xaml.cs:1022
 #, csharp-format
 msgid "A new version {0} is available!"
 msgstr "Nová verzia {0} je k dispozícii!"
 
-#: Views\MainWindow.xaml.cs:1024
+#: Views\MainWindow.xaml.cs:1025
 msgid "The new version of application will be installed side-by-side with earlier versions."
 msgstr "Nová verzia aplikácie bude nainštalovaná súbežne s predchádzajúcimi verziami."
 
-#: Views\MainWindow.xaml.cs:1028
+#: Views\MainWindow.xaml.cs:1029
 msgid "Warning: This is a pre-release, meaning there could be some bugs!"
 msgstr "Upozornenie: Toto je predbežná verzia, ktorá môže obsahovať chyby!"
 
-#: Views\MainWindow.xaml.cs:1032
+#: Views\MainWindow.xaml.cs:1033
 msgid "Do you want to download and install the update?"
 msgstr "Chcete stiahnuť a nainštalovať aktualizáciu?"
 
-#: Views\MainWindow.xaml.cs:1033
+#: Views\MainWindow.xaml.cs:1034
 msgid "Do you want to download and install the new version?"
 msgstr "Chcete stiahnuť a nainštalovať novú verziu?"
 
-#: Views\MainWindow.xaml.cs:1035
+#: Views\MainWindow.xaml.cs:1036
 msgid "Continue installation?"
 msgstr "Pokračovať s inštaláciou?"
 
-#: Views\MainWindow.xaml.cs:1046
+#: Views\MainWindow.xaml.cs:1047
 msgid "An error occurred while attempting to contact the update location."
 msgstr "Nastala chyba pri pokuse kontaktovať lokáciu pre aktualizácie."
 
-#: Views\MainWindow.xaml.cs:1054
+#: Views\MainWindow.xaml.cs:1055
 msgid "Downloading latest version"
 msgstr "Sťahujem najnovšiu verziu"
 
-#: Views\MainWindow.xaml.cs:1069 Views\MainWindow.xaml.cs:1084
+#: Views\MainWindow.xaml.cs:1070 Views\MainWindow.xaml.cs:1085
 msgid "An error occurred during the download operation."
 msgstr "Nastala chyba počas sťahovania."
 
-#: Views\MainWindow.xaml.cs:1097
+#: Views\MainWindow.xaml.cs:1098
 msgid "An error occurred while attempting to start the installation."
 msgstr "Nastala chyba pri pokuse spustiť inštaláciu."
 
-#: Views\MainWindow.xaml.cs:1637
+#: Views\MainWindow.xaml.cs:1638
 msgid "An error occurred while attempting to load item data."
 msgstr "Nastala chyba pri pokuse načítať údaje predmetov."
 
-#: Views\MainWindow.xaml.cs:1733 Views\MainWindow.xaml.cs:1776
+#: Views\MainWindow.xaml.cs:1734 Views\MainWindow.xaml.cs:1777
 msgid "An error occurred while attempting to load Skill tree from URL."
 msgstr "Nastala chyba pri pokuse načítať strom zručností z URL."
 
-#: Views\MainWindow.xaml.cs:1755
+#: Views\MainWindow.xaml.cs:1756
 msgid "The build you are loading contains information about selected bandits."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1756
+#: Views\MainWindow.xaml.cs:1757
 msgid "Do you want to use it and overwrite current settings?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1757
+#: Views\MainWindow.xaml.cs:1758
 msgid "Replace Bandits settings"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1783
+#: Views\MainWindow.xaml.cs:1784
 msgid "Current: "
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1784
+#: Views\MainWindow.xaml.cs:1785
 msgid "Loaded: "
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1879
+#: Views\MainWindow.xaml.cs:1880
 msgid "Generating PoEUrl of Skill tree"
 msgstr "Vytváranie Po_EUrl odkazu"
 
-#: Views\MainWindow.xaml.cs:1885
+#: Views\MainWindow.xaml.cs:1886
 msgid "An error occurred while attempting to contact the PoEUrl location."
 msgstr "Nastala chyba pri pokuse kontaktovať PoEUrl lokáciu."
 
-#: Views\MainWindow.xaml.cs:1895
+#: Views\MainWindow.xaml.cs:1896
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr "PoEUrl odkaz bol skopírovaný do Schránky."
 
-#: Views\MainWindow.xaml.cs:1899
+#: Views\MainWindow.xaml.cs:1900
 msgid "An error occurred while copying to Clipboard."
 msgstr "Nastala chyba počas kopírovania do Schránky."
 
@@ -2140,9 +2277,6 @@ msgstr "Nastala chyba počas kopírovania do Schránky."
 
 #~ msgid "Key combination"
 #~ msgstr "Kombinácia kláves"
-
-#~ msgid "Function"
-#~ msgstr "Funkcia"
 
 #~ msgid "Toggle Attributes sidebar"
 #~ msgstr "Prepnutie panela Atribúty"
@@ -2300,9 +2434,6 @@ msgstr "Nastala chyba počas kopírovania do Schránky."
 #~ msgid "_Nodes"
 #~ msgstr "_Uzly"
 
-#~ msgid "_Skill Tree Generator"
-#~ msgstr "Generátor stromu zručností"
-
 #~ msgid "_Help"
 #~ msgstr "_Pomocník"
 
@@ -2455,13 +2586,6 @@ msgstr "Nastala chyba počas kopírovania do Schránky."
 #~ msgid "An error occured while attempting to load Skill tree from {0} location."
 #~ msgstr "Nastala chyba pri pokuse načítať strom zručností z {0} lokácie."
 
-#~ msgid ""
-#~ "These settings define which attributes influence pseudo attributes.\n"
-#~ "For example, '#% increased Melee Physical Damage' will only influence the pseudo attribute '#% increased Physical Damage' if the Tag 'Melee' is selected."
-#~ msgstr ""
-#~ "Tieto nastavenia definujú, ktoré atribúty ovplyvňujú pseudo-atribúty.\n"
-#~ "Napríklad, „#% increased Melee Physical Damage“ bude ovplyvňovať pseudo-atribút „#% increased Physical Damage“, ak je zvolená značka „Melee“."
-
 #~ msgid "only search in current tree"
 #~ msgstr "hľadať len v aktuálnom strome"
 
@@ -2483,14 +2607,8 @@ msgstr "Nastala chyba počas kopírovania do Schránky."
 #~ msgid "_Program Assets"
 #~ msgstr "Údaje _programu"
 
-#~ msgid "Filter:"
-#~ msgstr "Filter:"
-
 #~ msgid "Error while trying to find solution"
 #~ msgstr "Chyba počas hľadania riešenia"
-
-#~ msgid "Skill tree Generator"
-#~ msgstr "Generátor stromu zručností"
 
 #~ msgid "An error occurred while attempting to load saved builds."
 #~ msgstr "Nastala chyba pri pokuse načítať uložené zostavy."

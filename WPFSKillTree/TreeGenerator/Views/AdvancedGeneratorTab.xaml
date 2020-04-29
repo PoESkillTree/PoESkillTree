@@ -128,7 +128,7 @@
                   IsChecked="{Binding IncludeChecked.Value}">
             <l:Catalog Message="include Check-tagged nodes"/>
             <CheckBox.ToolTip>
-                <l:Catalog>Select if Check-tagged nodes must be skilled by possible solutions.</l:Catalog>
+                <l:Catalog Message="Select if Check-tagged nodes must be skilled by possible solutions." />
             </CheckBox.ToolTip>
         </CheckBox>
 
@@ -137,7 +137,7 @@
                   IsChecked="{Binding ExcludeCrossed.Value}">
             <l:Catalog Message="exclude Cross-tagged nodes"/>
             <CheckBox.ToolTip>
-                <l:Catalog>Select if Cross-tagged nodes must not be skilled by possible solutions.</l:Catalog>
+                <l:Catalog Message="Select if Cross-tagged nodes must not be skilled by possible solutions." />
             </CheckBox.ToolTip>
         </CheckBox>
 
@@ -405,12 +405,11 @@
                     <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="5" TextWrapping="Wrap" MaxWidth="600" Margin="5"
                                FontSize="{DynamicResource MahApps.Font.Size.Default}">
                         <Run>
-                            <l:Catalog>These settings define which attributes influence pseudo attributes.</l:Catalog>
+                            <l:Catalog Message="These settings define which attributes influence pseudo attributes." />
                         </Run>
                         <LineBreak/><LineBreak/>
                         <Run>
-                            <l:Catalog>For example, '#% increased Melee Physical Damage' will only influence the 
-                                pseudo attribute '#% increased Physical Damage' if the Tag 'Melee' is selected.</l:Catalog>
+                            <l:Catalog Message="For example, '#% increased Melee Physical Damage' will only influence the pseudo attribute '#% increased Physical Damage' if the Tag 'Melee' is selected." />
                         </Run>
                     </TextBlock>
                     

@@ -249,7 +249,7 @@
                  mahapps:TextBoxHelper.ClearTextButton="True"
                  mahapps:TextBoxHelper.SelectAllOnFocus="True">
             <mahapps:TextBoxHelper.Watermark>
-                <l:Catalog>Stash search</l:Catalog>
+                <l:Catalog Message="Stash search" />
             </mahapps:TextBoxHelper.Watermark>
         </TextBox>
     </Grid>

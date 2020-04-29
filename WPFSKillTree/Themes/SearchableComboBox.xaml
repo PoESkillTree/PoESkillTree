@@ -222,7 +222,7 @@
                     <TextBox x:Name="PART_SearchBox" Grid.Row="0"
                              Text="{Binding SearchFilter, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}">
                         <controls:TextBoxHelper.Watermark>
-                            <l:Catalog>Type to search</l:Catalog>
+                            <l:Catalog Message="Type to search" />
                         </controls:TextBoxHelper.Watermark>
                     </TextBox>
                     <ScrollViewer Padding="{DynamicResource ComboBoxPopupBorderThemePadding}"

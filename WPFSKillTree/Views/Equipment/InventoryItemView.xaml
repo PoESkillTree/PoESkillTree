@@ -36,12 +36,12 @@
             <ContextMenu>
                 <MenuItem Command="{Binding DeleteCommand}">
                     <MenuItem.Header>
-                        <l:Catalog>Delete</l:Catalog>
+                        <l:Catalog Message="Delete" />
                     </MenuItem.Header>
                 </MenuItem>
                 <MenuItem Command="{Binding EditSocketedGemsCommand}">
                     <MenuItem.Header>
-                        <l:Catalog>Edit Socketed Skills</l:Catalog>
+                        <l:Catalog Message="Edit Socketed Skills" />
                     </MenuItem.Header>
                 </MenuItem>
             </ContextMenu>

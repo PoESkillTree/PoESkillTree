@@ -41,13 +41,36 @@ msgstr ""
 msgid "Stats gained on action"
 msgstr ""
 
+#: Computation\Views\ConfigurationStatsView.xaml:60
+#: Computation\Views\GainOnActionStatsView.xaml:29
+#: Computation\Views\IndependentResultStatsView.xaml:31
+#: Computation\Views\ResultStatsView.xaml:26
+msgid "Stat"
+msgstr ""
+
+#: Computation\Views\ConfigurationStatsView.xaml:66
+#: Computation\Views\GainOnActionStatsView.xaml:43
+#: Computation\Views\IndependentResultStatsView.xaml:38
+#: Computation\Views\ResultStatsView.xaml:34
+#: Computation\Views\ResultStatToolTip.xaml:27
+msgid "Value"
+msgstr ""
+
+#: Computation\Views\GainOnActionStatsView.xaml:36
+#, fuzzy
+msgid "Action"
+msgstr "Funktion"
+
 #: Computation\Views\MainSkillSelectionView.xaml:12
 msgid "Main Skill:"
 msgstr ""
 
-#: Computation\Views\ResultStatToolTip.xaml:27
-msgid "Value"
-msgstr ""
+#: Computation\Views\ResultStatsView.xaml:82
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:226
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:319
+#: Views\Skills\SkillsInSlotEditingView.xaml:78
+msgid "Add"
+msgstr "Hinzufügen"
 
 #: Computation\Views\ResultStatToolTip.xaml:34
 msgid "Form"
@@ -106,6 +129,10 @@ msgstr "Nein"
 msgid "Close"
 msgstr "Schließen"
 
+#: Themes\SearchableComboBox.xaml:225
+msgid "Type to search"
+msgstr ""
+
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:99
 msgid "Level:"
 msgstr "Level:"
@@ -122,10 +149,19 @@ msgstr "Gesamte Punkte:"
 msgid "include Check-tagged nodes"
 msgstr "Schließe Knoten mit Haken ein"
 
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:131
+msgid "Select if Check-tagged nodes must be skilled by possible solutions."
+msgstr ""
+
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:138
 #: TreeGenerator\Views\SteinerTabView.xaml:14
 msgid "exclude Cross-tagged nodes"
 msgstr "Schließe Knoten mit Kreuz aus"
+
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:140
+#: TreeGenerator\Views\SteinerTabView.xaml:16
+msgid "Select if Cross-tagged nodes must not be skilled by possible solutions."
+msgstr ""
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:146
 msgid "Iterations:"
@@ -164,11 +200,6 @@ msgstr "Zu Pseudo Attribute umwandeln"
 msgid "Converts the attributes to pseudo attributes where possible using the defined settings."
 msgstr "Wandelt die Attribute mithilfe der definierten Einstellungen, wo es möglich ist, zu Pseudo-Attributen um."
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:226
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:319
-msgid "Add"
-msgstr "Hinzufügen"
-
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:235
 msgid "Attribute"
 msgstr "Attribute"
@@ -195,33 +226,75 @@ msgstr "Pseudo Attribute"
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:423
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:408
+msgid "These settings define which attributes influence pseudo attributes."
+msgstr ""
+
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:412
+msgid "For example, '#% increased Melee Physical Damage' will only influence the pseudo attribute '#% increased Physical Damage' if the Tag 'Melee' is selected."
+msgstr ""
+
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:422
 msgid "Tree + Items"
 msgstr "Baum + Items"
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:426
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:425
 msgid "Tree only"
 msgstr "Baum"
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:433
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:432
 msgid "Reload Pseudo Attributes from filesystem"
 msgstr "Pseudo Attribute vom Verzeichnis neu einlesen"
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:440
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:439
 msgid "Weapon class"
 msgstr "Waffenklasse"
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:455
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:454
 msgid "Off hand"
 msgstr "Nebenhand"
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:478
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:477
 msgid "Tags"
 msgstr "Schlagwörter"
 
 #: TreeGenerator\Views\ControllerWindow.xaml:30
 msgid "Finding optimal Skill tree..."
 msgstr "Finde optimalen Fähigkeitenbaum..."
+
+#: TreeGenerator\Views\SettingsWindow.xaml:16
+#, fuzzy
+msgid "Passive Tree Generator"
+msgstr "Fähigkeitenbaum Generator"
+
+#: TreeGenerator\Views\SteinerTabView.xaml:32
+msgid "This generator connects all Check-tagged nodes to the current tree with the least amount of nodes possible. Cross-tagged nodes will not be skilled (if the corresponding checkbox is checked). It should always generate the optimal solution."
+msgstr ""
+
+#: TreeGenerator\Views\SteinerTabView.xaml:36
+msgid "Nodes can be Check-tagged by right-clicking them. They can be Cross-tagged by right-clicking twice or shift-right-clicking once."
+msgstr ""
+
+#: TreeGenerator\Views\SteinerTabView.xaml:41
+#, fuzzy
+msgid "The 'Advanced' tab"
+msgstr "Erweitert"
+
+#: TreeGenerator\Views\SteinerTabView.xaml:45
+msgid "For more complex generation, select the 'Advanced' tab. It allows you to add constraints, like a specific amount of '#% increased maximum Life', to the generated trees while keeping the amount of points spent under the specified number."
+msgstr ""
+
+#: TreeGenerator\Views\SteinerTabView.xaml:49
+msgid "The 'Advanced' generator also allows constraints that combine multiple attributes into one. These are called 'Pseudo Attributes' and what influences them can be adjusted under 'Advanced - Settings'."
+msgstr ""
+
+#: TreeGenerator\Views\SteinerTabView.xaml:53
+msgid "Constraints consist of three parts: the attribute name, the target value you want solutions to achieve and a weight. Reaching the target value of constraints with higher weights will be prioritized over reaching the target value of those with lower weights."
+msgstr ""
+
+#: TreeGenerator\Views\SteinerTabView.xaml:57
+msgid "However, the resulting solutions may deviate slightly from the optimum, as the problems that are solved are much more complex."
+msgstr ""
 
 #: Views\AboutWindow.xaml:11
 msgid "About PoESkillTree"
@@ -271,12 +344,19 @@ msgstr ""
 msgid "Right click to edit"
 msgstr "Rechtsklick um zu bearbeiten"
 
+#: Views\Builds\BuildsControl.xaml:87 Views\MainWindow.xaml:141
+#, fuzzy
+msgid "Filter"
+msgstr "Neuer Filter"
+
 #: Views\Builds\BuildsControl.xaml:123 Views\Builds\BuildsControl.xaml:200
 #: Views\MainRibbon.xaml:488 Views\MainRibbon.xaml:493
 msgid "Edit"
 msgstr "Bearbeiten"
 
 #: Views\Builds\BuildsControl.xaml:130 Views\Builds\BuildsControl.xaml:207
+#: Views\Equipment\DraggableItemView.xaml:27
+#: Views\Equipment\InventoryItemView.xaml:39
 msgid "Delete"
 msgstr "Löschen"
 
@@ -334,6 +414,10 @@ msgstr "Notiz"
 msgid "Crafting Window"
 msgstr ""
 
+#: Views\Crafting\CraftingView.xaml:143
+msgid "Show drop disabled bases"
+msgstr ""
+
 #: Views\Crafting\CraftingView.xaml:150
 #: Views\Crafting\UniqueCraftingView.xaml:57
 msgid "Create Item"
@@ -342,6 +426,20 @@ msgstr "Erstelle Item"
 #: Views\Crafting\UniqueCraftingView.xaml:16
 msgid "Unique Crafting Window"
 msgstr ""
+
+#: Views\Crafting\UniqueCraftingView.xaml:50
+msgid "Show drop disabled uniques"
+msgstr ""
+
+#: Views\Equipment\InventoryItemView.xaml:44
+#: Views\Skills\SkillsInSlotEditingDialog.xaml:13
+msgid "Edit Socketed Skills"
+msgstr ""
+
+#: Views\Equipment\StashView.xaml:252
+#, fuzzy
+msgid "Stash search"
+msgstr "Suche"
 
 #: Views\Equipment\TabPicker.xaml:18
 msgid "Stash Bookmark"
@@ -446,7 +544,7 @@ msgstr ""
 msgid "Ctrl + F"
 msgstr ""
 
-#: Views\HotkeysWindow.xaml:111
+#: Views\HotkeysWindow.xaml:111 Views\MainWindow.xaml:213
 msgid "Search"
 msgstr "Suche"
 
@@ -1245,7 +1343,7 @@ msgstr "Verwendete 'Ascendancy' Fähigkeitenpunkte"
 msgid "Total Ascendancy Skill Points"
 msgstr "Gesamte 'Ascendancy' Fähigkeitenpunkte"
 
-#: Views\MainWindow.xaml:348
+#: Views\MainWindow.xaml:348 Views\Skills\SkillsInSlotEditingView.xaml:146
 msgid "Level"
 msgstr "Level"
 
@@ -1289,8 +1387,22 @@ msgstr "Ausrüstung:"
 msgid "Automatically download missing item images"
 msgstr "Lade fehlende Bilder automatisch herunter"
 
-#: Views\Skills\SkillsInSlotEditingDialog.xaml:13
-msgid "Edit Socketed Skills"
+#: Views\Skills\SkillsInSlotEditingView.xaml:90
+#, fuzzy
+msgid "Skill Name"
+msgstr "Fähigkeitenbaum"
+
+#: Views\Skills\SkillsInSlotEditingView.xaml:160
+msgid "Quality"
+msgstr ""
+
+#: Views\Skills\SkillsInSlotEditingView.xaml:174
+#, fuzzy
+msgid "Group"
+msgstr "Gruppenname"
+
+#: Views\Skills\SkillsInSlotEditingView.xaml:189
+msgid "Enabled"
 msgstr ""
 
 #: Views\Skills\SkillsInSlotEditingView.xaml:218
@@ -1354,7 +1466,7 @@ msgstr "Konnte Build nicht importieren"
 msgid "New build"
 msgstr "Neuer Build"
 
-#: SkillTreeFiles\SkillTree.cs:1040
+#: SkillTreeFiles\SkillTree.cs:1045
 msgid "Some nodes ({unknownNodes}) are unknown and have been omitted."
 msgstr "Manche Knoten ({unknownNodes}) sind unbekannt und wurden weggelassen."
 
@@ -1743,7 +1855,7 @@ msgid "This will delete the build folder \"{0}\" and all its contents.\n"
 msgstr "Dies wird das Verzeichnis \"{0}\" und den ganzen Inhalt löschen.\n"
 
 #: ViewModels\Builds\BuildsControlViewModel.cs:424
-#: Views\MainWindow.xaml.cs:963
+#: Views\MainWindow.xaml.cs:964
 msgid "Do you want to continue?"
 msgstr "Fortfahren?"
 
@@ -1979,6 +2091,23 @@ msgstr "Hebe Knoten nach Attribut hervor"
 msgid "Remove highlights by attribute"
 msgstr "Entferne die Hervorhebungen nach Attribut"
 
+#: Views\MainWindow.xaml.cs:552
+#, fuzzy
+msgid "Create new group"
+msgstr "Erstelle eine neue Attributgruppe"
+
+#: Views\MainWindow.xaml.cs:556
+msgid "Add to group..."
+msgstr ""
+
+#: Views\MainWindow.xaml.cs:561
+msgid "Delete group..."
+msgstr ""
+
+#: Views\MainWindow.xaml.cs:564
+msgid "Remove from group"
+msgstr ""
+
 #: Views\MainWindow.xaml.cs:621
 msgid "Load Tree"
 msgstr "Lade Fähigkeitenbaum"
@@ -2008,117 +2137,122 @@ msgstr[1] "{0} Punkte"
 msgid "Your build must use at least one node to generate a screenshot"
 msgstr "Dein Build muss mindestens einen Knoten ausgewählt haben, damit ein Screenshot generiert werden kann."
 
-#: Views\MainWindow.xaml.cs:960
+#: Views\MainWindow.xaml.cs:943
+#, fuzzy
+msgid "Screenshot Generator"
+msgstr "Fähigkeitenbaum Generator"
+
+#: Views\MainWindow.xaml.cs:961
 msgid "The existing skill tree data will be deleted. The data will be downloaded from the official online skill tree and is from the latest released version of the game."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:969
+#: Views\MainWindow.xaml.cs:970
 msgid "Downloading skill tree assets ..."
 msgstr "Lade Assets für den Fähigkeitenbaum herunter..."
 
-#: Views\MainWindow.xaml.cs:990
+#: Views\MainWindow.xaml.cs:991
 msgid "An error occurred while downloading assets."
 msgstr "Beim Herunterladen der Assets ist ein Fehler aufgetreten."
 
-#: Views\MainWindow.xaml.cs:1007
+#: Views\MainWindow.xaml.cs:1008
 msgid "Checking for updates"
 msgstr "Suche nach Aktualisierungen"
 
-#: Views\MainWindow.xaml.cs:1012
+#: Views\MainWindow.xaml.cs:1013
 msgid "You have the latest version!"
 msgstr "Das Programm hat bereits die aktuellste Version!"
 
-#: Views\MainWindow.xaml.cs:1017
+#: Views\MainWindow.xaml.cs:1018
 #, csharp-format
 msgid "An update for {0} ({1}) is available!"
 msgstr "Eine Aktualisierung für {0} ({1}) ist verfügbar!"
 
-#: Views\MainWindow.xaml.cs:1020
+#: Views\MainWindow.xaml.cs:1021
 msgid "The application will be closed when download completes to proceed with the update."
 msgstr "Die Anwendung wird nach dem Herunterladen geschlossen um mit dem Update fortfahren zu können."
 
-#: Views\MainWindow.xaml.cs:1021
+#: Views\MainWindow.xaml.cs:1022
 #, csharp-format
 msgid "A new version {0} is available!"
 msgstr "Eine neue Version {0} steht zur Verfügung!"
 
-#: Views\MainWindow.xaml.cs:1024
+#: Views\MainWindow.xaml.cs:1025
 msgid "The new version of application will be installed side-by-side with earlier versions."
 msgstr "Die neue Version des Programms wird neben den älteren Versionen installiert."
 
-#: Views\MainWindow.xaml.cs:1028
+#: Views\MainWindow.xaml.cs:1029
 msgid "Warning: This is a pre-release, meaning there could be some bugs!"
 msgstr "Warnung: Dies ist eine Vorabversion. Dies bedeutet, dass Fehler auftreten können!"
 
-#: Views\MainWindow.xaml.cs:1032
+#: Views\MainWindow.xaml.cs:1033
 msgid "Do you want to download and install the update?"
 msgstr "Möchtest Du die Aktualisierung herunterladen und installieren?"
 
-#: Views\MainWindow.xaml.cs:1033
+#: Views\MainWindow.xaml.cs:1034
 msgid "Do you want to download and install the new version?"
 msgstr "Möchtest Du die neue Version herunterladen und installieren?"
 
-#: Views\MainWindow.xaml.cs:1035
+#: Views\MainWindow.xaml.cs:1036
 msgid "Continue installation?"
 msgstr "Installation fortfahren?"
 
-#: Views\MainWindow.xaml.cs:1046
+#: Views\MainWindow.xaml.cs:1047
 msgid "An error occurred while attempting to contact the update location."
 msgstr "Beim Versuch den Updateserver zu erreichen ist ein Fehler aufgetreten."
 
-#: Views\MainWindow.xaml.cs:1054
+#: Views\MainWindow.xaml.cs:1055
 msgid "Downloading latest version"
 msgstr "Lade aktuelle Version herunter"
 
-#: Views\MainWindow.xaml.cs:1069 Views\MainWindow.xaml.cs:1084
+#: Views\MainWindow.xaml.cs:1070 Views\MainWindow.xaml.cs:1085
 msgid "An error occurred during the download operation."
 msgstr "Während des Herunterladens ist ein Fehler aufgetreten."
 
-#: Views\MainWindow.xaml.cs:1097
+#: Views\MainWindow.xaml.cs:1098
 msgid "An error occurred while attempting to start the installation."
 msgstr "Beim Versuch die Installation zu starten ist ein Fehler aufgetreten."
 
-#: Views\MainWindow.xaml.cs:1637
+#: Views\MainWindow.xaml.cs:1638
 msgid "An error occurred while attempting to load item data."
 msgstr "Beim Versuch die Gegenstandsdaten zu laden ist ein Fehler aufgetreten."
 
-#: Views\MainWindow.xaml.cs:1733 Views\MainWindow.xaml.cs:1776
+#: Views\MainWindow.xaml.cs:1734 Views\MainWindow.xaml.cs:1777
 msgid "An error occurred while attempting to load Skill tree from URL."
 msgstr "Beim Versuch den Fähigkeitenbaum von der URL zu laden ist ein Fehler aufgetreten."
 
-#: Views\MainWindow.xaml.cs:1755
+#: Views\MainWindow.xaml.cs:1756
 msgid "The build you are loading contains information about selected bandits."
 msgstr "Der Build enthält Informationen über ausgewählte Banditen."
 
-#: Views\MainWindow.xaml.cs:1756
+#: Views\MainWindow.xaml.cs:1757
 msgid "Do you want to use it and overwrite current settings?"
 msgstr "Möchtest Du es verwenden und die derzeitige Einstellungen überschreiben?"
 
-#: Views\MainWindow.xaml.cs:1757
+#: Views\MainWindow.xaml.cs:1758
 msgid "Replace Bandits settings"
 msgstr "Ersetze Einstellungen für Banditen"
 
-#: Views\MainWindow.xaml.cs:1783
+#: Views\MainWindow.xaml.cs:1784
 msgid "Current: "
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1784
+#: Views\MainWindow.xaml.cs:1785
 msgid "Loaded: "
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1879
+#: Views\MainWindow.xaml.cs:1880
 msgid "Generating PoEUrl of Skill tree"
 msgstr "Generiere PoEUrl des Fähigkeitenbaums"
 
-#: Views\MainWindow.xaml.cs:1885
+#: Views\MainWindow.xaml.cs:1886
 msgid "An error occurred while attempting to contact the PoEUrl location."
 msgstr "Beim Versuch die PoEUrl zu kontaktieren ist ein Fehler aufgetreten."
 
-#: Views\MainWindow.xaml.cs:1895
+#: Views\MainWindow.xaml.cs:1896
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr "Der PoEUrl Link wurde in die Zwischenablage kopiert."
 
-#: Views\MainWindow.xaml.cs:1899
+#: Views\MainWindow.xaml.cs:1900
 msgid "An error occurred while copying to Clipboard."
 msgstr "Beim Kopieren in den Zwischenspeicher ist ein Fehler aufgetreten."
 
@@ -2151,9 +2285,6 @@ msgstr "Beim Kopieren in den Zwischenspeicher ist ein Fehler aufgetreten."
 
 #~ msgid "Key combination"
 #~ msgstr "Tastenkombination"
-
-#~ msgid "Function"
-#~ msgstr "Funktion"
 
 #~ msgid "Toggle Attributes sidebar"
 #~ msgstr "Schalte die Attribute-Seitenleiste um"
@@ -2309,9 +2440,6 @@ msgstr "Beim Kopieren in den Zwischenspeicher ist ein Fehler aufgetreten."
 #~ msgid "_Nodes"
 #~ msgstr "Knoten"
 
-#~ msgid "_Skill Tree Generator"
-#~ msgstr "Fähigkeitenbaum Generator"
-
 #~ msgid "_Help"
 #~ msgstr "Hilfe"
 
@@ -2367,9 +2495,6 @@ msgstr "Beim Kopieren in den Zwischenspeicher ist ein Fehler aufgetreten."
 
 #~ msgid "Enter a name for filter you want to create."
 #~ msgstr "Gebe einen Namen für den Filter ein."
-
-#~ msgid "New Filter"
-#~ msgstr "Neuer Filter"
 
 #~ msgid "Create Copy"
 #~ msgstr "Erstelle Kopie"

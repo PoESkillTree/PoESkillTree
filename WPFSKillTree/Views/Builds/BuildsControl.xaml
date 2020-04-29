@@ -84,7 +84,7 @@
                      controls:TextBoxHelper.SelectAllOnFocus="True"
                      Text="{Binding TextFilter, UpdateSourceTrigger=PropertyChanged}"
                      Margin="4 0 1 0">
-                <controls:TextBoxHelper.Watermark><l:Catalog>Filter</l:Catalog></controls:TextBoxHelper.Watermark>
+                <controls:TextBoxHelper.Watermark><l:Catalog Message="Filter" /></controls:TextBoxHelper.Watermark>
             </TextBox>
         </DockPanel>
 

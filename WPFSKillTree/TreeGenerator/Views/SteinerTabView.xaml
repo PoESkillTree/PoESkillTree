@@ -13,7 +13,7 @@
             <CheckBox IsChecked="{Binding ExcludeCrossed.Value}">
                 <l:Catalog Message="exclude Cross-tagged nodes"/>
                 <CheckBox.ToolTip>
-                    <l:Catalog>Select if Cross-tagged nodes must not be skilled by possible solutions.</l:Catalog>
+                    <l:Catalog Message="Select if Cross-tagged nodes must not be skilled by possible solutions." />
                 </CheckBox.ToolTip>
             </CheckBox>
 
@@ -29,42 +29,32 @@
                    FontSize="{StaticResource MahApps.Font.Size.Default}"
                    Padding="5">
             <Run>
-                <l:Catalog>This generator connects all Check-tagged nodes to the current tree with the least amount of
-                    nodes possible. Cross-tagged nodes will not be skilled (if the corresponding checkbox is
-                    checked). It should always generate the optimal solution.</l:Catalog>
+                <l:Catalog Message="This generator connects all Check-tagged nodes to the current tree with the least amount of nodes possible. Cross-tagged nodes will not be skilled (if the corresponding checkbox is checked). It should always generate the optimal solution." />
             </Run>
             <LineBreak /><LineBreak />
             <Run>
-                <l:Catalog>Nodes can be Check-tagged by right-clicking them. They can be Cross-tagged by right-clicking
-                    twice or shift-right-clicking once.</l:Catalog>
+                <l:Catalog Message="Nodes can be Check-tagged by right-clicking them. They can be Cross-tagged by right-clicking twice or shift-right-clicking once." />
             </Run>
         </TextBlock>
         <Expander Margin="5 20 5 5">
             <Expander.Header>
-                <l:Catalog>The 'Advanced' tab</l:Catalog>
+                <l:Catalog Message="The 'Advanced' tab" />
             </Expander.Header>
             <TextBlock TextWrapping="Wrap">
                 <Run>
-                    <l:Catalog>For more complex generation, select the 'Advanced' tab. It allows you to add constraints,
-                        like a specific amount of '#% increased maximum Life', to the generated trees while keeping the amount
-                        of points spent under the specified number.</l:Catalog>
+                    <l:Catalog Message="For more complex generation, select the 'Advanced' tab. It allows you to add constraints, like a specific amount of '#% increased maximum Life', to the generated trees while keeping the amount of points spent under the specified number." />
                 </Run>
                 <LineBreak /><LineBreak />
                 <Run>
-                    <l:Catalog>The 'Advanced' generator also allows constraints that combine multiple attributes into one.
-                        These are called 'Pseudo Attributes' and what influences them can be adjusted under
-                        'Advanced - Settings'.</l:Catalog>
+                    <l:Catalog Message="The 'Advanced' generator also allows constraints that combine multiple attributes into one. These are called 'Pseudo Attributes' and what influences them can be adjusted under 'Advanced - Settings'." />
                 </Run>
                 <LineBreak /><LineBreak />
                 <Run>
-                    <l:Catalog>Constraints consist of three parts: the attribute name, the target value you want solutions to
-                        achieve and a weight. Reaching the target value of constraints with higher weights will be prioritized
-                        over reaching the target value of those with lower weights.</l:Catalog>
+                    <l:Catalog Message="Constraints consist of three parts: the attribute name, the target value you want solutions to achieve and a weight. Reaching the target value of constraints with higher weights will be prioritized over reaching the target value of those with lower weights." />
                 </Run>
                 <LineBreak /><LineBreak />
                 <Run>
-                    <l:Catalog>However, the resulting solutions may deviate slightly from
-                        the optimum, as the problems that are solved are much more complex.</l:Catalog>
+                    <l:Catalog Message="However, the resulting solutions may deviate slightly from the optimum, as the problems that are solved are much more complex." />
                 </Run>
             </TextBlock>
         </Expander>

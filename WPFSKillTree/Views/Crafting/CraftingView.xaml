@@ -140,7 +140,7 @@
         <CheckBox Grid.Row="2"
                   VerticalAlignment="Center"
                   IsChecked="{Binding ShowDropDisabledItems}">
-            <l:Catalog>Show drop disabled bases</l:Catalog>
+            <l:Catalog Message="Show drop disabled bases" />
         </CheckBox>
         <StackPanel Grid.Row="2"
                     Style="{StaticResource DialogPanel}">

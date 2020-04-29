@@ -24,7 +24,7 @@
         <ContextMenu>
             <MenuItem Command="{Binding DeleteCommand}">
                 <MenuItem.Header>
-                    <l:Catalog>Delete</l:Catalog>
+                    <l:Catalog Message="Delete" />
                 </MenuItem.Header>
             </MenuItem>
         </ContextMenu>

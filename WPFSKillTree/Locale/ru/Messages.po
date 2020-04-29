@@ -42,13 +42,36 @@ msgstr "Конфигурация"
 msgid "Stats gained on action"
 msgstr ""
 
+#: Computation\Views\ConfigurationStatsView.xaml:60
+#: Computation\Views\GainOnActionStatsView.xaml:29
+#: Computation\Views\IndependentResultStatsView.xaml:31
+#: Computation\Views\ResultStatsView.xaml:26
+msgid "Stat"
+msgstr ""
+
+#: Computation\Views\ConfigurationStatsView.xaml:66
+#: Computation\Views\GainOnActionStatsView.xaml:43
+#: Computation\Views\IndependentResultStatsView.xaml:38
+#: Computation\Views\ResultStatsView.xaml:34
+#: Computation\Views\ResultStatToolTip.xaml:27
+msgid "Value"
+msgstr "Значение"
+
+#: Computation\Views\GainOnActionStatsView.xaml:36
+#, fuzzy
+msgid "Action"
+msgstr "Предназначение"
+
 #: Computation\Views\MainSkillSelectionView.xaml:12
 msgid "Main Skill:"
 msgstr "Основной Навык:"
 
-#: Computation\Views\ResultStatToolTip.xaml:27
-msgid "Value"
-msgstr "Значение"
+#: Computation\Views\ResultStatsView.xaml:82
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:226
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:319
+#: Views\Skills\SkillsInSlotEditingView.xaml:78
+msgid "Add"
+msgstr "Добавить"
 
 #: Computation\Views\ResultStatToolTip.xaml:34
 msgid "Form"
@@ -107,6 +130,10 @@ msgstr "Нет"
 msgid "Close"
 msgstr "Закрыть"
 
+#: Themes\SearchableComboBox.xaml:225
+msgid "Type to search"
+msgstr ""
+
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:99
 msgid "Level:"
 msgstr "Уровень:"
@@ -123,10 +150,19 @@ msgstr "Всего очков:"
 msgid "include Check-tagged nodes"
 msgstr "включить отмеченные узлы"
 
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:131
+msgid "Select if Check-tagged nodes must be skilled by possible solutions."
+msgstr ""
+
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:138
 #: TreeGenerator\Views\SteinerTabView.xaml:14
 msgid "exclude Cross-tagged nodes"
 msgstr "исключить Cross-tagged узлы"
+
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:140
+#: TreeGenerator\Views\SteinerTabView.xaml:16
+msgid "Select if Cross-tagged nodes must not be skilled by possible solutions."
+msgstr ""
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:146
 msgid "Iterations:"
@@ -165,11 +201,6 @@ msgstr "Конвертировать в псевдоатрибуты"
 msgid "Converts the attributes to pseudo attributes where possible using the defined settings."
 msgstr "Конвертировать атрибуты в псевдоатрибуты, где это возможно, используя заданные настройки."
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:226
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:319
-msgid "Add"
-msgstr "Добавить"
-
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:235
 msgid "Attribute"
 msgstr "Атрибуты"
@@ -196,33 +227,75 @@ msgstr "Псевдо-атрибут"
 msgid "Settings"
 msgstr "Настройки"
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:423
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:408
+msgid "These settings define which attributes influence pseudo attributes."
+msgstr ""
+
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:412
+msgid "For example, '#% increased Melee Physical Damage' will only influence the pseudo attribute '#% increased Physical Damage' if the Tag 'Melee' is selected."
+msgstr ""
+
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:422
 msgid "Tree + Items"
 msgstr "Дерево + Предметы"
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:426
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:425
 msgid "Tree only"
 msgstr "Только дерево"
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:433
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:432
 msgid "Reload Pseudo Attributes from filesystem"
 msgstr "Перезагрузить псевдоатрибуты из файловой системы"
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:440
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:439
 msgid "Weapon class"
 msgstr "Класс оружия"
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:455
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:454
 msgid "Off hand"
 msgstr "Вторая рука"
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:478
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:477
 msgid "Tags"
 msgstr "Метки"
 
 #: TreeGenerator\Views\ControllerWindow.xaml:30
 msgid "Finding optimal Skill tree..."
 msgstr "Ищутся оптмальные пути..."
+
+#: TreeGenerator\Views\SettingsWindow.xaml:16
+#, fuzzy
+msgid "Passive Tree Generator"
+msgstr "Генератор дерева"
+
+#: TreeGenerator\Views\SteinerTabView.xaml:32
+msgid "This generator connects all Check-tagged nodes to the current tree with the least amount of nodes possible. Cross-tagged nodes will not be skilled (if the corresponding checkbox is checked). It should always generate the optimal solution."
+msgstr ""
+
+#: TreeGenerator\Views\SteinerTabView.xaml:36
+msgid "Nodes can be Check-tagged by right-clicking them. They can be Cross-tagged by right-clicking twice or shift-right-clicking once."
+msgstr ""
+
+#: TreeGenerator\Views\SteinerTabView.xaml:41
+#, fuzzy
+msgid "The 'Advanced' tab"
+msgstr "Запустить 'Advanced' генератор"
+
+#: TreeGenerator\Views\SteinerTabView.xaml:45
+msgid "For more complex generation, select the 'Advanced' tab. It allows you to add constraints, like a specific amount of '#% increased maximum Life', to the generated trees while keeping the amount of points spent under the specified number."
+msgstr ""
+
+#: TreeGenerator\Views\SteinerTabView.xaml:49
+msgid "The 'Advanced' generator also allows constraints that combine multiple attributes into one. These are called 'Pseudo Attributes' and what influences them can be adjusted under 'Advanced - Settings'."
+msgstr ""
+
+#: TreeGenerator\Views\SteinerTabView.xaml:53
+msgid "Constraints consist of three parts: the attribute name, the target value you want solutions to achieve and a weight. Reaching the target value of constraints with higher weights will be prioritized over reaching the target value of those with lower weights."
+msgstr ""
+
+#: TreeGenerator\Views\SteinerTabView.xaml:57
+msgid "However, the resulting solutions may deviate slightly from the optimum, as the problems that are solved are much more complex."
+msgstr ""
 
 #: Views\AboutWindow.xaml:11
 msgid "About PoESkillTree"
@@ -272,12 +345,19 @@ msgstr "Механизм расчета билдов, используемый �
 msgid "Right click to edit"
 msgstr "Нажмите правую кнопку мыши для изменения"
 
+#: Views\Builds\BuildsControl.xaml:87 Views\MainWindow.xaml:141
+#, fuzzy
+msgid "Filter"
+msgstr "Фильтр"
+
 #: Views\Builds\BuildsControl.xaml:123 Views\Builds\BuildsControl.xaml:200
 #: Views\MainRibbon.xaml:488 Views\MainRibbon.xaml:493
 msgid "Edit"
 msgstr "Редактировать"
 
 #: Views\Builds\BuildsControl.xaml:130 Views\Builds\BuildsControl.xaml:207
+#: Views\Equipment\DraggableItemView.xaml:27
+#: Views\Equipment\InventoryItemView.xaml:39
 msgid "Delete"
 msgstr "Удалить"
 
@@ -335,6 +415,10 @@ msgstr "Заметки"
 msgid "Crafting Window"
 msgstr "Окно Создания Предметов"
 
+#: Views\Crafting\CraftingView.xaml:143
+msgid "Show drop disabled bases"
+msgstr ""
+
 #: Views\Crafting\CraftingView.xaml:150
 #: Views\Crafting\UniqueCraftingView.xaml:57
 msgid "Create Item"
@@ -343,6 +427,20 @@ msgstr "Создать Предмет"
 #: Views\Crafting\UniqueCraftingView.xaml:16
 msgid "Unique Crafting Window"
 msgstr "Окно создания Уникальных предметов"
+
+#: Views\Crafting\UniqueCraftingView.xaml:50
+msgid "Show drop disabled uniques"
+msgstr ""
+
+#: Views\Equipment\InventoryItemView.xaml:44
+#: Views\Skills\SkillsInSlotEditingDialog.xaml:13
+msgid "Edit Socketed Skills"
+msgstr "Редактирование Навыков со Слотами"
+
+#: Views\Equipment\StashView.xaml:252
+#, fuzzy
+msgid "Stash search"
+msgstr "Поиск"
 
 #: Views\Equipment\TabPicker.xaml:18
 msgid "Stash Bookmark"
@@ -447,7 +545,7 @@ msgstr "Дерево"
 msgid "Ctrl + F"
 msgstr "Ctrl + F"
 
-#: Views\HotkeysWindow.xaml:111
+#: Views\HotkeysWindow.xaml:111 Views\MainWindow.xaml:213
 msgid "Search"
 msgstr "Поиск"
 
@@ -1242,7 +1340,7 @@ msgstr "Использованные Очки Навыков Восхожден�
 msgid "Total Ascendancy Skill Points"
 msgstr "Всего Очков Навыков Восхождения"
 
-#: Views\MainWindow.xaml:348
+#: Views\MainWindow.xaml:348 Views\Skills\SkillsInSlotEditingView.xaml:146
 msgid "Level"
 msgstr "Уровень"
 
@@ -1286,9 +1384,23 @@ msgstr "Снаряжение:"
 msgid "Automatically download missing item images"
 msgstr "Загружать отсутствующие изображения предметов"
 
-#: Views\Skills\SkillsInSlotEditingDialog.xaml:13
-msgid "Edit Socketed Skills"
-msgstr "Редактирование Навыков со Слотами"
+#: Views\Skills\SkillsInSlotEditingView.xaml:90
+#, fuzzy
+msgid "Skill Name"
+msgstr "Нывыки"
+
+#: Views\Skills\SkillsInSlotEditingView.xaml:160
+msgid "Quality"
+msgstr ""
+
+#: Views\Skills\SkillsInSlotEditingView.xaml:174
+#, fuzzy
+msgid "Group"
+msgstr "Имя Группы"
+
+#: Views\Skills\SkillsInSlotEditingView.xaml:189
+msgid "Enabled"
+msgstr ""
 
 #: Views\Skills\SkillsInSlotEditingView.xaml:218
 msgid "Equipped item's maximum number of sockets:"
@@ -1351,7 +1463,7 @@ msgstr "Не удалось импортировать билд"
 msgid "New build"
 msgstr "Новый билд"
 
-#: SkillTreeFiles\SkillTree.cs:1040
+#: SkillTreeFiles\SkillTree.cs:1045
 msgid "Some nodes ({unknownNodes}) are unknown and have been omitted."
 msgstr "Некоторые узлы ({unknownNodes}) неизвестны и были опущены."
 
@@ -1741,7 +1853,8 @@ msgstr "Открытый в данный момент билд не может �
 msgid "This will delete the build folder \"{0}\" and all its contents.\n"
 msgstr "Это приведет к удалению папки билда \"{0} \" и всего его содержимого.\n"
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:424 Views\MainWindow.xaml.cs:963
+#: ViewModels\Builds\BuildsControlViewModel.cs:424
+#: Views\MainWindow.xaml.cs:964
 msgid "Do you want to continue?"
 msgstr "Хотите продолжить?"
 
@@ -1979,6 +2092,23 @@ msgstr "Выделить узлы по атрибуту"
 msgid "Remove highlights by attribute"
 msgstr "Удалить выделения по атрибуту"
 
+#: Views\MainWindow.xaml.cs:552
+#, fuzzy
+msgid "Create new group"
+msgstr "Создать Новую Группу Атрибутов"
+
+#: Views\MainWindow.xaml.cs:556
+msgid "Add to group..."
+msgstr ""
+
+#: Views\MainWindow.xaml.cs:561
+msgid "Delete group..."
+msgstr ""
+
+#: Views\MainWindow.xaml.cs:564
+msgid "Remove from group"
+msgstr ""
+
 #: Views\MainWindow.xaml.cs:621
 msgid "Load Tree"
 msgstr "Загрузить"
@@ -2009,117 +2139,122 @@ msgstr[2] ""
 msgid "Your build must use at least one node to generate a screenshot"
 msgstr "Ваш билд должен использовать по крайней мере один узел для создания скриншота"
 
-#: Views\MainWindow.xaml.cs:960
+#: Views\MainWindow.xaml.cs:943
+#, fuzzy
+msgid "Screenshot Generator"
+msgstr "Сссылка"
+
+#: Views\MainWindow.xaml.cs:961
 msgid "The existing skill tree data will be deleted. The data will be downloaded from the official online skill tree and is from the latest released version of the game."
 msgstr "Существующие данные дерева навыков будут удалены. Данные будут загружены из официального онлайн-дерева навыков и взяты из последней выпущенной версии игры."
 
-#: Views\MainWindow.xaml.cs:969
+#: Views\MainWindow.xaml.cs:970
 msgid "Downloading skill tree assets ..."
 msgstr "Загрузка ресурсов дерева навыков ..."
 
-#: Views\MainWindow.xaml.cs:990
+#: Views\MainWindow.xaml.cs:991
 msgid "An error occurred while downloading assets."
 msgstr "Произошла ошибка при загрузке ресурсов."
 
-#: Views\MainWindow.xaml.cs:1007
+#: Views\MainWindow.xaml.cs:1008
 msgid "Checking for updates"
 msgstr "Проверяется наличие обновлений"
 
-#: Views\MainWindow.xaml.cs:1012
+#: Views\MainWindow.xaml.cs:1013
 msgid "You have the latest version!"
 msgstr "Вы используете последнюю версию!"
 
-#: Views\MainWindow.xaml.cs:1017
+#: Views\MainWindow.xaml.cs:1018
 #, csharp-format
 msgid "An update for {0} ({1}) is available!"
 msgstr "Доступно обновление {0} ({1})"
 
-#: Views\MainWindow.xaml.cs:1020
+#: Views\MainWindow.xaml.cs:1021
 msgid "The application will be closed when download completes to proceed with the update."
 msgstr "Приложение будет закрыито по завершению загрузки для продолжения обновления."
 
-#: Views\MainWindow.xaml.cs:1021
+#: Views\MainWindow.xaml.cs:1022
 #, csharp-format
 msgid "A new version {0} is available!"
 msgstr "Длступна новая версия {0}!"
 
-#: Views\MainWindow.xaml.cs:1024
+#: Views\MainWindow.xaml.cs:1025
 msgid "The new version of application will be installed side-by-side with earlier versions."
 msgstr "Новая версия прилодения будет установлена поверх предидущей."
 
-#: Views\MainWindow.xaml.cs:1028
+#: Views\MainWindow.xaml.cs:1029
 msgid "Warning: This is a pre-release, meaning there could be some bugs!"
 msgstr "Внимание! Это пре-релизная версия, что значит, что моут возникать баги."
 
-#: Views\MainWindow.xaml.cs:1032
+#: Views\MainWindow.xaml.cs:1033
 msgid "Do you want to download and install the update?"
 msgstr "Хотите загрузить и установить обновление?"
 
-#: Views\MainWindow.xaml.cs:1033
+#: Views\MainWindow.xaml.cs:1034
 msgid "Do you want to download and install the new version?"
 msgstr "Хотите загрузить и установить новую версию?"
 
-#: Views\MainWindow.xaml.cs:1035
+#: Views\MainWindow.xaml.cs:1036
 msgid "Continue installation?"
 msgstr "Продолжить установку?"
 
-#: Views\MainWindow.xaml.cs:1046
+#: Views\MainWindow.xaml.cs:1047
 msgid "An error occurred while attempting to contact the update location."
 msgstr "Произошла ошибка при попытке соединения."
 
-#: Views\MainWindow.xaml.cs:1054
+#: Views\MainWindow.xaml.cs:1055
 msgid "Downloading latest version"
 msgstr "Загрузить последнюю версию"
 
-#: Views\MainWindow.xaml.cs:1069 Views\MainWindow.xaml.cs:1084
+#: Views\MainWindow.xaml.cs:1070 Views\MainWindow.xaml.cs:1085
 msgid "An error occurred during the download operation."
 msgstr "Произошла ошибка при загрузке."
 
-#: Views\MainWindow.xaml.cs:1097
+#: Views\MainWindow.xaml.cs:1098
 msgid "An error occurred while attempting to start the installation."
 msgstr "Произошла ошибка при попытке начать установку."
 
-#: Views\MainWindow.xaml.cs:1637
+#: Views\MainWindow.xaml.cs:1638
 msgid "An error occurred while attempting to load item data."
 msgstr "Произошла ошибка при попытке загрузки базы данных предметов."
 
-#: Views\MainWindow.xaml.cs:1733 Views\MainWindow.xaml.cs:1776
+#: Views\MainWindow.xaml.cs:1734 Views\MainWindow.xaml.cs:1777
 msgid "An error occurred while attempting to load Skill tree from URL."
 msgstr "Произошла ошибка при попытке загрузить ссылку."
 
-#: Views\MainWindow.xaml.cs:1755
+#: Views\MainWindow.xaml.cs:1756
 msgid "The build you are loading contains information about selected bandits."
 msgstr "Загружаемый билд содержит информацию о выбранных разбойниках."
 
-#: Views\MainWindow.xaml.cs:1756
+#: Views\MainWindow.xaml.cs:1757
 msgid "Do you want to use it and overwrite current settings?"
 msgstr "Вы хотите использовать это и перезаписать текущие настройки?"
 
-#: Views\MainWindow.xaml.cs:1757
+#: Views\MainWindow.xaml.cs:1758
 msgid "Replace Bandits settings"
 msgstr "Заменить настройки Разбойников"
 
-#: Views\MainWindow.xaml.cs:1783
+#: Views\MainWindow.xaml.cs:1784
 msgid "Current: "
 msgstr "Текущие:"
 
-#: Views\MainWindow.xaml.cs:1784
+#: Views\MainWindow.xaml.cs:1785
 msgid "Loaded: "
 msgstr "Загруженные:"
 
-#: Views\MainWindow.xaml.cs:1879
+#: Views\MainWindow.xaml.cs:1880
 msgid "Generating PoEUrl of Skill tree"
 msgstr "Создается ссылка PoEUrl"
 
-#: Views\MainWindow.xaml.cs:1885
+#: Views\MainWindow.xaml.cs:1886
 msgid "An error occurred while attempting to contact the PoEUrl location."
 msgstr "Произошла ошибка при попытке соединения с PoEUrl."
 
-#: Views\MainWindow.xaml.cs:1895
+#: Views\MainWindow.xaml.cs:1896
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr "Сссылка PoEUrl была скопирована."
 
-#: Views\MainWindow.xaml.cs:1899
+#: Views\MainWindow.xaml.cs:1900
 msgid "An error occurred while copying to Clipboard."
 msgstr "Произошла ошибка при копировании."
 
@@ -2151,9 +2286,6 @@ msgstr "Произошла ошибка при копировании."
 
 #~ msgid "Key combination"
 #~ msgstr "Сочитания клавиш"
-
-#~ msgid "Function"
-#~ msgstr "Предназначение"
 
 #~ msgid "Toggle Attributes sidebar"
 #~ msgstr "Показать/спрятать список атрибутов"
@@ -2318,13 +2450,6 @@ msgstr "Произошла ошибка при копировании."
 
 #~ msgid "_Program Assets"
 #~ msgstr "Програмниые активы"
-
-#~ msgid "Filter:"
-#~ msgstr "Фильтр"
-
-#, fuzzy
-#~ msgid "Skill tree Generator"
-#~ msgstr "Сссылка"
 
 #~ msgid "An error occurred while attempting to load saved builds."
 #~ msgstr "Произошла ошибка при попытке загрузить сохраненные билды."
