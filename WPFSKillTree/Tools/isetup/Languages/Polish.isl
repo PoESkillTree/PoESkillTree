@@ -325,3 +325,12 @@ AssocingFileExtension=Przypisywanie programu %1 do rozszerzenia pliku %2...
 AutoStartProgramGroupDescription=Autostart:
 AutoStartProgram=Automatycznie uruchamiaj %1
 AddonHostProgramNotFound=%1 nie zosta³ znaleziony we wskazanym przez Ciebie folderze.%n%nCzy pomimo tego chcesz kontynuowaæ?
+
+; *** "Installation Type" dialog messages
+InstallationTypeTitle=Typ Instalacji
+InstallationTypeDesc=Wybierz Typ Instalacji
+InstallationTypeLabel=Wybierz instalacjê przenoœn¹ tylko wtedy, gdy chcesz mieæ mo¿liwoœæ przenoszenia tego programu i jego ustawieñ na urz¹dzeniu przenoœnym (na przyk³ad dysku USB). Nie zostan¹ utworzone ¿adne skróty, a opcja odinstalowania bêdzie niedostêpna.
+InstallationTypeStandardLabel=Standardowa - Zainstaluj na tym komputerze (zalecane)
+InstallationTypePortableLabel=Portable - Zainstaluj na urz¹dzeniu prznoœnym
+
+UninstallAskForPersistentDataRemove=Czy chcesz aby deinstalator usun¹³ Twoje buildy, ustawienia i inne trwa³e dane? Nie bêdziesz móg³ tego cofn¹æ! Tylko buildy zapisane w domyœlnej lokalizacji zostan¹ usuniête.
