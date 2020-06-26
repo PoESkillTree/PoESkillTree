@@ -173,6 +173,15 @@
                     <DataGridTemplateColumn.Header>
                         <l:Catalog Message="Group" />
                     </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}">
+                            <Setter Property="ToolTip">
+                                <Setter.Value>
+                                    <l:Catalog Message="Skills with the same group are linked." />
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DataGridTemplateColumn.HeaderStyle>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="viewModels:GemViewModel">
                             <mahapps:NumericUpDown Style="{StaticResource UpDownInDataGridStyle}"
