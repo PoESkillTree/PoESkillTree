@@ -103,7 +103,8 @@ msgstr "OK"
 #: Controls\Dialogs\Views\MetroMessageBoxView.xaml:76
 #: Controls\Dialogs\Views\ValidatingInputDialogView.xaml:49
 #: Views\Builds\EditBuildWindow.xaml:48 Views\Crafting\CraftingView.xaml:155
-#: Views\Crafting\UniqueCraftingView.xaml:62 Views\Equipment\TabPicker.xaml:127
+#: Views\Crafting\UniqueCraftingView.xaml:62
+#: Views\Equipment\TabPicker.xaml:127
 #: Controls\Dialogs\ExtendedDialogManager.cs:92
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:121
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:349
@@ -261,7 +262,7 @@ msgstr "Znaczniki"
 msgid "Finding optimal Skill tree..."
 msgstr "Szukanie optymalnego drzewa Umiejętności..."
 
-#: TreeGenerator\Views\SettingsWindow.xaml:16
+#: TreeGenerator\Views\SettingsWindow.xaml:17
 msgid "Passive Tree Generator"
 msgstr "Generator Drzewa Umiejętności"
 
@@ -347,52 +348,52 @@ msgstr "Prawy klawisz aby edytować"
 msgid "Filter"
 msgstr "Filtruj"
 
-#: Views\Builds\BuildsControl.xaml:123 Views\Builds\BuildsControl.xaml:200
-#: Views\MainRibbon.xaml:488 Views\MainRibbon.xaml:493
+#: Views\Builds\BuildsControl.xaml:124 Views\Builds\BuildsControl.xaml:201
+#: Views\MainRibbon.xaml:487 Views\MainRibbon.xaml:492
 msgid "Edit"
 msgstr "Edytuj"
 
-#: Views\Builds\BuildsControl.xaml:130 Views\Builds\BuildsControl.xaml:207
+#: Views\Builds\BuildsControl.xaml:131 Views\Builds\BuildsControl.xaml:208
 #: Views\Equipment\DraggableItemView.xaml:27
 #: Views\Equipment\InventoryItemView.xaml:39
 msgid "Delete"
 msgstr "Usuń"
 
-#: Views\Builds\BuildsControl.xaml:138 Views\Builds\BuildsControl.xaml:215
+#: Views\Builds\BuildsControl.xaml:139 Views\Builds\BuildsControl.xaml:216
 msgid "Cut"
 msgstr "Wytnij"
 
-#: Views\Builds\BuildsControl.xaml:145
+#: Views\Builds\BuildsControl.xaml:146
 msgid "Paste"
 msgstr "Wklej"
 
-#: Views\Builds\BuildsControl.xaml:152
+#: Views\Builds\BuildsControl.xaml:153
 msgid "New Build"
 msgstr "Nowy Build"
 
-#: Views\Builds\BuildsControl.xaml:158
+#: Views\Builds\BuildsControl.xaml:159
 #: ViewModels\Builds\BuildsControlViewModel.cs:381
 msgid "New Folder"
 msgstr "Nowy Katalog"
 
-#: Views\Builds\BuildsControl.xaml:193
+#: Views\Builds\BuildsControl.xaml:194
 msgid "Open"
 msgstr "Otwórz"
 
-#: Views\Builds\BuildsControl.xaml:222
+#: Views\Builds\BuildsControl.xaml:223
 msgid "Copy"
 msgstr "Kopiuj"
 
-#: Views\Builds\BuildsControl.xaml:229 Views\MainRibbon.xaml:159
+#: Views\Builds\BuildsControl.xaml:230 Views\MainRibbon.xaml:158
 msgid "Save"
 msgstr "Zapisz"
 
-#: Views\Builds\BuildsControl.xaml:235 Views\MainRibbon.xaml:511
-#: Views\MainRibbon.xaml:516
+#: Views\Builds\BuildsControl.xaml:236 Views\MainRibbon.xaml:510
+#: Views\MainRibbon.xaml:515
 msgid "Discard changes"
 msgstr "Odrzuć zmiany"
 
-#: Views\Builds\BuildsControl.xaml:238
+#: Views\Builds\BuildsControl.xaml:239
 msgid "Discards all changes made to this build after the last save"
 msgstr "Odrzuć wszystkie zmiany wprowadzone do tego buildu od ostatniego zapisu"
 
@@ -434,7 +435,7 @@ msgstr "Pokaż unikaty wykluczone z dropu"
 msgid "Edit Socketed Skills"
 msgstr "Edytuj Umiejętności (Gemy)"
 
-#: Views\Equipment\StashView.xaml:252
+#: Views\Equipment\StashView.xaml:258
 msgid "Stash search"
 msgstr "Szukaj w Skrytce"
 
@@ -454,13 +455,13 @@ msgstr "Usuń zakładkę i przedmioty"
 msgid "Delete bookmark"
 msgstr "Usuń zakładkę"
 
-#: Views\HelpWindow.xaml:11 Views\MainRibbon.xaml:1209
-#: Views\MainRibbon.xaml:1221 Views\MainRibbon.xaml:1226
+#: Views\HelpWindow.xaml:11 Views\MainRibbon.xaml:1210
+#: Views\MainRibbon.xaml:1222 Views\MainRibbon.xaml:1227
 msgid "Help"
 msgstr "Pomoc"
 
-#: Views\HotkeysWindow.xaml:9 Views\MainRibbon.xaml:1244
-#: Views\MainRibbon.xaml:1249
+#: Views\HotkeysWindow.xaml:9 Views\MainRibbon.xaml:1245
+#: Views\MainRibbon.xaml:1250
 msgid "Hotkeys"
 msgstr "Skróty Klawiszowe"
 
@@ -532,8 +533,8 @@ msgstr "Ctrl + 7"
 msgid "Shadow"
 msgstr "Shadow"
 
-#: Views\HotkeysWindow.xaml:105 Views\MainRibbon.xaml:322
-#: Views\MainRibbon.xaml:976 Views\MainWindow.xaml:181
+#: Views\HotkeysWindow.xaml:105 Views\MainRibbon.xaml:321
+#: Views\MainRibbon.xaml:977 Views\MainWindow.xaml:181
 msgid "Passive tree"
 msgstr "Drzewo umiejętności"
 
@@ -605,8 +606,8 @@ msgstr "Kliknij dwukrotnie na polu przedmiotu"
 msgid "Edit socketed gems"
 msgstr "Edytuj zagnieżdżone gemy"
 
-#: Views\HotkeysWindow.xaml:163 Views\MainRibbon.xaml:960
-#: Views\MainRibbon.xaml:1048
+#: Views\HotkeysWindow.xaml:163 Views\MainRibbon.xaml:961
+#: Views\MainRibbon.xaml:1049
 msgid "Saved builds"
 msgstr "Zapamiętane buildy"
 
@@ -618,7 +619,7 @@ msgstr "Ctrl + Strzałka Góra/Dół"
 msgid "Move build up and down"
 msgstr "Przesuń build w górę i w dół"
 
-#: Views\HotkeysWindow.xaml:174 Views\MainRibbon.xaml:938
+#: Views\HotkeysWindow.xaml:174 Views\MainRibbon.xaml:939
 msgid "Build summary"
 msgstr "Podsumowanie Buildu"
 
@@ -761,123 +762,123 @@ msgstr "Łącze do zakładki skrytki:"
 msgid "Load stash tab from clipboard"
 msgstr "Wczytaj zawartość zakładki skrytki do schowka systemu"
 
-#: Views\MainRibbon.xaml:57
+#: Views\MainRibbon.xaml:56
 msgid "File"
 msgstr "Plik"
 
-#: Views\MainRibbon.xaml:61
+#: Views\MainRibbon.xaml:60
 msgid "New"
 msgstr "Nowy"
 
-#: Views\MainRibbon.xaml:71
+#: Views\MainRibbon.xaml:70
 msgid "New top level build"
 msgstr "Nowy nadrzędny build"
 
-#: Views\MainRibbon.xaml:76
+#: Views\MainRibbon.xaml:75
 msgid "New top level build (Ctrl+N)"
 msgstr "Nowy nadrzędny build (Ctrl+N)"
 
-#: Views\MainRibbon.xaml:79
+#: Views\MainRibbon.xaml:78
 msgid "Create a new empty build in the root build folder."
 msgstr "Stwórz nowy pusty build w głównym katalogu buildów."
 
-#: Views\MainRibbon.xaml:91 Views\MainRibbon.xaml:96
+#: Views\MainRibbon.xaml:90 Views\MainRibbon.xaml:95
 msgid "New build next to current"
 msgstr "Nowy build przy aktualnym"
 
-#: Views\MainRibbon.xaml:101
+#: Views\MainRibbon.xaml:100
 #, csharp-format
 msgid "Create a new empty build in the same folder as the current build ({0})."
 msgstr "Stwórz nowy pusty build w tym samym katalogu co aktualny build ({0})."
 
-#: Views\MainRibbon.xaml:116
+#: Views\MainRibbon.xaml:115
 msgid "New top level folder"
 msgstr "Nowy nadrzędny katalog"
 
-#: Views\MainRibbon.xaml:121
+#: Views\MainRibbon.xaml:120
 msgid "New top level folder (Ctrl+Shift+N)"
 msgstr ""
 "Nowy nadrzędny katalog\n"
 "(Ctrl+Shift+N)"
 
-#: Views\MainRibbon.xaml:124
+#: Views\MainRibbon.xaml:123
 msgid "Create a new empty folder in the root build folder."
 msgstr "Stwórz nowy pusty katalog w głównym katalogu buildów."
 
-#: Views\MainRibbon.xaml:136 Views\MainRibbon.xaml:141
+#: Views\MainRibbon.xaml:135 Views\MainRibbon.xaml:140
 msgid "New folder next to current"
 msgstr "Nowy katalog przy aktualnym"
 
-#: Views\MainRibbon.xaml:146
+#: Views\MainRibbon.xaml:145
 #, csharp-format
 msgid "Create a new empty folder in the same folder as the current build ({0})."
 msgstr "Stwórz nowy pusty katalog w tym samym katalogu co aktualny build ({0})."
 
-#: Views\MainRibbon.xaml:151
+#: Views\MainRibbon.xaml:150
 msgid "Maximum folder depth has been reached."
 msgstr "Maksymalna głębokość katalogu została osiągnięta."
 
-#: Views\MainRibbon.xaml:169
+#: Views\MainRibbon.xaml:168
 msgid "Save current build"
 msgstr "Zapisz aktualny build"
 
-#: Views\MainRibbon.xaml:174
+#: Views\MainRibbon.xaml:173
 msgid "Save current build (Ctrl+S)"
 msgstr "Zapisz aktualny build (Strl+S)"
 
-#: Views\MainRibbon.xaml:177
+#: Views\MainRibbon.xaml:176
 msgid "Save the currently opened build."
 msgstr "Zapisz aktulnie otwarty build."
 
-#: Views\MainRibbon.xaml:180
+#: Views\MainRibbon.xaml:179
 msgid "The current build has no unsaved changes."
 msgstr "Aktualny build nie ma niezapisanych zmian."
 
-#: Views\MainRibbon.xaml:193
+#: Views\MainRibbon.xaml:192
 msgid "Save current build as"
 msgstr "Zapisz aktualny build jako"
 
-#: Views\MainRibbon.xaml:198
+#: Views\MainRibbon.xaml:197
 msgid "Save current build as (Ctrl+Alt+S)"
 msgstr ""
 "Zapisz aktualny build jako\n"
 "(Ctrl+Alt+S)"
 
-#: Views\MainRibbon.xaml:201
+#: Views\MainRibbon.xaml:200
 msgid "Save the currently opened build as a new build."
 msgstr "Zapisz aktualnie otwarty build jako nowy build."
 
-#: Views\MainRibbon.xaml:213
+#: Views\MainRibbon.xaml:212
 msgid "Save all builds"
 msgstr "Zapisz wszystkie buildy"
 
-#: Views\MainRibbon.xaml:218
+#: Views\MainRibbon.xaml:217
 msgid "Save all builds (Ctrl+Shift+N)"
 msgstr ""
 "Zapisz wszystkie buildy\n"
 "(Ctrl+Shift+N)"
 
-#: Views\MainRibbon.xaml:221
+#: Views\MainRibbon.xaml:220
 msgid "Save all changed builds."
 msgstr "Zapisz wszystkie zmienione buildy."
 
-#: Views\MainRibbon.xaml:224
+#: Views\MainRibbon.xaml:223
 msgid "No build has unsaved changes."
 msgstr "Żaden build nie ma niezapisanych zmian."
 
-#: Views\MainRibbon.xaml:238 Views\MainRibbon.xaml:243
+#: Views\MainRibbon.xaml:237 Views\MainRibbon.xaml:242
 msgid "Reload builds from file system"
 msgstr "Wczytaj ponownie buildy z pliku systemu"
 
-#: Views\MainRibbon.xaml:246
+#: Views\MainRibbon.xaml:245
 msgid "Reload saved build information from file system, e.g. after manually copying builds there."
 msgstr "Wczytaj ponownie zapisane informacje o buildach z plików systemu, np. po skopiowaniu tutaj buildów ręcznie."
 
-#: Views\MainRibbon.xaml:257 Views\MainRibbon.xaml:262
+#: Views\MainRibbon.xaml:256 Views\MainRibbon.xaml:261
 msgid "Open build directory"
 msgstr "Otwórz katalog buildów"
 
-#: Views\MainRibbon.xaml:265
+#: Views\MainRibbon.xaml:264
 msgid ""
 "Open the build save path in the file explorer.\n"
 "The path can be changed in the options."
@@ -885,182 +886,182 @@ msgstr ""
 "Otwórz ścieżkę zapisu buildu w eksploratorze plików.\n"
 "Ścieżka może zostać zmieniona w opcjach."
 
-#: Views\MainRibbon.xaml:278 Views\MainRibbon.xaml:283
+#: Views\MainRibbon.xaml:277 Views\MainRibbon.xaml:282
 #: ViewModels\SettingsMenuViewModel.cs:30
 msgid "Options"
 msgstr "Opcje"
 
-#: Views\MainRibbon.xaml:286
+#: Views\MainRibbon.xaml:285
 msgid "Open the options."
 msgstr "Otwórz opcje."
 
-#: Views\MainRibbon.xaml:297
+#: Views\MainRibbon.xaml:296
 msgid "Exit"
 msgstr "Wyjdź"
 
-#: Views\MainRibbon.xaml:302
+#: Views\MainRibbon.xaml:301
 msgid "Exit (Alt+F4)"
 msgstr "Wyjdź (Alt+F4)"
 
-#: Views\MainRibbon.xaml:305
+#: Views\MainRibbon.xaml:304
 msgid "Exit the program."
 msgstr "Wyjdź z programu."
 
-#: Views\MainRibbon.xaml:318
+#: Views\MainRibbon.xaml:317
 msgid "Home"
 msgstr "Główne"
 
-#: Views\MainRibbon.xaml:333
+#: Views\MainRibbon.xaml:332
 msgid "Undo"
 msgstr "Cofnij"
 
-#: Views\MainRibbon.xaml:338
+#: Views\MainRibbon.xaml:337
 msgid "Undo (Ctrl+Z)"
 msgstr "Cofnij (Ctrl+Z)"
 
-#: Views\MainRibbon.xaml:341
+#: Views\MainRibbon.xaml:340
 msgid "Undo the last passive tree action."
 msgstr "Cofnij ostatnią zmianę w drzewie umiejętności."
 
-#: Views\MainRibbon.xaml:355
+#: Views\MainRibbon.xaml:354
 msgid "Redo"
 msgstr "Ponów"
 
-#: Views\MainRibbon.xaml:360
+#: Views\MainRibbon.xaml:359
 msgid "Redo (Ctrl+Y)"
 msgstr "Ponów (Ctrl+Y)"
 
-#: Views\MainRibbon.xaml:363
+#: Views\MainRibbon.xaml:362
 msgid "Redo the last passive tree action."
 msgstr "Ponów ostatnią zmianę w drzewie umiejętności."
 
-#: Views\MainRibbon.xaml:377
+#: Views\MainRibbon.xaml:376
 msgid "Reset"
 msgstr "Reset"
 
-#: Views\MainRibbon.xaml:382
+#: Views\MainRibbon.xaml:381
 msgid "Reset passive tree (Ctrl+R)"
 msgstr ""
 "Reset drzewa umiejętności\n"
 "(Ctrl+R)"
 
-#: Views\MainRibbon.xaml:385
+#: Views\MainRibbon.xaml:384
 msgid "Reset the passive tree. What is reset can be configured in the options."
 msgstr "Zresetuj drzewo umiejętności. W opcjach możesz ustawić co zostanie zresetowane."
 
-#: Views\MainRibbon.xaml:390
+#: Views\MainRibbon.xaml:389
 msgid "Reset preferences"
 msgstr "Zresetuj ustawienia"
 
-#: Views\MainRibbon.xaml:396
+#: Views\MainRibbon.xaml:395
 msgid "Non-ascendancy passive nodes"
 msgstr "Węzły drzewa inne niż Ascendenta"
 
-#: Views\MainRibbon.xaml:403
+#: Views\MainRibbon.xaml:402
 msgid "Ascendancy passive nodes"
 msgstr "Węzły drzewa Ascendencji"
 
-#: Views\MainRibbon.xaml:410
+#: Views\MainRibbon.xaml:409
 msgid "Selected bandit"
 msgstr "Wybrany Bandyta"
 
-#: Views\MainRibbon.xaml:417
+#: Views\MainRibbon.xaml:416
 msgid "Craft"
 msgstr "Stwórz przedmiot"
 
-#: Views\MainRibbon.xaml:428 Views\MainRibbon.xaml:433
+#: Views\MainRibbon.xaml:427 Views\MainRibbon.xaml:432
 msgid "Craft unique"
 msgstr "Stwórz Unikatowy przedmiot"
 
-#: Views\MainRibbon.xaml:436
+#: Views\MainRibbon.xaml:435
 msgid "Craft a new unique item and add it to the stash."
 msgstr "Stwórz nowy przedmiot unikalny i dodaj go do skrytki."
 
-#: Views\MainRibbon.xaml:450 Views\MainRibbon.xaml:455
+#: Views\MainRibbon.xaml:449 Views\MainRibbon.xaml:454
 msgid "Craft item"
 msgstr "Stwórz przedmiot"
 
-#: Views\MainRibbon.xaml:458
+#: Views\MainRibbon.xaml:457
 msgid "Craft a new non-unique item and add it to the stash."
 msgstr "Stwórz nowy nie unikalny przedmiot i dodaj go do skrytki."
 
-#: Views\MainRibbon.xaml:466 Views\MainRibbon.xaml:471
+#: Views\MainRibbon.xaml:465 Views\MainRibbon.xaml:470
 msgid "Build"
 msgstr "Build"
 
-#: Views\MainRibbon.xaml:474
+#: Views\MainRibbon.xaml:473
 msgid "These commands operate on the current build. For other builds and folders, use the saved builds panel's context menu."
 msgstr "Te komendy operują na aktualnym buildzie. Dla innych buildów i katalogów, użyj panelu menu kontekstowego zapisanych buildow."
 
-#: Views\MainRibbon.xaml:496
+#: Views\MainRibbon.xaml:495
 msgid "Change the current build's name and note."
 msgstr "Zmień nazwę i notkę dla aktualnego buildu."
 
-#: Views\MainRibbon.xaml:519
+#: Views\MainRibbon.xaml:518
 msgid "Discards all changes made to the current build after the last save."
 msgstr "Porzuć wszystkie zmiany aktualnego buildu od czasu ostatniego zapisu."
 
-#: Views\MainRibbon.xaml:533 Views\MainRibbon.xaml:538
+#: Views\MainRibbon.xaml:532 Views\MainRibbon.xaml:537
 msgid "Copy (export)"
 msgstr "Kopiuj (eksportuj)"
 
-#: Views\MainRibbon.xaml:541
+#: Views\MainRibbon.xaml:540
 msgid "Copy/export the current build to the clipboard as a XML string."
 msgstr "Kopiuj/eksportuj aktualny build do schowka jako łańcuch znaków XML."
 
-#: Views\MainRibbon.xaml:555 Views\MainRibbon.xaml:560
+#: Views\MainRibbon.xaml:554 Views\MainRibbon.xaml:559
 msgid "Paste (import)"
 msgstr "Wklej (importuj)"
 
-#: Views\MainRibbon.xaml:563
+#: Views\MainRibbon.xaml:562
 msgid "Paste/import a new build from the clipboard into the root build folder and open it."
 msgstr "Wklej/importuj nowy build ze schowka systemu do głównego katalogu buildów i go otwórz go."
 
-#: Views\MainRibbon.xaml:566
+#: Views\MainRibbon.xaml:565
 msgid "The clipboard is empty or does not contain a build in a suitable format. Builds can only be imported as a XML string."
 msgstr "Schowek jest pusty albo nie zawiera właściwego formatu danych dla buildu. Buildy mogą być zaimportowane tylko jako łańcuch znaków XML."
 
-#: Views\MainRibbon.xaml:574
+#: Views\MainRibbon.xaml:573
 msgid "Import"
 msgstr "Importuj"
 
-#: Views\MainRibbon.xaml:585 Views\MainRibbon.xaml:590
+#: Views\MainRibbon.xaml:584 Views\MainRibbon.xaml:589
 msgid "Import character"
 msgstr "Importuj postać"
 
-#: Views\MainRibbon.xaml:593
+#: Views\MainRibbon.xaml:592
 msgid "Import passive tree, items and skills of an existing character."
 msgstr "Importuj drzewo pasywne, przedmioty oraz umiejętnośći istniejącej postaci."
 
-#: Views\MainRibbon.xaml:607 Views\MainRibbon.xaml:612
+#: Views\MainRibbon.xaml:606 Views\MainRibbon.xaml:611
 msgid "Import stash"
 msgstr "Importuj skrytkę"
 
-#: Views\MainRibbon.xaml:615
+#: Views\MainRibbon.xaml:614
 msgid "Import stash tabs of an account."
 msgstr "Importuj zakładki skrytki z konta postaci."
 
-#: Views\MainRibbon.xaml:629 Views\MainRibbon.xaml:634
+#: Views\MainRibbon.xaml:628 Views\MainRibbon.xaml:633
 msgid "Import PoB"
 msgstr "Importuj PoB"
 
-#: Views\MainRibbon.xaml:637
+#: Views\MainRibbon.xaml:636
 msgid "Import a new build from the clipboard in Path of Building's format (build code or pastebin URL) into the root folder and open it."
 msgstr "Importuj nowy build ze schowka systemowego w formacie Path of Building ( kod buildu albo adres URL pastebin ) do głównego katalogu i go otwórz."
 
-#: Views\MainRibbon.xaml:640
+#: Views\MainRibbon.xaml:639
 msgid "The clipboard is empty or does not contain a build in a suitable format. Builds can only be imported from a build code or pastebin URL."
 msgstr "Schowek systemowy jest pusty lub nie zawiera buildu we właściwym formacie. Buildy mogą być zaimportowane tylko odowiedniego kodu buildu lub adresu URL pastebin'a."
 
-#: Views\MainRibbon.xaml:648
+#: Views\MainRibbon.xaml:647
 msgid "Tag nodes"
 msgstr "Zaznacz węzły"
 
-#: Views\MainRibbon.xaml:659 Views\MainRibbon.xaml:664
+#: Views\MainRibbon.xaml:658 Views\MainRibbon.xaml:663
 msgid "Tag highlighted nodes"
 msgstr "Zaznacz podświetlone węzły"
 
-#: Views\MainRibbon.xaml:667
+#: Views\MainRibbon.xaml:666
 msgid "Tag all highlighted nodes."
 msgstr "Zaznacz wszystkie podświetlone węzły. (poprzez wyszukiwanie, lub wybrane z Podsumowania Buildu)"
 
@@ -1072,239 +1073,237 @@ msgstr "Oznacz podświetlone węzły"
 msgid "Check-tag all highlighted nodes."
 msgstr "Oznacz wszystkieg podświetlone węzły."
 
-#: Views\MainRibbon.xaml:696 Views\MainRibbon.xaml:701
+#: Views\MainRibbon.xaml:697 Views\MainRibbon.xaml:702
 msgid "Cross-tag highlighted nodes"
 msgstr "Przekreśl podświetlone węzły"
 
-#: Views\MainRibbon.xaml:704
+#: Views\MainRibbon.xaml:705
 msgid "Cross-tag all highlighted nodes."
 msgstr "Przekreśl wszystkie podświetlone węzły."
 
-#: Views\MainRibbon.xaml:720 Views\MainRibbon.xaml:725
+#: Views\MainRibbon.xaml:721 Views\MainRibbon.xaml:726
 msgid "Untag all nodes"
 msgstr "Usuń znacznik dla wszystkich węzłów"
 
-#: Views\MainRibbon.xaml:728
+#: Views\MainRibbon.xaml:729
 msgid "Remove tags from all passive nodes."
 msgstr "Usuń znaczeniki ze wszystkich węzłów."
 
-#: Views\MainRibbon.xaml:743 Views\MainRibbon.xaml:748
+#: Views\MainRibbon.xaml:744 Views\MainRibbon.xaml:749
 msgid "Unhighlight all nodes"
 msgstr "Usuń podświetlenie wszystkich węzłów"
 
-#: Views\MainRibbon.xaml:751
+#: Views\MainRibbon.xaml:752
 msgid "Remove all passive node highlights."
 msgstr "Usuń podświetlenie wszystkich węzłów."
 
-#: Views\MainRibbon.xaml:759
+#: Views\MainRibbon.xaml:760
 msgid "Tools"
 msgstr "Narzędzia"
 
-#: Views\MainRibbon.xaml:771
+#: Views\MainRibbon.xaml:772
 msgid "Passive tree generator"
 msgstr "Generator drzewa umiejętności"
 
-#: Views\MainRibbon.xaml:776
+#: Views\MainRibbon.xaml:777
 msgid "Passive tree generator (Ctrl+Shift+G)"
 msgstr "Generator drzewa umiejętności (Ctrl+Shift+G)"
 
-#: Views\MainRibbon.xaml:779
+#: Views\MainRibbon.xaml:780
 msgid "Open the passive tree generator. It creates optimized builds based on constraints."
 msgstr "Otwórz generator drzewa umiejętności. Tworzy zoptymalizowane buildy oparte o ustalone ograniczenia."
 
-#: Views\MainRibbon.xaml:789
+#: Views\MainRibbon.xaml:790
 msgid "Run 'Tagged Nodes' generator"
 msgstr "Uruchom generator \"Zaznaczonych Węzłów\""
 
-#: Views\MainRibbon.xaml:794
+#: Views\MainRibbon.xaml:795
 msgid "Run 'Tagged Nodes' generator (Ctrl+Shift+T)"
 msgstr "Uruchom generator \"Zaznaczonych Węzłów\" (Ctrl+Shift+T)"
 
-#: Views\MainRibbon.xaml:797
+#: Views\MainRibbon.xaml:798
 msgid "Run the 'Tagged Nodes' generator with the current settings set in the passive tree generator window."
 msgstr "Uruchom generator \"Zaznaczonych Węzłów\" z jego aktualnie zapisanymi opcjami."
 
-#: Views\MainRibbon.xaml:808
+#: Views\MainRibbon.xaml:809
 msgid "Run 'Advanced' generator"
 msgstr "Uruchom \"Zaawansowany\" generator"
 
-#: Views\MainRibbon.xaml:813
+#: Views\MainRibbon.xaml:814
 msgid "Run 'Advanced' generator (Ctrl+Shift+A)"
 msgstr "Uruchom \"Zaawansowany\" generator (Ctrl+Shift+A)"
 
-#: Views\MainRibbon.xaml:816
+#: Views\MainRibbon.xaml:817
 msgid "Run the 'Advanced' generator with the current settings set in the passive tree generator window."
 msgstr "Uruchom \"Zaawansowany\" generator z jego aktualnie zapisanymi opcjami."
 
-#: Views\MainRibbon.xaml:832 Views\MainRibbon.xaml:837
+#: Views\MainRibbon.xaml:833 Views\MainRibbon.xaml:838
 msgid "Screenshot skilled nodes"
 msgstr "Zrób zrzut ekranu wybranych węzłów"
 
-#: Views\MainRibbon.xaml:840
+#: Views\MainRibbon.xaml:841
 msgid "Take a screenshot of the passive tree area around the skilled nodes."
 msgstr "Zrób zrzut ekranu obszaru drzewa umiejętności wokół wybranych węzłów."
 
-#: Views\MainRibbon.xaml:856
+#: Views\MainRibbon.xaml:857
 msgid "Create PoEUrl of passive tree"
 msgstr "Stwórz PoEUrl drzewa umiejętności"
 
-#: Views\MainRibbon.xaml:861
+#: Views\MainRibbon.xaml:862
 msgid "Create PoEUrl of passive tree (Ctrl+E)"
 msgstr "Stwórz PoEUrl drzewa umiejętności (Ctrl+E)"
 
-#: Views\MainRibbon.xaml:864
+#: Views\MainRibbon.xaml:865
 msgid "Creates a PoEUrl from the current passive tree URL and copies it to the clipboard."
 msgstr "Tworzy PoEUrl z aktualnego adresu URL drzewa umiejętności i kopiuje go do schowka systemu."
 
-#: Views\MainRibbon.xaml:879 Views\MainRibbon.xaml:884
+#: Views\MainRibbon.xaml:880 Views\MainRibbon.xaml:885
 msgid "Download live tree data"
 msgstr "Pobierz dane drzewa ze strony GGG"
 
-#: Views\MainRibbon.xaml:887
+#: Views\MainRibbon.xaml:888
 msgid "Delete the current passive tree data and download the official data from the latest patch."
 msgstr "Usuń aktualne dane drzewa umiejętnośći i pobierz oficialne dane z ostatniego patcha."
 
-#: Views\MainRibbon.xaml:902 Views\MainRibbon.xaml:907
+#: Views\MainRibbon.xaml:903 Views\MainRibbon.xaml:908
 msgid "Check for updates"
 msgstr "Sprawdź aktualizacje"
 
-#: Views\MainRibbon.xaml:910
+#: Views\MainRibbon.xaml:911
 msgid "Check for updates available for PoESkillTree."
 msgstr "Sprawdź dostępne aktualizacje dla PoESkillTree."
 
-#: Views\MainRibbon.xaml:923
+#: Views\MainRibbon.xaml:924
 msgid "View"
 msgstr "Widok"
 
-#: Views\MainRibbon.xaml:927
+#: Views\MainRibbon.xaml:928
 msgid "Panels"
 msgstr "Panele"
 
-#: Views\MainRibbon.xaml:943
+#: Views\MainRibbon.xaml:944
 msgid "Build summary (Ctrl+Q)"
 msgstr "Podsumowanie Buildu (Ctrl+Q)"
 
-#: Views\MainRibbon.xaml:946
+#: Views\MainRibbon.xaml:947
 msgid "Show a summary of the currently opened build."
 msgstr "Pokaż podsumowanie aktualnie otwartego buildu."
 
-#: Views\MainRibbon.xaml:965
+#: Views\MainRibbon.xaml:966
 msgid "Saved builds (Ctrl+B)"
 msgstr "Zapisane buildy (Ctrl+B)"
 
-#: Views\MainRibbon.xaml:968
+#: Views\MainRibbon.xaml:969
 msgid "Show the available builds in the build save path."
 msgstr "Pokaż dostępne buildy w ścieżce zapisu buildów."
 
-#: Views\MainRibbon.xaml:987
+#: Views\MainRibbon.xaml:988
 msgid "Summary of changes"
 msgstr "Podsumowanie zmian"
 
-#: Views\MainRibbon.xaml:992
+#: Views\MainRibbon.xaml:993
 msgid "Summary of changes (Ctrl+G)"
 msgstr "Podsumowanie zmian (Ctrl+G)"
 
-#: Views\MainRibbon.xaml:995
+#: Views\MainRibbon.xaml:996
 msgid "Show a summary of the total changes to the passive tree when hovering over a node."
 msgstr "Pokaż podsumowanie wszystkich zmian drzewa umiejętności, kiedy najedziesz wskaźnikiem myszy na węzeł."
 
-#: Views\MainRibbon.xaml:1009 Views\MainRibbon.xaml:1014
+#: Views\MainRibbon.xaml:1010 Views\MainRibbon.xaml:1015
 msgid "Tree comparison"
 msgstr "Porównanie Drzew"
 
-#: Views\MainRibbon.xaml:1017
+#: Views\MainRibbon.xaml:1018
 msgid "Compare the passive trees of the current and selected builds. Builds can be selected in the saved builds panel."
 msgstr "Porównaj drzewa umiejętności między aktualnym a zaznaczonym buildem. Buildy mogą być zaznaczone w panelu zachowanych buildów."
 
-#: Views\MainRibbon.xaml:1031 Views\MainRibbon.xaml:1036
+#: Views\MainRibbon.xaml:1032 Views\MainRibbon.xaml:1037
 msgid "Show all ascendancies"
 msgstr "Pokaż wszystkie ascendenty"
 
-#: Views\MainRibbon.xaml:1039
+#: Views\MainRibbon.xaml:1040
 msgid "Show all ascendancy class passive nodes instead of just your current ascendancy."
 msgstr "Pokaż wszystkie węzły umiejętności dla klasy ascendenta zamiast Twojego aktualnego ascendenta."
 
-#: Views\MainRibbon.xaml:1059 Views\MainRibbon.xaml:1064
+#: Views\MainRibbon.xaml:1060 Views\MainRibbon.xaml:1065
 msgid "Expand all folders"
 msgstr "Rozwiń wszystkie katalogi"
 
-#: Views\MainRibbon.xaml:1067
+#: Views\MainRibbon.xaml:1068
 msgid "Expand all build folders in the saved builds panel."
 msgstr "Rozwiń wszystkie katalogi buildów w panelu zapisanych buildów."
 
-#: Views\MainRibbon.xaml:1070 Views\MainRibbon.xaml:1095
+#: Views\MainRibbon.xaml:1071 Views\MainRibbon.xaml:1096
 msgid "The saved builds panel must be open."
 msgstr "Panel zapisanych buildów musi być otwarty."
 
-#: Views\MainRibbon.xaml:1084 Views\MainRibbon.xaml:1089
+#: Views\MainRibbon.xaml:1085 Views\MainRibbon.xaml:1090
 msgid "Collapse all folders"
 msgstr "Zwiń wszystkie katalogi"
 
-#: Views\MainRibbon.xaml:1092
+#: Views\MainRibbon.xaml:1093
 msgid "Collapse all build folders in the saved builds panel."
 msgstr "Zwiń wszystkie katalogi w panelu zapisanych buildów."
 
-#: Views\MainRibbon.xaml:1103
+#: Views\MainRibbon.xaml:1104 Views\MainRibbon.xaml:1117
 msgid "Theme"
 msgstr "Motyw Kolorystyczny"
 
-#: Views\MainRibbon.xaml:1111
-msgid "Base color:"
-msgstr "Podstawowy kolor:"
+#: Views\MainRibbon.xaml:1112
+#, fuzzy
+msgid "Theme:"
+msgstr "Motyw Kolorystyczny"
 
-#: Views\MainRibbon.xaml:1116
-msgid "Base color"
-msgstr "Podstawowy kolor"
-
-#: Views\MainRibbon.xaml:1119
+#: Views\MainRibbon.xaml:1120
 msgid "Change the base color of the theme defining the program's look."
 msgstr "Zmień kolor podstawowy schemat kolorystyczny decydujący o tym jak wygląda program."
 
-#: Views\MainRibbon.xaml:1131
-msgid "Color scheme:"
-msgstr "Schemat kolorów:"
+#: Views\MainRibbon.xaml:1132
+msgid "Accent:"
+msgstr ""
 
-#: Views\MainRibbon.xaml:1147
-msgid "Color scheme"
-msgstr "Schemat kolorów"
+#: Views\MainRibbon.xaml:1148
+msgid "Accent"
+msgstr ""
 
-#: Views\MainRibbon.xaml:1150
-msgid "Change the color scheme of the theme defining the program's look."
-msgstr "Zmień schemat kolorów decydujący o tym jak program wygląda."
+#: Views\MainRibbon.xaml:1151
+#, fuzzy
+msgid "Change the accent color of the theme defining the program's look."
+msgstr "Zmień kolor podstawowy schemat kolorystyczny decydujący o tym jak wygląda program."
 
-#: Views\MainRibbon.xaml:1158
+#: Views\MainRibbon.xaml:1159
 msgid "Links"
 msgstr "Łącza"
 
-#: Views\MainRibbon.xaml:1170 Views\MainRibbon.xaml:1175
+#: Views\MainRibbon.xaml:1171 Views\MainRibbon.xaml:1176
 msgid "Path of Exile website"
 msgstr "Strona Path of Exile"
 
-#: Views\MainRibbon.xaml:1178
+#: Views\MainRibbon.xaml:1179
 msgid "Open the official Path of Exile website in the default web browser."
 msgstr "Otwórz oficialną stronę Path of Exile w domyślnej przeglądarce."
 
-#: Views\MainRibbon.xaml:1193 Views\MainRibbon.xaml:1198
+#: Views\MainRibbon.xaml:1194 Views\MainRibbon.xaml:1199
 msgid "Path of Exile wiki"
 msgstr "Wiki Path of Exile"
 
-#: Views\MainRibbon.xaml:1201
+#: Views\MainRibbon.xaml:1202
 msgid "Open the Path of Exile wiki in the default web browser."
 msgstr "Otwórz Path of Exile wiki w domyślnej przeglądarce."
 
-#: Views\MainRibbon.xaml:1229
+#: Views\MainRibbon.xaml:1230
 msgid "Learn more about the program."
 msgstr "Dowiedz się więcej o programie."
 
-#: Views\MainRibbon.xaml:1252
+#: Views\MainRibbon.xaml:1253
 msgid "Learn more about the available hotkeys."
 msgstr "Dowiedz się więcej o dostępnych skrótach klawiszowych."
 
-#: Views\MainRibbon.xaml:1267 Views\MainRibbon.xaml:1272
+#: Views\MainRibbon.xaml:1268 Views\MainRibbon.xaml:1273
 msgid "About"
 msgstr "O programie"
 
-#: Views\MainRibbon.xaml:1275
+#: Views\MainRibbon.xaml:1276
 msgid "View information about the program."
 msgstr "Zobacz informacje o programie."
 
@@ -1402,11 +1401,15 @@ msgstr "Jakość"
 msgid "Group"
 msgstr "Grupa"
 
-#: Views\Skills\SkillsInSlotEditingView.xaml:189
+#: Views\Skills\SkillsInSlotEditingView.xaml:180
+msgid "Skills with the same group are linked."
+msgstr ""
+
+#: Views\Skills\SkillsInSlotEditingView.xaml:198
 msgid "Enabled"
 msgstr "Włączony"
 
-#: Views\Skills\SkillsInSlotEditingView.xaml:218
+#: Views\Skills\SkillsInSlotEditingView.xaml:227
 msgid "Equipped item's maximum number of sockets:"
 msgstr "Maksymalna liczba gniaz w założonym przedmiotcie to:"
 
@@ -1858,7 +1861,8 @@ msgstr "Aktualnie otwarty build nie może zostać skasowany."
 msgid "This will delete the build folder \"{0}\" and all its contents.\n"
 msgstr "To skasuje katalog buildów \"{0}\" i całą jego zawartość.\n"
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:424 Views\MainWindow.xaml.cs:964
+#: ViewModels\Builds\BuildsControlViewModel.cs:424
+#: Views\MainWindow.xaml.cs:966
 msgid "Do you want to continue?"
 msgstr "Czy chcesz kontynuować?"
 
@@ -2063,63 +2067,63 @@ msgstr "Czy na pewno?"
 msgid "Untag All Skill Nodes"
 msgstr "Usuń Znaczniki Z Wszystkich Węzłów Umiejętności"
 
-#: Views\MainWindow.xaml.cs:400
+#: Views\MainWindow.xaml.cs:402
 msgid "Create New Attribute Group"
 msgstr "Stwórz Nową Grupę Atrybutów"
 
-#: Views\MainWindow.xaml.cs:400
+#: Views\MainWindow.xaml.cs:402
 msgid "Group name"
 msgstr "Nazwa Grupy"
 
-#: Views\MainWindow.xaml.cs:405
+#: Views\MainWindow.xaml.cs:407
 msgid "A group with that name already exists."
 msgstr "Grupa o tej nazwie już istnieje."
 
-#: Views\MainWindow.xaml.cs:492
+#: Views\MainWindow.xaml.cs:494
 msgid "Initialization"
 msgstr "Inicjalizacja"
 
-#: Views\MainWindow.xaml.cs:493 Views\MainWindow.xaml.cs:513
+#: Views\MainWindow.xaml.cs:495 Views\MainWindow.xaml.cs:515
 msgid "Initializing window ..."
 msgstr "Uruchamianie okna..."
 
-#: Views\MainWindow.xaml.cs:508
+#: Views\MainWindow.xaml.cs:510
 msgid "Loading skill tree assets ..."
 msgstr "Wczytywanie zasobów drzewa..."
 
-#: Views\MainWindow.xaml.cs:544
+#: Views\MainWindow.xaml.cs:546
 msgid "Highlight nodes by attribute"
 msgstr "Podświetl węzły z atrybutami"
 
-#: Views\MainWindow.xaml.cs:549
+#: Views\MainWindow.xaml.cs:551
 msgid "Remove highlights by attribute"
 msgstr "Usuń podświetlenia dla atrybutów"
 
-#: Views\MainWindow.xaml.cs:552
+#: Views\MainWindow.xaml.cs:554
 msgid "Create new group"
 msgstr "Stwórz nową grupę"
 
-#: Views\MainWindow.xaml.cs:556
+#: Views\MainWindow.xaml.cs:558
 msgid "Add to group..."
 msgstr "Dodaj do grupy..."
 
-#: Views\MainWindow.xaml.cs:561
+#: Views\MainWindow.xaml.cs:563
 msgid "Delete group..."
 msgstr "Usuń grupę..."
 
-#: Views\MainWindow.xaml.cs:564
+#: Views\MainWindow.xaml.cs:566
 msgid "Remove from group"
 msgstr "Usuń z grupy"
 
-#: Views\MainWindow.xaml.cs:621
+#: Views\MainWindow.xaml.cs:623
 msgid "Load Tree"
 msgstr "Wczytaj drzewo"
 
-#: Views\MainWindow.xaml.cs:627
+#: Views\MainWindow.xaml.cs:629
 msgid "Load as new build"
 msgstr "Wczytaj nowe drzewo"
 
-#: Views\MainWindow.xaml.cs:828
+#: Views\MainWindow.xaml.cs:830
 msgid ""
 "There are unsaved builds. Do you want to save them before closing?\n"
 "\n"
@@ -2129,7 +2133,7 @@ msgstr ""
 "\n"
 "Anulowanie przerwie zamykanie programu i nie zapisze żadnych buildów."
 
-#: Views\MainWindow.xaml.cs:908
+#: Views\MainWindow.xaml.cs:910
 #, csharp-format
 msgid "{0} point"
 msgid_plural "{0} points"
@@ -2137,124 +2141,139 @@ msgstr[0] "{0} punkt"
 msgstr[1] "{0} punkty"
 msgstr[2] "{0} punktów"
 
-#: Views\MainWindow.xaml.cs:942
+#: Views\MainWindow.xaml.cs:944
 msgid "Your build must use at least one node to generate a screenshot"
 msgstr "Twój build musi użyć przynajmniej jednego węzła aby zrobić zrzut ekranu"
 
-#: Views\MainWindow.xaml.cs:943
+#: Views\MainWindow.xaml.cs:945
 msgid "Screenshot Generator"
 msgstr "Generator Zrzutu Ekranu"
 
-#: Views\MainWindow.xaml.cs:961
+#: Views\MainWindow.xaml.cs:963
 msgid "The existing skill tree data will be deleted. The data will be downloaded from the official online skill tree and is from the latest released version of the game."
 msgstr "Istniejące drzewo umiejętności zostanie usunięte. Dane zostaną pobrane z oficialnego drzewa umiejętności (online) oraz z ostatniej wydanej wersji gry."
 
-#: Views\MainWindow.xaml.cs:970
+#: Views\MainWindow.xaml.cs:972
 msgid "Downloading skill tree assets ..."
 msgstr "Pobieranie zasobów drzewa ..."
 
-#: Views\MainWindow.xaml.cs:991
+#: Views\MainWindow.xaml.cs:993
 msgid "An error occurred while downloading assets."
 msgstr "Wystąpił błąd podczas pobierania zasobów."
 
-#: Views\MainWindow.xaml.cs:1008
+#: Views\MainWindow.xaml.cs:1010
 msgid "Checking for updates"
 msgstr "Sprawdzanie uaktualnień"
 
-#: Views\MainWindow.xaml.cs:1013
+#: Views\MainWindow.xaml.cs:1015
 msgid "You have the latest version!"
 msgstr "Masz najnowszą wersję!"
 
-#: Views\MainWindow.xaml.cs:1018
+#: Views\MainWindow.xaml.cs:1020
 #, csharp-format
 msgid "An update for {0} ({1}) is available!"
 msgstr "Aktualizacja dla {0} ({1}) jest dostępna!"
 
-#: Views\MainWindow.xaml.cs:1021
+#: Views\MainWindow.xaml.cs:1023
 msgid "The application will be closed when download completes to proceed with the update."
 msgstr "Gdy pobieranie się zakończy program zostanie zamknięty, aby kontynuować proces aktualizacji."
 
-#: Views\MainWindow.xaml.cs:1022
+#: Views\MainWindow.xaml.cs:1024
 #, csharp-format
 msgid "A new version {0} is available!"
 msgstr "Nowa wersja {0} jest dostępna!"
 
-#: Views\MainWindow.xaml.cs:1025
+#: Views\MainWindow.xaml.cs:1027
 msgid "The new version of application will be installed side-by-side with earlier versions."
 msgstr "Nowa wersja programu zostanie zainstalowana obok wcześniejszych wersji."
 
-#: Views\MainWindow.xaml.cs:1029
+#: Views\MainWindow.xaml.cs:1031
 msgid "Warning: This is a pre-release, meaning there could be some bugs!"
 msgstr "Uwaga: To jest wczesne wydanie programu , to znaczy możesz napotkać błędy!"
 
-#: Views\MainWindow.xaml.cs:1033
+#: Views\MainWindow.xaml.cs:1035
 msgid "Do you want to download and install the update?"
 msgstr "Czy chcesz pobrać i zainstalować aktualizację?"
 
-#: Views\MainWindow.xaml.cs:1034
+#: Views\MainWindow.xaml.cs:1036
 msgid "Do you want to download and install the new version?"
 msgstr "Czy chcesz pobrać i zainstalować nową wersję?"
 
-#: Views\MainWindow.xaml.cs:1036
+#: Views\MainWindow.xaml.cs:1038
 msgid "Continue installation?"
 msgstr "Kontynuować instalację?"
 
-#: Views\MainWindow.xaml.cs:1047
+#: Views\MainWindow.xaml.cs:1049
 msgid "An error occurred while attempting to contact the update location."
 msgstr "Wystąpił błąd podczas próby dostępu do adresu aktualizacji."
 
-#: Views\MainWindow.xaml.cs:1055
+#: Views\MainWindow.xaml.cs:1057
 msgid "Downloading latest version"
 msgstr "Pobieranie ostatniej wersji"
 
-#: Views\MainWindow.xaml.cs:1070 Views\MainWindow.xaml.cs:1085
+#: Views\MainWindow.xaml.cs:1072 Views\MainWindow.xaml.cs:1087
 msgid "An error occurred during the download operation."
 msgstr "Wystąpił błąd podczas operacji pobierania."
 
-#: Views\MainWindow.xaml.cs:1098
+#: Views\MainWindow.xaml.cs:1100
 msgid "An error occurred while attempting to start the installation."
 msgstr "Wystąpił błąd podczas próby uruchamienia inizjalizacji."
 
-#: Views\MainWindow.xaml.cs:1638
+#: Views\MainWindow.xaml.cs:1640
 msgid "An error occurred while attempting to load item data."
 msgstr "Wystąpił błąd podczas próby wczytania danych przedmiotu."
 
-#: Views\MainWindow.xaml.cs:1734 Views\MainWindow.xaml.cs:1777
+#: Views\MainWindow.xaml.cs:1736 Views\MainWindow.xaml.cs:1779
 msgid "An error occurred while attempting to load Skill tree from URL."
 msgstr "Wystąpił błąd podczas próby wczytania drzewa Umiejętności z adresu URL."
 
-#: Views\MainWindow.xaml.cs:1756
+#: Views\MainWindow.xaml.cs:1758
 msgid "The build you are loading contains information about selected bandits."
 msgstr "Build który ładujesz zawiera informacje o wybranych bandytach."
 
-#: Views\MainWindow.xaml.cs:1757
+#: Views\MainWindow.xaml.cs:1759
 msgid "Do you want to use it and overwrite current settings?"
 msgstr "Czy chcesz go użyć i nadpisać aktualne ustawienia?"
 
-#: Views\MainWindow.xaml.cs:1758
+#: Views\MainWindow.xaml.cs:1760
 msgid "Replace Bandits settings"
 msgstr "Zamień ustawienia questu Bandyci"
 
-#: Views\MainWindow.xaml.cs:1784
+#: Views\MainWindow.xaml.cs:1786
 msgid "Current: "
 msgstr "Aktualny: "
 
-#: Views\MainWindow.xaml.cs:1785
+#: Views\MainWindow.xaml.cs:1787
 msgid "Loaded: "
 msgstr "Załadowany: "
 
-#: Views\MainWindow.xaml.cs:1880
+#: Views\MainWindow.xaml.cs:1882
 msgid "Generating PoEUrl of Skill tree"
 msgstr "Generowanie PoEUrl drzewa Umiejętności"
 
-#: Views\MainWindow.xaml.cs:1886
+#: Views\MainWindow.xaml.cs:1888
 msgid "An error occurred while attempting to contact the PoEUrl location."
 msgstr "Wystąpił błąd w czasie próby połączenia z adresem PoEUrl."
 
-#: Views\MainWindow.xaml.cs:1896
+#: Views\MainWindow.xaml.cs:1898
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr "Łącze PoeUrl zostało skopiowane do Schowka."
 
-#: Views\MainWindow.xaml.cs:1900
+#: Views\MainWindow.xaml.cs:1902
 msgid "An error occurred while copying to Clipboard."
 msgstr "Wystąpił błąd podczas kopiowania do Schowka."
+
+#~ msgid "Base color:"
+#~ msgstr "Podstawowy kolor:"
+
+#~ msgid "Base color"
+#~ msgstr "Podstawowy kolor"
+
+#~ msgid "Color scheme:"
+#~ msgstr "Schemat kolorów:"
+
+#~ msgid "Color scheme"
+#~ msgstr "Schemat kolorów"
+
+#~ msgid "Change the color scheme of the theme defining the program's look."
+#~ msgstr "Zmień schemat kolorów decydujący o tym jak program wygląda."
