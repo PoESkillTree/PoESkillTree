@@ -182,12 +182,18 @@
                     <wpf:StyleSelectorByType Type="{x:Type viewModels:StashBookmarkViewModel}">
                         <wpf:StyleSelectorByType.DefaultStyle>
                             <Style TargetType="FrameworkElement">
+                                <d:Style.DataContext>
+                                    <x:Type Type="viewModels:StashItemViewModel" />
+                                </d:Style.DataContext>
                                 <Setter Property="Canvas.Left" Value="{Binding Item.X, Converter={StaticResource CellSizeMultiplicationConverter}}" />
                                 <Setter Property="Canvas.Top" Value="{Binding Item.Y, Converter={StaticResource CellSizeMultiplicationConverter}}" />
                             </Style>
                         </wpf:StyleSelectorByType.DefaultStyle>
                         <wpf:StyleSelectorByType.Style>
                             <Style TargetType="FrameworkElement">
+                                <d:Style.DataContext>
+                                    <x:Type Type="viewModels:StashBookmarkViewModel" />
+                                </d:Style.DataContext>
                                 <Setter Property="Canvas.Left" Value="0" />
                                 <Setter Property="Canvas.Top">
                                     <Setter.Value>

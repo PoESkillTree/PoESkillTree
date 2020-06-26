@@ -48,12 +48,12 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using ControlzEx.Theming;
 using Attribute = PoESkillTree.ViewModels.Attribute;
 using ContextMenu = System.Windows.Controls.ContextMenu;
 using Item = PoESkillTree.Model.Items.Item;
 using MenuItem = System.Windows.Controls.MenuItem;
-using OnThemeChangedEventArgs = MahApps.Metro.OnThemeChangedEventArgs;
-using ThemeManager = MahApps.Metro.ThemeManager;
+using ThemeManager = ControlzEx.Theming.ThemeManager;
 
 namespace PoESkillTree.Views
 {
@@ -73,6 +73,8 @@ namespace PoESkillTree.Views
 
         private IExtendedDialogCoordinator _dialogCoordinator;
         public IPersistentData PersistentData { get; } = App.PersistentData;
+
+        private ThemeManager ThemeManager => ThemeManager.Current;
 
         private readonly List<Attribute> _attiblist = new List<Attribute>();
         private readonly Regex _backreplace = new Regex("#");
@@ -1909,7 +1911,7 @@ namespace PoESkillTree.Views
         {
             SetTheme();
             SyncThemeManagers(null, null);
-            ThemeManager.IsThemeChanged += SyncThemeManagers;
+            ThemeManager.ThemeChanged += SyncThemeManagers;
         }
 
         private void SetTheme()
@@ -1917,11 +1919,22 @@ namespace PoESkillTree.Views
             ThemeManager.ChangeTheme(Application.Current, PersistentData.Options.Theme, PersistentData.Options.Accent);
         }
 
-        private void SyncThemeManagers(object? sender, OnThemeChangedEventArgs? args)
+        private void SyncThemeManagers(object? sender, ThemeChangedEventArgs? args)
         {
-            var mahAppsTheme = args?.Theme ?? ThemeManager.DetectTheme();
-            Fluent.ThemeManager.ChangeTheme(this, mahAppsTheme.Name);
+            var mahAppsTheme = args?.NewTheme ?? ThemeManager.DetectTheme();
+            if (mahAppsTheme != null)
+            {
+                Fluent.ThemeManager.ChangeTheme(this, mahAppsTheme.Name);
+            }
         }
+
+        public IEnumerable<string> AvailableThemes => ThemeManager.BaseColors;
+
+        public IEnumerable<AccentItemViewModel> AvailableAccents =>
+            ThemeManager.Themes
+                .GroupBy(x => x.ColorScheme)
+                .OrderBy(x => x.Key)
+                .Select(x => new AccentItemViewModel(x.Key, x.First().ShowcaseBrush));
         #endregion
 
         private void UpdateTreeComparison()

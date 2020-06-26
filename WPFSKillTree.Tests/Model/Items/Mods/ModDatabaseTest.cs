@@ -145,9 +145,6 @@ namespace PoESkillTree.Model.Items.Mods
                 Tags.Jewel | Tags.DexJewel | Tags.NotInt | Tags.NotStr, ItemClass.Jewel).ToList();
             Assert.AreEqual(1, jewelChaosDamage.Count);
             Assert.AreEqual("ChaosDamageJewel", ((Mod) jewelChaosDamage[0]).Id);
-            var amuletChaosDamage = chaosDamage.GetMatchingMods(Tags.Amulet, ItemClass.Amulet).ToList();
-            Assert.AreEqual(2, amuletChaosDamage.Count);
-            Assert.AreEqual("EinharMasterAddedChaosDamage1", ((Mod) amuletChaosDamage[0]).Id);
         }
 
         [Test]

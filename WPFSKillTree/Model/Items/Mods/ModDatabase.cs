@@ -21,7 +21,9 @@ namespace PoESkillTree.Model.Items.Mods
 
         public ModDatabase(IReadOnlyDictionary<string, JsonMod> mods, IEnumerable<JsonCraftingBenchOption> benchOptions)
         {
-            var benchLookup = benchOptions.ToLookup(m => m.ModId);
+            var benchLookup = benchOptions
+                .Where(x => x.Actions.AddMod != null)
+                .ToLookup(x => x.Actions.AddMod!);
             Mods = mods.ToDictionary(
                 p => p.Key, 
                 p => new Mod(p.Key, p.Value, benchLookup[p.Key]));

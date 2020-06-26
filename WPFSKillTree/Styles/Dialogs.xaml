@@ -20,17 +20,17 @@
         <Setter Property="Margin" Value="5 0" />
         <Setter Property="MinWidth" Value="80" />
         <Setter Property="Height" Value="35" />
-        <Setter Property="Padding" Value="10" />
+        <Setter Property="Padding" Value="8" />
     </Style>
 
     <Style x:Key="AccentedDialogPanelButton"
-           BasedOn="{StaticResource MahApps.Styles.Button.AccentedSquare}"
+           BasedOn="{StaticResource MahApps.Styles.Button.Square.Accent}"
            TargetType="Button">
         <Setter Property="controls:ControlsHelper.ContentCharacterCasing" Value="Normal" />
         <Setter Property="Margin" Value="5 0" />
         <Setter Property="MinWidth" Value="80" />
         <Setter Property="Height" Value="35" />
-        <Setter Property="Padding" Value="10" />
+        <Setter Property="Padding" Value="8" />
     </Style>
     
     <Style x:Key="DynamicDialogPanelButton"

@@ -115,7 +115,7 @@ namespace PoESkillTree.Computation.ViewModels
             AddStats(OffensiveStats, f.StatBuilders.ChanceToHit);
             AddAvailableStats(OffensiveStats, f.StatBuilders.Accuracy);
             AddAvailableStats(OffensiveStats, f.StatBuilders.Evasion, Entity.Enemy);
-            AddAvailableStats(OffensiveStats, f.MetaStatBuilders.EnemyResistanceFromArmourAgainstNonCrits);
+            AddAvailableStats(OffensiveStats, f.MetaStatBuilders.EnemyDamageReductionFromArmourAgainstNonCrits);
             AddAvailableStats(OffensiveStats, f.StatBuilders.Armour, Entity.Enemy);
 
             ForEachDamagingAilment(

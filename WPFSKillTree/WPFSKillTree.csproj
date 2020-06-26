@@ -23,21 +23,21 @@
     <Exec Command="$(ProjectDir)build-locale.bat" />
   </Target>
   <ItemGroup>
-    <PackageReference Include="ControlzEx" Version="4.2.2" />
+    <PackageReference Include="ControlzEx" Version="4.3.0" />
     <PackageReference Include="DynamicExpresso.Core" Version="2.3.1" />
     <PackageReference Include="Enums.NET" Version="3.0.3" />
-    <PackageReference Include="Fluent.Ribbon" Version="7.0.1" />
+    <PackageReference Include="Fluent.Ribbon" Version="7.1.0" />
     <PackageReference Include="gong-wpf-dragdrop" Version="2.2.0" />
-    <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0660" />
-    <PackageReference Include="MahApps.Metro.IconPacks" Version="3.3.0" />
+    <PackageReference Include="MahApps.Metro" Version="2.1.0" />
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="4.2.0" />
     <PackageReference Include="MahApps.Metro.SimpleChildWindow" Version="2.0.0-alpha0032" />
     <PackageReference Include="morelinq" Version="3.3.2" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="NLog" Version="4.6.8" />
-    <PackageReference Include="PoESkillTree.Engine" Version="0.3.1" />
-    <PackageReference Include="System.Buffers" Version="4.5.0" />
-    <PackageReference Include="System.Reactive" Version="4.3.2" />
-    <PackageReference Include="System.Threading.Tasks.Dataflow" Version="4.11.0" />
+    <PackageReference Include="NLog" Version="4.7.2" />
+    <PackageReference Include="PoESkillTree.Engine" Version="0.3.2" />
+    <PackageReference Include="System.Buffers" Version="4.5.1" />
+    <PackageReference Include="System.Reactive" Version="4.4.1" />
+    <PackageReference Include="System.Threading.Tasks.Dataflow" Version="4.11.1" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data\PseudoAttributes\*.xml">

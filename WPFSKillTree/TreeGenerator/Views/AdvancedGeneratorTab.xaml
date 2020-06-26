@@ -416,14 +416,14 @@
                     <!-- 'Tree + gear' mode not yet implemented -->
                     <metroControls:ToggleSwitch Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Margin="5,0,0,5"
                                                 HorizontalAlignment="Center"
-                                                IsChecked="{Binding TreePlusItemsMode.Value}"
+                                                IsOn="{Binding TreePlusItemsMode.Value}"
                                                 Visibility="Collapsed">
-                        <metroControls:ToggleSwitch.OnLabel>
+                        <metroControls:ToggleSwitch.OnContent>
                             <l:Catalog Message="Tree + Items"/>
-                        </metroControls:ToggleSwitch.OnLabel>
-                        <metroControls:ToggleSwitch.OffLabel>
+                        </metroControls:ToggleSwitch.OnContent>
+                        <metroControls:ToggleSwitch.OffContent>
                             <l:Catalog Message="Tree only"/>
-                        </metroControls:ToggleSwitch.OffLabel>
+                        </metroControls:ToggleSwitch.OffContent>
                     </metroControls:ToggleSwitch>
 
                     <Button Grid.Column="0" Grid.Row="3" Margin="4,4,4,4" Grid.ColumnSpan="5"

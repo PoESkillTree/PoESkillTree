@@ -4,7 +4,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:mahApps="clr-namespace:MahApps.Metro;assembly=MahApps.Metro"
              xmlns:dialogs="clr-namespace:PoESkillTree.Controls.Dialogs"
              xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
              xmlns:local="clr-namespace:PoESkillTree.Views"
@@ -1102,18 +1101,18 @@
                 <fluent:RibbonGroupBox.Header>
                     <l:Catalog Message="Theme" />
                 </fluent:RibbonGroupBox.Header>
-                <fluent:ComboBox ItemsSource="{x:Static mahApps:ThemeManager.BaseColors}"
+                <fluent:ComboBox ItemsSource="{Binding AvailableThemes}"
                                  SelectedItem="{Binding PersistentData.Options.Theme}"
                                  KeyTip="TB"
                                  IsEditable="False"
                                  InputWidth="90">
                     <fluent:ComboBox.Header>
-                        <l:Catalog Message="Base color:" />
+                        <l:Catalog Message="Theme:" />
                     </fluent:ComboBox.Header>
                     <fluent:ComboBox.ToolTip>
                         <fluent:ScreenTip>
                             <fluent:ScreenTip.Title>
-                                <l:Catalog Message="Base color" />
+                                <l:Catalog Message="Theme" />
                             </fluent:ScreenTip.Title>
                             <fluent:ScreenTip.Text>
                                 <l:Catalog Message="Change the base color of the theme defining the program's look." />
@@ -1121,17 +1120,17 @@
                         </fluent:ScreenTip>
                     </fluent:ComboBox.ToolTip>
                 </fluent:ComboBox>
-                <fluent:ComboBox ItemsSource="{x:Static mahApps:ThemeManager.ColorSchemes}"
+                <fluent:ComboBox ItemsSource="{Binding AvailableAccents}"
                                  SelectedValuePath="Name"
                                  SelectedValue="{Binding PersistentData.Options.Accent}"
                                  KeyTip="TS"
                                  IsEditable="False"
                                  InputWidth="90">
                     <fluent:ComboBox.Header>
-                        <l:Catalog Message="Color scheme:" />
+                        <l:Catalog Message="Accent:" />
                     </fluent:ComboBox.Header>
                     <fluent:ComboBox.ItemTemplate>
-                        <DataTemplate DataType="mahApps:ColorScheme">
+                        <DataTemplate DataType="local:AccentItemViewModel">
                             <StackPanel Orientation="Horizontal">
                                 <Ellipse Width="15"
                                          Height="15"
@@ -1144,10 +1143,10 @@
                     <fluent:ComboBox.ToolTip>
                         <fluent:ScreenTip>
                             <fluent:ScreenTip.Title>
-                                <l:Catalog Message="Color scheme" />
+                                <l:Catalog Message="Accent" />
                             </fluent:ScreenTip.Title>
                             <fluent:ScreenTip.Text>
-                                <l:Catalog Message="Change the color scheme of the theme defining the program's look." />
+                                <l:Catalog Message="Change the accent color of the theme defining the program's look." />
                             </fluent:ScreenTip.Text>
                         </fluent:ScreenTip>
                     </fluent:ComboBox.ToolTip>

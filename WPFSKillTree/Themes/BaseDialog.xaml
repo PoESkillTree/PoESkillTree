@@ -82,7 +82,7 @@
             </Trigger>
             <EventTrigger RoutedEvent="Loaded">
                 <EventTrigger.Actions>
-                    <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.DialogShown}" />
+                    <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.Dialogs.Show}" />
                 </EventTrigger.Actions>
             </EventTrigger>
         </ControlTemplate.Triggers>

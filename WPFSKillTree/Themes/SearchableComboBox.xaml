@@ -6,7 +6,7 @@
                     xmlns:l="clr-namespace:PoESkillTree.Localization.XAML">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Shared.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TextBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.ComboBox.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
@@ -114,7 +114,7 @@
                          IsReadOnly="{TemplateBinding IsReadOnly}"
                          MaxLength="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(controls:ComboBoxHelper.MaxLength), Mode=OneWay}"
                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                         Style="{StaticResource MahApps.Styles.TextBox.Editable}"
+                         Style="{StaticResource MahApps.Styles.TextBox.ComboBox.Editable}"
                          Visibility="Collapsed" />
 
                 <TextBlock x:Name="PART_WatermarkMessage"

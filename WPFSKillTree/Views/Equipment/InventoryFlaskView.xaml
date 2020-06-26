@@ -11,17 +11,10 @@
     <StackPanel Orientation="Vertical">
         <local:InventoryItemView Width="51" Height="98"
                                  DataContext="{Binding}" />
-        <mah:ToggleSwitch Margin="-10 -4 0 0"
-                          ThumbIndicatorWidth="10"
-                          OffLabel="" OnLabel=""
-                          IsChecked="{Binding IsEnabled}">
-            <mah:ToggleSwitch.ToggleSwitchButtonStyle>
-                <Style TargetType="{x:Type mah:ToggleSwitchButton}"
-                       BasedOn="{StaticResource {x:Type mah:ToggleSwitchButton}}">
-                    <Setter Property="Width" Value="51" />
-                    <Setter Property="Height" Value="25" />
-                </Style>
-            </mah:ToggleSwitch.ToggleSwitchButtonStyle>
+        <mah:ToggleSwitch Margin="0 -4 0 -7"
+                          Width="44"
+                          HorizontalAlignment="Center"
+                          IsOn="{Binding IsEnabled}">
         </mah:ToggleSwitch>
     </StackPanel>
 </UserControl>
