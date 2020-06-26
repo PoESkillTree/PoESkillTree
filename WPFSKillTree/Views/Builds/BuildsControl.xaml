@@ -98,8 +98,9 @@
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type viewModels:BuildFolderViewModel}"
                                           ItemsSource="{Binding Children}">
-                    <StackPanel Orientation="Horizontal" Height="16">
-                        <iconPacks:PackIconModern Height="16" Width="16" Margin="0 0 4 0">
+                    <DockPanel Height="16">
+                        <iconPacks:PackIconModern Height="16" Width="16" Margin="0 0 4 0"
+                                                  DockPanel.Dock="Left">
                             <iconPacks:PackIconModern.Style>
                                 <Style TargetType="iconPacks:PackIconModern">
                                     <Setter Property="Kind" Value="Folder" />
@@ -114,7 +115,7 @@
                         <TextBlock Text="{Binding Build.Name}"
                                    FontWeight="Bold"
                                    VerticalAlignment="Center"/>
-                        <StackPanel.ContextMenu>
+                        <DockPanel.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Command="{Binding Data.EditCommand, Source={StaticResource VmProxy}}"
                                           CommandParameter="{Binding}"
@@ -159,8 +160,8 @@
                                     </MenuItem.Header>
                                 </MenuItem>
                             </ContextMenu>
-                        </StackPanel.ContextMenu>
-                    </StackPanel>
+                        </DockPanel.ContextMenu>
+                    </DockPanel>
                 </HierarchicalDataTemplate>
                 <DataTemplate DataType="{x:Type viewModels:BuildViewModel}">
                     <Grid x:Name="Grid">
