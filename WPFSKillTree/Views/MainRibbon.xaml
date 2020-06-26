@@ -670,7 +670,8 @@
                     <fluent:MenuItem Click="CheckAllHighlightedNodes"
                                      KeyTip="C">
                         <fluent:MenuItem.Icon>
-                            <iconPacks:PackIconMaterial Kind="MapMarkerCheck" />
+                            <iconPacks:PackIconMaterial Kind="MapMarkerCheck"
+                                                        Width="Auto" Height="Auto" />
                         </fluent:MenuItem.Icon>
                         <fluent:MenuItem.Header>
                             <l:Catalog Message="Check-tag highlighted nodes" />
@@ -689,7 +690,8 @@
                     <fluent:MenuItem Click="CrossAllHighlightedNodes"
                                      KeyTip="X">
                         <fluent:MenuItem.Icon>
-                            <iconPacks:PackIconMaterial Kind="MapMarkerRemoveVariant" />
+                            <iconPacks:PackIconMaterial Kind="MapMarkerRemoveVariant"
+                                                        Width="Auto" Height="Auto" />
                         </fluent:MenuItem.Icon>
                         <fluent:MenuItem.Header>
                             <l:Catalog Message="Cross-tag highlighted nodes" />
