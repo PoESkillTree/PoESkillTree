@@ -11,7 +11,8 @@
     xmlns:dialogs="clr-namespace:PoESkillTree.Controls.Dialogs"
     d:DataContext="{d:DesignInstance vm:SettingsViewModel}"
     AllowMove="True" IsModal="False" ShowCloseButton="True"
-    dialogs:DialogParticipation.Register="{Binding}">
+    dialogs:DialogParticipation.Register="{Binding}"
+    Background="{DynamicResource MahApps.Brushes.ThemeBackground}">
     <simpleChildWindow:ChildWindow.Title>
         <l:Catalog Message="Passive Tree Generator" />
     </simpleChildWindow:ChildWindow.Title>
