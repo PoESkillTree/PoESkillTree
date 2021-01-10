@@ -136,7 +136,7 @@ namespace PoESkillTree.ViewModels.Import
                 var tabs = (JArray)JObject.Parse(stashData)["tabs"]!;
                 foreach (var tab in tabs)
                 {
-                    if (tab["hidden"]!.Value<bool>())
+                    if (tab.Value<bool>("hidden"))
                         continue;
                     var name = tab["n"]!.Value<string>();
                     var index = tab["i"]!.Value<int>();
