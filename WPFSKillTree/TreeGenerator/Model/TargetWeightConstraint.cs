@@ -50,8 +50,8 @@ namespace PoESkillTree.TreeGenerator.Model
                 SetProperty(ref _weight, value);
             }
         }
-        
-        public TargetWeightConstraint(T data = default)
+
+        public TargetWeightConstraint(T data = default!)
         {
             _data = data;
         }

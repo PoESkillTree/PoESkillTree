@@ -547,7 +547,7 @@ namespace PoESkillTree.TreeGenerator.ViewModels
             CalculateTotalPoints();
             TreePlusItemsMode = new LeafSetting<bool>(nameof(TreePlusItemsMode), false);
             WeaponClass = new LeafSetting<WeaponClass>(nameof(WeaponClass), Model.PseudoAttributes.WeaponClass.Unarmed,
-                () => WeaponClassIsTwoHanded = WeaponClass.Value.IsTwoHanded());
+                () => WeaponClassIsTwoHanded = WeaponClass!.Value.IsTwoHanded());
             OffHand = new LeafSetting<OffHand>(nameof(OffHand), Model.PseudoAttributes.OffHand.Shield);
             Tags = new LeafSetting<Tags>(nameof(Tags), Model.PseudoAttributes.Tags.None);
 
