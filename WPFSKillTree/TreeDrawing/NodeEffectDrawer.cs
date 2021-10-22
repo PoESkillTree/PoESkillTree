@@ -8,12 +8,12 @@ using PoESkillTree.ViewModels.PassiveTree;
 
 namespace PoESkillTree.TreeDrawing
 {
-    public abstract class NodeIconDrawer
+    public abstract class NodeEffectDrawer
     {
         private readonly SkillIcons _icons;
         private readonly IReadOnlyCollection<PassiveNodeViewModel> _nodes;
 
-        protected NodeIconDrawer(SkillIcons skillIcons, IReadOnlyCollection<PassiveNodeViewModel> nodes)
+        protected NodeEffectDrawer(SkillIcons skillIcons, IReadOnlyCollection<PassiveNodeViewModel> nodes)
         {
             _icons = skillIcons;
             _nodes = nodes;
@@ -33,8 +33,10 @@ namespace PoESkillTree.TreeDrawing
 
         private void Draw(DrawingContext context, PassiveNodeViewModel node)
         {
-            var rect = _icons.SkillPositions[node.IconKey];
-            var image = _icons.GetSkillImage(node.IconKey);
+            if (!_icons.SkillPositions.ContainsKey(node.EffectKey)) return;
+
+            var rect = _icons.SkillPositions[node.EffectKey];
+            var image = _icons.GetSkillImage(node.EffectKey);
             var imageBrush = new ImageBrush
             {
                 Stretch = Stretch.Uniform,
@@ -54,23 +56,13 @@ namespace PoESkillTree.TreeDrawing
         }
     }
 
-    public class NonAscendancyNodeIconDrawer : NodeIconDrawer
+    public class AllNodeEffectDrawer : NodeEffectDrawer
     {
-        public NonAscendancyNodeIconDrawer(SkillIcons skillIcons, IReadOnlyCollection<PassiveNodeViewModel> nodes)
+        public AllNodeEffectDrawer(SkillIcons skillIcons, IReadOnlyCollection<PassiveNodeViewModel> nodes)
             : base(skillIcons, nodes)
         {
         }
 
-        public void Draw() => Draw(n => !n.IsAscendancyNode && !n.IsRootNode);
-    }
-
-    public class AscendancyNodeIconDrawer : NodeIconDrawer
-    {
-        public AscendancyNodeIconDrawer(SkillIcons skillIcons, IReadOnlyCollection<PassiveNodeViewModel> nodes) : base(skillIcons, nodes)
-        {
-        }
-
-        public void Draw(bool allAscendancies, string? ascendancyClassName)
-            => Draw(n => !n.IsAscendancyStart && n.IsAscendancyNode && (allAscendancies || n.AscendancyName == ascendancyClassName));
+        public void Draw() => Draw(n => true);
     }
 }

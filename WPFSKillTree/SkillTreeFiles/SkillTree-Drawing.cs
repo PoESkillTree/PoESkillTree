@@ -43,12 +43,14 @@ namespace PoESkillTree.SkillTreeFiles
 
         public DrawingVisual SkillTreeVisual { get; private set; }
         private DrawingVisual _background;
+        private AllNodeEffectDrawer _nodeEffectDrawer;
         private NonAscendancyNodeSurroundDrawer _nodeComparisonSurroundDrawer;
         private DrawingVisual _pathComparisonHighlight;
         private DrawingVisual _paths;
         public DrawingVisual ActivePaths { get; private set; }
         private DrawingVisual _pathOverlay;
         private NonAscendancyNodeIconDrawer _nodeIconDrawer;
+        private MasteryNodeConnectedDrawer _masteryNodeConnectedDrawer;
         private NonAscendancyNodeIconDrawer _activeNodeIconDrawer;
         private NonAscendancyNodeIconDrawer _itemAllocatedNodeIconDrawer;
         private NonAscendancyNodeSurroundDrawer _nodeSurroundDrawer;
@@ -116,6 +118,7 @@ namespace PoESkillTree.SkillTreeFiles
 
         private void SkilledNodes_CollectionChanged_Draw(object sender, EventArgs e)
         {
+            DrawActiveNodeEffects();
             DrawActiveSkillIconsAndSurrounds();
             DrawActivePaths();
             DrawCharacterFaces();
@@ -155,10 +158,13 @@ namespace PoESkillTree.SkillTreeFiles
         private void InitializeDrawers()
         {
             _nodeIconDrawer = new NonAscendancyNodeIconDrawer(IconInActiveSkills, Skillnodes.Values);
+            _masteryNodeConnectedDrawer = new MasteryNodeConnectedDrawer(IconActiveSkills, SkilledNodes, Assets.Where(x => x.Key.Contains("Connected")).ToDictionary());
             _activeNodeIconDrawer = new NonAscendancyNodeIconDrawer(IconActiveSkills, SkilledNodes);
             _itemAllocatedNodeIconDrawer = new NonAscendancyNodeIconDrawer(IconActiveSkills, _itemAllocatedNodes);
             _ascendancyNodeIconDrawer = new AscendancyNodeIconDrawer(IconInActiveSkills, Skillnodes.Values);
             _activeAscendancyNodeIconDrawer = new AscendancyNodeIconDrawer(IconActiveSkills, SkilledNodes);
+
+            _nodeEffectDrawer = new AllNodeEffectDrawer(IconActiveSkills, SkilledNodes);
 
             _nodeSurroundDrawer = new NonAscendancyNodeSurroundDrawer(
                 Skillnodes.Values, 1, n => GetNodeSurroundBrushSize(n, 0), n => GetNodeSurroundBrush(n, 0));
@@ -183,12 +189,14 @@ namespace PoESkillTree.SkillTreeFiles
         {
             // Top most add will be the bottom most element drawn
             SkillTreeVisual.Children.Add(_background);
+            SkillTreeVisual.Children.Add(_nodeEffectDrawer.Visual);
             SkillTreeVisual.Children.Add(_nodeComparisonSurroundDrawer.Visual);
             SkillTreeVisual.Children.Add(_pathComparisonHighlight);
             SkillTreeVisual.Children.Add(_paths);
             SkillTreeVisual.Children.Add(ActivePaths);
             SkillTreeVisual.Children.Add(_pathOverlay);
             SkillTreeVisual.Children.Add(_nodeIconDrawer.Visual);
+            SkillTreeVisual.Children.Add(_masteryNodeConnectedDrawer.Visual);
             SkillTreeVisual.Children.Add(_itemAllocatedNodeIconDrawer.Visual);
             SkillTreeVisual.Children.Add(_activeNodeIconDrawer.Visual);
             SkillTreeVisual.Children.Add(_nodeSurroundDrawer.Visual);
@@ -315,6 +323,8 @@ namespace PoESkillTree.SkillTreeFiles
 
         private void DrawActiveSkillIconsAndSurrounds(bool onlyAscendancy = false)
         {
+            _masteryNodeConnectedDrawer.Draw();
+
             if (DrawAscendancy)
             {
                 _activeAscendancyNodeIconDrawer.Draw(_persistentData.Options.ShowAllAscendancyClasses, AscendancyClassName);
@@ -696,6 +706,11 @@ namespace PoESkillTree.SkillTreeFiles
                     }
                 }
             }
+        }
+
+        private void DrawActiveNodeEffects()
+        {
+            _nodeEffectDrawer.Draw();
         }
 
         private void DrawActivePaths(bool onlyAscendancy = false)

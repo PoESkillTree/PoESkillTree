@@ -82,6 +82,10 @@ namespace PoESkillTree.ViewModels.PassiveTree
             PassiveNodeType.Mastery => ActiveEffectIcon is null ? "mastery" : (IsSkilled ? "masterySelected" : (NeighborPassiveNodes.Count(x => x.Value.IsSkilled) > 0 ? "masteryConnected" : "mastery")),
             _ => $"normal"
         };
+
+        public string EffectKey => $"{EffectKeyPrefix}_{ActiveEffectIcon}";
+        private string EffectKeyPrefix => $"{PassiveNodeType.ToString().ToLowerInvariant()}Effect";
+
         public Dictionary<string, IReadOnlyList<float>> Attributes { get; } = new Dictionary<string, IReadOnlyList<float>>();
         public Dictionary<ushort, PassiveNodeViewModel> NeighborPassiveNodes { get; } = new Dictionary<ushort, PassiveNodeViewModel>();
         public Dictionary<ushort, PassiveNodeViewModel> VisibleNeighborPassiveNodes { get; } = new Dictionary<ushort, PassiveNodeViewModel>();
