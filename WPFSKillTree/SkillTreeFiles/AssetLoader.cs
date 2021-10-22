@@ -23,8 +23,8 @@ namespace PoESkillTree.SkillTreeFiles
     {
         private const string SpriteUrl = "http://www.pathofexile.com/image/passive-skill/";
 
-        private const string SkillTreeFile = "SkillTree.txt";
-        private const string OptsFile = "Opts.txt";
+        public static string SkillTreeFile = "SkillTree.json";
+        public static string OptsFile = "Opts.json";
         private const string AssetsFolder = "Assets/";
 
         private const string TempFolder = "Temp/";
@@ -94,8 +94,9 @@ namespace PoESkillTree.SkillTreeFiles
             foreach (var obj in inTree.SkillSprites)
             {
                 var sprite = obj.Value[inTree.MaxImageZoomLevelIndex];
-                var path = _tempAssetsPath + sprite.FileName;
-                var url = SpriteUrl + sprite.FileName;
+                var filename = sprite.FileName.Replace("https://web.poecdn.com/image/passive-skill/", string.Empty);
+                var path = _tempAssetsPath + filename;
+                var url = SpriteUrl + filename;
                 if (path.Contains('?'))
                     path = path.Remove(path.IndexOf('?'));
                 await DownloadAsync(url, path);

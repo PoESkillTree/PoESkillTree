@@ -17,7 +17,7 @@ namespace PoESkillTree.ViewModels.PassiveTree
         public ushort Id { get; private set; } = 0;
         public List<ushort> OccupiedOrbits => JsonPassiveNodeGroup.OccupiedOrbits;
         public HashSet<ushort> PassiveNodeIds => JsonPassiveNodeGroup.PassiveNodeIds;
-        public bool? IsProxy { get => JsonPassiveNodeGroup.IsProxy; }
+        public bool IsProxy { get => JsonPassiveNodeGroup.IsProxy.HasValue && JsonPassiveNodeGroup.IsProxy.Value; }
         public Dictionary<ushort, PassiveNodeViewModel> PassiveNodes { get; } = new Dictionary<ushort, PassiveNodeViewModel>();
 
         public float X { get => JsonPassiveNodeGroup.OriginalX; private set { JsonPassiveNodeGroup.OriginalX = value; } }

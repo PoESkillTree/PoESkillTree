@@ -5,6 +5,7 @@ using PoESkillTree.Engine.Utils.Extensions;
 using PoESkillTree.SkillTreeFiles;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace PoESkillTree.ViewModels.PassiveTree
@@ -40,13 +41,34 @@ namespace PoESkillTree.ViewModels.PassiveTree
         public string[] ReminderText { get => JsonPassiveNode.ReminderText; }
         public string[] StatDescriptions { get => JsonPassiveNode.StatDescriptions; private set => JsonPassiveNode.StatDescriptions = value; }
         public int PassivePointsGranted { get => JsonPassiveNode.PassivePointsGranted; }
-        public string Icon { get => JsonPassiveNode.Icon; }
+        public string Icon
+        {
+            get
+            {
+                if (PassiveNodeType == PassiveNodeType.Mastery)
+                {
+                    if (IsSkilled && !(JsonPassiveNode.ActiveIcon is null))
+                    {
+                        return JsonPassiveNode.ActiveIcon;
+                    }
+
+                    if (!(JsonPassiveNode.InactiveIcon is null))
+                    {
+                        return JsonPassiveNode.InactiveIcon;
+                    }
+                }
+
+                return JsonPassiveNode.Icon;
+            }
+        }
+        public string? ActiveEffectIcon { get => JsonPassiveNode.ActiveEffectImage; }
         public string? AscendancyName { get => JsonPassiveNode.AscendancyName; }
         public bool IsBlighted { get => JsonPassiveNode.IsBlighted; }
         public bool IsProxy { get => JsonPassiveNode.IsProxy; }
         public bool IsAscendancyStart { get => JsonPassiveNode.IsAscendancyStart; }
         public bool IsMultipleChoice { get => JsonPassiveNode.IsMultipleChoice; }
         public bool IsMultipleChoiceOption { get => JsonPassiveNode.IsMultipleChoiceOption; }
+        public bool IsSkilled { get; set; } = false;
         public int Strength { get => JsonPassiveNode.Strength; }
         public int Dexterity { get => JsonPassiveNode.Dexterity; }
         public int Intelligence { get => JsonPassiveNode.Intelligence; }
@@ -57,7 +79,7 @@ namespace PoESkillTree.ViewModels.PassiveTree
         {
             PassiveNodeType.Keystone => $"keystone",
             PassiveNodeType.Notable => $"notable",
-            PassiveNodeType.Mastery => $"mastery",
+            PassiveNodeType.Mastery => ActiveEffectIcon is null ? "mastery" : (IsSkilled ? "masterySelected" : (NeighborPassiveNodes.Count(x => x.Value.IsSkilled) > 0 ? "masteryConnected" : "mastery")),
             _ => $"normal"
         };
         public Dictionary<string, IReadOnlyList<float>> Attributes { get; } = new Dictionary<string, IReadOnlyList<float>>();

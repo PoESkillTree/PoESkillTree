@@ -121,7 +121,7 @@ namespace PoESkillTree.TreeDrawing
 
             var radius = radiusEnum.GetRadius(node.ZoomLevel);
             var nodesInRadius = _skillNodes.Values
-                .Where(n => n.PassiveNodeType != PassiveNodeType.Mastery && !n.IsRootNode && !n.IsAscendancyNode)
+                .Where(n => !n.IsRootNode && !n.IsAscendancyNode)
                 .Where(n => Distance(n.Position, node.Position) <= radius);
             var pen = new Pen(RadiusBrushes[radiusEnum], RadiusPenThickness);
             foreach (var n in nodesInRadius)

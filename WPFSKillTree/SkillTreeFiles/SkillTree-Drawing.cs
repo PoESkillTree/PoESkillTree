@@ -86,7 +86,7 @@ namespace PoESkillTree.SkillTreeFiles
         private void InitialSkillTreeDrawing()
         {
 
-            SkilledNodes.CollectionChanged += SkilledNodes_CollectionChanged;
+            SkilledNodes.CollectionChanged += SkilledNodes_CollectionChanged_Draw;
             HighlightedNodes.CollectionChanged += HighlightedNodes_CollectionChanged;
             _itemAllocatedNodes.CollectionChanged += ItemAllocatedNodesOnCollectionChanged;
 
@@ -114,7 +114,7 @@ namespace PoESkillTree.SkillTreeFiles
             DrawTreeComparisonHighlight();
         }
 
-        private void SkilledNodes_CollectionChanged(object sender, EventArgs e)
+        private void SkilledNodes_CollectionChanged_Draw(object sender, EventArgs e)
         {
             DrawActiveSkillIconsAndSurrounds();
             DrawActivePaths();
@@ -407,7 +407,8 @@ namespace PoESkillTree.SkillTreeFiles
                     groupOrbitBrush[5].Viewport = new Rect(0, 0, 1, .5f);
                 }
                 #region Background Drawing
-                var backgroundBrush = new ImageBrush(Assets["Background1"]) { TileMode = TileMode.Tile };
+                var backgroundAsset = Assets.ContainsKey("Background1") ? Assets["Background1"] : Assets["Background2"];
+                var backgroundBrush = new ImageBrush(backgroundAsset) { TileMode = TileMode.Tile };
                 backgroundBrush.Viewport = new Rect(0, 0,
                     3 * backgroundBrush.ImageSource.Width / SkillTreeRect.Width,
                     3 * backgroundBrush.ImageSource.Height / SkillTreeRect.Height);
@@ -427,7 +428,7 @@ namespace PoESkillTree.SkillTreeFiles
                     if (maxr == 0) continue;
                     var groupType = maxr > 3 ? 2 : maxr - 1;
                     var heightFactor = groupType == 2 ? 2 : 1;
-                    if (skillNodeGroup.IsProxy.HasValue && skillNodeGroup.IsProxy.Value && groupOrbitBrush.Count > 3)
+                    if (skillNodeGroup.IsProxy && groupOrbitBrush.Count > 3)
                     {
                         groupType += 3;
                     }

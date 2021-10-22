@@ -270,6 +270,7 @@ namespace PoESkillTree.TreeGenerator.Solver
                             || searchGraph.NodeDict.ContainsKey(node)
                             // Don't add nodes that should not be skilled.
                             || Settings.Crossed.Contains(node)
+                            //TODO: Mastery Nodes are useful as of 3.16.0
                             // Mastery nodes are obviously not useful.
                             || node.PassiveNodeType == PassiveNodeType.Mastery
                             // Ignore ascendencies for now

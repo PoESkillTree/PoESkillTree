@@ -28,6 +28,11 @@ namespace PoESkillTree.TreeDrawing
             foreach (var node in _nodes.Where(shouldDrawNode))
             {
                 Draw(context, node);
+
+                foreach (var other in node.NeighborPassiveNodes.Values.Where(x => x.PassiveNodeType == Engine.GameModel.PassiveTree.PassiveNodeType.Mastery))
+                {
+                    Draw(context, other);
+                }
             }
         }
 

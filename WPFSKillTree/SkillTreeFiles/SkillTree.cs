@@ -189,6 +189,20 @@ namespace PoESkillTree.SkillTreeFiles
             _persistentData = persistentData;
 
             Serializer = new SkillTreeToUrlSerializer(this);
+            SkilledNodes.CollectionChanged += SkilledNodes_CollectionChanged;
+        }
+
+        private void SkilledNodes_CollectionChanged(object sender, CollectionChangedEventArgs<PassiveNodeViewModel> args)
+        {
+            foreach (var node in args.RemovedItems)
+            {
+                node.IsSkilled = false;
+            }
+
+            foreach (var node in args.AddedItems)
+            {
+                node.IsSkilled = true;
+            }
         }
 
         private async Task InitializeAsync(string treestring, string? opsstring, ProgressDialogController? controller, AssetLoader assetLoader)
@@ -210,40 +224,25 @@ namespace PoESkillTree.SkillTreeFiles
                     new List<(Task<BitmapImage>, Action<BitmapImage>)>(PoESkillTree.SkillSprites.Count + PoESkillTree.Assets.Count);
                 foreach (var obj in PoESkillTree.SkillSprites)
                 {
-                    SkillIcons icons;
-                    string prefix;
                     foreach (var i in obj.Value)
                     {
                         if (i.FileName.Contains('?'))
                             i.FileName = i.FileName.Remove(i.FileName.IndexOf('?'));
                     }
-                    if (obj.Key.EndsWith("Active"))
+
+                    var value = obj.Value[PoESkillTree.MaxImageZoomLevelIndex];
+                    if (obj.Key.Contains("Inactive"))
                     {
-                        // Adds active nodes to IconActiveSkills
-                        icons = IconActiveSkills;
-                        prefix = obj.Key.Substring(0, obj.Key.Length - "Active".Length);
+                        AddToIcons(IconInActiveSkills, value, obj.Key.Replace("Inactive", string.Empty), assetActions);
                     }
-                    else if (obj.Key.EndsWith("Inactive"))
+                    else if (obj.Key.Contains("Active"))
                     {
-                        // Adds inactive nodes to IconInActiveSkills
-                        icons = IconInActiveSkills;
-                        prefix = obj.Key.Substring(0, obj.Key.Length - "Inactive".Length);
+                        AddToIcons(IconActiveSkills, value, obj.Key.Replace("Active", string.Empty), assetActions);
                     }
                     else
                     {
-                        // Adds masteries to IconInActiveSkills
-                        icons = IconInActiveSkills;
-                        prefix = obj.Key;
-                    }
-                    var sprite = obj.Value[PoESkillTree.MaxImageZoomLevelIndex];
-                    var path = _assetsFolderPath + sprite.FileName;
-                    assetActions.Add(
-                        (Task.Run(() => BitmapImageFactory.Create(path)), i => icons.Images[sprite.FileName] = i));
-                    foreach (var o in sprite.Coords)
-                    {
-                        var iconKey = prefix + "_" + o.Key;
-                        icons.SkillPositions[iconKey] = new Rect(o.Value.X, o.Value.Y, o.Value.Width, o.Value.Height);
-                        icons.SkillImages[iconKey] = sprite.FileName;
+                        AddToIcons(IconInActiveSkills, value, obj.Key, assetActions);
+                        AddToIcons(IconActiveSkills, value, obj.Key, assetActions);
                     }
                 }
 
@@ -316,7 +315,7 @@ namespace PoESkillTree.SkillTreeFiles
                 }
 
                 SkillTreeRect = new Rect2D(
-                    new Vector2D(PoESkillTree.MinX * PoESkillTree.MaxImageZoomLevel * 1.25, PoESkillTree.MinY * PoESkillTree.MaxImageZoomLevel * 1.25), 
+                    new Vector2D(PoESkillTree.MinX * PoESkillTree.MaxImageZoomLevel * 1.25, PoESkillTree.MinY * PoESkillTree.MaxImageZoomLevel * 1.25),
                     new Vector2D(PoESkillTree.MaxX * PoESkillTree.MaxImageZoomLevel * 1.25, PoESkillTree.MaxY * PoESkillTree.MaxImageZoomLevel * 1.25));
             }
 
@@ -327,6 +326,19 @@ namespace PoESkillTree.SkillTreeFiles
             controller?.SetProgress(1);
 
             _initialized = true;
+        }
+
+        private static void AddToIcons(SkillIcons icons, in Engine.GameModel.PassiveTree.Base.JsonPassiveTreeSkillSprite sprite, in string prefix, in List<(Task<BitmapImage>, Action<BitmapImage>)> assetActions)
+        {
+            var filename = sprite.FileName.Replace("https://web.poecdn.com/image/passive-skill/", string.Empty);
+            var path = _assetsFolderPath + filename;
+            assetActions.Add((Task.Run(() => BitmapImageFactory.Create(path)), i => icons.Images[filename] = i));
+            foreach (var o in sprite.Coords)
+            {
+                var iconKey = prefix + "_" + o.Key;
+                icons.SkillPositions[iconKey] = new Rect(o.Value.X, o.Value.Y, o.Value.Width, o.Value.Height);
+                icons.SkillImages[iconKey] = filename;
+            }
         }
 
         /// <summary>
@@ -535,9 +547,15 @@ namespace PoESkillTree.SkillTreeFiles
             if (assetLoader == null)
                 assetLoader = new AssetLoader(new HttpClient(), dataFolderPath, false);
 
-            var skillTreeTask = LoadTreeFileAsync(dataFolderPath + "Skilltree.txt",
+            if (File.Exists(dataFolderPath + "Skilltree.txt"))
+                File.Move(dataFolderPath + "Skilltree.txt", dataFolderPath + AssetLoader.SkillTreeFile);
+
+            if (File.Exists(dataFolderPath + "Opts.txt"))
+                File.Move(dataFolderPath + "Opts.txt", dataFolderPath + AssetLoader.OptsFile);
+
+            var skillTreeTask = LoadTreeFileAsync(dataFolderPath + AssetLoader.SkillTreeFile,
                 () => assetLoader.DownloadSkillTreeToFileAsync());
-            var optsTask = LoadTreeFileAsync(dataFolderPath + "Opts.txt");
+            var optsTask = LoadTreeFileAsync(dataFolderPath + AssetLoader.OptsFile);
             await Task.WhenAny(skillTreeTask, optsTask);
             controller?.SetProgress(0.1);
 
@@ -684,9 +702,8 @@ namespace PoESkillTree.SkillTreeFiles
             if (SkilledNodes.Contains(targetNode))
                 return new List<PassiveNodeViewModel>();
             var reachableSkilled = SelectNodesReachableFromStart(SkilledNodes);
-            var itemConnected = SelectItemConnectedNodes(reachableSkilled);
             var adjacent = GetAvailableNodes(reachableSkilled);
-            if (adjacent.Contains(targetNode) || itemConnected.Contains(targetNode))
+            if (adjacent.Contains(targetNode))
                 return new List<PassiveNodeViewModel> { targetNode };
 
             var visited = new HashSet<PassiveNodeViewModel>(reachableSkilled);
@@ -721,9 +738,9 @@ namespace PoESkillTree.SkillTreeFiles
                         continue;
                     if (distance.ContainsKey(connection))
                         continue;
-                    if (newNode.StartingCharacterClass.HasValue)
-                        continue;
                     if (newNode.PassiveNodeType == PassiveNodeType.Mastery)
+                        continue;
+                    if (newNode.StartingCharacterClass.HasValue)
                         continue;
                     if (newNode.IsAscendantClassStartNode)
                         continue;
@@ -864,8 +881,7 @@ namespace PoESkillTree.SkillTreeFiles
                     var regex = new Regex(search, RegexOptions.IgnoreCase);
                     var nodes =
                         Skillnodes.Values.Where(
-                            nd => (matchFct(nd.StatDescriptions, att => regex.IsMatch(att)) ||
-                                  regex.IsMatch(nd.Name) && nd.PassiveNodeType != PassiveNodeType.Mastery) &&
+                            nd => (matchFct(nd.StatDescriptions, att => regex.IsMatch(att)) || regex.IsMatch(nd.Name)) &&
                                   (DrawAscendancy ? (_persistentData.Options.ShowAllAscendancyClasses || (nd.AscendancyName == null || nd.AscendancyName == AscendancyClassName)) : nd.AscendancyName == null));
                     _nodeHighlighter.ResetHighlights(nodes, flag);
                     DrawHighlights();
@@ -880,8 +896,7 @@ namespace PoESkillTree.SkillTreeFiles
                 search = search.ToLowerInvariant();
                 var nodes =
                     Skillnodes.Values.Where(
-                        nd => (matchFct(nd.StatDescriptions, att => att.ToLowerInvariant().Contains(search)) ||
-                              nd.Name.ToLowerInvariant().Contains(search) && nd.PassiveNodeType != PassiveNodeType.Mastery) &&
+                        nd => (matchFct(nd.StatDescriptions, att => att.ToLowerInvariant().Contains(search)) || nd.Name.ToLowerInvariant().Contains(search)) &&
                               (DrawAscendancy ? (_persistentData.Options.ShowAllAscendancyClasses || (nd.AscendancyName == null || nd.AscendancyName == AscendancyClassName)) : nd.AscendancyName == null));
                 _nodeHighlighter.ResetHighlights(nodes, flag);
                 DrawHighlights();
@@ -1140,6 +1155,11 @@ namespace PoESkillTree.SkillTreeFiles
 
             foreach (var node in skilledNodes)
             {
+                if (node.PassiveNodeType == PassiveNodeType.Mastery)
+                {
+                    continue;
+                }
+
                 foreach (var skillNode in node.NeighborPassiveNodes.Values)
                 {
                     if (!skillNode.IsRootNode && !SkilledNodes.Contains(skillNode))

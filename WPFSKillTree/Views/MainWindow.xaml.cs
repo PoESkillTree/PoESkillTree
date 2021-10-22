@@ -1339,7 +1339,7 @@ namespace PoESkillTree.Views
                 if (!PersistentData.Options.ShowAllAscendancyClasses && node.IsAscendancyNode && node.AscendancyName != ascendancyClassName)
                     return;
                 // Ignore clicks on character portraits and masteries
-                if (node.StartingCharacterClass == null && node.PassiveNodeType != PassiveNodeType.Mastery)
+                if (node.StartingCharacterClass == null)
                 {
                     if (_lastMouseButton == MouseButton.Right)
                     {
@@ -1459,8 +1459,7 @@ namespace PoESkillTree.Views
             else
             {
                 _prePath = Tree.GetShortestPathTo(node);
-                if (node.PassiveNodeType != PassiveNodeType.Mastery)
-                    Tree.DrawPath(_prePath);
+                Tree.DrawPath(_prePath);
             }
             var tooltip = node.Name;
             if (node.Attributes.Count != 0)
@@ -1503,9 +1502,9 @@ namespace PoESkillTree.Views
                 sp.Children.Add(new TextBlock { Text = node.ReminderText.Aggregate((s1, s2) => s1 + '\n' + s2) });
             }
 
-            if (_prePath != null && node.PassiveNodeType != PassiveNodeType.Mastery)
+            if (_prePath != null)
             {
-                var points = _prePath.Count(n => !n.IsAscendancyStart && !Tree.SkilledNodes.Contains(n));
+                var points = _prePath.Count(n => !n.IsAscendancyStart && !Tree.SkilledNodes.Contains(n) && n.PassiveNodeType != PassiveNodeType.Mastery);
                 sp.Children.Add(new Separator());
                 sp.Children.Add(new TextBlock { Text = "Points to skill node: " + points });
             }
