@@ -16,7 +16,7 @@
     <Description>Passive skill tree planner for Path of Exile®</Description>
     <Product>PoESkillTree - Conquerors of the Atlas</Product>
     <ProductUrl>https://github.com/PoESkillTree/PoESkillTree/</ProductUrl>
-    <VersionPrefix>3.0.1</VersionPrefix>
+    <VersionPrefix>3.0.2</VersionPrefix>
   </PropertyGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="$(Configuration) == Release">
     <Exec Command="$(ProjectDir)build-locale.bat" />

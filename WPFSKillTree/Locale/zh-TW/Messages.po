@@ -97,6 +97,7 @@ msgstr "瀏覽..."
 #: Controls\Dialogs\Views\MetroMessageBoxView.xaml:70
 #: Controls\Dialogs\Views\ValidatingInputDialogView.xaml:42
 #: Views\Builds\EditBuildWindow.xaml:43 Views\Equipment\TabPicker.xaml:122
+#: Views\PassiveTree\MasteryEffectSelectionView.xaml:83
 msgid "OK"
 msgstr ""
 
@@ -1338,6 +1339,10 @@ msgstr "全部昇華點數"
 msgid "Level"
 msgstr "等級"
 
+#: Views\PassiveTree\MasteryEffectSelectionView.xaml:34
+msgid "Mastery Effect Selection"
+msgstr ""
+
 #: Views\SettingsMenuWindow.xaml:45
 msgid "General:"
 msgstr ""
@@ -1459,7 +1464,11 @@ msgstr ""
 msgid "New build"
 msgstr "新流派"
 
-#: SkillTreeFiles\SkillTree.cs:1045
+#: SkillTreeFiles\SkillTree.cs:1010 SkillTreeFiles\SkillTree.cs:1011
+msgid "Could not encode skill tree url. Something is very wrong..."
+msgstr ""
+
+#: SkillTreeFiles\SkillTree.cs:1054
 msgid "Some nodes ({unknownNodes}) are unknown and have been omitted."
 msgstr ""
 
@@ -1787,16 +1796,19 @@ msgstr ""
 msgid "Value contains a colon at an invalid position-"
 msgstr ""
 
-#: Utils\UrlProcessing\BuildUrlNormalizer.cs:93
-msgid "Resolving shortened tree address"
-msgstr ""
-
-#: Utils\UrlProcessing\NaivePoeUrlDeserializer.cs:56
-msgid "The build is using an old version of the passive tree."
-msgstr ""
-
-#: Utils\UrlProcessing\NaivePoeUrlDeserializer.cs:107
+#: Utils\UrlProcessing\Decoders\PoESkillTreeUrlV3Decoder.cs:85
+#: Utils\UrlProcessing\Decoders\PoESkillTreeUrlV4Decoder.cs:96
+#: Utils\UrlProcessing\Decoders\PoESkillTreeUrlV5Decoder.cs:91
+#: Utils\UrlProcessing\Decoders\PoESkillTreeUrlV6Decoder.cs:101
 msgid "Failed to load build from URL."
+msgstr ""
+
+#: Utils\UrlProcessing\SkillTreeUrlDecoders.cs:32
+msgid "Could not find a valid decoder for the normalized url: {url}"
+msgstr ""
+
+#: Utils\UrlProcessing\SkillTreeUrlNormalizer.cs:92
+msgid "Resolving shortened tree address"
 msgstr ""
 
 #: Computation\ViewModels\CalculationNodeViewModel.cs:75
@@ -1844,7 +1856,7 @@ msgid "This will delete the build folder \"{0}\" and all its contents.\n"
 msgstr ""
 
 #: ViewModels\Builds\BuildsControlViewModel.cs:424
-#: Views\MainWindow.xaml.cs:966
+#: Views\MainWindow.xaml.cs:967
 msgid "Do you want to continue?"
 msgstr ""
 
@@ -2039,195 +2051,175 @@ msgstr ""
 msgid "Untag All Skill Nodes"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:402
+#: Views\MainWindow.xaml.cs:403
 msgid "Create New Attribute Group"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:402
+#: Views\MainWindow.xaml.cs:403
 msgid "Group name"
 msgstr "群組名稱"
 
-#: Views\MainWindow.xaml.cs:407
+#: Views\MainWindow.xaml.cs:408
 msgid "A group with that name already exists."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:494
+#: Views\MainWindow.xaml.cs:495
 msgid "Initialization"
 msgstr "初始化"
 
-#: Views\MainWindow.xaml.cs:495 Views\MainWindow.xaml.cs:515
+#: Views\MainWindow.xaml.cs:496 Views\MainWindow.xaml.cs:516
 msgid "Initializing window ..."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:510
+#: Views\MainWindow.xaml.cs:511
 msgid "Loading skill tree assets ..."
 msgstr "讀取天賦樹元件"
 
-#: Views\MainWindow.xaml.cs:546
+#: Views\MainWindow.xaml.cs:547
 msgid "Highlight nodes by attribute"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:551
+#: Views\MainWindow.xaml.cs:552
 msgid "Remove highlights by attribute"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:554
+#: Views\MainWindow.xaml.cs:555
 msgid "Create new group"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:558
+#: Views\MainWindow.xaml.cs:559
 msgid "Add to group..."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:563
+#: Views\MainWindow.xaml.cs:564
 msgid "Delete group..."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:566
+#: Views\MainWindow.xaml.cs:567
 msgid "Remove from group"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:623
+#: Views\MainWindow.xaml.cs:624
 msgid "Load Tree"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:629
+#: Views\MainWindow.xaml.cs:630
 msgid "Load as new build"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:830
+#: Views\MainWindow.xaml.cs:831
 msgid ""
 "There are unsaved builds. Do you want to save them before closing?\n"
 "\n"
 "Canceling stops the program from closing and does not save any builds."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:910
+#: Views\MainWindow.xaml.cs:911
 #, csharp-format
 msgid "{0} point"
 msgid_plural "{0} points"
 msgstr[0] ""
 msgstr[1] ""
 
-#: Views\MainWindow.xaml.cs:944
+#: Views\MainWindow.xaml.cs:945
 msgid "Your build must use at least one node to generate a screenshot"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:945
+#: Views\MainWindow.xaml.cs:946
 msgid "Screenshot Generator"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:963
+#: Views\MainWindow.xaml.cs:964
 msgid "The existing skill tree data will be deleted. The data will be downloaded from the official online skill tree and is from the latest released version of the game."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:972
+#: Views\MainWindow.xaml.cs:973
 msgid "Downloading skill tree assets ..."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:993
+#: Views\MainWindow.xaml.cs:994
 msgid "An error occurred while downloading assets."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1010
+#: Views\MainWindow.xaml.cs:1011
 msgid "Checking for updates"
 msgstr "檢查更新"
 
-#: Views\MainWindow.xaml.cs:1015
+#: Views\MainWindow.xaml.cs:1016
 msgid "You have the latest version!"
 msgstr "你的版本是最新版!"
 
-#: Views\MainWindow.xaml.cs:1020
+#: Views\MainWindow.xaml.cs:1021
 #, csharp-format
 msgid "An update for {0} ({1}) is available!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1023
+#: Views\MainWindow.xaml.cs:1024
 msgid "The application will be closed when download completes to proceed with the update."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1024
+#: Views\MainWindow.xaml.cs:1025
 #, csharp-format
 msgid "A new version {0} is available!"
 msgstr "新版本 {0} 可下載!"
 
-#: Views\MainWindow.xaml.cs:1027
+#: Views\MainWindow.xaml.cs:1028
 msgid "The new version of application will be installed side-by-side with earlier versions."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1031
+#: Views\MainWindow.xaml.cs:1032
 msgid "Warning: This is a pre-release, meaning there could be some bugs!"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1035
+#: Views\MainWindow.xaml.cs:1036
 msgid "Do you want to download and install the update?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1036
+#: Views\MainWindow.xaml.cs:1037
 msgid "Do you want to download and install the new version?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1038
+#: Views\MainWindow.xaml.cs:1039
 msgid "Continue installation?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1049
+#: Views\MainWindow.xaml.cs:1050
 msgid "An error occurred while attempting to contact the update location."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1057
+#: Views\MainWindow.xaml.cs:1058
 msgid "Downloading latest version"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1072 Views\MainWindow.xaml.cs:1087
+#: Views\MainWindow.xaml.cs:1073 Views\MainWindow.xaml.cs:1088
 msgid "An error occurred during the download operation."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1100
+#: Views\MainWindow.xaml.cs:1101
 msgid "An error occurred while attempting to start the installation."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1640
+#: Views\MainWindow.xaml.cs:1649
 msgid "An error occurred while attempting to load item data."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1736 Views\MainWindow.xaml.cs:1779
+#: Views\MainWindow.xaml.cs:1745 Views\MainWindow.xaml.cs:1769
 msgid "An error occurred while attempting to load Skill tree from URL."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1758
-msgid "The build you are loading contains information about selected bandits."
-msgstr ""
-
-#: Views\MainWindow.xaml.cs:1759
-msgid "Do you want to use it and overwrite current settings?"
-msgstr ""
-
-#: Views\MainWindow.xaml.cs:1760
-msgid "Replace Bandits settings"
-msgstr ""
-
-#: Views\MainWindow.xaml.cs:1786
-msgid "Current: "
-msgstr ""
-
-#: Views\MainWindow.xaml.cs:1787
-msgid "Loaded: "
-msgstr ""
-
-#: Views\MainWindow.xaml.cs:1882
+#: Views\MainWindow.xaml.cs:1861
 msgid "Generating PoEUrl of Skill tree"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1888
+#: Views\MainWindow.xaml.cs:1867
 msgid "An error occurred while attempting to contact the PoEUrl location."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1898
+#: Views\MainWindow.xaml.cs:1877
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1902
+#: Views\MainWindow.xaml.cs:1881
 msgid "An error occurred while copying to Clipboard."
 msgstr ""
 
