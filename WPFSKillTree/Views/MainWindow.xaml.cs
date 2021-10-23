@@ -54,6 +54,7 @@ using ContextMenu = System.Windows.Controls.ContextMenu;
 using Item = PoESkillTree.Model.Items.Item;
 using MenuItem = System.Windows.Controls.MenuItem;
 using ThemeManager = ControlzEx.Theming.ThemeManager;
+using PoESkillTree.Views.PassiveTree;
 
 namespace PoESkillTree.Views
 {
@@ -1324,7 +1325,7 @@ namespace PoESkillTree.Views
             _lastMouseButton = e.ChangedButton;
         }
 
-        private void zbSkillTreeBackground_Click(object sender, RoutedEventArgs e)
+        private async void zbSkillTreeBackground_Click(object sender, RoutedEventArgs e)
         {
             var p = ((MouseEventArgs)e.OriginalSource).GetPosition(zbSkillTreeBackground.Child);
             var v = new Vector2D(p.X, p.Y);
@@ -1366,6 +1367,15 @@ namespace PoESkillTree.Views
                         }
                         else if (_prePath != null)
                         {
+                            if (Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+                            {
+                                if (node.PassiveNodeType == PassiveNodeType.Mastery)
+                                {
+                                    var model = new MasteryEffectSelectionViewModel(node, Tree.SkilledNodes.Where(x => x.PassiveNodeType == PassiveNodeType.Mastery));
+                                    await MasteryEffectSelectionAsync(model, new MasteryEffectSelectionView());
+                                }
+                            }
+
                             Tree.AllocateSkillNodes(_prePath);
                             _toRemove = Tree.ForceRefundNodePreview(node);
                             if (_toRemove != null)
@@ -1504,7 +1514,7 @@ namespace PoESkillTree.Views
 
             if (_prePath != null)
             {
-                var points = _prePath.Count(n => !n.IsAscendancyStart && !Tree.SkilledNodes.Contains(n) && n.PassiveNodeType != PassiveNodeType.Mastery);
+                var points = _prePath.Count(n => !n.IsAscendancyStart && !Tree.SkilledNodes.Contains(n));
                 sp.Children.Add(new Separator());
                 sp.Children.Add(new TextBlock { Text = "Points to skill node: " + points });
             }
@@ -1926,6 +1936,14 @@ namespace PoESkillTree.Views
                 Tree.HighlightedAttributes = null;
             }
             UpdateUI();
+        }
+
+        private async Task MasteryEffectSelectionAsync(MasteryEffectSelectionViewModel viewModel, BaseDialog view)
+        {
+            if (!await this.ShowDialogAsync(viewModel, view))
+            {
+                return;
+            }
         }
 
         public async Task CraftItemAsync()

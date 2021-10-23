@@ -20,13 +20,38 @@ namespace PoESkillTree.ViewModels.PassiveTree
         {
             JsonPassiveNode = jsonPassiveNode;
             PassiveNodeGroup = group;
+            _statDescriptions = JsonPassiveNode.StatDescriptions;
+            _skill = JsonPassiveNode.Skill;
             InitializeAttributes();
         }
 
         public PassiveNodeDefinition PassiveNodeDefinition => PassiveNodeDefinition.Convert(JsonPassiveNode);
 
         public ushort Id { get => JsonPassiveNode.Id; }
-        public ushort Skill { get => JsonPassiveNode.Skill; set => JsonPassiveNode.Skill = value; }
+        private ushort _skill;
+        public ushort Skill
+        {
+            get => _skill;
+            set
+            {
+                if (_skill == value)
+                {
+                    return;
+                }
+
+                if (JsonPassiveNode.MasteryEffects.FirstOrDefault(x => x.Effect == value) is JsonPassiveNodeMasterEffect effect)
+                {
+                    StatDescriptions = effect.StatDescriptions;
+                }
+                else
+                {
+                    StatDescriptions = JsonPassiveNode.StatDescriptions;
+                }
+
+                _skill = value;
+                InitializeAttributes();
+            }
+        }
         public string Name { get => JsonPassiveNode.Name; }
         public CharacterClass? StartingCharacterClass { get => JsonPassiveNode.StartingCharacterClass; }
         public string[]? Recipe { get => JsonPassiveNode.Recipe; }
@@ -39,7 +64,9 @@ namespace PoESkillTree.ViewModels.PassiveTree
         public bool IsRootNode => JsonPassiveNode.IsRootNode;
         public PassiveNodeType PassiveNodeType { get => JsonPassiveNode.PassiveNodeType; }
         public string[] ReminderText { get => JsonPassiveNode.ReminderText; }
-        public string[] StatDescriptions { get => JsonPassiveNode.StatDescriptions; private set => JsonPassiveNode.StatDescriptions = value; }
+
+        private string[] _statDescriptions = new string[0];
+        public string[] StatDescriptions { get => _statDescriptions; private set => _statDescriptions = value; }
         public int PassivePointsGranted { get => JsonPassiveNode.PassivePointsGranted; }
         public string Icon
         {
@@ -72,6 +99,7 @@ namespace PoESkillTree.ViewModels.PassiveTree
         public int Strength { get => JsonPassiveNode.Strength; }
         public int Dexterity { get => JsonPassiveNode.Dexterity; }
         public int Intelligence { get => JsonPassiveNode.Intelligence; }
+        public JsonPassiveNodeMasterEffect[] MasterEffects { get => JsonPassiveNode.MasteryEffects; }
         public double Arc => JsonPassiveNode.Arc;
 
         public string IconKey => $"{IconKeyPrefix}_{Icon}";

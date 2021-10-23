@@ -1,0 +1,74 @@
+﻿<dialogs:CloseableBaseDialog x:Class="PoESkillTree.Views.PassiveTree.MasteryEffectSelectionView"
+                             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                             xmlns:local="clr-namespace:PoESkillTree.Views.PassiveTree"
+                             xmlns:dialogs="clr-namespace:PoESkillTree.Controls.Dialogs"
+                             xmlns:l="clr-namespace:PoESkillTree.Localization.XAML"
+                             xmlns:controls="clr-namespace:PoESkillTree.Controls"
+                             xmlns:viewModels="clr-namespace:PoESkillTree.ViewModels.PassiveTree"
+                             xmlns:mahApps="http://metro.mahapps.com/winfx/xaml/controls"
+                             xmlns:base="clr-namespace:PoESkillTree.Engine.GameModel.PassiveTree.Base;assembly=PoESkillTree.Engine.GameModel"
+                             xmlns:system="clr-namespace:System;assembly=mscorlib"
+                             mc:Ignorable="d" 
+                             d:DataContext="{d:DesignInstance viewModels:MasteryEffectSelectionViewModel}"
+                             CloseButtonVisibility="Collapsed"
+                             MaxContentWidth="800">
+    <dialogs:CloseableBaseDialog.Resources>
+        <viewModels:MasteryEffectSelectionViewModelProxy x:Key="VmProxy" Data="{Binding}" />
+        <viewModels:MasteryEffectEnabledConverter x:Key="MasteryEffectEnabledConverter" />
+        <viewModels:MasteryEffectCheckedConverter x:Key="MasteryEffectCheckedConverter" />
+        <Style TargetType="{x:Type TextBlock}" x:Key="titleText">
+            <Style.Setters>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="TextAlignment" Value="Center"/>
+                <Setter Property="Foreground" Value="White"/>
+            </Style.Setters>
+        </Style>
+    </dialogs:CloseableBaseDialog.Resources>
+
+    <dialogs:CloseableBaseDialog.Title>
+        <l:Catalog Message="Mastery Effect Selection"/>
+    </dialogs:CloseableBaseDialog.Title>
+    <StackPanel>
+        <TextBlock FontSize="16" Style="{StaticResource titleText}" VerticalAlignment="Center" Grid.Row="0" Text="{Binding Node.Name}"/>
+        <ItemsControl Margin="3,0" Grid.Row="3" ItemsSource="{Binding Node.MasterEffects}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type base:JsonPassiveNodeMasterEffect}">
+                    <CheckBox VerticalAlignment="Center" Command="{Binding DataContext.SetEffect, RelativeSource={RelativeSource AncestorType=local:MasteryEffectSelectionView}}">
+                        <CheckBox.CommandParameter>
+                            <Binding Path="Effect"></Binding>
+                        </CheckBox.CommandParameter>
+                        <CheckBox.IsEnabled>
+                            <MultiBinding Converter="{StaticResource MasteryEffectEnabledConverter}">
+                                <Binding Path="Effect"></Binding>
+                                <Binding Path="DataContext" RelativeSource="{RelativeSource AncestorType=local:MasteryEffectSelectionView}"/>
+                            </MultiBinding>
+                        </CheckBox.IsEnabled>
+                        <CheckBox.IsChecked>
+                            <MultiBinding Converter="{StaticResource MasteryEffectCheckedConverter}" Mode="OneWay">
+                                <Binding Path="Effect"></Binding>
+                                <Binding Path="DataContext" RelativeSource="{RelativeSource AncestorType=local:MasteryEffectSelectionView}"/>
+                            </MultiBinding>
+                        </CheckBox.IsChecked>
+                        <ItemsControl Margin="3,0" Grid.Row="3" ItemsSource="{Binding StatDescriptions}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="{x:Type system:String}">
+                                    <TextBlock Foreground="White" Style="{StaticResource titleText}" Text="{Binding Path=.}"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </CheckBox>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <StackPanel Style="{StaticResource DialogPanel}">
+            <Button Style="{StaticResource DynamicDialogPanelButton}"
+                    Command="{Binding CloseCommand}" CommandParameter="{StaticResource True}"
+                    IsDefault="True">
+                <l:Catalog Message="OK"/>
+            </Button>
+        </StackPanel>
+    </StackPanel>
+</dialogs:CloseableBaseDialog>
