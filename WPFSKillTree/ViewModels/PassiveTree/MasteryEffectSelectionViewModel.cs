@@ -28,7 +28,7 @@ namespace PoESkillTree.ViewModels.PassiveTree
             Masteries = masteries;
         }
 
-        public bool IsEffectEnabled(ushort effect) => Node.Skill == effect || !Masteries.Any(x => x.Skill == effect);
+        public bool IsEffectEnabled(ushort effect) => !Masteries.Any(x => x.Skill == effect);
         public bool IsEffectChecked(ushort effect) => Node.Skill == effect || Masteries.Any(x => x.Skill == effect);
 
         public ICommand SetEffect => new RelayCommand<ushort>((effect) =>

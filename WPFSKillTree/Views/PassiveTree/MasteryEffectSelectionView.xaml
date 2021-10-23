@@ -14,16 +14,18 @@
                              mc:Ignorable="d" 
                              d:DataContext="{d:DesignInstance viewModels:MasteryEffectSelectionViewModel}"
                              CloseButtonVisibility="Collapsed"
-                             MaxContentWidth="800">
+                             MaxContentWidth="800"
+                             x:Name="view">
     <dialogs:CloseableBaseDialog.Resources>
         <viewModels:MasteryEffectSelectionViewModelProxy x:Key="VmProxy" Data="{Binding}" />
         <viewModels:MasteryEffectEnabledConverter x:Key="MasteryEffectEnabledConverter" />
         <viewModels:MasteryEffectCheckedConverter x:Key="MasteryEffectCheckedConverter" />
-        <Style TargetType="{x:Type TextBlock}" x:Key="titleText">
+        <Style TargetType="{x:Type TextBlock}" x:Key="enabledText">
             <Style.Setters>
                 <Setter Property="HorizontalAlignment" Value="Center"/>
                 <Setter Property="TextAlignment" Value="Center"/>
                 <Setter Property="Foreground" Value="White"/>
+                <Setter Property="IsEnabled" Value="False"/>
             </Style.Setters>
         </Style>
     </dialogs:CloseableBaseDialog.Resources>
@@ -32,30 +34,41 @@
         <l:Catalog Message="Mastery Effect Selection"/>
     </dialogs:CloseableBaseDialog.Title>
     <StackPanel>
-        <TextBlock FontSize="16" Style="{StaticResource titleText}" VerticalAlignment="Center" Grid.Row="0" Text="{Binding Node.Name}"/>
+        <TextBlock FontSize="16" Style="{StaticResource enabledText}" VerticalAlignment="Center" Grid.Row="0" Text="{Binding Node.Name}"/>
         <ItemsControl Margin="3,0" Grid.Row="3" ItemsSource="{Binding Node.MasterEffects}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type base:JsonPassiveNodeMasterEffect}">
-                    <CheckBox VerticalAlignment="Center" Command="{Binding DataContext.SetEffect, RelativeSource={RelativeSource AncestorType=local:MasteryEffectSelectionView}}">
+                    <CheckBox x:Name="checkbox" VerticalAlignment="Center" Command="{Binding DataContext.SetEffect, ElementName=view}">
                         <CheckBox.CommandParameter>
                             <Binding Path="Effect"></Binding>
                         </CheckBox.CommandParameter>
                         <CheckBox.IsEnabled>
-                            <MultiBinding Converter="{StaticResource MasteryEffectEnabledConverter}">
+                            <MultiBinding Converter="{StaticResource MasteryEffectEnabledConverter}" Mode="OneWay">
                                 <Binding Path="Effect"></Binding>
-                                <Binding Path="DataContext" RelativeSource="{RelativeSource AncestorType=local:MasteryEffectSelectionView}"/>
+                                <Binding Path="DataContext" ElementName="view"/>
                             </MultiBinding>
                         </CheckBox.IsEnabled>
                         <CheckBox.IsChecked>
                             <MultiBinding Converter="{StaticResource MasteryEffectCheckedConverter}" Mode="OneWay">
                                 <Binding Path="Effect"></Binding>
-                                <Binding Path="DataContext" RelativeSource="{RelativeSource AncestorType=local:MasteryEffectSelectionView}"/>
+                                <Binding Path="DataContext" ElementName="view"/>
                             </MultiBinding>
                         </CheckBox.IsChecked>
                         <ItemsControl Margin="3,0" Grid.Row="3" ItemsSource="{Binding StatDescriptions}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate DataType="{x:Type system:String}">
-                                    <TextBlock Foreground="White" Style="{StaticResource titleText}" Text="{Binding Path=.}"/>
+                                    <TextBlock Text="{Binding Path=.}" IsEnabled="{Binding Path=IsEnabled, ElementName=checkbox}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock" BasedOn="{StaticResource enabledText}">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsEnabled" Value="False">
+                                                        <Setter Property="Foreground" Value="Gray"/>
+                                                        <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
