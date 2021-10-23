@@ -22,7 +22,7 @@ namespace PoESkillTree.Utils.UrlProcessing.Decoders
             var _ = GetFullscreen(bytes);
 
             var nodeIds = new HashSet<ushort>();
-            for (int j = 7; j < bytes.Length; j += 2)
+            for (int j = 6; j < bytes.Length; j += 2)
             {
                 if (j > bytes.Length || j + 1 > bytes.Length)
                 {

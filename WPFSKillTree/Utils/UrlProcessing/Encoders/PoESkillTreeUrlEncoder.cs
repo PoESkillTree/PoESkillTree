@@ -9,6 +9,7 @@ namespace PoESkillTree.Utils.UrlProcessing.Encoders
 {
     public class PoESkillTreeUrlEncoder : ISkillTreeUrlEncoder
     {
+        private static readonly byte Version = 6;
         public bool CanEncode(byte _, byte __, IEnumerable<PassiveNodeViewModel> ___) => true;
 
         public string Encode(byte character, byte ascendancy, IEnumerable<PassiveNodeViewModel> nodes)
@@ -19,7 +20,6 @@ namespace PoESkillTree.Utils.UrlProcessing.Encoders
             // Ordering provides nice exact Url match, but is not strictly needed.
             // Performance impact is minimal even on tree with all 1.3K nodes allocated.
             var skillNodes = validNodes
-                .Where(node => node.PassiveNodeType != PassiveNodeType.ExpansionJewelSocket)
                 .Select(node => node.Id)
                 .OrderBy(n => n)
                 .ToList();
@@ -50,7 +50,7 @@ namespace PoESkillTree.Utils.UrlProcessing.Encoders
             bytes[i++] = 0;
             bytes[i++] = 0;
             bytes[i++] = 0;
-            bytes[i++] = 6;
+            bytes[i++] = Version;
             bytes[i++] = character;
             bytes[i++] = ascendancy;
 
