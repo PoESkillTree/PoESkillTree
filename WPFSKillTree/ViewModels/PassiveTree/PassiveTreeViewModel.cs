@@ -32,13 +32,13 @@ namespace PoESkillTree.ViewModels.PassiveTree
         {
             if (!(options is null))
             {
-                foreach (var character in options.CharacterToAscendancy)
+                foreach (var pair in options.CharacterToAscendancy)
                 {
                     foreach (var other in CharacterClasses)
                     {
-                        if (character.CharacterName == other.Name && !other.AscendancyClasses.Any())
+                        if (pair.Value.CharacterName == other.Name && !other.AscendancyClasses.Any())
                         {
-                            other.AscendancyClasses.AddRange(character.AscendancyClasses.Values);
+                            other.AscendancyClasses.AddRange(pair.Value.AscendancyClasses.Values);
                             break;
                         }
                     }
@@ -134,6 +134,15 @@ namespace PoESkillTree.ViewModels.PassiveTree
 
         public void FixAscendancyPassiveNodeGroups()
         {
+            var padding = 1.20f;
+            var validNodes = PassiveNodes
+                .Where(x => !(x.Value.IsAscendancyNode || x.Value.IsRootNode || x.Value.PassiveNodeGroup is null || x.Value.IsProxy || x.Value.PassiveNodeGroup.IsProxy))
+                .Select(x => x.Value);
+            var minX = validNodes.Min(x => x.Position.X) * padding;
+            var maxX = validNodes.Max(x => x.Position.X) * padding;
+            var minY = validNodes.Min(x => x.Position.Y) * padding;
+            var maxY = validNodes.Max(x => x.Position.Y) * padding;
+
             foreach (var (_, node) in AscendancyStartPassiveNodes)
             {
                 if (node.PassiveNodeGroup is null) continue;
@@ -153,25 +162,25 @@ namespace PoESkillTree.ViewModels.PassiveTree
                 var offset = CharacterClasses.First(c => c.Name == name).AscendancyClasses.Select((a, index) => a.Name == node.AscendancyName ? index - 1 : -2).Max();
                 if (offset == -2) continue;
 
-                var centerThreshold = 100;
-                var offsetDistance = 1450;
-                var basePosition = new Vector2D(0, 0);
                 var startGroup = PassiveNodeGroups[start.PassiveNodeGroup.Id];
+                var centerThreshold = 100;
+                var offsetDistance = 550;
+                var basePosition = new Vector2D(0, 0);
 
-                if ((startGroup.X > -centerThreshold && startGroup.X < centerThreshold) && (startGroup.Y > -centerThreshold && startGroup.Y < centerThreshold))
+                if (startGroup.X > -centerThreshold && startGroup.X < centerThreshold && startGroup.Y > -centerThreshold && startGroup.Y < centerThreshold)
                 {
                     // Scion
-                    basePosition = new Vector2D(MinX * .65f, MaxY * .95f);
+                    basePosition = new Vector2D(minX + Math.Sign(minX) * offset * offsetDistance, maxY);
                 }
                 else if (startGroup.X > -centerThreshold && startGroup.X < centerThreshold)
                 {
                     // Witch, Duelist
-                    basePosition = new Vector2D(startGroup.X / startGroup.ZoomLevel + (Math.Sign(startGroup.X) * offset * offsetDistance), (startGroup.Y / startGroup.ZoomLevel) + Math.Sign(startGroup.Y) > 0 ? MaxY + 1.05f : MinY);
+                    basePosition = new Vector2D(startGroup.X + Math.Sign(startGroup.X) * offset * offsetDistance, startGroup.Y + Math.Sign(startGroup.Y) > 0 ? maxY : minY);
                 }
                 else
                 {
                     // Templar, Marauder, Ranger, Shadow 
-                    basePosition = new Vector2D(startGroup.X < 0 ? MinX * .80f : MaxX, (startGroup.Y / startGroup.ZoomLevel) + (Math.Sign(startGroup.Y) * offset * offsetDistance));
+                    basePosition = new Vector2D(startGroup.X < 0 ? minX : maxX, startGroup.Y + Math.Sign(startGroup.Y) * offset * offsetDistance);
                 }
 
                 RepositionAscendancyAt(node, basePosition);
@@ -181,6 +190,8 @@ namespace PoESkillTree.ViewModels.PassiveTree
         public void RepositionAscendancyAt(PassiveNodeViewModel node, Vector2D position)
         {
             if (node.PassiveNodeGroup is null) return;
+            
+            position = position / node.PassiveNodeGroup.ZoomLevel;
 
             var completed = new HashSet<ushort>() { node.PassiveNodeGroup.Id };
             foreach (var (_, other) in PassiveNodes)

@@ -9,7 +9,7 @@ namespace PoESkillTree.SkillTreeFiles
     public class JsonPassiveTreeOptions
     {
         [JsonProperty("ascClasses")]
-        public List<CharacterToAscendancyOption> CharacterToAscendancy { get; set; } = default!;
+        public Dictionary<int, CharacterToAscendancyOption> CharacterToAscendancy { get; set; } = default!;
     }
 
     public class CharacterToAscendancyOption
