@@ -9,6 +9,8 @@ using PoESkillTree.Localization;
 using PoESkillTree.Model;
 using PoESkillTree.Utils;
 using PoESkillTree.Utils.UrlProcessing;
+using PoESkillTree.Utils.UrlProcessing.Decoders;
+using PoESkillTree.Utils.UrlProcessing.Encoders;
 using PoESkillTree.Utils.Wpf;
 using PoESkillTree.ViewModels.PassiveTree;
 using System;
@@ -171,10 +173,7 @@ namespace PoESkillTree.SkillTreeFiles
         private IEnumerable<PassiveNodeViewModel> SelectItemConnectedNodes(IEnumerable<PassiveNodeViewModel> sourceNodes) =>
             ItemConnectedNodesSelector(sourceNodes.Select(n => n.Id).ToHashSet())
                 .Select(n => Skillnodes[n]);
-
-        public SkillTreeSerializer Serializer { get; }
         public IAscendancyClasses AscendancyClasses { get; private set; }
-        public IBuildConverter BuildConverter { get; private set; }
 
         private CharacterClass _charClass;
         private int _asctype;
@@ -188,7 +187,6 @@ namespace PoESkillTree.SkillTreeFiles
         {
             _persistentData = persistentData;
 
-            Serializer = new SkillTreeToUrlSerializer(this);
             SkilledNodes.CollectionChanged += SkilledNodes_CollectionChanged;
         }
 
@@ -262,11 +260,6 @@ namespace PoESkillTree.SkillTreeFiles
                 }
 
                 AscendancyClasses = new AscendancyClasses(PoESkillTree.CharacterClasses);
-
-                BuildConverter = new BuildConverter(AscendancyClasses,
-                    url => new NaivePoEUrlDeserializer(url, AscendancyClasses),
-                    PoeplannerUrlDeserializer.TryCreate,
-                    PathofexileUrlDeserializer.TryCreate);
 
                 CharBaseAttributes = new Dictionary<CharacterClass, IReadOnlyList<(string stat, float value)>>();
                 foreach (var character in PoESkillTree.CharacterClasses)
@@ -617,7 +610,7 @@ namespace PoESkillTree.SkillTreeFiles
             return nodes.First().Value;
         }
 
-        public void ResetSkilledNodesTo(IReadOnlyCollection<PassiveNodeViewModel> nodes)
+        public void ResetSkilledNodesTo(IEnumerable<PassiveNodeViewModel> nodes)
         {
             SkilledNodes.ResetTo(nodes);
             AscType = SelectAscendancyFromNodes(nodes) ?? 0;
@@ -1014,20 +1007,21 @@ namespace PoESkillTree.SkillTreeFiles
             return retval;
         }
 
+        public string EncodeUrl() => SkillTreeUrlEncoders.TryEncode((byte)CharClass, (byte)AscType, SkilledNodes) ?? throw new Exception(L10n.Message("Could not encode skill tree url. Something is very wrong..."));
+        public string EncodeUrl(SkillTreeUrlData data) => SkillTreeUrlEncoders.TryEncode((byte)data.CharacterClass, (byte)data.AscendancyClassId, Skillnodes.Values.Where(x => data.SkilledNodesIds.Contains(x.Id))) ?? throw new Exception(L10n.Message("Could not encode skill tree url. Something is very wrong..."));
+        public SkillTreeUrlData DecodeUrl(string url) => SkillTreeUrlDecoders.TryDecode(url);
+
         public static void DecodeUrl(
             string url, out HashSet<PassiveNodeViewModel> skilledNodes, out CharacterClass charClass, ISkillTree skillTree)
             => DecodeUrlPrivate(url, out skilledNodes, out charClass, skillTree);
 
-        private static BuildUrlData DecodeUrl(string url, out HashSet<PassiveNodeViewModel> skilledNodes, ISkillTree skillTree)
+        private static SkillTreeUrlData DecodeUrl(string url, out HashSet<PassiveNodeViewModel> skilledNodes, ISkillTree skillTree)
             => DecodeUrlPrivate(url, out skilledNodes, out _, skillTree);
 
-        public static BuildUrlData DecodeUrl(string url, ISkillTree skillTree)
-            => DecodeUrlPrivate(url, out _, out _, skillTree);
-
-        private static BuildUrlData DecodeUrlPrivate(
+        private static SkillTreeUrlData DecodeUrlPrivate(
             string url, out HashSet<PassiveNodeViewModel> skilledNodes, out CharacterClass charClass, ISkillTree skillTree)
         {
-            BuildUrlData buildData = skillTree.BuildConverter.GetUrlDeserializer(url).GetBuildData();
+            var buildData = skillTree.DecodeUrl(url);
 
             charClass = buildData.CharacterClass;
             var ascType = (byte)buildData.AscendancyClassId;
@@ -1065,9 +1059,17 @@ namespace PoESkillTree.SkillTreeFiles
 
         public void LoadFromUrl(string url)
         {
-            var data = DecodeUrl(url, out var skillNodes, this);
+            var data = DecodeUrl(url);
+            var skillNodes = Skillnodes.Values.Where(x => data.SkilledNodesIds.Contains(x.Id));
             CharClass = data.CharacterClass;
             ResetSkilledNodesTo(skillNodes);
+            foreach (var pair in data.MasteryEffectPairs)
+            {
+                if (SkilledNodes.FirstOrDefault(x => x.Id == pair.Id) is PassiveNodeViewModel mastery)
+                {
+                    mastery.Skill = pair.Effect;
+                }
+            }
         }
 
         public void Reset()

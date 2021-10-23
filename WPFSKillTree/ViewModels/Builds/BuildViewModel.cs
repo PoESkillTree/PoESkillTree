@@ -132,17 +132,17 @@ namespace PoESkillTree.ViewModels.Builds
             if (SkillTree == null || string.IsNullOrEmpty(Build.TreeUrl))
                 return;
 
-            var deserializer = SkillTree.BuildConverter.GetUrlDeserializer(Build.TreeUrl);
+            var data = SkillTree.DecodeUrl(Build.TreeUrl);
 
-            if (deserializer.ValidateBuildUrl(out var e))
+            if (data.IsValid)
             {
-                PointsUsed = (uint) deserializer.GetPointsCount();
-                CharacterClass = deserializer.GetCharacterClass();
-                AscendancyClass = deserializer.GetAscendancyClass();
+                PointsUsed = (uint)data.SkilledNodesIds.Count;
+                CharacterClass = data.CharacterClass;
+                AscendancyClass = SkillTree.AscendancyClasses.GetAscendancyClassName(data.CharacterClass, data.AscendancyClassId);
             }
             else
             {
-                Log.Warn(e, $"Could not get tree depending properties for {Build.Name} because the tree is invalid: {Build.TreeUrl}");
+                Log.Warn($"Could not get tree depending properties for {Build.Name} because the tree is invalid: {Build.TreeUrl}");
                 PointsUsed = 0;
             }
         }

@@ -120,10 +120,10 @@ namespace PoESkillTree.Utils.UrlProcessing
             Assert.AreEqual("Resolving shortened tree address", message);
         }
 
-        private static BuildUrlNormalizer CreateBuildUrlNormalizer(params (string, string)[] requests)
+        private static SkillTreeUrlNormalizer CreateBuildUrlNormalizer(params (string, string)[] requests)
         {
             var requestDict = requests.ToDictionary();
-            return new BuildUrlNormalizer(GetResponse);
+            return new SkillTreeUrlNormalizer(GetResponse);
 
             Task<HttpResponseMessage> GetResponse(string uri, HttpCompletionOption _)
             {
@@ -173,7 +173,7 @@ namespace PoESkillTree.Utils.UrlProcessing
             public static NormalizationTestData CreateUnchanged(string originalUrl)
                 => new NormalizationTestData(originalUrl, originalUrl);
 
-            public BuildUrlNormalizer CreateNormalizer()
+            public SkillTreeUrlNormalizer CreateNormalizer()
                 => CreateBuildUrlNormalizer(Requests.ToArray());
         }
     }

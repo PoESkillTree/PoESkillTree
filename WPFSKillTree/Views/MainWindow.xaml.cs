@@ -79,7 +79,7 @@ namespace PoESkillTree.Views
         private readonly List<Attribute> _attiblist = new List<Attribute>();
         private readonly Regex _backreplace = new Regex("#");
         private readonly ToolTip _sToolTip = new ToolTip();
-        private readonly BuildUrlNormalizer _buildUrlNormalizer = new BuildUrlNormalizer();
+        private readonly SkillTreeUrlNormalizer _buildUrlNormalizer = new SkillTreeUrlNormalizer();
         private ListCollectionView _attributeCollection;
 
         private GroupStringConverter _attributeGroups;
@@ -633,7 +633,7 @@ namespace PoESkillTree.Views
 
                 var url = InputTreeUrl;
                 BuildsControlViewModel.NewBuild(BuildsControlViewModel.BuildRoot);
-                await LoadBuildFromUrlAsync(url, forceBanditsUpdate: true);
+                await LoadBuildFromUrlAsync(url);
             }, () => NoAsyncTaskRunning);
             LoadTreeButtonViewModel.SelectedIndex = PersistentData.Options.LoadTreeButtonIndex;
             LoadTreeButtonViewModel.PropertyChanged += (o, args) =>
@@ -1691,7 +1691,7 @@ namespace PoESkillTree.Views
         private void SetCurrentBuildUrlFromTree()
         {
             _skipLoadOnCurrentBuildTreeChange = true;
-            PersistentData.CurrentBuild.TreeUrl = Tree.Serializer.ToUrl();
+            PersistentData.CurrentBuild.TreeUrl = Tree.EncodeUrl();
             _skipLoadOnCurrentBuildTreeChange = false;
         }
 
@@ -1731,64 +1731,34 @@ namespace PoESkillTree.Views
             }
             catch (Exception ex)
             {
-                PersistentData.CurrentBuild.TreeUrl = Tree.Serializer.ToUrl();
+                PersistentData.CurrentBuild.TreeUrl = Tree.EncodeUrl();
                 await this.ShowErrorAsync(L10n.Message("An error occurred while attempting to load Skill tree from URL."), ex.Message);
             }
         }
 
-        private async Task LoadBuildFromUrlAsync(string treeUrl, bool forceBanditsUpdate = false)
+        private async Task LoadBuildFromUrlAsync(string treeUrl)
         {
             try
             {
+                var currentUrl = Tree.EncodeUrl();
                 var normalizedUrl = await _buildUrlNormalizer.NormalizeAsync(treeUrl, AwaitAsyncTask);
-                BuildUrlData data = SkillTree.DecodeUrl(normalizedUrl, Tree);
-                var newTreeUrl = new BuildUrlDataToUrlSerializer(data, SkillTree.Skillnodes.Keys.ToHashSet()).ToUrl();
+                var data = Tree.DecodeUrl(normalizedUrl);
 
-                BanditSettings bandits = PersistentData.CurrentBuild.Bandits;
-                if (forceBanditsUpdate)
-                {
-                    bandits.Choice = data.Bandit ?? Bandit.None;
-                }
-                else if (data != null && data.Bandit is Bandit bandit && bandits.Choice != bandit)
-                {
-                    var details = CreateDetailsString(bandits, data);
-
-                    var dialogResult = await this.ShowQuestionAsync(
-                        L10n.Message("The build you are loading contains information about selected bandits.") + Environment.NewLine +
-                        L10n.Message("Do you want to use it and overwrite current settings?"),
-                        details, L10n.Message("Replace Bandits settings"), MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-                    if (dialogResult == MessageBoxResult.Yes)
-                    {
-                        bandits.Choice = bandit;
-                    }
-                }
-
-                if (data?.CompatibilityIssues != null && data.CompatibilityIssues.Any())
+                if (!data.IsValid && data.CompatibilityIssues.Any())
                 {
                     await this.ShowWarningAsync(string.Join(Environment.NewLine, data.CompatibilityIssues));
+                    normalizedUrl = currentUrl;
                 }
 
-                PersistentData.CurrentBuild.TreeUrl = newTreeUrl;
-                InputTreeUrl = newTreeUrl;
+                PersistentData.CurrentBuild.TreeUrl = normalizedUrl;
+                InputTreeUrl = normalizedUrl;
             }
             catch (Exception ex)
             {
-                PersistentData.CurrentBuild.TreeUrl = Tree.Serializer.ToUrl();
+                PersistentData.CurrentBuild.TreeUrl = Tree.EncodeUrl();
                 await this.ShowErrorAsync(L10n.Message("An error occurred while attempting to load Skill tree from URL."), ex.Message);
             }
         }
-
-        private string CreateDetailsString(BanditSettings bandits, BuildUrlData data)
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine(L10n.Message("Current: ")).Append(bandits.Choice)
-                .AppendLine(L10n.Message("Loaded: ")).Append(data.Bandit);
-
-            string details = sb.ToString();
-            return details;
-        }
-
         #endregion
 
         #region Bottom Bar (Build URL etc)

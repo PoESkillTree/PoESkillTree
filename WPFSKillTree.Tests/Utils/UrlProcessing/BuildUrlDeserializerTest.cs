@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using PoESkillTree.Engine.GameModel;
+using PoESkillTree.Engine.GameModel.PassiveTree.Base;
+using PoESkillTree.SkillTreeFiles;
+using PoESkillTree.Utils.UrlProcessing.Decoders;
 
 namespace PoESkillTree.Utils.UrlProcessing
 {
@@ -12,32 +16,14 @@ namespace PoESkillTree.Utils.UrlProcessing
         {
             var sut = CreateSut(url);
 
-            return sut.GetBuildData().SkilledNodesIds.Count;
+            return sut.SkilledNodesIds.Count;
         }
 
         private static IEnumerable<TestCaseData> CreateNodeCountData()
         {
             yield return new TestCaseData(
-                    "https://poeplanner.com/ABMAAOkAExMAAHHfiukCS64bJdlbbRkRUDW5pysdT5f0UlM9X5eVTLPQH-_rIG5QMBEPrJj314RIXGvDbeL3AW-LeiL0bAuTJ3_GwcXsGCy_j_rQ0F9qRwbb57TFwzpcQFS9Fe2Wi9W5h8unm3WezxXYdrk-rGYs4fLhY0NsCPGK74j5N9fPSbG-iqEvEZaJ4OZYkx9JE8rTtAzqug18Dkhd8ioLcFKiow_EO3y4yvDVSVE7Dfb8pzRirGyMnarrY7VI1EKEb3X9Fr8PqySLNj1W9dtul9COim1sItgaSPQofPCRB7v8fqFp2JJ0AAAAAAA=")
-                .Returns(113);
-            yield return new TestCaseData(
-                    "https://pathofexile.com/fullscreen-passive-skill-tree/AAAABAMBAQFvDXwOSA-rD8QRDxEvEVARlhV-FdcV7Ra_GkgbJR1PIG4i9CSLKgsqOCy_LOE1uTY9Ow07fD1fRwZJE0lRSbFLrkyzUDBSU1S9VmNW9VxAXGtd8l9qYqxjQ2nYbAhsC2yMbRlwUnBWdZ51_XzwfeN-oX_GhEiEb4auh8uJ4It6joqP-pAbkQeTH5MnlouXlZfQl_SaE52qoS-io6crpzSnm6xmrJi0DLTFtUi4yrk-u_y-isHFwzrDbcrTzxXQH9DQ1ELVudfP2HbZW9tu29Tb59-K4vfmWOkC6rrrY-wY74jv6_DV8Yry4fQo9vz31_k3")
+                    "https://www.pathofexile.com/passive-skill-tree/AAAABgMBeQFvDXwOSA-rD8QRDxFQEZYV1xXtFr8aSBslHU8gbiL0JIsqCyy_LOE2PTdNOw07fD1fRwZJUUmxS65Ms1AwUEJSU1M1VL1W9VxAXGtcil3yX2pirGNDadhsCGwLbIxtGXBScFZ1nnX9fPB-oX_Gg_eESIRvhq6Hy4t6joqPRo_6kQeSdJMfkyeWi5eVl9CX9JoTm6GdqqEvoqOnCKcrpzSnm6xmrJivvLQMtMW1BLVIuMq5Ark-u_y-isHFw23K088V0B_Q0NRC1bnXz9h22VvbbtvU2-ffiuZY6QLquutj7BjviO_r8NXxivQo9vz31_k3AAA=")
                 .Returns(121);
-            yield return new TestCaseData(
-                    "https://poeplanner.com/ABMAACgAExMAAAjfsJLBjr4RLXyD6-4c3I8aAY8aDgIZAQAAAQEBAAAAAAAAAAAAAA==")
-                .Returns(8);
-            yield return new TestCaseData(
-                    "http://poedb.tw/us/passive-skill-tree/AAAABAMBAAFvDXwOSA-rD8QRDxEvEVARlhV-FdcV7Ra_GkgbJR1PIG4i9CSLKgsqOCy_LOE1uTY9Ow07fD1fRwZJE0lRSbFLrkyzUDBSU1S9VmNW9VxAXGtd8l9qYqxjQ2nYbAhsC2yMbRlwUnBWdZ51_XzwfeN-oX_GhEiEb4auh8uJ4It6joqP-pAbkQeTH5MnlouXlZfQl_SaE52qoS-io6crpzSnm6xmrJi0DLTFtUi4yrk-u_y-isHFwzrDbcrTzxXQH9DQ1ELVudfP2HbZW9tu29Tb59-K4vfmWOkC6rrrY-wY74jv6_DV8Yry4fQo9vz31_k3")
-                .Returns(121);
-            yield return new TestCaseData(
-                    "https://poeplanner.com/ABMAAAAAIgEBAQACAAfQAQH0AQkACxEADBAACwUJBw0KAwAABwEABgIAAA==")
-                .Returns(0);
-            yield return new TestCaseData(
-                    "https://poeplanner.com/ABMAAAAAAAAnAAAACQBwAhQAAAQHAA8AywAUAQEBDAAAAAADAwAAAAAAAAAAAAAA")
-                .Returns(0);
-            yield return new TestCaseData(
-                    "https://poebuilder.com/character/AAAAAgUAfA6nVVugQ8hPBGjyogDwH5o74XPvfDwFgpuQVScv7Dhj_XrmcYXAGho4RtexQtq51abtPBps5CI26eNqFm8kqnF5FxwSaZ2upwismPFs7FUqjUkbNtiD21XGOlhMswQHPV9SU5eVwfOVIC0f2wuCHl8q6-QRln_GoqO3dR7wDkjljp1jXfKMNqSxJpVh4lVLFr9Om9ngm7VTNQ-rRitTUkWdmuDr7riT-ejYvf4Ktz5Bh9gkNsUfAodlr7cyNDwtxq7E9gn21HwGDiftU6UMXxyn7hVJUfDVlS4HHoLHxp4Qfwx9KPo=")
-                .Returns(115);
         }
 
         [TestCaseSource(nameof(CreateEmptyBuildData))]
@@ -45,7 +31,7 @@ namespace PoESkillTree.Utils.UrlProcessing
         {
             var sut = CreateSut(url);
 
-            var actual = sut.GetCharacterClass();
+            var actual = sut.CharacterClass;
 
             Assert.AreEqual(expected, actual);
         }
@@ -55,80 +41,76 @@ namespace PoESkillTree.Utils.UrlProcessing
         {
             var sut = CreateSut(url);
 
-            var actual = sut.GetAscendancyClassId();
+            var actual = sut.AscendancyClassId;
 
             Assert.AreEqual(expected, actual);
         }
 
         private static IEnumerable<TestCaseData> CreateEmptyBuildData()
         {
-            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABAAAAA==",
+            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABgAAAAAA",
                 CharacterClass.Scion, 0);
-            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABAABAA==",
+            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABgABAAAA",
                 CharacterClass.Scion, 1);
 
-            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABAEAAA==",
+            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABgEAAAAA",
                 CharacterClass.Marauder, 0);
-            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABAEBAA==",
+            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABgEBAAAA",
                 CharacterClass.Marauder, 1);
-            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABAECAA==",
+            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABgECAAAA",
                 CharacterClass.Marauder, 2);
-            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABAEDAA==",
+            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABgEDAAAA",
                 CharacterClass.Marauder, 3);
 
-            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABAIAAA==",
+            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABgIAAAAA",
                 CharacterClass.Ranger, 0);
-            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABAIBAA==",
+            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABgIBAAAA",
                 CharacterClass.Ranger, 1);
-            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABAICAA==",
+            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABgICAAAA",
                 CharacterClass.Ranger, 2);
-            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABAIDAA==",
+            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABgIDAAAA",
                 CharacterClass.Ranger, 3);
 
-            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABAMAAA==",
+            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABgMAAAAA",
                 CharacterClass.Witch, 0);
-            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABAMBAA==",
+            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABgMBAAAA",
                 CharacterClass.Witch, 1);
-            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABAMCAA==",
+            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABgMCAAAA",
                 CharacterClass.Witch, 2);
-            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABAMDAA==",
+            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABgMDAAAA",
                 CharacterClass.Witch, 3);
 
-            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABAQAAA==",
+            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABgQAAAAA",
                 CharacterClass.Duelist, 0);
-            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABAQBAA==",
+            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABgQBAAAA",
                 CharacterClass.Duelist, 1);
-            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABAQCAA==",
+            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABgQCAAAA",
                 CharacterClass.Duelist, 2);
-            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABAQDAA==",
+            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABgQDAAAA",
                 CharacterClass.Duelist, 3);
 
-            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABAUAAA==",
+            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABgUAAAAA",
                 CharacterClass.Templar, 0);
-            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABAUBAA==",
+            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABgUBAAAA",
                 CharacterClass.Templar, 1);
-            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABAUCAA==",
+            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABgUCAAAA",
                 CharacterClass.Templar, 2);
-            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABAUDAA==",
+            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABgUDAAAA",
                 CharacterClass.Templar, 3);
 
-            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABAYAAA==",
+            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABgYAAAAA",
                 CharacterClass.Shadow, 0);
-            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABAYBAA==",
+            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABgYBAAAA",
                 CharacterClass.Shadow, 1);
-            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABAYCAA==",
+            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABgYCAAAA",
                 CharacterClass.Shadow, 2);
-            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABAYDAA==",
+            yield return new TestCaseData("https://www.pathofexile.com/passive-skill-tree/AAAABgYDAAAA",
                 CharacterClass.Shadow, 3);
         }
 
-        private static BuildUrlDeserializer CreateSut(string url)
+        private static SkillTreeUrlData CreateSut(string url)
         {
-            var buildConverter = new BuildConverter(null!,
-                u => new NaivePoEUrlDeserializer(u, null!),
-                PathofexileUrlDeserializer.TryCreate,
-                PoeplannerUrlDeserializer.TryCreate);
-            return buildConverter.GetUrlDeserializer(url);
+            return SkillTreeUrlDecoders.TryDecode(url);
         }
     }
 }
