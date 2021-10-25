@@ -1061,8 +1061,8 @@ namespace PoESkillTree.SkillTreeFiles
         {
             var data = DecodeUrl(url);
             var skillNodes = Skillnodes.Values.Where(x => data.SkilledNodesIds.Contains(x.Id));
-            SwitchClass(data.CharacterClass);
             ResetSkilledNodesTo(skillNodes);
+            SwitchClass(data.CharacterClass);
             foreach (var pair in data.MasteryEffectPairs)
             {
                 if (SkilledNodes.FirstOrDefault(x => x.Id == pair.Id) is PassiveNodeViewModel mastery)
