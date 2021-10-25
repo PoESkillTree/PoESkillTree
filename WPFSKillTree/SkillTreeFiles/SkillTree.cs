@@ -1061,7 +1061,7 @@ namespace PoESkillTree.SkillTreeFiles
         {
             var data = DecodeUrl(url);
             var skillNodes = Skillnodes.Values.Where(x => data.SkilledNodesIds.Contains(x.Id));
-            CharClass = data.CharacterClass;
+            SwitchClass(data.CharacterClass);
             ResetSkilledNodesTo(skillNodes);
             foreach (var pair in data.MasteryEffectPairs)
             {
