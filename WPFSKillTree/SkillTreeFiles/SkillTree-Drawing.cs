@@ -12,6 +12,7 @@ using PoESkillTree.ViewModels.PassiveTree;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
@@ -409,35 +410,49 @@ namespace PoESkillTree.SkillTreeFiles
                     }
                 }
 
-                groupOrbitBrush[2].TileMode = TileMode.FlipXY;
-                groupOrbitBrush[2].Viewport = new Rect(0, 0, 1, .5f);
-                if (groupOrbitBrush.Count > 3)
+                if (PoESkillTree.LargeGroupUsesHalfImage)
                 {
-                    groupOrbitBrush[5].TileMode = TileMode.FlipXY;
-                    groupOrbitBrush[5].Viewport = new Rect(0, 0, 1, .5f);
+                    groupOrbitBrush[2].TileMode = TileMode.FlipXY;
+                    groupOrbitBrush[2].Viewport = new Rect(0, 0, 1, .5f);
+                    if (groupOrbitBrush.Count > 3)
+                    {
+                        groupOrbitBrush[5].TileMode = TileMode.FlipXY;
+                        groupOrbitBrush[5].Viewport = new Rect(0, 0, 1, .5f);
+                    }
                 }
                 #region Background Drawing
-                var backgroundAsset = Assets.ContainsKey("Background1") ? Assets["Background1"] : Assets["Background2"];
-                var backgroundBrush = new ImageBrush(backgroundAsset) { TileMode = TileMode.Tile };
-                backgroundBrush.Viewport = new Rect(0, 0,
-                    3 * backgroundBrush.ImageSource.Width / SkillTreeRect.Width,
-                    3 * backgroundBrush.ImageSource.Height / SkillTreeRect.Height);
-                dc.DrawRectangle(backgroundBrush, null, SkillTreeRect);
+                if (Assets.ContainsKey("AtlasPassiveBackground"))
+                {
+                    var backgroundAsset = Assets["AtlasPassiveBackground"];
+                    var backgroundBrush = new ImageBrush(backgroundAsset);
+                    dc.DrawRectangle(backgroundBrush, null, SkillTreeRect);
+                }
+                else
+                {
+                    var backgroundAsset = Assets.ContainsKey("Background1") ? Assets["Background1"] : Assets["Background2"];
+                    var backgroundBrush = new ImageBrush(backgroundAsset) { TileMode = TileMode.Tile };
+                    backgroundBrush.Viewport = new Rect(0, 0,
+                        3 * backgroundBrush.ImageSource.Width / SkillTreeRect.Width,
+                        3 * backgroundBrush.ImageSource.Height / SkillTreeRect.Height);
+                    dc.DrawRectangle(backgroundBrush, null, SkillTreeRect);
+                }
                 #endregion
 
                 #region SkillNodeGroup Background Drawing
-
                 foreach (var skillNodeGroup in PoESkillTree.PassiveNodeGroups.Values)
                 {
                     if (skillNodeGroup.PassiveNodes.Values.Where(n => n.IsAscendancyNode).ToArray().Length > 0)
                         continue;
+                    if (skillNodeGroup.BackgroundOverride == 4)
+                        continue;
+                    
                     var cgrp = skillNodeGroup.OccupiedOrbits.Where(ng => ng <= 3) ?? Enumerable.Empty<ushort>();
                     var enumerable = cgrp as IList<ushort> ?? cgrp.ToList();
                     if (!enumerable.Any()) continue;
                     var maxr = enumerable.Max(ng => ng);
                     if (maxr == 0) continue;
                     var groupType = maxr > 3 ? 2 : maxr - 1;
-                    var heightFactor = groupType == 2 ? 2 : 1;
+                    var heightFactor = groupType == 2 && PoESkillTree.LargeGroupUsesHalfImage ? 2 : 1;
                     if (skillNodeGroup.IsProxy && groupOrbitBrush.Count > 3)
                     {
                         groupType += 3;
@@ -453,16 +468,16 @@ namespace PoESkillTree.SkillTreeFiles
         private static void DrawConnection(DrawingContext dc, Pen pen2, PassiveNodeViewModel n1, PassiveNodeViewModel n2)
         {
             if (!n1.VisibleNeighborPassiveNodes.ContainsKey(n2.Id) || !n2.VisibleNeighborPassiveNodes.ContainsKey(n1.Id)) return;
-            if (n1.PassiveNodeGroup == n2.PassiveNodeGroup && n1.OrbitRadiiIndex == n2.OrbitRadiiIndex)
+            if (n1.PassiveNodeGroup == n2.PassiveNodeGroup && n1.Orbit == n2.Orbit)
             {
                 if (n1.Arc - n2.Arc > 0 && n1.Arc - n2.Arc <= Math.PI ||
                     n1.Arc - n2.Arc < -Math.PI)
                 {
-                    dc.DrawArc(null, pen2, n1.Position, n2.Position, new Size(n1.OrbitRadii[n1.OrbitRadiiIndex] * n1.ZoomLevel, n1.OrbitRadii[n1.OrbitRadiiIndex] * n1.ZoomLevel));
+                    dc.DrawArc(null, pen2, n1.Position, n2.Position, new Size(n1.OrbitRadii[n1.Orbit] * n1.ZoomLevel, n1.OrbitRadii[n1.Orbit] * n1.ZoomLevel));
                 }
                 else
                 {
-                    dc.DrawArc(null, pen2, n2.Position, n1.Position, new Size(n1.OrbitRadii[n1.OrbitRadiiIndex] * n1.ZoomLevel, n1.OrbitRadii[n1.OrbitRadiiIndex] * n1.ZoomLevel));
+                    dc.DrawArc(null, pen2, n2.Position, n1.Position, new Size(n1.OrbitRadii[n1.Orbit] * n1.ZoomLevel, n1.OrbitRadii[n1.Orbit] * n1.ZoomLevel));
                 }
             }
             else
@@ -512,18 +527,31 @@ namespace PoESkillTree.SkillTreeFiles
             {
                 foreach (var charClass in Enums.GetValues<CharacterClass>())
                 {
-                    var pos = Skillnodes[RootNodeClassDictionary[charClass]].Position;
-                    dc.DrawRectangle(_startBackgrounds[false].brush, null,
-                        new Rect(
-                            pos - new Vector2D(_startBackgrounds[false].rect.Width, _startBackgrounds[false].rect.Height),
-                            pos + new Vector2D(_startBackgrounds[false].rect.Width, _startBackgrounds[false].rect.Height)));
+                    if (!RootNodeClassDictionary.TryGetValue(charClass, out var id))
+                    {
+                        continue;
+                    }
+
+                    var pos = Skillnodes[id].Position;
+                    if (_startBackgrounds.ContainsKey(false))
+                    {
+                        dc.DrawRectangle(_startBackgrounds[false].brush, null,
+                            new Rect(
+                                pos - new Vector2D(_startBackgrounds[false].rect.Width, _startBackgrounds[false].rect.Height),
+                                pos + new Vector2D(_startBackgrounds[false].rect.Width, _startBackgrounds[false].rect.Height)));
+                    }
                     if (CharClass == charClass)
                     {
                         var i = (int)CharClass;
                         var (rect, brush) = _faceBrushes[i];
                         dc.DrawRectangle(brush, null, new Rect(pos - new Vector2D(rect.Width, rect.Height), pos + new Vector2D(rect.Width, rect.Height)));
 
-                        var charBaseAttr = CharBaseAttributes[CharClass].ToDictionary();
+                        if (!CharBaseAttributes.TryGetValue(charClass, out var charBase)) 
+                        {
+                            continue;
+                        }
+
+                        var charBaseAttr = charBase.ToDictionary();
                         var text = CreateAttributeText(charBaseAttr["+# to Intelligence"].ToString(CultureInfo.InvariantCulture), Brushes.DodgerBlue);
                         var textPos = pos - new Vector2D(10, 47);
                         dc.DrawGeometry(null, _textShadowPen, text.BuildGeometry(textPos));
@@ -863,26 +891,34 @@ namespace PoESkillTree.SkillTreeFiles
             if (_initialized) return;
             foreach (var faceName in CharacterFaceNames)
             {
-                var bi = BitmapImageFactory.Create(_assetsFolderPath + faceName + ".png");
-                _faceBrushes.Add((new Rect(0, 0, bi.PixelWidth * PoESkillTree.MaxImageZoomLevel, bi.PixelHeight * PoESkillTree.MaxImageZoomLevel),
-                    new ImageBrush(bi)));
+                var facePath = Path.Combine(_assetsFolderPath, $"{faceName}.png");
+                if (File.Exists(facePath))
+                {
+                    var bi = BitmapImageFactory.Create(facePath);
+                    _faceBrushes.Add((new Rect(0, 0, bi.PixelWidth * PoESkillTree.MaxImageZoomLevel, bi.PixelHeight * PoESkillTree.MaxImageZoomLevel),
+                        new ImageBrush(bi)));
+                }
             }
 
-            var bi2 = BitmapImageFactory.Create(_assetsFolderPath + "PSStartNodeBackgroundInactive.png");
-            if (_startBackgrounds.ContainsKey(false))
+            var path = Path.Combine(_assetsFolderPath, "PSStartNodeBackgroundInactive.png");
+            if (File.Exists(path))
             {
-                if (!_startBackgrounds[false].rect.Equals(new Rect(0, 0, bi2.PixelWidth * PoESkillTree.MaxImageZoomLevel, bi2.PixelHeight * PoESkillTree.MaxImageZoomLevel)))
+                var bi2 = BitmapImageFactory.Create(path);
+                if (_startBackgrounds.ContainsKey(false))
+                {
+                    if (!_startBackgrounds[false].rect.Equals(new Rect(0, 0, bi2.PixelWidth * PoESkillTree.MaxImageZoomLevel, bi2.PixelHeight * PoESkillTree.MaxImageZoomLevel)))
+                    {
+                        _startBackgrounds.Add(false,
+                            ((new Rect(0, 0, bi2.PixelWidth * PoESkillTree.MaxImageZoomLevel, bi2.PixelHeight * PoESkillTree.MaxImageZoomLevel),
+                                new ImageBrush(bi2))));
+                    }
+                }
+                else
                 {
                     _startBackgrounds.Add(false,
                         ((new Rect(0, 0, bi2.PixelWidth * PoESkillTree.MaxImageZoomLevel, bi2.PixelHeight * PoESkillTree.MaxImageZoomLevel),
                             new ImageBrush(bi2))));
                 }
-            }
-            else
-            {
-                _startBackgrounds.Add(false,
-                    ((new Rect(0, 0, bi2.PixelWidth * PoESkillTree.MaxImageZoomLevel, bi2.PixelHeight * PoESkillTree.MaxImageZoomLevel),
-                        new ImageBrush(bi2))));
             }
         }
 

@@ -46,6 +46,9 @@ namespace PoESkillTree.SkillTreeFiles
 
         public string? GetAscendancyClassName(CharacterClass characterClass, int ascOrder)
         {
+            if (_classes.Count == 0)
+                return null;
+
             if (ascOrder > 0)
                 ascOrder -= 1;
             var classes = _classes[characterClass];
@@ -55,7 +58,7 @@ namespace PoESkillTree.SkillTreeFiles
         }
 
         public IEnumerable<Class> GetClasses(CharacterClass characterClass)
-            => _classes[characterClass];
+            => _classes.ContainsKey(characterClass) ? _classes[characterClass] : new List<Class>();
 
         public Class GetClass(string ascClass)
             => _classes.Values.SelectMany(x => x).FirstOrDefault(x => x.Name == ascClass);

@@ -85,6 +85,7 @@ namespace PoESkillTree.SkillTreeFiles
         private static readonly IReadOnlyDictionary<string, CharacterClass> PassiveNodeNameToClass =
             new Dictionary<string, CharacterClass>
             {
+                { "", CharacterClass.Scion },
                 { "SEVEN", CharacterClass.Scion },
                 { "MARAUDER", CharacterClass.Marauder },
                 { "RANGER", CharacterClass.Ranger },
@@ -102,7 +103,8 @@ namespace PoESkillTree.SkillTreeFiles
             "centerwitch",
             "centerduelist",
             "centertemplar",
-            "centershadow"
+            "centershadow",
+            "atlaspassiveskillscreenstart"
         };
 
         private static readonly Dictionary<string, string> NodeBackgrounds = new Dictionary<string, string>
@@ -249,7 +251,7 @@ namespace PoESkillTree.SkillTreeFiles
                 await assetLoader.DownloadAssetsAsync(PoESkillTree, d => controller?.SetProgress(0.55 + d * 0.44));
                 foreach (var ass in PoESkillTree.Assets)
                 {
-                    var key = ass.Key.Replace("PassiveSkillScreen", string.Empty);
+                    var key = ass.Key == "AtlasPassiveSkillScreenStart" ? ass.Key : ass.Key.Replace("PassiveSkillScreen", string.Empty);
                     var path = _assetsFolderPath + key + ".png";
                     assetActions.Add((Task.Run(() => BitmapImageFactory.Create(path)), i => Assets[key] = i));
                 }
@@ -465,13 +467,15 @@ namespace PoESkillTree.SkillTreeFiles
         {
             var temp = new Dictionary<string, List<float>>();
 
-            foreach (var (stat, value) in
-                CharBaseAttributes[charClass].Union(BaseAttributes).Union(banditSettings.Rewards))
+            if (CharBaseAttributes.ContainsKey(charClass))
             {
-                if (!temp.ContainsKey(stat))
-                    temp[stat] = new List<float> { value };
-                else if (temp[stat].Any())
-                    temp[stat][0] += value;
+                foreach (var (stat, value) in CharBaseAttributes[charClass].Union(BaseAttributes).Union(banditSettings.Rewards))
+                {
+                    if (!temp.ContainsKey(stat))
+                        temp[stat] = new List<float> { value };
+                    else if (temp[stat].Any())
+                        temp[stat][0] += value;
+                }
             }
 
             foreach (var node in skilledNodes)
@@ -929,40 +933,50 @@ namespace PoESkillTree.SkillTreeFiles
 
         public static Dictionary<string, List<float>> ImplicitAttributes(Dictionary<string, List<float>> attribs, int level)
         {
-            var retval = new Dictionary<string, List<float>>
+            var retval = new Dictionary<string, List<float>>();
+
+            if (attribs.ContainsKey("+# to Intelligence"))
             {
-                ["+# to maximum Mana"] = new List<float>
+                retval["+# to maximum Mana"] = new List<float>
                 {
                     attribs["+# to Intelligence"][0]/IntPerMana + level*ManaPerLevel
-                },
-                ["#% increased maximum Energy Shield"] = new List<float>
+                };
+
+                retval["#% increased maximum Energy Shield"] = new List<float>
                 {
                     (float) Math.Round(attribs["+# to Intelligence"][0]/IntPerES, 0)
-                },
-                ["+# to maximum Life"] = new List<float>
+                };
+            }
+
+            if (attribs.ContainsKey("+# to Strength"))
+            {
+                retval["+# to maximum Life"] = new List<float>
                 {
                     attribs["+# to Strength"][0]/StrPerLife + level*LifePerLevel
-                }
-            };
-            // +# to Strength", co["base_str"].Value<int>() }, { "+# to Dexterity", co["base_dex"].Value<int>() }, { "+# to Intelligence", co["base_int"].Value<int>() } };
+                };
 
-            // Every 10 strength grants 2% increased melee physical damage. 
-            var str = (int)attribs["+# to Strength"][0];
-            if (str % (int)StrPerED > 0) str += (int)StrPerED - (str % (int)StrPerED);
-            retval["#% increased Melee Physical Damage"] = new List<float> { str / StrPerED };
-            // Every point of Dexterity gives 2 additional base accuracy, and characters gain 2 base accuracy when leveling up.
-            // @see http://pathofexile.gamepedia.com/Accuracy
-            retval["+# Accuracy Rating"] = new List<float>
+                // Every 10 strength grants 2% increased melee physical damage. 
+                var str = (int)attribs["+# to Strength"][0];
+                if (str % (int)StrPerED > 0) str += (int)StrPerED - (str % (int)StrPerED);
+                retval["#% increased Melee Physical Damage"] = new List<float> { str / StrPerED };
+            }
+
+            if (attribs.ContainsKey("+# to Dexterity"))
             {
-                attribs["+# to Dexterity"][0]/DexPerAcc + (level - 1)*AccPerLevel
-            };
-            retval["Evasion Rating: #"] = new List<float> { level * EvasPerLevel };
+                // Every point of Dexterity gives 2 additional base accuracy, and characters gain 2 base accuracy when leveling up.
+                // @see http://pathofexile.gamepedia.com/Accuracy
+                retval["+# Accuracy Rating"] = new List<float>
+                {
+                    attribs["+# to Dexterity"][0]/DexPerAcc + (level - 1)*AccPerLevel
+                };
+                retval["Evasion Rating: #"] = new List<float> { level * EvasPerLevel };
 
-            // Dexterity value is not getting rounded up any more but rounded normally to the nearest multiple of 5.
-            // @see http://pathofexile.gamepedia.com/Talk:Evasion
-            float dex = attribs["+# to Dexterity"][0];
-            dex = (float)Math.Round(dex / DexPerEvas, 0, MidpointRounding.AwayFromZero) * DexPerEvas;
-            retval["#% increased Evasion Rating"] = new List<float> { dex / DexPerEvas };
+                // Dexterity value is not getting rounded up any more but rounded normally to the nearest multiple of 5.
+                // @see http://pathofexile.gamepedia.com/Talk:Evasion
+                float dex = attribs["+# to Dexterity"][0];
+                dex = (float)Math.Round(dex / DexPerEvas, 0, MidpointRounding.AwayFromZero) * DexPerEvas;
+                retval["#% increased Evasion Rating"] = new List<float> { dex / DexPerEvas };
+            }
 
             int frenzycharges, powercharges;
             var endurancecharges = frenzycharges = powercharges = 0;
@@ -1133,7 +1147,7 @@ namespace PoESkillTree.SkillTreeFiles
             => Skillnodes[GetCharNodeId()];
 
         private ushort GetCharNodeId()
-            => RootNodeClassDictionary[CharClass];
+            => RootNodeClassDictionary.ContainsKey(CharClass) ? RootNodeClassDictionary[CharClass] : RootNodeClassDictionary.Values.FirstOrDefault();
 
         private PassiveNodeViewModel? GetAscNode()
         {

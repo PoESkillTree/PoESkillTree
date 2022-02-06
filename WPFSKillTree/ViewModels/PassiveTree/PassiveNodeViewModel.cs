@@ -58,8 +58,8 @@ namespace PoESkillTree.ViewModels.PassiveTree
         public JsonExpansionJewelSocket? ExpansionJewelSocket { get => JsonPassiveNode.ExpansionJewelSocket; }
         public HashSet<ushort> OutPassiveNodeIds => JsonPassiveNode.OutPassiveNodeIds;
         public HashSet<ushort> InPassiveNodeIds => JsonPassiveNode.InPassiveNodeIds;
-        public float[] OrbitRadii { get => JsonPassiveNode.OrbitRadii; }
-        public int OrbitRadiiIndex { get => JsonPassiveNode.OrbitRadiiIndex; }
+        public int[] OrbitRadii { get => JsonPassiveNode.OrbitRadii; }
+        public int Orbit { get => JsonPassiveNode.Orbit; }
         public bool IsAscendancyNode => JsonPassiveNode.IsAscendancyNode;
         public bool IsRootNode => JsonPassiveNode.IsRootNode;
         public PassiveNodeType PassiveNodeType { get => JsonPassiveNode.PassiveNodeType; }

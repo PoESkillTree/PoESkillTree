@@ -33,7 +33,11 @@ namespace PoESkillTree.TreeDrawing
 
         private void Draw(DrawingContext context, PassiveNodeViewModel node)
         {
-            var rect = _icons.SkillPositions[node.IconKey];
+            if (!_icons.SkillPositions.TryGetValue(node.IconKey, out var rect))
+            {
+                return;
+            }
+            
             var image = _icons.GetSkillImage(node.IconKey);
             var imageBrush = new ImageBrush
             {

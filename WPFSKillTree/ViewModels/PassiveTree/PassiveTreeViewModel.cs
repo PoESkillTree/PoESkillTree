@@ -64,6 +64,7 @@ namespace PoESkillTree.ViewModels.PassiveTree
         public List<JsonPassiveTreeCharacterClass> CharacterClasses => JsonPassiveTree.CharacterClasses;
         public Uri SpriteSheetUri => JsonPassiveTree.SpriteSheetUri;
         public string ImageRoot { get => JsonPassiveTree.ImageRoot; }
+        public bool LargeGroupUsesHalfImage { get => JsonPassiveTree.UIArtOptions.LargeGroupUsesHalfImage; }
 
         public PassiveNodeViewModel Root { get; }
         public Dictionary<ushort, PassiveNodeViewModel> PassiveNodes { get; } = new Dictionary<ushort, PassiveNodeViewModel>();
