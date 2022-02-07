@@ -209,7 +209,7 @@ namespace PoESkillTree.TreeGenerator.Solver
         private void CreateTargetNodes(SearchGraph searchGraph)
         {
             TargetNodes = (from node in Settings.Checked
-                           where !searchGraph.NodeDict.ContainsKey(node)
+                           where !searchGraph.NodeDict.ContainsKey(node) && node.PassiveNodeType != PassiveNodeType.Mastery
                            select searchGraph.AddNodeId(node.Id))
                           .Union(new[] {StartNode}).ToList();
         }

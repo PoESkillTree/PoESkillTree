@@ -821,9 +821,12 @@ namespace PoESkillTree.TreeGenerator.ViewModels
         private Dictionary<string, float> CreateInitialAttributes()
         {
             // base attributes: SkillTree.BaseAttributes, SkillTree.CharBaseAttributes
-            var stats = SkillTree.BaseAttributes
-                .Concat(SkillTree.CharBaseAttributes[Tree.CharClass])
-                .ToDictionary();
+            var stats = SkillTree.BaseAttributes.ToDictionary();
+            if (SkillTree.CharBaseAttributes.TryGetValue(Tree.CharClass, out var charStats))
+            {
+                stats.AddRange(charStats.ToDictionary());
+            }
+
             // Level attributes (flat mana, life, evasion and accuracy) are blacklisted, because they are also dependent
             // on core attributes, which are dependent on the actual tree and are pretty pointless as basic attributes anyway.
             // For the calculation of pseudo attributes, they need to be included however.
