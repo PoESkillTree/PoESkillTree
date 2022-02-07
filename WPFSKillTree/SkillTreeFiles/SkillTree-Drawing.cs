@@ -441,22 +441,23 @@ namespace PoESkillTree.SkillTreeFiles
                 #region SkillNodeGroup Background Drawing
                 foreach (var skillNodeGroup in PoESkillTree.PassiveNodeGroups.Values)
                 {
-                    if (skillNodeGroup.PassiveNodes.Values.Where(n => n.IsAscendancyNode).ToArray().Length > 0)
+                    if (skillNodeGroup.PassiveNodes.Count == 0)
                         continue;
-                    if (skillNodeGroup.BackgroundOverride == 4)
+                    if (skillNodeGroup.PassiveNodes.Values.Count(n => n.IsAscendancyNode) > 0)
                         continue;
                     
-                    var cgrp = skillNodeGroup.OccupiedOrbits.Where(ng => ng <= 3) ?? Enumerable.Empty<ushort>();
-                    var enumerable = cgrp as IList<ushort> ?? cgrp.ToList();
-                    if (!enumerable.Any()) continue;
-                    var maxr = enumerable.Max(ng => ng);
-                    if (maxr == 0) continue;
-                    var groupType = maxr > 3 ? 2 : maxr - 1;
+                    var cgrp = skillNodeGroup.OccupiedOrbits.Where(ng => ng <= 3)?.ToList() ?? new List<ushort> { 0 };
+                    if (!cgrp.Any()) 
+                        cgrp.Add(0);
+
+                    var maxr = skillNodeGroup.BackgroundOverride == 0 ? cgrp.Max(ng => ng) : skillNodeGroup.BackgroundOverride; 
+                    if (maxr == 0 || maxr > 3) continue;
+                    
+                    var groupType = maxr - 1;
                     var heightFactor = groupType == 2 && PoESkillTree.LargeGroupUsesHalfImage ? 2 : 1;
                     if (skillNodeGroup.IsProxy && groupOrbitBrush.Count > 3)
-                    {
                         groupType += 3;
-                    }
+
                     var size = new Size(groupBackgrounds[groupType].PixelWidth, groupBackgrounds[groupType].PixelHeight * heightFactor);
                     var offset = new Vector2D(size.Width, size.Height) / 2;
                     dc.DrawRectangle(groupOrbitBrush[groupType], null, new Rect(skillNodeGroup.Position - offset, size));
