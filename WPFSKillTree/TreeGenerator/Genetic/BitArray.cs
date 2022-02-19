@@ -112,10 +112,10 @@ namespace PoESkillTree.TreeGenerator.Genetic
             return obj is BitArray other && Equals(other);
         }
 
-        public bool Equals(BitArray other)
+        public bool Equals(BitArray? other)
         {
-            if (null == other) return false;
-            if (this == other) return true;
+            if (other is null) return false;
+            if (this is null) return true;
             if (other.Length != Length) return false;
             if (_hash.HasValue && other._hash.HasValue && other.GetHashCode() != GetHashCode())
             {

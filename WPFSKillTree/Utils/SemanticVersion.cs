@@ -27,8 +27,9 @@ namespace PoESkillTree.Utils
             return new SemanticVersion(major, minor, patch, preReleaseType, preReleaseNumber);
         }
 
-        public int CompareTo(SemanticVersion other)
+        public int CompareTo(SemanticVersion? other)
         {
+            if (other is null) return -1;
             if (Major != other.Major)
                 return Major.CompareTo(other.Major);
             if (Minor != other.Minor)

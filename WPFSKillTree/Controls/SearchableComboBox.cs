@@ -108,14 +108,13 @@ namespace PoESkillTree.Controls
         {
             if (_oldFilter != null && !_oldFilter(item))
                 return false;
-            if (item == null)
-                return false;
             if (string.IsNullOrEmpty(SearchFilter))
                 return true;
-            return ToValue(item).Contains(SearchFilter, StringComparison.CurrentCultureIgnoreCase);
+            if (ToValue(item) is string value)
+                return value.Contains(SearchFilter, StringComparison.CurrentCultureIgnoreCase);
+            return false;
         }
 
-        [return: NotNullIfNotNull("item")]
         private string? ToValue(object? item)
         {
             if (item == null)
