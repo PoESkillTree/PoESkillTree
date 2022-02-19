@@ -544,11 +544,23 @@ namespace PoESkillTree.SkillTreeFiles
             if (assetLoader == null)
                 assetLoader = new AssetLoader(new HttpClient(), dataFolderPath, false);
 
-            if (File.Exists(dataFolderPath + "Skilltree.txt"))
-                File.Move(dataFolderPath + "Skilltree.txt", dataFolderPath + AssetLoader.SkillTreeFile);
+            var oldSkillTreeFile = "Skilltree.txt";
+            if (File.Exists(dataFolderPath + oldSkillTreeFile))
+            {
+                if (File.Exists(dataFolderPath + AssetLoader.SkillTreeFile))
+                    File.Delete(dataFolderPath + oldSkillTreeFile);
+                else
+                    File.Move(dataFolderPath + oldSkillTreeFile, dataFolderPath + AssetLoader.SkillTreeFile);
+            }
 
-            if (File.Exists(dataFolderPath + "Opts.txt"))
-                File.Move(dataFolderPath + "Opts.txt", dataFolderPath + AssetLoader.OptsFile);
+            var oldOptsFile = "Ops.txt";
+            if (File.Exists(dataFolderPath + oldOptsFile))
+            {
+                if (File.Exists(dataFolderPath + AssetLoader.OptsFile))
+                    File.Delete(dataFolderPath + oldOptsFile);
+                else
+                    File.Move(dataFolderPath + oldOptsFile, dataFolderPath + AssetLoader.OptsFile);
+            }
 
             var skillTreeTask = LoadTreeFileAsync(dataFolderPath + AssetLoader.SkillTreeFile,
                 () => assetLoader.DownloadSkillTreeToFileAsync());
