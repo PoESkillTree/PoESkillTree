@@ -12,11 +12,11 @@
   <PropertyGroup>
     <AssemblyName>PoESkillTree</AssemblyName>
     <Company>PoESkillTree Team</Company>
-    <Copyright>Copyright © 2012-20121 PoESkillTree Team</Copyright>
+    <Copyright>Copyright © 2012-2022 PoESkillTree Team</Copyright>
     <Description>Passive skill tree planner for Path of Exile®</Description>
     <Product>PoESkillTree - Conquerors of the Atlas</Product>
     <ProductUrl>https://github.com/PoESkillTree/PoESkillTree/</ProductUrl>
-    <VersionPrefix>3.0.3</VersionPrefix>
+    <VersionPrefix>3.0.4</VersionPrefix>
   </PropertyGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="$(Configuration) == Release">
     <Exec Command="$(ProjectDir)build-locale.bat" />
