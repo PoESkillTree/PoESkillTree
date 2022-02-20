@@ -308,10 +308,11 @@ namespace PoESkillTree.SkillTreeFiles
                         AscRootNodeList.Add(node);
                     }
                 }
-
+                
                 SkillTreeRect = new Rect2D(
-                    new Vector2D(PoESkillTree.MinX * PoESkillTree.MaxImageZoomLevel * 1.25, PoESkillTree.MinY * PoESkillTree.MaxImageZoomLevel * 1.25),
-                    new Vector2D(PoESkillTree.MaxX * PoESkillTree.MaxImageZoomLevel * 1.25, PoESkillTree.MaxY * PoESkillTree.MaxImageZoomLevel * 1.25));
+                    new Vector2D(PoESkillTree.MinX * PoESkillTree.MaxImageZoomLevel, PoESkillTree.MinY * PoESkillTree.MaxImageZoomLevel),
+                    new Vector2D(PoESkillTree.MaxX * PoESkillTree.MaxImageZoomLevel, PoESkillTree.MaxY * PoESkillTree.MaxImageZoomLevel));
+                SkillTreeRect *= 1.25;
             }
 
             if (_persistentData.Options.ShowAllAscendancyClasses)

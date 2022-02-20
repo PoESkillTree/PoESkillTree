@@ -190,11 +190,10 @@ namespace PoESkillTree.Views
 
         public CommandCollectionViewModel LoadTreeButtonViewModel { get; } = new CommandCollectionViewModel();
 
+        private Vector2D _multransform;
         private Vector2D _addtransform;
         private bool _justLoaded;
         private string? _lasttooltip;
-
-        private Vector2D _multransform;
 
         private IReadOnlyCollection<PassiveNodeViewModel>? _prePath;
         private IReadOnlyCollection<PassiveNodeViewModel>? _toRemove;
@@ -938,7 +937,7 @@ namespace PoESkillTree.Views
                     image.Save(dialog.FileName, format);
                 }
 
-                recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
+                InitializeTreeDependentUI();
             }
             else
             {
@@ -980,7 +979,7 @@ namespace PoESkillTree.Views
 
                         SkillTree.ClearAssets(); //enable recaching of assets
                         Tree = await CreateSkillTreeAsync(controller, assetLoader); //create new skilltree to reinitialize cache
-                        recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
+                        InitializeTreeDependentUI();
 
                         await ResetTreeUrl();
                         _justLoaded = false;
@@ -1327,9 +1326,9 @@ namespace PoESkillTree.Views
 
         private async void zbSkillTreeBackground_Click(object sender, RoutedEventArgs e)
         {
-            var p = ((MouseEventArgs)e.OriginalSource).GetPosition(zbSkillTreeBackground.Child);
-            var v = new Vector2D(p.X, p.Y);
-            v = v * _multransform + _addtransform;
+            if (!(e.OriginalSource is MouseEventArgs mouse))
+                return;
+            var (p, v) = ScreenToWorld(mouse, zbSkillTreeBackground.Child);
 
             var node = Tree.FindNodeInRange(v);
             if (node != null && !node.IsRootNode)
@@ -1404,6 +1403,12 @@ namespace PoESkillTree.Views
             }
         }
 
+        private (Vector2D screen, Vector2D world) ScreenToWorld(MouseEventArgs e, UIElement target)
+        {
+            var screen = e.GetPosition(target);
+            return (screen, screen * _multransform + _addtransform);
+        }
+
         private void zbSkillTreeBackground_MouseLeave(object sender, MouseEventArgs e)
         {
             // We might have popped up a tooltip while the window didn't have focus,
@@ -1414,9 +1419,7 @@ namespace PoESkillTree.Views
 
         private void zbSkillTreeBackground_MouseMove(object sender, MouseEventArgs e)
         {
-            var p = e.GetPosition(zbSkillTreeBackground.Child);
-            var v = new Vector2D(p.X, p.Y);
-            v = v * _multransform + _addtransform;
+            var (p, v) = ScreenToWorld(e, zbSkillTreeBackground.Child);
 
             var node = Tree.FindNodeInRange(v);
             _hoveredNode = node;
